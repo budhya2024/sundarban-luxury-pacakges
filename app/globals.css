@@ -1,26 +1,474 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-brand-green-dark: var(--brand-green-dark);
+  --color-brand-green-primary: var(--brand-green-primary);
+  --color-brand-green-medium: var(--brand-green-medium);
+  --color-brand-green-light: var(--brand-green-light);
+  --color-brand-green-soft: var(--brand-green-soft);
+  --color-brand-green-border: var(--brand-green-border);
+
+  --color-brand-yellow-dark: var(--brand-yellow-dark);
+  --color-brand-yellow-primary: var(--brand-yellow-primary);
+  --color-brand-yellow-medium: var(--brand-yellow-medium);
+  --color-brand-yellow-light: var(--brand-yellow-light);
+  --color-brand-yellow-soft: var(--brand-yellow-soft);
+  --color-brand-yellow-subtle: var(--brand-yellow-subtle);
+  --color-brand-yellow-border: var(--brand-yellow-border);
+  --color-brand-yellow-text: var(--brand-yellow-text);
+
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-accent: var(--brand-accent);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-sans);
+  --font-manrope: var(--font-sans);
   --font-mono: var(--font-geist-mono);
+  --font-montez: var(--font-montez);
+  --font-heading: var(--font-sans);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* Primary Deep Green Palette (Heritage Forest & Mangroves) */
+  --brand-green-dark: #052e16;
+  /* Deepest Jungle Green (950) */
+  --brand-green-primary: #064e3b;
+  /* Heritage Deep Forest Green (900) */
+  --brand-green-medium: #047857;
+  /* Emerald Deep Green (700) */
+  --brand-green-light: #10b981;
+  /* Vibrant Green (500) */
+  --brand-green-soft: #ecfdf5;
+  /* Light Green Tint (50) */
+  --brand-green-border: #a7f3d0;
+  /* Green Border (200) */
+
+  /* Primary Warm Yellow / Gold Palette (Wild Sun & Tiger Gold) */
+  --brand-yellow-dark: #78350f;
+  /* Deep Amber Bronze (900) */
+  --brand-yellow-primary: #d97706;
+  /* Rich Dark Yellow / Gold (600) */
+  --brand-yellow-medium: #f59e0b;
+  /* Vibrant Yellow Gold (500) */
+  --brand-yellow-light: #fbbf24;
+  /* Bright Sun Gold (400) */
+  --brand-yellow-soft: #fef3c7;
+  /* Soft Yellow Tint (100) */
+  --brand-yellow-subtle: #fffbeb;
+  /* Pale Yellow Tint (50) */
+  --brand-yellow-border: #fde68a;
+  /* Warm Gold Border (200) */
+  --brand-yellow-text: #b45309;
+  /* Readable Dark Yellow/Amber (700) */
+  --brand-cream-bg: #fef8e2;
+  /* Warm Cream Section Background */
+  --brand-cream-light: #fffdf5;
+  /* Ultra Light Cream */
+
+  /* Aliases for global utility usage */
+  --brand-primary: var(--brand-green-primary);
+  --brand-accent: var(--brand-yellow-primary);
+
+  /* Neutral & Base UI */
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #064e3b;
+  --primary-foreground: #ffffff;
+  --secondary: #d97706;
+  --secondary-foreground: #ffffff;
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+  --accent: #f59e0b;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #d97706;
+  --radius: 0.625rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  ::selection {
+    background-color: var(--brand-green-primary, #064e3b) !important;
+    color: white;
+  }
+
+  ::-moz-selection {
+    background-color: var(--brand-green-primary, #064e3b) !important;
+    color: white;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    @apply font-sans;
+  }
+
+  button,
+  a,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"],
+  .btn {
+    cursor: pointer !important;
+  }
+
+  input,
+  select,
+  textarea {
+    outline: none !important;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    --tw-ring-shadow: 0 0 #0000 !important;
+    --tw-ring-offset-shadow: 0 0 #0000 !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+.container {
+  max-width: 1380px;
+  width: 100%;
+  padding-inline: 16px;
+  margin: 0 auto;
+}
+
+
+
+/* ==========================================================================
+   Section Global Typography & Components
+   ========================================================================== */
+
+.sec-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .sec-header {
+    margin-bottom: 3.5rem;
+  }
+}
+
+.sec-tagline,
+.sec-subtitle {
+  font-family: var(--font-montez), cursive;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  color: var(--brand-primary, #d97706);
+  letter-spacing: 0.025em;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+@media (min-width: 640px) {
+
+  .sec-tagline,
+  .sec-subtitle {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+}
+
+.sec-title {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.025em;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .sec-title {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .sec-title {
+    font-size: 2.5rem;
+    line-height: 1.15;
+  }
+}
+
+.sec-details,
+.sec-desc,
+.sec-text {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #64748b;
+  max-width: 42rem;
+  margin-inline: auto;
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 768px) {
+
+  .sec-details,
+  .sec-desc,
+  .sec-text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+}
+
+/* Warm Cream Background Utility */
+.bg-cream,
+.bg-warm-cream {
+  background-color: var(--brand-cream-bg, #fef8e2) !important;
+}
+
+.bg-cream-light {
+  background-color: var(--brand-cream-light, #fffdf5) !important;
+}
+
+/* ==========================================================================
+   Global Button Components (Left-to-Right Background Fill Animation)
+   ========================================================================== */
+
+.btn,
+.btn-fill-slide,
+.btn-primary,
+.btn-secondary,
+.btn-gold,
+.btn-yellow,
+.btn-amber,
+.btn-outline,
+.btn-glass {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.25;
+  border-radius: 9999px;
+  overflow: hidden;
+  z-index: 1;
+  cursor: pointer !important;
+  text-decoration: none;
+  transition: color 0.4s ease, border-color 0.4s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+/* Ensure inner content stays strictly above the sliding background fill */
+.btn > *,
+.btn-fill-slide > *,
+.btn-primary > *,
+.btn-secondary > *,
+.btn-gold > *,
+.btn-yellow > *,
+.btn-amber > *,
+.btn-outline > *,
+.btn-glass > * {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.btn:active,
+.btn-fill-slide:active,
+.btn-primary:active,
+.btn-secondary:active,
+.btn-gold:active,
+.btn-outline:active {
+  transform: scale(0.97);
+}
+
+/* Base Left-to-Right Fill Pseudo-element */
+.btn::before,
+.btn-fill-slide::before,
+.btn-primary::before,
+.btn-secondary::before,
+.btn-gold::before,
+.btn-yellow::before,
+.btn-amber::before,
+.btn-outline::before,
+.btn-glass::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--btn-fill-color, var(--brand-yellow-primary, #d97706));
+  z-index: 1;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.btn:hover::before,
+.btn-fill-slide:hover::before,
+.btn-primary:hover::before,
+.btn-secondary:hover::before,
+.btn-gold:hover::before,
+.btn-yellow:hover::before,
+.btn-amber:hover::before,
+.btn-outline:hover::before,
+.btn-glass:hover::before {
+  transform: scaleX(1);
+}
+
+/* Primary Theme Button (Deep Forest Green base -> Fills with Rich Dark Yellow / Gold from left to right) */
+.btn-primary {
+  background-color: var(--brand-green-primary, #064e3b);
+  color: #ffffff;
+  border: 1.5px solid var(--brand-green-primary, #064e3b);
+  --btn-fill-color: var(--brand-yellow-primary, #d97706);
+}
+
+.btn-primary:hover {
+  color: #ffffff;
+  border-color: var(--brand-yellow-primary, #d97706);
+  box-shadow: 0 10px 25px -5px rgba(217, 119, 6, 0.4);
+}
+
+/* Secondary Theme Button (Rich Dark Yellow / Gold base -> Fills with Deep Forest Green from left to right) */
+.btn-secondary,
+.btn-gold,
+.btn-yellow,
+.btn-amber {
+  background-color: var(--brand-yellow-primary, #d97706);
+  color: #ffffff;
+  border: 1.5px solid var(--brand-yellow-primary, #d97706);
+  --btn-fill-color: var(--brand-green-primary, #064e3b);
+}
+
+.btn-secondary:hover,
+.btn-gold:hover,
+.btn-yellow:hover,
+.btn-amber:hover {
+  color: #ffffff;
+  border-color: var(--brand-green-primary, #064e3b);
+  box-shadow: 0 10px 25px -5px rgba(6, 78, 59, 0.35);
+}
+
+/* Swiper Pagination Pure Yellow (No Border) */
+.swiper-pagination-bullet {
+  background: #fde68a !important;
+  opacity: 1 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.swiper-pagination-bullet:hover {
+  background: #f59e0b !important;
+  border: none !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #d97706 !important;
+  opacity: 1 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Outline Theme Button (Transparent base -> Fills with Deep Forest Green from left to right) */
+.btn-outline {
+  background-color: transparent;
+  color: var(--brand-green-primary, #064e3b);
+  border: 1.5px solid var(--brand-green-primary, #064e3b);
+  --btn-fill-color: var(--brand-green-primary, #064e3b);
+}
+
+.btn-outline:hover {
+  color: #ffffff;
+  border-color: var(--brand-green-primary, #064e3b);
+  box-shadow: 0 8px 20px -4px rgba(6, 78, 59, 0.3);
+}
+
+/* Frosted Glass Pill Button */
+.btn-glass {
+  background-color: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 0.375rem 0.875rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  --btn-fill-color: #ffffff;
+}
+
+@media (min-width: 640px) {
+  .btn-glass {
+    padding: 0.45rem 1rem;
+    font-size: 0.8125rem;
+  }
+}
+
+.btn-glass:hover {
+  color: #0f172a;
+  border-color: #ffffff;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.25);
+}
+
+/* Hide all browser native video play and sound controls */
+video::-webkit-media-controls,
+video::-webkit-media-controls-enclosure,
+video::-webkit-media-controls-panel,
+video::-webkit-media-controls-play-button,
+video::-webkit-media-controls-start-playback-button,
+video::-webkit-media-controls-volume-slider,
+video::-webkit-media-controls-mute-button {
+  display: none !important;
+  -webkit-appearance: none;
+  opacity: 0 !important;
 }
