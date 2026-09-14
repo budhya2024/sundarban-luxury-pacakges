@@ -21,14 +21,14 @@ export function FaqSection() {
     <section id="faq" className="py-8 md:py-16 bg-white relative overflow-hidden">
       <div className="w-full max-w-[1020px] mx-auto px-4 sm:px-6">
         {/* Section Header */}
-        <div className="text-center mb-12 md:mb-14">
-          <p className="font-montez text-3xl md:text-4xl text-[#d97706] tracking-wide mb-1">
+        <div className="sec-header">
+          <p className="sec-tagline">
             FAQ
           </p>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-[#0f172a] tracking-tight mb-3">
+          <h2 className="sec-title">
             Frequently Asked Questions
           </h2>
-          <p className="text-slate-500 text-sm md:text-base font-normal">
+          <p className="sec-desc">
             Have questions you want answers to?
           </p>
         </div>
@@ -41,11 +41,10 @@ export function FaqSection() {
             return (
               <div
                 key={item.id}
-                className={`border transition-all duration-300 overflow-hidden ${
-                  isOpen
-                    ? "border-[#064e3b] bg-white shadow-md shadow-[#064e3b]/5"
-                    : "border-slate-200/90 bg-white hover:border-[#064e3b]/60 hover:bg-emerald-50/20"
-                }`}
+                className={`border transition-all duration-300 overflow-hidden rounded-xl ${isOpen
+                  ? "border-[#064e3b] bg-white shadow-md shadow-[#064e3b]/5"
+                  : "border-slate-200/90 bg-white hover:border-[#064e3b]/60 hover:bg-emerald-50/20"
+                  }`}
               >
                 {/* Accordion Question Trigger */}
                 <button
@@ -61,9 +60,8 @@ export function FaqSection() {
                   </span>
 
                   <div
-                    className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full group-hover:bg-amber-100 transition-transform duration-300 ${
-                      isOpen ? "rotate-180 text-[#064e3b]" : "text-slate-500"
-                    }`}
+                    className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full group-hover:bg-amber-100 transition-transform duration-300 ${isOpen ? "rotate-180 text-[#064e3b]" : "text-slate-500"
+                      }`}
                   >
                     <ChevronDown className="h-5 w-5" />
                   </div>

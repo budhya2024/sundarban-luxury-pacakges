@@ -34,7 +34,7 @@ const slides: SlideItem[] = [
     subtitle:
       "Experience royal comfort with panoramic observation decks, chef-curated cuisine, and 24/7 personalized concierge service.",
     image:
-      "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=2000&q=80",
+      "/assets/images/tiger-photo.jpg",
     ctaText: "View Cruise Itinerary",
     ctaHref: "/tour-details",
   },
@@ -45,7 +45,7 @@ const slides: SlideItem[] = [
     subtitle:
       "Combine 5-star luxury resort stays with watchtower canopy walks, local folk shows, and private boat safaris.",
     image:
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=2000&q=80",
+      "/assets/images/sonar-bangla-hotel-ambience.jpg",
     ctaText: "Book Sonar Bangla Stay",
     ctaHref: "/contact",
   },
@@ -87,7 +87,7 @@ export function HeroSlider() {
 
 
   return (
-    <section className="relative w-full h-[520px] sm:h-[600px] md:h-[680px] lg:h-[750px] overflow-hidden bg-[#052e16]">
+    <section className="relative w-full h-[520px] sm:h-[600px] md:h-[660px] lg:h-[700px] overflow-hidden bg-[#052e16]">
       {/* Slides Background Images with Ken Burns Zoom Effect */}
       {slides.map((slide, index) => {
         const isActive = index === currentSlide;
@@ -118,27 +118,26 @@ export function HeroSlider() {
         );
       })}
 
-      {/* Main Content Overlay */}
-      <div className="relative z-20 h-full flex flex-col justify-between py-8 md:py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 my-auto">
-          <div className="max-w-3xl text-left space-y-4 sm:space-y-6">
-
+      {/* Main Content Overlay - Vertically Centered in Middle */}
+      <div className="relative z-20 h-full flex flex-col justify-center py-10 md:py-16">
+        <div className="container">
+          <div className="max-w-3xl space-y-4 sm:space-y-6">
 
             {/* Main Title */}
-            <h1 className="text-3xl sm:text-5xl md:text-6xl  font-black text-white tracking-tight leading-[1.1] drop-shadow-md">
+            <h1 className="text-3xl sm:text-5xl  font-black text-white leading-snug  drop-shadow-md">
               {slides[currentSlide].title}
             </h1>
 
             {/* Subtitle */}
-            <p className="text-slate-200 text-sm sm:text-base md:text-xl font-light leading-relaxed max-w-2xl drop-shadow-sm">
+            <p className="text-slate-200 text-sm sm:text-lg font-light leading-relaxed max-w-2xl drop-shadow-sm">
               {slides[currentSlide].subtitle}
             </p>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="flex flex-wrap items-center justify-start gap-4 pt-2">
               <Link
                 href={slides[currentSlide].ctaHref}
-                className="inline-flex items-center gap-2.5 rounded-full bg-[#d97706] hover:bg-[#064e3b] text-white px-7 py-3.5 font-bold text-sm sm:text-base shadow-xl transition-all duration-300 hover:scale-105 group border border-[#fbbf24]/40"
+                className="inline-flex items-center gap-2.5 rounded-full bg-[#d97706] hover:bg-[#064e3b] text-white px-7 py-3.5 font-bold text-sm sm:text-base shadow-xl transition-all duration-300 group"
               >
                 <span>{slides[currentSlide].ctaText}</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -153,9 +152,11 @@ export function HeroSlider() {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Bottom Slide Indicators */}
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-4">
+      {/* Bottom Slide Indicators */}
+      <div className="absolute bottom-5 sm:bottom-7 left-0 right-0 z-30 pointer-events-auto">
+        <div className="container">
           <div className="flex items-center justify-center gap-2.5">
             {slides.map((_, idx) => (
               <button

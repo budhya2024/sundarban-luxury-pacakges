@@ -32,23 +32,23 @@ export interface TourPackageOption {
 export const sonarBanglaPackages: TourPackageOption[] = [
   {
     id: "1n2d-sonar",
-    name: "1 Night 2 Days Luxury Package",
-    duration: "2 Days / 1 Night",
+    name: "1 Days Luxury Package",
+    duration: "1 day",
     pricePerPerson: 5999,
     highlight: "1 Night Resort Stay • 2 Forest Safaris • All Meals",
   },
   {
     id: "2n3d-sonar",
-    name: "2 Nights 3 Days Deluxe Package",
-    duration: "3 Days / 2 Nights",
+    name: "1 Night 2 Days Deluxe Package",
+    duration: "1 Night /2 Days",
     pricePerPerson: 8999,
     highlight: "2 Nights Resort • Dobanki Canopy Walk • Baul Night",
     popular: true,
   },
   {
     id: "3n4d-sonar",
-    name: "3 Nights 4 Days Grand Expedition",
-    duration: "4 Days / 3 Nights",
+    name: "2 Nights 3 Days Grand Expedition",
+    duration: "2 Nights / 3 Days",
     pricePerPerson: 12999,
     highlight: "3 Nights Riverview Suite • Core Safari • Dolphin Creek",
   },
@@ -81,6 +81,15 @@ export function HotelTourBookingForm() {
   const [guestEmail, setGuestEmail] = useState<string>("");
   const [guestPhone, setGuestPhone] = useState<string>("");
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+  // Compute today's date in YYYY-MM-DD for min date attribute
+  const todayStr = React.useMemo(() => {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }, []);
 
   const selectedPackage =
     sonarBanglaPackages.find((p) => p.id === selectedPackageId) ||
@@ -116,14 +125,14 @@ export function HotelTourBookingForm() {
 • Email: ${guestEmail || "Provided"}
 • Contact: ${guestPhone || "Provided"}`;
 
-    return `https://wa.me/919876543210?text=${encodeURIComponent(message)}`;
+    return `https://wa.me/917001403498?text=${encodeURIComponent(message)}`;
   };
 
   return (
-    <div className="bg-white rounded-[4px] border border-slate-300/80 shadow-md p-6 sm:p-8 lg:p-10 relative">
+    <div className="bg-white rounded-[4px] border p-6 sm:p-8 lg:p-10 relative">
       {/* Form Header */}
       <div className="border-b border-slate-200 pb-6 mb-8">
-        <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#0f172a] tracking-tight">
+        <h3 className="text-2xl sm:text-3xl  font-black text-[#0f172a] tracking-tight">
           Select Tour Package With Hotel Sonar Bangla
         </h3>
         <p className="text-sm sm:text-base text-slate-600 mt-2 leading-relaxed max-w-3xl">
@@ -286,7 +295,13 @@ export function HotelTourBookingForm() {
                 <input
                   id={dateInputId}
                   type="date"
+                  min={todayStr}
                   value={travelDate}
+                  onClick={(e) => {
+                    try {
+                      (e.target as HTMLInputElement).showPicker?.();
+                    } catch {}
+                  }}
                   onChange={(e) => setTravelDate(e.target.value)}
                   className="w-full h-12 px-3.5 rounded-[4px] border border-slate-300 bg-white text-[#0f172a] text-sm sm:text-base font-medium outline-none focus:outline-none focus:ring-0 focus:border-[#064e3b] transition-colors cursor-pointer"
                 />
@@ -536,10 +551,10 @@ export function HotelTourBookingForm() {
             <span>
               Direct Hotel Sonar Bangla Safari Helpline:{" "}
               <a
-                href="tel:+919876543210"
+                href="tel:+917001403498"
                 className="font-extrabold text-[#064e3b] hover:text-[#d97706]"
               >
-                +91 98765 43210
+                +91 70014 03498
               </a>{" "}
               (Available 24x7)
             </span>

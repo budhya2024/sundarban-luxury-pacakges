@@ -64,12 +64,12 @@ export default function BlogListPage() {
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Hero Title */}
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-4">
+          <h1 className="text-2xl sm:text-4xl font-black text-white leading-snug drop-shadow-md mb-4">
             News &amp; Articles
           </h1>
 
           {/* Subdescription */}
-          <p className="max-w-2xl mx-auto text-white/95 text-base sm:text-lg leading-relaxed mb-8 font-normal">
+          <p className="max-w-2xl mx-auto text-slate-200 text-sm sm:text-lg font-light leading-relaxed mb-6 drop-shadow-sm">
             Wildlife stories, travel guides, culture &amp; ecology from the heart of Sundarban.
           </p>
 

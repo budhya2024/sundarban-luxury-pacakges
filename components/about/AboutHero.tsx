@@ -22,12 +22,12 @@ export function AboutHero() {
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
         {/* Hero Title */}
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-4">
+        <h1 className="text-2xl sm:text-4xl font-black text-white leading-snug drop-shadow-md mb-4">
           Pioneering Luxury In Sundarban
         </h1>
 
         {/* Subdescription */}
-        <p className="max-w-2xl text-white/75 mt-3 text-sm sm:text-base mx-auto font-medium font-normal">
+        <p className="max-w-2xl mx-auto text-slate-200 text-sm sm:text-lg font-light leading-relaxed mb-6 drop-shadow-sm">
           We blend five-star hospitality with deep ecological conservation. Experience the wild beauty of the UNESCO World Heritage mangrove forest aboard our solar-powered luxury vessels.
         </p>
 

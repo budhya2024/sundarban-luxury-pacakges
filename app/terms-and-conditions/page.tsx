@@ -17,28 +17,31 @@ export default function TermsAndConditionsPage() {
   return (
     <main className="min-h-screen bg-[#fcfdfe] text-[#0f172a]">
       {/* Hero Header */}
-      <section className="relative bg-[#052e16] text-white py-16 sm:py-20 lg:py-24 overflow-hidden">
+      <section className="relative bg-black text-white py-20 lg:py-28 overflow-hidden">
+        {/* Background Image with Dark Black Overlay */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
           style={{
             backgroundImage: `url('https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80&w=2000')`,
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#052e16] via-[#052e16]/70 to-transparent" />
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#064e3b]/30 rounded-full blur-3xl pointer-events-none" />
+
+        {/* Deep Black Gradient Overlay Layer */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/50" />
+        <div className="absolute inset-0 bg-black/40" />
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="font-montez text-3xl sm:text-4xl text-[#fbbf24] tracking-wide mb-2">
             Legal &amp; Policies
           </p>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white mb-4">
+          <h1 className="text-2xl sm:text-4xl font-black text-white leading-snug drop-shadow-md mb-4">
             Terms and Conditions
           </h1>
-          <p className="max-w-2xl mx-auto text-white/95 text-sm sm:text-base leading-relaxed mb-6 font-normal">
+          <p className="max-w-2xl mx-auto text-slate-200 text-sm sm:text-lg font-light leading-relaxed mb-6 drop-shadow-sm">
             Please read these terms carefully before booking your Sundarban luxury river cruise and resort stay.
           </p>
 
-          <div className="inline-flex items-center gap-2.5 text-sm sm:text-base font-bold text-white">
+          <div className="inline-flex items-center gap-2.5 text-base sm:text-lg font-bold text-white flex-wrap justify-center">
             <Link href="/" className="text-white hover:text-[#fbbf24] transition-colors">
               Home
             </Link>
@@ -233,7 +236,7 @@ export default function TermsAndConditionsPage() {
                   Contact Support
                 </Link>
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+917001403498"
                   className="px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm transition-colors border border-white/20"
                 >
                   Call Concierge

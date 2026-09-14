@@ -22,11 +22,11 @@ export default function AdminSettingsPage() {
 
   const [settings, setSettings] = useState({
     businessName: "Sundarban Luxury Package (Techshift)",
-    helpline1: "+91 98765 43210",
-    helpline2: "+91 91234 56789",
-    whatsappNumber: "+91 98765 43210",
-    bookingEmail: "booking@sundarbanluxurypackage.com",
-    supportEmail: "info@sundarbanluxurypackage.com",
+    helpline1: "+91 70014 03498",
+    helpline2: "+91 70014 03498",
+    whatsappNumber: "+91 70014 03498",
+    bookingEmail: "sundarbanluxurypackage@gmail.com",
+    supportEmail: "sundarbanluxurypackage@gmail.com",
     departurePoint: "Godkhali Ferry Ghat, Canning Town, South 24 Parganas, West Bengal 743329",
     currency: "INR (₹)",
     taxRate: 5,

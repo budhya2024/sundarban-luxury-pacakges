@@ -41,7 +41,7 @@ export function PlanTripSection() {
               {/* Bottom Mangrove Image */}
               <div className="relative w-[140px] sm:w-[190px] md:w-[220px] lg:w-[230px] xl:w-[245px] h-[170px] sm:h-[220px] md:h-[240px] lg:h-[245px] rounded-b-full rounded-tl-full rounded-tr-2xl overflow-hidden bg-zinc-100 shadow-md group">
                 <Image
-                  src="/assets/sonarbanglahotel.jpg"
+                  src="/assets/images/sonarbanglahotel.jpg"
                   alt="Hotel Sonar Bangla Sundarban Resort"
                   fill
                   sizes="(max-width: 640px) 40vw, 20vw"
@@ -53,19 +53,19 @@ export function PlanTripSection() {
 
           {/* Right Column: Heading, Description & Features */}
           <div className="lg:col-span-6 flex flex-col justify-center max-w-xl">
-            {/* Montez Subtitle */}
-            <p className="font-montez text-3xl md:text-4xl text-[#d97706] tracking-wide mb-1">
+            {/* Tagline */}
+            <p className="sec-tagline text-left">
               Let's Go Together
             </p>
 
             {/* Bold Title */}
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0f172a] tracking-tight leading-tight mb-4">
+            <h2 className="sec-title text-left mb-4">
               Plan Your Trip <br />
               With us
             </h2>
 
             {/* Description Text */}
-            <p className="text-slate-600 text-sm sm:text-[15px] leading-relaxed mb-8 font-normal">
+            <p className="sec-desc text-left !mx-0 mb-8 font-normal">
               There are many variations of passages of available but the majority have
               suffered alteration in some form, by injected hum randomised words which
               don't look even slightly.

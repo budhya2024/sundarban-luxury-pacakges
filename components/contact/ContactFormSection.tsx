@@ -219,14 +219,14 @@ export function ContactFormSection() {
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+917001403498"
                   className="flex-1 flex items-center justify-center gap-2 rounded-sm bg-[#064e3b] hover:bg-[#d97706] text-white py-3 px-4 font-bold text-sm transition-colors shadow-md"
                 >
                   <Phone className="w-4 h-4" />
-                  <span>+91 98765 43210</span>
+                  <span>+91 70014 03498</span>
                 </a>
                 <a
-                  href="https://wa.me/919876543210"
+                  href="https://wa.me/917001403498"
                   target="_blank"
                   rel="noreferrer"
                   className="flex-1 flex items-center justify-center gap-2 rounded-sm bg-[#25d366] hover:bg-[#20bd5a] text-white py-3 px-4 font-bold text-sm transition-colors shadow-md"

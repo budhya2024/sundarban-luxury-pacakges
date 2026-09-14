@@ -126,9 +126,7 @@ export default async function BlogDetailPage({
           <div className=" lg:col-span-8 bg-white p-6 sm:p-8 md:p-10 border border-slate-100 shadow-sm">
             {/* Category & Article Title */}
             <div className="mb-6">
-              <span className="inline-block bg-[#064e3b] text-[#fbbf24] text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-3 shadow-xs">
-                {post.category}
-              </span>
+
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0e2a47] tracking-tight leading-snug">
                 {post.title}
               </h1>
@@ -136,7 +134,7 @@ export default async function BlogDetailPage({
 
             <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-8 border-b border-slate-100">
               <div className="flex items-center gap-3">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-[#064e3b]/30 flex-shrink-0">
+                <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-[#064e3b]/30 shrink-0">
                   <Image
                     src={post.authorImage}
                     alt={post.author}
@@ -246,9 +244,9 @@ export default async function BlogDetailPage({
                   <Link
                     key={item.slug}
                     href={`/blog/${item.slug}`}
-                    className="flex gap-3.5 group items-center p-2  hover:bg-amber-50/40 transition-all duration-300 border border-transparent hover:border-slate-100"
+                    className="flex gap-3.5 group items-center p-2  bg-primary/10 rounded-md hover:bg-secondary/10 transition-all duration-300 border border-transparent hover:border-slate-100"
                   >
-                    <div className="relative w-16 h-16 overflow-hidden flex-shrink-0 bg-slate-100 shadow-sm">
+                    <div className="relative w-16 h-16 overflow-hidden rounded-sm flex-shrink-0 bg-slate-100 shadow-sm">
                       <Image
                         src={item.image}
                         alt={item.title}

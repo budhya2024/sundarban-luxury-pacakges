@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { CheckCircle2, Award, ShieldCheck, HeartHandshake } from "lucide-react";
+import { CheckCircle2, ShieldCheck, HeartHandshake } from "lucide-react";
 
 export function AboutStorySection() {
   return (
@@ -23,39 +23,18 @@ export function AboutStorySection() {
                 />
               </div>
 
-              {/* Secondary Overlapping Image */}
-              <div className="absolute -bottom-8 -right-4 sm:-right-8 w-48 sm:w-60 h-36 sm:h-44 rounded-2xl overflow-hidden shadow-2xl border-4 border-white hidden sm:block">
-                <Image
-                  src="https://images.unsplash.com/photo-1561731216-c3a4d99437d5?auto=format&fit=crop&q=80&w=600"
-                  alt="Royal Bengal Tiger in Sundarban Delta"
-                  fill
-                  className="object-cover"
-                  sizes="240px"
-                />
-              </div>
 
-              {/* Floating 12+ Years Experience Badge */}
-              <div className="absolute -top-6 -left-4 sm:-left-6 rounded-2xl bg-[#064e3b] text-white p-4 sm:p-5 shadow-xl flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
-                  <Award className="w-7 h-7 text-[#fbbf24]" />
-                </div>
-                <div>
-                  <span className="block text-2xl font-extrabold leading-none text-[#fbbf24]">12+ Years</span>
-                  <span className="text-xs font-medium text-white uppercase tracking-wider mt-1 block">
-                    Luxury Excellence
-                  </span>
-                </div>
-              </div>
+
             </div>
           </div>
 
           {/* Right Column: Story Text (6 Cols) */}
           <div className="lg:col-span-6 space-y-6">
             <div>
-              <p className="font-montez text-3xl sm:text-4xl text-[#d97706] mb-1">
+              <p className="sec-tagline text-left">
                 Our Story
               </p>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0f172a] tracking-tight leading-tight">
+              <h2 className="sec-title text-left leading-tight">
                 Crafting Unforgettable Sundarban Expeditions
               </h2>
             </div>

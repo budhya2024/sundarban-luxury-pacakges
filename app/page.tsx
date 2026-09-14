@@ -1,7 +1,7 @@
 import { HeroSlider } from "@/components/home/HeroSlider";
-import { TourCategories } from "@/components/home/TourCategories";
 import { TourMenuSection } from "@/components/home/TourMenuSection";
-import { PopularDestinations } from "@/components/home/PopularDestinations";
+import { PopularDestinations } from "@/components/home/TourPackage";
+import { HotelSonarBanglaSection } from "@/components/home/HotelSonarBanglaSection";
 import { PlanTripSection } from "@/components/home/PlanTripSection";
 import { RecentGallery } from "@/components/home/RecentGallery";
 import { TrustSection } from "@/components/home/TrustSection";
@@ -14,7 +14,8 @@ export default function Home() {
     <main>
       <HeroSlider />
       <PopularDestinations />
-      <TourCategories />
+      <HotelSonarBanglaSection />
+
       <TourMenuSection />
       <PlanTripSection />
       <RecentGallery />
@@ -25,3 +26,4 @@ export default function Home() {
     </main>
   );
 }
+

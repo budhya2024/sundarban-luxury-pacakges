@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -12,6 +12,7 @@ import {
   XCircle,
   Briefcase,
   ChevronLeft,
+  ChevronRight,
   Calendar,
   PhoneCall,
   ShieldCheck,
@@ -20,6 +21,7 @@ import {
   Send,
   Sparkles,
   Tag,
+  Camera,
 } from "lucide-react";
 import {
   FaFacebookF,
@@ -28,10 +30,18 @@ import {
   FaWhatsapp,
   FaAngleRight,
 } from "react-icons/fa6";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
 import { BookingModal } from "./BookingModal";
 import { useAdmin } from "@/context/AdminContext";
 
 import { TourDayFoodMenu, TourItineraryDay } from "@/lib/admin-data";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/effect-fade";
 
 interface TourDetailsProps {
   packageSlug?: string;
@@ -222,10 +232,37 @@ export function TourDetails({
   const highlightQuote =
     currentPackage?.highlightQuote ||
     `“${title} is the most popular tour package from Kolkata. Discover mangroves, watchtowers, and pristine tranquility with our luxury eco package.”`;
-  const helplinePhone = currentPackage?.helplinePhone || "+91 98765 43210";
+  const helplinePhone = currentPackage?.helplinePhone || "+91 70014 03498";
   const rating = currentPackage?.rating || 4.9;
   const reviewsCount = currentPackage?.reviewsCount || 128;
   const category = currentPackage?.category || "Luxury Cruise";
+
+  // Dynamic image list for sidebar slider
+  const packageImages = useMemo(() => {
+    const list: string[] = [];
+    if (currentPackage?.image) list.push(currentPackage.image);
+    if (currentPackage?.bannerImage && !list.includes(currentPackage.bannerImage)) {
+      list.push(currentPackage.bannerImage);
+    }
+    if (currentPackage?.gallery && currentPackage.gallery.length > 0) {
+      currentPackage.gallery.forEach((img) => {
+        if (img && !list.includes(img)) list.push(img);
+      });
+    }
+    // High-resolution Sundarban landscape & safari fallback images
+    const fallbackList = [
+      "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=900&q=80",
+    ];
+    for (const img of fallbackList) {
+      if (list.length >= 5) break;
+      if (!list.includes(img)) list.push(img);
+    }
+    return list;
+  }, [currentPackage]);
 
   // Determine package duration type (1-day, 2-days, 3-days)
   const fullText = (duration + " " + title + " " + (packageSlug || "")).toLowerCase();
@@ -288,43 +325,6 @@ export function TourDetails({
 
   return (
     <div className="bg-slate-50/70 min-h-screen text-[#0f172a] font-sans relative">
-      {/* Sticky Right Side Floating Contact Bar */}
-      <div className="fixed right-3 top-1/3 z-50 flex flex-col gap-2">
-        <a
-          href="https://facebook.com"
-          target="_blank"
-          rel="noreferrer"
-          className="w-10 h-10 rounded-full bg-[#0f172a] text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
-          title="Facebook"
-        >
-          <FaFacebookF className="w-4 h-4" />
-        </a>
-        <a
-          href="https://instagram.com"
-          target="_blank"
-          rel="noreferrer"
-          className="w-10 h-10 rounded-full bg-[#15803d] text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
-          title="Instagram"
-        >
-          <FaInstagram className="w-4 h-4" />
-        </a>
-        <a
-          href={`tel:${helplinePhone.replace(/\s+/g, "")}`}
-          className="w-10 h-10 rounded-full bg-[#15803d] text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
-          title="Call Us"
-        >
-          <FaPhone className="w-4 h-4" />
-        </a>
-        <a
-          href={`https://wa.me/${helplinePhone.replace(/[^0-9]/g, "")}`}
-          target="_blank"
-          rel="noreferrer"
-          className="w-10 h-10 rounded-full bg-[#25d366] text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
-          title="WhatsApp"
-        >
-          <FaWhatsapp className="w-4.5 h-4.5" />
-        </a>
-      </div>
 
       {/* 1. HERO SECTION */}
       <section className="relative bg-black text-white py-20 lg:py-28 overflow-hidden">
@@ -341,20 +341,13 @@ export function TourDetails({
         <div className="absolute inset-0 bg-black/40" />
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {/* Duration Badge Chip */}
-          <div className="mb-4">
-            <span className="inline-block bg-[#064e3b] text-[#fbbf24] text-xs font-extrabold px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
-              {duration}
-            </span>
-          </div>
-
           {/* Hero Title */}
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-4 max-w-4xl mx-auto">
+          <h1 className="text-2xl sm:text-4xl font-black text-white leading-snug drop-shadow-md mb-4 max-w-4xl mx-auto">
             {title}
           </h1>
 
           {/* Subdescription */}
-          <p className="max-w-2xl mx-auto text-white/95 text-base sm:text-lg leading-relaxed mb-8 font-normal">
+          <p className="max-w-2xl mx-auto text-slate-200 text-sm sm:text-lg font-light leading-relaxed mb-6 drop-shadow-sm">
             {subtitle}
           </p>
 
@@ -376,23 +369,6 @@ export function TourDetails({
       {/* MAIN CONTAINER CONTENT */}
       <div className="py-8 md:py-14">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Back Button */}
-          <div className="mb-6 flex items-center justify-between">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#064e3b] hover:text-[#d97706] hover:-translate-x-1 transition-all"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              <span>Back To All Packages</span>
-            </Link>
-
-            <div className="flex items-center gap-1.5 text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1.5 rounded border border-amber-200">
-              <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
-              <span>{rating} / 5.0</span>
-              <span className="text-slate-500 font-normal">({reviewsCount} verified reviews)</span>
-            </div>
-          </div>
-
           {/* 2-COLUMN GRID */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             {/* LEFT MAIN CONTENT (8 COLS) */}
@@ -638,19 +614,65 @@ export function TourDetails({
             <div className="lg:col-span-4 sticky top-6 space-y-6">
               {/* Image & Booking Card */}
               <div className="bg-white border border-slate-200 p-5 shadow-md overflow-hidden space-y-5 rounded-sm">
-                <div className="relative h-56 rounded-sm overflow-hidden bg-slate-100">
-                  <Image
-                    src={heroImage}
-                    alt={title}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                  <div className="absolute bottom-3 left-3 text-white">
-                    <span className="text-xs font-bold bg-[#064e3b] text-white px-2.5 py-1 rounded-sm uppercase">
-                      {duration}
-                    </span>
-                  </div>
+                {/* Image Slider */}
+                <div className="relative h-60 sm:h-64 rounded-sm overflow-hidden bg-slate-900 group select-none shadow-xs">
+                  <Swiper
+                    modules={[Navigation, Pagination, Autoplay, EffectFade]}
+                    navigation={{
+                      prevEl: ".sidebar-slider-prev",
+                      nextEl: ".sidebar-slider-next",
+                    }}
+                    pagination={{
+                      clickable: true,
+                      bulletClass: "sidebar-tour-bullet",
+                      bulletActiveClass: "sidebar-tour-bullet-active",
+                    }}
+                    autoplay={{
+                      delay: 3500,
+                      disableOnInteraction: false,
+                      pauseOnMouseEnter: true,
+                    }}
+                    loop={packageImages.length > 1}
+                    speed={600}
+                    className="h-full w-full relative"
+                  >
+                    {packageImages.map((imgUrl, idx) => (
+                      <SwiperSlide key={idx} className="relative h-full w-full">
+                        <Image
+                          src={imgUrl}
+                          alt={`${title} - Photo ${idx + 1}`}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 400px"
+                          unoptimized={imgUrl.startsWith("data:")}
+                          className="object-cover"
+                          priority={idx === 0}
+                        />
+                      </SwiperSlide>
+                    ))}
+
+
+
+
+                    {/* Left & Right Navigation Arrows */}
+                    {packageImages.length > 1 && (
+                      <>
+                        <button
+                          type="button"
+                          aria-label="Previous Slide"
+                          className="sidebar-slider-prev absolute left-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/55 hover:bg-[#064e3b] text-white flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 shadow-md backdrop-blur-xs cursor-pointer"
+                        >
+                          <ChevronLeft className="w-4 h-4" />
+                        </button>
+                        <button
+                          type="button"
+                          aria-label="Next Slide"
+                          className="sidebar-slider-next absolute right-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/55 hover:bg-[#064e3b] text-white flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 shadow-md backdrop-blur-xs cursor-pointer"
+                        >
+                          <ChevronRight className="w-4 h-4" />
+                        </button>
+                      </>
+                    )}
+                  </Swiper>
                 </div>
 
                 <div className="space-y-3">
@@ -728,6 +750,31 @@ export function TourDetails({
         packageName={title}
         pricePerPerson={price}
       />
+
+      {/* Global CSS for Swiper pagination bullets */}
+      <style jsx global>{`
+        .sidebar-tour-bullet {
+          width: 0.45rem;
+          height: 0.45rem;
+          border-radius: 9999px;
+          border: none !important;
+          outline: none !important;
+          background-color:  white !important;
+          display: inline-block;
+          margin: 0 3px !important;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          opacity: 1 !important;
+        }
+        .sidebar-tour-bullet:hover {
+          background-color: #fbbf24 !important;
+        }
+        .sidebar-tour-bullet-active {
+          width: 1.25rem !important;
+          background-color: #f59e0b !important;
+          border-radius: 9999px !important;
+        }
+      `}</style>
     </div>
   );
 }

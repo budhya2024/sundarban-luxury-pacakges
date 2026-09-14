@@ -22,12 +22,12 @@ export function ContactHero() {
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
         {/* Hero Title */}
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-4">
+        <h1 className="text-2xl sm:text-4xl font-black text-white leading-snug drop-shadow-md mb-4">
           Contact Sundarban Luxury
         </h1>
 
         {/* Subdescription */}
-        <p className="max-w-2xl mx-auto text-white/95 text-base sm:text-lg leading-relaxed mb-8 font-normal">
+        <p className="max-w-2xl mx-auto text-slate-200 text-sm sm:text-lg font-light leading-relaxed mb-6 drop-shadow-sm">
           Have questions about our luxury river cruises, customized tiger safari packages, or private resort bookings? Our expert travel advisors are available 24/7 to assist you.
         </p>
 

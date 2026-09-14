@@ -3,7 +3,7 @@ import HotelHero from "@/components/hotel/HotelHero";
 import HotelOverview from "@/components/hotel/HotelOverview";
 import HotelAmenities from "@/components/hotel/HotelAmenities";
 import HotelGallery from "@/components/hotel/HotelGallery";
-import HotelCTA from "@/components/hotel/HotelCTA";
+
 
 export const metadata: Metadata = {
   title: "Hotel Sonar Bangla - 5-Star Luxury Resort in Sundarban | Sundarban Luxury Package",
@@ -18,7 +18,7 @@ export default function HotelPage() {
       <HotelOverview />
       <HotelAmenities />
       <HotelGallery />
-      <HotelCTA />
+
     </main>
   );
 }

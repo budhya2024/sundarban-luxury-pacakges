@@ -102,11 +102,7 @@ export function PopularDestinations() {
                         <Star className="w-3 h-3 fill-white" />
                         <span>{item.rating || 4.9}</span>
                       </div>
-                      {/* {item.category && (
-                        <div className="absolute top-3 left-3 bg-slate-900/85 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md backdrop-blur-xs">
-                          {item.category}
-                        </div>
-                      )} */}
+
                     </div>
 
                     {/* Card Body */}
@@ -133,22 +129,6 @@ export function PopularDestinations() {
                           {item.name}
                         </h3>
 
-                        {/* Day-Wise Feature Badges */}
-                        <div className="flex flex-wrap gap-1.5 mb-3 min-h-[1.75rem] items-center">
-                          {itineraryDays > 0 && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200/80 text-[11px] font-bold">
-                              <Calendar className="w-3 h-3 text-blue-600" />
-                              {itineraryDays} Days Itinerary
-                            </span>
-                          )}
-                          {menuDays > 0 && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-[11px] font-bold">
-                              <Utensils className="w-3 h-3 text-emerald-600" />
-                              {menuDays} Days Meal Menu
-                            </span>
-                          )}
-                        </div>
-
                         {/* Package Inclusions */}
                         <div className="grid grid-cols-2 gap-x-2 gap-y-2 my-2 pt-2.5 border-t border-slate-100">
                           <div className="flex items-center gap-1.5 text-slate-700">
@@ -174,7 +154,7 @@ export function PopularDestinations() {
                       <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
                         <Link
                           href={href}
-                          className="text-xs font-bold text-slate-700 hover:text-[#d97706] transition-colors inline-flex items-center gap-1"
+                          className="text-sm font-bold text-slate-700 hover:text-[#d97706] transition-colors inline-flex items-center gap-1"
                         >
                           <span>View Day Plan &amp; Menu</span>
                           <ArrowRight className="w-3 h-3" />
@@ -182,9 +162,9 @@ export function PopularDestinations() {
 
                         <button
                           onClick={() => handleOpenBooking(item.name)}
-                          className="btn btn-secondary !py-1.5 !px-3.5 !text-xs shadow-xs rounded-full flex items-center gap-1 font-bold"
+                          className="btn btn-secondary !py-1.5 !px-3.5 !text-sm shadow-xs rounded-full flex items-center gap-1 font-bold"
                         >
-                          <span>Book</span>
+                          <span>Book now</span>
                           <ArrowRight className="w-3 h-3" />
                         </button>
                       </div>

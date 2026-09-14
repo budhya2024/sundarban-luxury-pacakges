@@ -199,7 +199,7 @@
 .sec-subtitle {
   font-family: var(--font-montez), cursive;
   font-size: 1.875rem;
-  line-height: 2.25rem;
+  line-height: 1.25rem;
   color: var(--brand-primary, #d97706);
   letter-spacing: 0.025em;
   margin-bottom: 0.25rem;
@@ -217,7 +217,7 @@
 
 .sec-title {
   font-family: var(--font-sans), sans-serif;
-  font-size: 1.875rem;
+  font-size: 1.25rem;
   line-height: 2.25rem;
   font-weight: 800;
   color: #0f172a;
@@ -304,15 +304,15 @@
 }
 
 /* Ensure inner content stays strictly above the sliding background fill */
-.btn > *,
-.btn-fill-slide > *,
-.btn-primary > *,
-.btn-secondary > *,
-.btn-gold > *,
-.btn-yellow > *,
-.btn-amber > *,
-.btn-outline > *,
-.btn-glass > * {
+.btn>*,
+.btn-fill-slide>*,
+.btn-primary>*,
+.btn-secondary>*,
+.btn-gold>*,
+.btn-yellow>*,
+.btn-amber>*,
+.btn-outline>*,
+.btn-glass>* {
   position: relative;
   z-index: 2;
   pointer-events: none;
@@ -396,25 +396,67 @@
   box-shadow: 0 10px 25px -5px rgba(6, 78, 59, 0.35);
 }
 
-/* Swiper Pagination Pure Yellow (No Border) */
-.swiper-pagination-bullet {
+/* Swiper Pagination Bullets (Strictly No Border / No Outline / No Ring on All Pages) */
+.swiper-pagination-bullet,
+.custom-bullet,
+.sidebar-tour-bullet,
+.swiper-pagination span,
+.swiper-pagination button {
   background: #fde68a !important;
   opacity: 1 !important;
-  border: none !important;
+  border: 0 !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
   outline: none !important;
+  outline-width: 0 !important;
+  outline-color: transparent !important;
   box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
   transition: all 0.3s ease !important;
 }
 
-.swiper-pagination-bullet:hover {
+.swiper-pagination-bullet:hover,
+.custom-bullet:hover,
+.sidebar-tour-bullet:hover {
   background: #f59e0b !important;
-  border: none !important;
+  border: 0 !important;
+  border-width: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-.swiper-pagination-bullet-active {
+.swiper-pagination-bullet-active,
+.custom-bullet-active,
+.sidebar-tour-bullet-active {
   background: #d97706 !important;
   opacity: 1 !important;
-  border: none !important;
+  border: 0 !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  outline: none !important;
+  outline-width: 0 !important;
+  outline-color: transparent !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+}
+
+.swiper-pagination-bullet:focus,
+.custom-bullet:focus,
+.sidebar-tour-bullet:focus,
+.swiper-pagination-bullet:focus-visible,
+.custom-bullet:focus-visible,
+.sidebar-tour-bullet:focus-visible,
+.swiper-pagination button:focus,
+.swiper-pagination button:focus-visible,
+.swiper-pagination span:focus,
+.swiper-pagination span:focus-visible {
+  border: 0 !important;
+  border-width: 0 !important;
   outline: none !important;
   box-shadow: none !important;
 }
@@ -471,4 +513,131 @@ video::-webkit-media-controls-mute-button {
   display: none !important;
   -webkit-appearance: none;
   opacity: 0 !important;
+}
+
+/* ==========================================================================
+   Global Section Heading, Title, and Tagline Typography System
+   ========================================================================== */
+
+.sec-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .sec-header {
+    margin-bottom: 3rem;
+  }
+}
+
+.sec-header.text-left {
+  text-align: left;
+}
+
+.sec-header.text-right {
+  text-align: right;
+}
+
+/* Tagline / Sub-heading in Montez / Cursive brand font */
+.sec-tagline {
+  font-family: var(--font-montez), cursive;
+  font-size: 1.375rem;
+  /* 22px (reduced for mobile) */
+  line-height: 1.25;
+  color: var(--brand-yellow-primary, #d97706);
+  letter-spacing: 0.025em;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .sec-tagline {
+    font-size: 2.25rem;
+    /* 36px (text-4xl) */
+  }
+}
+
+/* Light / Golden variant for dark hero sections */
+.sec-tagline-light {
+  color: #fbbf24;
+}
+
+/* Main Section Heading */
+.sec-title {
+  font-size: 1.375rem;
+  /* 22px (reduced for mobile) */
+  line-height: 1.25;
+  font-weight: 800;
+  /* font-extrabold */
+  color: #0f172a;
+  letter-spacing: -0.025em;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .sec-title {
+    font-size: 2rem;
+    /* 32px */
+  }
+}
+
+@media (min-width: 768px) {
+  .sec-title {
+    font-size: 2.2rem;
+    line-height: 1.15;
+  }
+}
+
+/* Inverted / White Section Title for Dark Backgrounds */
+.sec-title-white {
+  color: #ffffff;
+}
+
+/* Supporting Description / Subtitle Paragraph */
+.sec-desc {
+  font-size: 0.875rem;
+  /* 14px */
+  line-height: 1.625;
+  color: #475569;
+
+  font-weight: 400;
+  max-width: 42rem;
+  /* max-w-2xl */
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .sec-desc {
+    font-size: 1rem;
+    /* 16px */
+  }
+}
+
+/* Description when header is left aligned */
+.sec-header.text-left .sec-desc {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Infinite Marquee Scroll Animation */
+@keyframes infinite-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-infinite-scroll {
+  display: flex;
+  width: max-content;
+  animation: infinite-scroll 35s linear infinite;
+}
+
+.animate-infinite-scroll:hover {
+  animation-play-state: paused;
 }

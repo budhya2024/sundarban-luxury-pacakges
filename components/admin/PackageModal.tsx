@@ -79,7 +79,7 @@ export function PackageModal({
   const [minGroupSize, setMinGroupSize] = useState("Min 2 People");
   const [overview, setOverview] = useState("");
   const [highlightQuote, setHighlightQuote] = useState("");
-  const [helplinePhone, setHelplinePhone] = useState("+91 98765 43210");
+  const [helplinePhone, setHelplinePhone] = useState("+91 70014 03498");
   const [featured, setFeatured] = useState(false);
 
   // Arrays
@@ -119,7 +119,7 @@ export function PackageModal({
       setMinGroupSize(initialPackage.minGroupSize || "Min 2 People");
       setOverview(initialPackage.overview || "Sundarban 1 Night 2 Days Tour is the most popular tour package among tourists. You will experience rich wildlife, thick estuarine mangroves, serene watchtowers, and authentic local folk traditions in the land of Royal Bengal Tigers.");
       setHighlightQuote(initialPackage.highlightQuote || "“Discover mangroves, watchtowers, and pristine tranquility with our luxury eco package.”");
-      setHelplinePhone(initialPackage.helplinePhone || "+91 98765 43210");
+      setHelplinePhone(initialPackage.helplinePhone || "+91 70014 03498");
       setFeatured(!!initialPackage.featured);
       setItinerary(initialPackage.itinerary ? JSON.parse(JSON.stringify(initialPackage.itinerary)) : defaultItinerary());
       setFoodMenu(initialPackage.foodMenu ? JSON.parse(JSON.stringify(initialPackage.foodMenu)) : defaultFoodMenu());
@@ -148,7 +148,7 @@ export function PackageModal({
       setMinGroupSize("Min 2 People");
       setOverview("Experience rich wildlife, thick estuarine mangroves, serene watchtowers, and authentic local folk traditions in the land of Royal Bengal Tigers. Sail comfortably on our state-of-the-art vessel with freshly prepared delicacies and expert forest naturalists.");
       setHighlightQuote("“Discover mangroves, watchtowers, and pristine tranquility with our luxury eco package.”");
-      setHelplinePhone("+91 98765 43210");
+      setHelplinePhone("+91 70014 03498");
       setFeatured(false);
       setItinerary(defaultItinerary());
       setFoodMenu(defaultFoodMenu());

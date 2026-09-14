@@ -23,6 +23,7 @@ const quickLinks = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "Hotel Sonar Bangla", href: "/hotel-sonar-bangla" },
+  { label: "Photo Gallery", href: "/gallery" },
   { label: "Tour Packages", href: "/tour-details" },
   { label: "Contact Us", href: "/contact" },
 ];
@@ -212,8 +213,9 @@ export function Footer() {
                   <Phone className="h-4 w-4" />
                 </div>
                 <div className="leading-snug">
-                  <p>+91 98765 43210</p>
-                  <p>+91 91234 56789</p>
+                  <a href="tel:+917001403498" className="hover:text-[#fbbf24] transition-colors block">
+                    +91 70014 03498
+                  </a>
                 </div>
               </div>
 
@@ -223,8 +225,9 @@ export function Footer() {
                   <Mail className="h-4 w-4" />
                 </div>
                 <div className="leading-snug">
-                  <p>booking@sundarbanluxurypackage.com</p>
-                  <p>info@sundarbanluxurypackage.com</p>
+                  <a href="mailto:sundarbanluxurypackage@gmail.com" className="hover:text-[#fbbf24] transition-colors block break-all">
+                    sundarbanluxurypackage@gmail.com
+                  </a>
                 </div>
               </div>
 

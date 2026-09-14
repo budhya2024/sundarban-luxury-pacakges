@@ -41,7 +41,16 @@ export function BookingModal({
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Compute today's date in YYYY-MM-DD for min date attribute
+  const todayStr = React.useMemo(() => {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const guestCount = parseInt(formData.guests) || 1;
     const totalCalc = pricePerPerson * guestCount;
@@ -96,7 +105,7 @@ export function BookingModal({
           <div>
             {/* Header */}
             <div className="pr-10 mb-6">
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight">
+              <h2 className="text-xl md:text-2xl  font-extrabold text-[#111827] tracking-tight">
                 Book Your Trip
               </h2>
               <p className="text-slate-600 text-xs sm:text-sm mt-2 leading-relaxed">
@@ -128,7 +137,7 @@ export function BookingModal({
                       setFormData({ ...formData, fullName: e.target.value })
                     }
                     placeholder="Enter your full name"
-                    className="w-full pl-11 pr-4 py-3 bg-[#f9fafb] border border-slate-200 rounded-lg text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#15803d] focus:outline-none focus:ring-0 transition-colors"
+                    className="w-full pl-11 pr-4 py-3 bg-[#f9fafb] border border-slate-200 rounded-sm text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#15803d] focus:outline-none focus:ring-0 transition-colors"
                   />
                 </div>
               </div>
@@ -151,7 +160,7 @@ export function BookingModal({
                         setFormData({ ...formData, email: e.target.value })
                       }
                       placeholder="Your email"
-                      className="w-full pl-11 pr-4 py-3 bg-[#f9fafb] border border-slate-200 rounded-lg text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#15803d] focus:outline-none focus:ring-0 transition-colors"
+                      className="w-full pl-11 pr-4 py-3 bg-[#f9fafb] border border-slate-200 rounded-sm text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#15803d] focus:outline-none focus:ring-0 transition-colors"
                     />
                   </div>
                 </div>
@@ -175,7 +184,7 @@ export function BookingModal({
                         })
                       }
                       placeholder="Your phone number"
-                      className="w-full pl-11 pr-4 py-3 bg-[#f9fafb] border border-slate-200 rounded-lg text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#15803d] focus:outline-none focus:ring-0 transition-colors"
+                      className="w-full pl-11 pr-4 py-3 bg-[#f9fafb] border border-slate-200 rounded-sm text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#15803d] focus:outline-none focus:ring-0 transition-colors"
                     />
                   </div>
                 </div>
@@ -194,14 +203,20 @@ export function BookingModal({
                     <input
                       type="date"
                       required
+                      min={todayStr}
                       value={formData.travelDate}
+                      onClick={(e) => {
+                        try {
+                          (e.target as HTMLInputElement).showPicker?.();
+                        } catch { }
+                      }}
                       onChange={(e) =>
                         setFormData({
                           ...formData,
                           travelDate: e.target.value,
                         })
                       }
-                      className="w-full pl-11 pr-4 py-3 bg-[#f9fafb] border border-slate-200 rounded-lg text-sm text-slate-800 focus:bg-white focus:border-[#15803d] focus:outline-none focus:ring-0 transition-colors"
+                      className="w-full pl-11 pr-4 py-3 bg-[#f9fafb] border border-slate-200 rounded-sm text-sm text-slate-800 focus:bg-white focus:border-[#15803d] focus:outline-none focus:ring-0 transition-colors cursor-pointer"
                     />
                   </div>
                 </div>
@@ -224,7 +239,7 @@ export function BookingModal({
                         setFormData({ ...formData, guests: e.target.value })
                       }
                       placeholder="1"
-                      className="w-full pl-11 pr-4 py-3 bg-[#f9fafb] border border-slate-200 rounded-lg text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#15803d] focus:outline-none focus:ring-0 transition-colors"
+                      className="w-full pl-11 pr-4 py-3 bg-[#f9fafb] border border-slate-200 rounded-sm text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#15803d] focus:outline-none focus:ring-0 transition-colors"
                     />
                   </div>
                 </div>
@@ -249,7 +264,7 @@ export function BookingModal({
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full mt-2 py-3.5 px-6 rounded-lg bg-[#064e3b] hover:bg-[#d97706] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-md shadow-[#064e3b]/25 transition-all cursor-pointer"
+                className="w-full mt-2 py-3.5 px-6 rounded-sm bg-[#064e3b] hover:bg-[#d97706] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-md shadow-[#064e3b]/25 transition-all cursor-pointer"
               >
                 <Send className="w-4 h-4 transform -rotate-45" />
                 <span>Confirm Booking</span>
@@ -282,7 +297,7 @@ export function BookingModal({
             <div className="pt-2">
               <button
                 onClick={handleReset}
-                className="px-6 py-2.5 rounded-lg bg-[#064e3b] hover:bg-[#d97706] text-white font-bold text-sm transition-colors cursor-pointer"
+                className="px-6 py-2.5 rounded-sm bg-[#064e3b] hover:bg-[#d97706] text-white font-bold text-sm transition-colors cursor-pointer"
               >
                 Close Window
               </button>

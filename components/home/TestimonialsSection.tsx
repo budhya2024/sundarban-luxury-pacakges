@@ -45,11 +45,11 @@ export function TestimonialsSection() {
       />
       <div className="container relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-6">
-          <p className="font-montez text-3xl md:text-4xl text-[#d97706] tracking-wide mb-1">
+        <div className="sec-header">
+          <p className="sec-tagline">
             Testimonial
           </p>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-[#0f172a] tracking-tight">
+          <h2 className="sec-title">
             What Client Say
           </h2>
         </div>

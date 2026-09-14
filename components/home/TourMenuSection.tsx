@@ -67,13 +67,7 @@ const featuredDishes: SpecialDish[] = [
     tag: "Fresh Catch",
     description: "Mouth-watering delta delicacy of succulent Hilsa pieces steamed in banana leaf.",
   },
-  {
-    id: "special-mutton-kasha",
-    name: "Special Mutton Kosha",
-    image: "/assets/images/menu/mutton-curry.jpg",
-    tag: "House Special",
-    description: "Slow-braised delta style rich mutton curry seasoned with whole aromatic spices.",
-  },
+
 ];
 
 export function TourMenuSection() {
@@ -92,7 +86,7 @@ export function TourMenuSection() {
   return (
     <section
       id="tour-menu"
-      className="relative py-8 md:py-16 bg-[#faf6ee] text-[#0f172a] border-b border-amber-900/10 overflow-hidden"
+      className="relative py-8 md:py-16 bg-[#faf6ee] text-[#0f172a]  overflow-hidden"
     >
       {/* Food & Culinary Related Texture Pattern Overlay */}
       <div

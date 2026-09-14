@@ -3,9 +3,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AnnouncementBar } from "./AnnouncementBar";
 import {
     MapPin,
     Clock,
+    Sparkles,
     ChevronDown,
     ChevronRight,
     ArrowRight,
@@ -43,6 +45,10 @@ const navItems: NavItem[] = [
     {
         label: "Hotel",
         href: "/hotel-sonar-bangla",
+    },
+    {
+        label: "Gallery",
+        href: "/gallery",
     },
     {
         label: "Blog",
@@ -113,44 +119,8 @@ export function Header() {
 
     return (
         <header className="w-full bg-white relative z-40">
-            {/* 1. Top Bar — Deep Forest Green with Gold Accents */}
-            <div className="bg-[#064e3b] text-white text-xs sm:text-sm lg:text-[14px] py-2.5">
-                <div className="container flex items-center justify-between gap-4">
-                    {/* Top Left Info */}
-                    <div className="flex items-center flex-wrap gap-x-5 gap-y-1.5">
-                        <div className="flex items-center gap-2 text-white font-medium">
-                            <MapPin className="h-4 w-4 text-white flex-shrink-0" />
-                            <span>Godkhali Ferry Ghat, Canning Town, West Bengal</span>
-                        </div>
-
-                        <span className="text-white/30 hidden md:inline">|</span>
-
-                        <div className="flex items-center gap-2 text-white font-medium">
-                            <Clock className="h-4 w-4 text-white flex-shrink-0" />
-                            <span>Mon to Sun: 8.00 am - 9.00 pm</span>
-                        </div>
-                    </div>
-
-                    {/* Top Right Quick Links */}
-                    <div className="hidden lg:flex items-center gap-5 font-medium text-white">
-                        <Link
-                            href="/#faq"
-                            className="hover:text-amber-300 transition-colors"
-                        >
-                            FAQ
-                        </Link>
-
-                        <span className="text-white/30">|</span>
-
-                        <Link
-                            href="/contact"
-                            className="hover:text-amber-300 transition-colors"
-                        >
-                            Contact Us
-                        </Link>
-                    </div>
-                </div>
-            </div>
+            {/* 1. Top Bar — Rotating Sliding Announcement Component */}
+            <AnnouncementBar />
 
             {/* 2. Main Navigation Bar — fixed on scroll-up only */}
             <div

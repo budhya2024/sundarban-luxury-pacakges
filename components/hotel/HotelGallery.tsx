@@ -9,49 +9,97 @@ const galleryImages = [
     id: 1,
     title: "Resort Swimming Pool & Deck",
     category: "Resort Campus",
-    src: "/assets/sonar-bangla-hotel-pool.jpg",
+    src: "/assets/images/sonar-bangla-hotel-pool.jpg",
   },
   {
     id: 2,
     title: "Executive Deluxe Suite",
     category: "Rooms",
-    src: "/assets/sonar-bangla-hotel-deluxe.jpg",
+    src: "/assets/images/sonar-bangla-hotel-deluxe.jpg",
   },
   {
     id: 3,
     title: "Riverfront Balcony Suite",
     category: "Suites",
-    src: "/assets/sonar-bangla-hotel-balcony.webp",
+    src: "/assets/images/sonar-bangla-hotel-balcony.webp",
   },
   {
     id: 4,
     title: "Heritage Wooden Cottage",
     category: "Villas",
-    src: "/assets/sonar-bangla-hotel-cottage.webp",
+    src: "/assets/images/sonar-bangla-hotel-cottage.webp",
   },
   {
     id: 5,
     title: "Night Illumination & Lawn",
     category: "Ambience",
-    src: "/assets/sonar-bangla-hotel-ambience.jpg",
+    src: "/assets/images/sonar-bangla-hotel-ambience.jpg",
   },
   {
     id: 6,
     title: "Manicured Grounds & River Deck",
     category: "Campus Grounds",
-    src: "/assets/sonar-bangla-hotel-grounds.jpg",
+    src: "/assets/images/sonar-bangla-hotel-grounds.jpg",
   },
   {
     id: 7,
     title: "Hotel Sonar Bangla Facade",
     category: "Main Building",
-    src: "/assets/sonarbanglahotel.jpg",
+    src: "/assets/images/sonarbanglahotel.jpg",
   },
   {
     id: 8,
     title: "Panoramic Aerial Resort View",
     category: "Panoramic Campus",
-    src: "/assets/sonar-bangla-hotel-bg.jpg",
+    src: "/assets/images/sonar-bangla-hotel-bg.jpg",
+  },
+  {
+    id: 9,
+    title: "Luxury King Bedroom",
+    category: "Rooms",
+    src: "/assets/images/hotel-bedroom.jpeg",
+  },
+  {
+    id: 10,
+    title: "Deluxe Suite Room",
+    category: "Rooms",
+    src: "/assets/images/hotel-room-1.jpeg",
+  },
+  {
+    id: 11,
+    title: "Resort Garden View Pathway",
+    category: "Campus Grounds",
+    src: "/assets/images/hotel-garden.jpeg",
+  },
+  {
+    id: 12,
+    title: "Executive Lounge & Dining",
+    category: "Ambience",
+    src: "/assets/images/hotel-lounge.jpeg",
+  },
+  {
+    id: 13,
+    title: "Modern Executive Suite",
+    category: "Rooms",
+    src: "/assets/images/hotel-modern-room.jpeg",
+  },
+  {
+    id: 14,
+    title: "Resort Living & Hospitality",
+    category: "Ambience",
+    src: "/assets/images/hotel.jpeg",
+  },
+  {
+    id: 15,
+    title: "Riverfront Promenade Deck",
+    category: "Campus Grounds",
+    src: "/assets/images/resort-deck.jpg",
+  },
+  {
+    id: 16,
+    title: "Luxury Safari Cruise",
+    category: "Excursions",
+    src: "/assets/images/cruises.jpg",
   },
 ];
 
@@ -59,7 +107,7 @@ export function HotelGallery() {
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
 
   return (
-    <section id="gallery" className="py-8 md:py-16 bg-[#fef8e2] border-y border-amber-100/70 text-[#0f172a]">
+    <section id="gallery" className="py-8 md:py-16">
       <div className="container">
         {/* Header */}
         <div className="sec-header">
@@ -80,14 +128,14 @@ export function HotelGallery() {
             <div
               key={img.id}
               onClick={() => setSelectedImg(img.src)}
-              className="group relative h-[260px] sm:h-[280px]  overflow-hidden bg-slate-200 border border-slate-200 cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
+              className="group relative h-[260px] sm:h-[280px] rounded-xl overflow-hidden bg-slate-200 border border-slate-200 cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
             >
               <Image
                 src={img.src}
                 alt={img.title}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover"
+                className="object-cover group-hover:scale-108 transition-transform duration-500"
               />
 
               {/* Middle Cubic-Bezier Animated Overlay */}
@@ -117,13 +165,13 @@ export function HotelGallery() {
         >
           <button
             onClick={() => setSelectedImg(null)}
-            className="absolute top-6 right-6 text-white bg-white/10 hover:bg-white/20 p-2.5 rounded-sm border border-white/20 transition-colors"
+            className="absolute top-6 right-6 text-white bg-white/10 hover:bg-white/20 p-2.5 rounded-full border border-white/20 transition-colors cursor-pointer"
             aria-label="Close image modal"
           >
             <X className="w-6 h-6" />
           </button>
           <div
-            className="relative w-full max-w-4xl h-[75vh]  overflow-hidden border border-white/10"
+            className="relative w-full max-w-4xl h-[75vh] rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <Image

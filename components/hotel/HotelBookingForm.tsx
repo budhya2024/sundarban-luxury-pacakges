@@ -17,6 +17,15 @@ export function HotelBookingForm() {
     notes: "",
   });
 
+  // Compute today's date in YYYY-MM-DD for min date attribute
+  const todayStr = React.useMemo(() => {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
@@ -46,7 +55,7 @@ export function HotelBookingForm() {
             </div>
 
             <a
-              href={`https://wa.me/919876543210?text=${whatsappMessage}`}
+              href={`https://wa.me/917001403498?text=${whatsappMessage}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-3 rounded-sm bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs sm:text-sm shadow-md transition-all whitespace-nowrap"
@@ -75,9 +84,15 @@ export function HotelBookingForm() {
                   <input
                     type="date"
                     required
+                    min={todayStr}
                     value={formData.checkIn}
+                    onClick={(e) => {
+                      try {
+                        (e.target as HTMLInputElement).showPicker?.();
+                      } catch {}
+                    }}
                     onChange={(e) => setFormData({ ...formData, checkIn: e.target.value })}
-                    className="w-full px-4 py-3 rounded-sm border border-slate-300 text-sm text-slate-800 focus:outline-none focus:border-[#064e3b] focus:ring-1 focus:ring-[#064e3b]"
+                    className="w-full px-4 py-3 rounded-sm border border-slate-300 text-sm text-slate-800 focus:outline-none focus:border-[#064e3b] focus:ring-1 focus:ring-[#064e3b] cursor-pointer"
                   />
                 </div>
               </div>
@@ -91,9 +106,15 @@ export function HotelBookingForm() {
                   <input
                     type="date"
                     required
+                    min={formData.checkIn || todayStr}
                     value={formData.checkOut}
+                    onClick={(e) => {
+                      try {
+                        (e.target as HTMLInputElement).showPicker?.();
+                      } catch {}
+                    }}
                     onChange={(e) => setFormData({ ...formData, checkOut: e.target.value })}
-                    className="w-full px-4 py-3 rounded-sm border border-slate-300 text-sm text-slate-800 focus:outline-none focus:border-[#064e3b] focus:ring-1 focus:ring-[#064e3b]"
+                    className="w-full px-4 py-3 rounded-sm border border-slate-300 text-sm text-slate-800 focus:outline-none focus:border-[#064e3b] focus:ring-1 focus:ring-[#064e3b] cursor-pointer"
                   />
                 </div>
               </div>

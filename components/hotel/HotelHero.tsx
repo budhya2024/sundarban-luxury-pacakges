@@ -14,8 +14,8 @@ export function HotelHero() {
   }, []);
 
   return (
-    <section className="relative w-full h-[380px] sm:h-[480px] md:h-[580px] lg:h-[650px] bg-black overflow-hidden">
-      {/* Pure Full Hero Video (Completely Muted, No Sound, No Play Icon, No Controls, No Text) */}
+    <section className="relative bg-black text-white py-20 sm:py-28 lg:py-36 overflow-hidden min-h-[380px] sm:min-h-[480px] lg:min-h-[520px] flex items-center justify-center">
+      {/* Background Video with 100% full opacity & no overlay layers */}
       <video
         ref={videoRef}
         autoPlay
@@ -25,24 +25,32 @@ export function HotelHero() {
         controls={false}
         disablePictureInPicture
         disableRemotePlayback
-        poster="/assets/sonar-bangla-hotel-bg.jpg"
-        className="w-full h-full object-cover pointer-events-none"
+        poster="/assets/images/sonar-bangla-hotel-bg.jpg"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
       >
         <source
-          src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-luxury-hotel-resort-and-pool-42861-large.mp4"
-          type="video/mp4"
-        />
-        <source
-          src="https://assets.mixkit.co/videos/preview/mixkit-resort-with-swimming-pool-and-palm-trees-at-sunset-1205-large.mp4"
+          src="/assets/video/sonar-bangla.mp4"
           type="video/mp4"
         />
       </video>
 
-      {/* Subtle bottom vignette to blend smoothly with next section */}
-      <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-900/30 to-transparent pointer-events-none" />
+      {/* Hero Content - Text with Strong Text Shadow only (No background layer) */}
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center pointer-events-none">
+        <h1
+          className="text-3xl sm:text-5xl lg:text-6xl font-black text-white uppercase tracking-wider select-none"
+          style={{
+            textShadow: "0 2px 4px rgba(0,0,0,0.9), 0 4px 16px rgba(0,0,0,0.9), 0 8px 32px rgba(0,0,0,0.9)",
+          }}
+        >
+          Hotel Sonar Bangla
+        </h1>
+      </div>
     </section>
   );
 }
 
 export default HotelHero;
+
+
+
 

@@ -65,7 +65,7 @@ function PackageEditorForm() {
   const [minGroupSize, setMinGroupSize] = useState("Min 2 People");
   const [overview, setOverview] = useState("");
   const [highlightQuote, setHighlightQuote] = useState("");
-  const [helplinePhone, setHelplinePhone] = useState("+91 98765 43210");
+  const [helplinePhone, setHelplinePhone] = useState("+91 70014 03498");
   const [featured, setFeatured] = useState(false);
 
   // Arrays
@@ -100,7 +100,7 @@ function PackageEditorForm() {
       setMinGroupSize(existingPackage.minGroupSize || "Min 2 People");
       setOverview(existingPackage.overview || "Experience rich wildlife, thick estuarine mangroves, serene watchtowers, and authentic local folk traditions in the land of Royal Bengal Tigers.");
       setHighlightQuote(existingPackage.highlightQuote || "“Discover mangroves, watchtowers, and pristine tranquility with our luxury eco package.”");
-      setHelplinePhone(existingPackage.helplinePhone || "+91 98765 43210");
+      setHelplinePhone(existingPackage.helplinePhone || "+91 70014 03498");
       setFeatured(!!existingPackage.featured);
       setItinerary(existingPackage.itinerary ? JSON.parse(JSON.stringify(existingPackage.itinerary)) : defaultItinerary());
       setFoodMenu(existingPackage.foodMenu ? JSON.parse(JSON.stringify(existingPackage.foodMenu)) : defaultFoodMenu());
@@ -126,7 +126,7 @@ function PackageEditorForm() {
       setMinGroupSize("Min 2 People");
       setOverview("Experience rich wildlife, thick estuarine mangroves, serene watchtowers, and authentic local folk traditions in the land of Royal Bengal Tigers.");
       setHighlightQuote("“Discover mangroves, watchtowers, and pristine tranquility with our luxury eco package.”");
-      setHelplinePhone("+91 98765 43210");
+      setHelplinePhone("+91 70014 03498");
       setFeatured(false);
       setItinerary(defaultItinerary());
       setFoodMenu(defaultFoodMenu());

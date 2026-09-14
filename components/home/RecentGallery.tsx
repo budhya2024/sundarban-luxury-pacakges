@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { X, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
+import Link from "next/link";
+import { X, ChevronLeft, ChevronRight, Maximize2, ArrowRight } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
 import { AdminGalleryItem } from "@/lib/admin-data";
 
@@ -22,7 +23,7 @@ function ImageCard({
   return (
     <div
       onClick={() => onOpenLightbox(item.id)}
-      className={`group relative overflow-hidden rounded-[26px] bg-zinc-100 shadow-sm transition-all duration-300 hover:shadow-xl cursor-pointer ${className}`}
+      className={`group relative overflow-hidden rounded-2xl bg-zinc-100 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer ${className}`}
       role="button"
       tabIndex={0}
       aria-label={`View ${item.title}`}
@@ -37,22 +38,24 @@ function ImageCard({
         src={item.src}
         alt={item.alt || item.title}
         fill
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         priority={priority}
         unoptimized={item.src?.startsWith("data:")}
-        className="object-cover"
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
       />
 
-      {/* Middle Cubic-Bezier Animated Overlay Layer */}
-      <div className="absolute inset-0 bg-[#052e16]/75 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
-        <div className="flex flex-col items-center justify-center text-center text-white scale-50 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
-          <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center mb-2.5 shadow-lg border border-[#fbbf24]/30">
-            <Maximize2 className="w-5 h-5" />
+      {/* Animated Overlay Layer */}
+      <div className="absolute inset-0 bg-[#052e16]/75 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-2.5 sm:p-4">
+        <div className="flex flex-col items-center justify-center text-center text-white scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 ease-out">
+          <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-primary text-white flex items-center justify-center mb-1.5 sm:mb-2 shadow-lg border border-[#fbbf24]/30">
+            <Maximize2 className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
-          <span className="text-[11px] font-bold text-[#fbbf24] uppercase tracking-wider block mb-0.5">
-            {item.location}
-          </span>
-          <h4 className="text-sm font-extrabold text-white leading-snug max-w-[200px]">
+          {item.location && (
+            <span className="text-[10px] sm:text-[11px] font-bold text-[#fbbf24] uppercase tracking-wider block mb-0.5">
+              {item.location}
+            </span>
+          )}
+          <h4 className="text-xs sm:text-sm font-extrabold text-white leading-snug line-clamp-2 max-w-[150px] sm:max-w-[200px]">
             {item.title}
           </h4>
         </div>
@@ -116,41 +119,52 @@ export function RecentGallery() {
   }, [activeImage, handleClose, handleNext, handlePrev]);
 
   return (
-    <section className="py-8 md:py-16 bg-[#fcf9f2] relative overflow-hidden border-t border-b border-amber-100/70">
+    <section className="py-8 md:py-16 bg-[#fcf9f2] relative overflow-hidden">
       <div className="container">
         {/* Section Header */}
-        <div className="relative text-center mb-10 md:mb-14">
-          <p className="font-montez text-3xl md:text-4xl text-[#d97706] tracking-wide mb-1">
+        <div className="sec-header">
+          <p className="sec-tagline">
             Make Your Tour More Pleasure
           </p>
-          <div className="relative inline-block">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#0f172a] tracking-tight">
-              Recent Gallery
-            </h2>
-          </div>
+          <h2 className="sec-title">
+            Recent Gallery
+          </h2>
         </div>
 
-        {/* Gallery Grid (5 Columns matching the wave layout) */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-5 items-center">
+        {/* Mobile / Tablet View: 2 by 2 Grid (4 Photos with EXACT Same Height) */}
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
+          {displayItems.slice(0, 4).map((item, idx) => (
+            <ImageCard
+              key={`mob-${item.id || idx}`}
+              item={item}
+              className="h-[160px] sm:h-[220px] w-full rounded-xl sm:rounded-2xl"
+              onOpenLightbox={setActiveImageId}
+              priority={idx === 0}
+            />
+          ))}
+        </div>
+
+        {/* Desktop View: Signature 5-Column Wave Layout */}
+        <div className="hidden lg:grid lg:grid-cols-5 gap-5 items-center">
           {/* Column 1 */}
           <div className="flex flex-col justify-center h-full">
             {col1Items.map((item) => (
               <ImageCard
                 key={item.id}
                 item={item}
-                className="h-[260px] lg:h-[280px] w-full"
+                className="h-[280px] w-full"
                 onOpenLightbox={setActiveImageId}
               />
             ))}
           </div>
 
           {/* Column 2 */}
-          <div className="flex flex-col gap-4 lg:gap-5">
+          <div className="flex flex-col gap-5">
             {col2Items.map((item) => (
               <ImageCard
                 key={item.id}
                 item={item}
-                className="h-[190px] lg:h-[205px] w-full"
+                className="h-[205px] w-full"
                 onOpenLightbox={setActiveImageId}
               />
             ))}
@@ -162,7 +176,7 @@ export function RecentGallery() {
               <ImageCard
                 key={item.id}
                 item={item}
-                className="h-[400px] lg:h-[430px] w-full"
+                className="h-[430px] w-full"
                 onOpenLightbox={setActiveImageId}
                 priority
               />
@@ -170,28 +184,39 @@ export function RecentGallery() {
           </div>
 
           {/* Column 4 */}
-          <div className="flex flex-col gap-4 lg:gap-5">
+          <div className="flex flex-col gap-5">
             {col4Items.map((item) => (
               <ImageCard
                 key={item.id}
                 item={item}
-                className="h-[190px] lg:h-[205px] w-full"
+                className="h-[205px] w-full"
                 onOpenLightbox={setActiveImageId}
               />
             ))}
           </div>
 
           {/* Column 5 */}
-          <div className="flex flex-col justify-center h-full sm:col-span-2 md:col-span-1">
+          <div className="flex flex-col justify-center h-full">
             {col5Items.map((item) => (
               <ImageCard
                 key={item.id}
                 item={item}
-                className="h-[260px] lg:h-[280px] w-full"
+                className="h-[280px] w-full"
                 onOpenLightbox={setActiveImageId}
               />
             ))}
           </div>
+        </div>
+
+        {/* View Full Gallery Link Button */}
+        <div className="text-center mt-8 sm:mt-12">
+          <Link
+            href="/gallery"
+            className="btn btn-secondary !py-3 !px-8 rounded-full text-sm font-bold shadow-md inline-flex items-center gap-2 hover:gap-3 transition-all duration-300"
+          >
+            <span>View Full Gallery</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
 
@@ -256,9 +281,11 @@ export function RecentGallery() {
               />
             </div>
             <div className="mt-4 text-center">
-              <p className="text-xs uppercase tracking-widest text-[#fbbf24] font-semibold">
-                {activeImage.location}
-              </p>
+              {activeImage.location && (
+                <p className="text-xs uppercase tracking-widest text-[#fbbf24] font-semibold">
+                  {activeImage.location}
+                </p>
+              )}
               <h3 className="text-lg md:text-xl font-bold text-white">
                 {activeImage.title}
               </h3>

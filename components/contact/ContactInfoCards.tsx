@@ -1,83 +1,99 @@
 "use client";
 
 import React from "react";
-import { FaLocationDot, FaPhone, FaEnvelope, FaClock } from "react-icons/fa6";
-
-interface ContactCard {
-  id: string;
-  icon: React.ElementType;
-  title: string;
-  subtitle: string;
-  details: string[];
-}
-
-const contactCards: ContactCard[] = [
-  {
-    id: "address",
-    icon: FaLocationDot,
-    title: "Head Office",
-    subtitle: "Launch & Reservation Center",
-    details: ["Godkhali Ferry Ghat, Canning Town", "South 24 Parganas, West Bengal 743329"],
-  },
-  {
-    id: "phone",
-    icon: FaPhone,
-    title: "Phone & WhatsApp",
-    subtitle: "24/7 Cruise Assistance",
-    details: ["+91 98765 43210 (Hotline)", "+91 91234 56789 (WhatsApp)"],
-  },
-  {
-    id: "email",
-    icon: FaEnvelope,
-    title: "Email Support",
-    subtitle: "Inquiries & Reservations",
-    details: ["booking@sundarbanluxury.com", "info@sundarbanluxury.com"],
-  },
-  {
-    id: "hours",
-    icon: FaClock,
-    title: "Operating Hours",
-    subtitle: "Always At Your Service",
-    details: ["Mon - Sat: 8:00 AM - 9:00 PM", "Sunday: 9:00 AM - 6:00 PM"],
-  },
-];
+import { FaPhone, FaEnvelope, FaLocationDot, FaClock } from "react-icons/fa6";
 
 export function ContactInfoCards() {
   return (
-    <section className="py-12 md:py-16 bg-[#fef8e2] border-b border-amber-100">
+    <section className="py-10 sm:py-16 bg-[#f5f8f5]/80">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {contactCards.map((card) => {
-            const Icon = card.icon;
-            return (
-              <div
-                key={card.id}
-                className="group flex flex-col rounded-sm justify-between  bg-white p-7 shadow-sm border border-slate-100 hover:shadow-lg transition-shadow duration-300"
-              >
-                <div>
-                  {/* Icon Circle */}
-                  <div className="w-14 h-14 rounded-sm bg-amber-50 text-[#d97706] group-hover:bg-[#064e3b] group-hover:text-[#fbbf24] flex items-center justify-center text-2xl transition-colors duration-300 mb-6 shadow-xs">
-                    <Icon />
-                  </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
 
-                  {/* Title & Subtitle */}
-                  <h3 className="text-xl font-bold text-[#0f172a] mb-1 group-hover:text-[#064e3b] transition-colors">
-                    {card.title}
-                  </h3>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-[#d97706] mb-4">
-                    {card.subtitle}
-                  </p>
-
-                  {/* Details Lines */}
-                  <div className="space-y-1.5 text-sm text-slate-600 font-normal">
-                    {card.details.map((line, idx) => (
-                      <p key={idx}>{line}</p>
-                    ))}
-                  </div>
-                </div>
+          {/* 1. Call Us */}
+          <div className="bg-[#f9fbf9] rounded-2xl p-6 sm:p-7 border border-[#e1e9e1] shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+            <div>
+              <div className="w-12 h-12 rounded-xl bg-[#1c4e3a] text-white flex items-center justify-center text-xl mb-5 shadow-xs">
+                <FaPhone />
               </div>
-            );
-          })}
+              <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-1">
+                Call Us
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-500 mb-4">
+                Speak directly with our travel experts
+              </p>
+            </div>
+            <div>
+              <a
+                href="tel:+917001403498"
+                className="text-sm font-bold text-slate-900 hover:text-[#1c4e3a] transition-colors"
+              >
+                +91 70014 03498
+              </a>
+            </div>
+          </div>
+
+          {/* 2. Email Us */}
+          <div className="bg-[#f9fbf9] rounded-2xl p-6 sm:p-7 border border-[#e1e9e1] shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+            <div>
+              <div className="w-12 h-12 rounded-xl bg-[#e78d1f] text-white flex items-center justify-center text-xl mb-5 shadow-xs">
+                <FaEnvelope />
+              </div>
+              <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-1">
+                Email Us
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-500 mb-4">
+                Get a response within 24 hours
+              </p>
+            </div>
+            <div>
+              <a
+                href="mailto:sundarbanluxurypackage@gmail.com"
+                className="text-xs sm:text-sm font-bold text-slate-900 hover:text-[#e78d1f] transition-colors break-all"
+              >
+                sundarbanluxurypackage@gmail.com
+              </a>
+            </div>
+          </div>
+
+          {/* 3. Visit Us */}
+          <div className="bg-[#f9fbf9] rounded-2xl p-6 sm:p-7 border border-[#e1e9e1] shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+            <div>
+              <div className="w-12 h-12 rounded-xl bg-[#237c73] text-white flex items-center justify-center text-xl mb-5 shadow-xs">
+                <FaLocationDot />
+              </div>
+              <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-1">
+                Visit Us
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-500 mb-4">
+                Our office location
+              </p>
+            </div>
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-slate-800 leading-snug">
+                Godkhali Ferry Ghat, Canning Town, South 24 Parganas, West Bengal 743329
+              </p>
+            </div>
+          </div>
+
+          {/* 4. Working Hours */}
+          <div className="bg-[#f9fbf9] rounded-2xl p-6 sm:p-7 border border-[#e1e9e1] shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+            <div>
+              <div className="w-12 h-12 rounded-xl bg-[#1c4e3a] text-white flex items-center justify-center text-xl mb-5 shadow-xs">
+                <FaClock />
+              </div>
+              <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-1">
+                Working Hours
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-500 mb-4">
+                We&apos;re available for you
+              </p>
+            </div>
+            <div className="space-y-0.5 text-xs sm:text-sm font-medium text-slate-800">
+              <p>Mon - Sat: 9:00 AM - 6:00 PM</p>
+              <p>Sunday: 10:00 AM - 4:00 PM</p>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -85,3 +101,5 @@ export function ContactInfoCards() {
 }
 
 export default ContactInfoCards;
+
+

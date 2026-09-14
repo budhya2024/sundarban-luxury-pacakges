@@ -63,7 +63,7 @@ const amenities: AmenityCard[] = [
 
 export function HotelAmenities() {
   return (
-    <section id="amenities" className="py-8 md:py-16 bg-[#fef8e2] text-[#0f172a] border-b border-amber-100/80">
+    <section id="amenities" className="py-8 md:py-16 bg-secondary/5 text-[#0f172a] ">
       <div className="container">
         {/* Section Title */}
         <div className="sec-header">

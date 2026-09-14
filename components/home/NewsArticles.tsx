@@ -23,19 +23,17 @@ export function NewsArticles() {
   return (
     <section className="py-8 md:py-16 bg-[#fef8e2] relative overflow-hidden border-y border-amber-100/70">
       <div className="container">
-        {/* Header row: title left, navigation controls & button right */}
-        <div className="text-center mb-8 md:mb-12">
-
+        {/* Header row: title and description */}
+        <div className="sec-header">
           <span className="sec-tagline">About Us &amp; Travel</span>
           <h2 className="sec-title">News &amp; Articles From Sundarban</h2>
-          <p className="text-slate-600 text-sm sm:text-base mt-1 max-w-xl mx-auto">
+          <p className="sec-desc">
             Explore insightful guides, wildlife stories, and travel advice curated by our mangrove naturalists.
           </p>
-
         </div>
 
         {/* 3 Slides per view Swiper Carousel */}
-        <div className="relative pb-6">
+        <div className="relative">
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
             onBeforeInit={(swiper) => {

@@ -75,7 +75,7 @@ export function HotelCTA() {
                 {/* Secondary WhatsApp & Phone Row */}
                 <div className="grid grid-cols-2 gap-2">
                   <a
-                    href="https://wa.me/919876543210?text=Hi%2C%20I%20want%20to%20book%20a%20luxury%20tour%20package%20at%20Hotel%20Sonar%20Bangla%20Sundarban"
+                    href="https://wa.me/917001403498?text=Hi%2C%20I%20want%20to%20book%20a%20luxury%20tour%20package%20at%20Hotel%20Sonar%20Bangla%20Sundarban"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-1.5 px-4 py-3 bg-[#064e3b]/80 hover:bg-[#047857] text-white text-xs sm:text-sm font-semibold rounded-[4px] border border-emerald-500/40 transition-colors"
@@ -85,11 +85,11 @@ export function HotelCTA() {
                   </a>
 
                   <a
-                    href="tel:+919876543210"
+                    href="tel:+917001403498"
                     className="inline-flex items-center justify-center gap-1.5 px-4 py-3 bg-white/10 hover:bg-white/15 text-white text-xs sm:text-sm font-semibold rounded-[4px] border border-white/20 transition-colors"
                   >
                     <PhoneCall className="w-4 h-4 text-slate-200" />
-                    <span>+91 98765 43210</span>
+                    <span>+91 70014 03498</span>
                   </a>
                 </div>
               </div>

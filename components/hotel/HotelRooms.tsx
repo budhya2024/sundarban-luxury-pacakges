@@ -27,7 +27,7 @@ const roomsData: RoomCategory[] = [
     bed: "King Size Bed",
     size: "320 sq.ft",
     view: "Riverside Garden View",
-    image: "/assets/sonar-bangla-hotel-deluxe.jpg",
+    image: "/assets/images/sonar-bangla-hotel-deluxe.jpg",
     amenities: ["Air Conditioning", "Private Balcony", "Free Wi-Fi", "Complimentary Breakfast", "24/7 Hot Water", "Smart LED TV"],
   },
   {
@@ -39,7 +39,7 @@ const roomsData: RoomCategory[] = [
     bed: "Super King Bed",
     size: "480 sq.ft",
     view: "180° Panoramic Riverfront",
-    image: "/assets/sonar-bangla-hotel-balcony.webp",
+    image: "/assets/images/sonar-bangla-hotel-balcony.webp",
     amenities: ["Panoramic Balcony", "Mini Refrigerator", "Tea/Coffee Maker", "Premium Toiletries", "Express Room Service", "Wi-Fi & Breakfast"],
   },
   {
@@ -51,7 +51,7 @@ const roomsData: RoomCategory[] = [
     bed: "Royal Canopy Bed",
     size: "560 sq.ft",
     view: "Jungle & Estuary View",
-    image: "/assets/sonar-bangla-hotel-cottage.webp",
+    image: "/assets/images/sonar-bangla-hotel-cottage.webp",
     amenities: ["Private Wooden Deck", "Personal Sun Lounge", "VIP Check-in", "Luxury Bathtub", "Customized Evening Snacks", "Free Speedboat Transfer"],
   },
   {
@@ -63,7 +63,7 @@ const roomsData: RoomCategory[] = [
     bed: "2 King Size Beds",
     size: "750 sq.ft",
     view: "Exclusive Waterfront Lawn",
-    image: "/assets/sonarbanglahotel.jpg",
+    image: "/assets/images/sonarbanglahotel.jpg",
     amenities: ["2 Attached Bedrooms", "Private Living Room", "Dedicated Butler Service", "Complimentary Dinner Thali", "Late Check-out", "All Inclusive"],
   },
 ];
@@ -73,14 +73,14 @@ export function HotelRooms() {
     <section id="rooms" className="py-8 md:py-16 bg-slate-50 text-[#0f172a]">
       <div className="container">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
-          <span className="text-[#15803d] font-bold text-xs sm:text-sm uppercase tracking-widest block mb-2">
+        <div className="sec-header max-w-2xl mx-auto mb-14">
+          <span className="sec-tagline">
             Accommodations & Suites
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0f172a] tracking-tight">
+          <h2 className="sec-title">
             Luxury Rooms & Villa Suites
           </h2>
-          <p className="text-slate-600 text-sm sm:text-base mt-3">
+          <p className="sec-desc">
             Designed for supreme comfort with riverfront views, high-end amenities, and warm eco-friendly interiors.
           </p>
         </div>

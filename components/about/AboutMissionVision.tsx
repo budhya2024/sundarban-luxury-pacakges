@@ -5,13 +5,13 @@ import React from "react";
 
 export function AboutMissionVision() {
   return (
-    <section className="py-12 md:py-16 bg-[#fef8e2] border-y border-amber-100">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center mb-8 md:mb-10">
-          <p className="font-montez text-3xl sm:text-4xl text-[#d97706] mb-1">
+    <section className="">
+      <div className="container">
+        <div className="sec-header max-w-3xl mx-auto mb-8 md:mb-10">
+          <p className="sec-tagline">
             Driven By Purpose
           </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0f172a] tracking-tight">
+          <h2 className="sec-title">
             Our Mission, Vision & Values
           </h2>
         </div>
