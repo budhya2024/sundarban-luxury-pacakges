@@ -66,7 +66,7 @@ export function HotelCTA() {
                 {/* Primary CTA redirecting to contact page */}
                 <Link
                   href="/contact"
-                  className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-sm sm:text-base rounded-[4px] shadow-lg shadow-[#d97706]/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0 border border-amber-400/40 text-center group"
+                  className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-sm sm:text-base rounded-[4px] transition-all transform hover:-translate-y-0.5 active:translate-y-0 border border-amber-400/40 text-center group"
                 >
                   <span>Contact Us Today</span>
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

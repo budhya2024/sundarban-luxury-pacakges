@@ -3,6 +3,7 @@ import { TourMenuSection } from "@/components/home/TourMenuSection";
 import { PopularDestinations } from "@/components/home/TourPackage";
 import { HotelSonarBanglaSection } from "@/components/home/HotelSonarBanglaSection";
 import { PlanTripSection } from "@/components/home/PlanTripSection";
+import { SundarbanEnvironmentSection } from "@/components/home/SundarbanEnvironmentSection";
 import { RecentGallery } from "@/components/home/RecentGallery";
 import { TrustSection } from "@/components/home/TrustSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
@@ -18,6 +19,7 @@ export default function Home() {
 
       <TourMenuSection />
       <PlanTripSection />
+      <SundarbanEnvironmentSection />
       <RecentGallery />
       <TrustSection />
       <TestimonialsSection />

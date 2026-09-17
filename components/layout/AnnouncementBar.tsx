@@ -24,7 +24,7 @@ export function AnnouncementBar() {
 
   return (
     <div
-      className="bg-[#064e3b] text-white text-xs sm:text-sm py-2.5 overflow-hidden select-none relative z-50 border-b border-emerald-900/30"
+      className="bg-primary text-white text-xs sm:text-sm py-2.5 overflow-hidden select-none relative z-50 border-b border-primary/20"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >

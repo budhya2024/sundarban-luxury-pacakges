@@ -31,15 +31,11 @@ export default function TermsAndConditionsPage() {
         <div className="absolute inset-0 bg-black/40" />
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="font-montez text-3xl sm:text-4xl text-[#fbbf24] tracking-wide mb-2">
-            Legal &amp; Policies
-          </p>
+
           <h1 className="text-2xl sm:text-4xl font-black text-white leading-snug drop-shadow-md mb-4">
             Terms and Conditions
           </h1>
-          <p className="max-w-2xl mx-auto text-slate-200 text-sm sm:text-lg font-light leading-relaxed mb-6 drop-shadow-sm">
-            Please read these terms carefully before booking your Sundarban luxury river cruise and resort stay.
-          </p>
+
 
           <div className="inline-flex items-center gap-2.5 text-base sm:text-lg font-bold text-white flex-wrap justify-center">
             <Link href="/" className="text-white hover:text-[#fbbf24] transition-colors">
@@ -67,7 +63,7 @@ export default function TermsAndConditionsPage() {
             {/* Section 1 */}
             <div id="acceptance" className="space-y-3">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-[#064e3b] text-[#fbbf24] text-xs flex items-center justify-center font-bold">
+                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
                   1
                 </span>
                 Acceptance of Terms
@@ -83,7 +79,7 @@ export default function TermsAndConditionsPage() {
             {/* Section 2 */}
             <div id="booking-pricing" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-[#064e3b] text-[#fbbf24] text-xs flex items-center justify-center font-bold">
+                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
                   2
                 </span>
                 Booking, Payments &amp; Pricing
@@ -107,7 +103,7 @@ export default function TermsAndConditionsPage() {
             {/* Section 3 */}
             <div id="cancellation-refund" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-[#064e3b] text-[#fbbf24] text-xs flex items-center justify-center font-bold">
+                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
                   3
                 </span>
                 Cancellation &amp; 100% Refund Policy
@@ -137,7 +133,7 @@ export default function TermsAndConditionsPage() {
             {/* Section 4 */}
             <div id="wildlife-forest-rules" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-[#064e3b] text-[#fbbf24] text-xs flex items-center justify-center font-bold">
+                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
                   4
                 </span>
                 Forest Dept. &amp; National Park Regulations
@@ -176,7 +172,7 @@ export default function TermsAndConditionsPage() {
             {/* Section 5 */}
             <div id="safety-insurance" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-[#064e3b] text-[#fbbf24] text-xs flex items-center justify-center font-bold">
+                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
                   5
                 </span>
                 Boat Safety, Life Jackets &amp; Liability
@@ -192,7 +188,7 @@ export default function TermsAndConditionsPage() {
             {/* Section 6 */}
             <div id="force-majeure" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-[#064e3b] text-[#fbbf24] text-xs flex items-center justify-center font-bold">
+                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
                   6
                 </span>
                 Weather, Tidal Conditions &amp; Force Majeure
@@ -208,7 +204,7 @@ export default function TermsAndConditionsPage() {
             {/* Section 7 */}
             <div id="jurisdiction" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-[#064e3b] text-[#fbbf24] text-xs flex items-center justify-center font-bold">
+                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
                   7
                 </span>
                 Governing Law &amp; Jurisdiction
@@ -231,13 +227,13 @@ export default function TermsAndConditionsPage() {
               <div className="flex items-center gap-3">
                 <Link
                   href="/contact"
-                  className="px-5 py-2.5 rounded-lg bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-xs sm:text-sm transition-colors shadow-sm"
+                  className="px-5 py-2.5 rounded-full bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-xs sm:text-sm transition-colors shadow-sm"
                 >
                   Contact Support
                 </Link>
                 <a
                   href="tel:+917001403498"
-                  className="px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm transition-colors border border-white/20"
+                  className="px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm transition-colors border border-white/20"
                 >
                   Call Concierge
                 </a>

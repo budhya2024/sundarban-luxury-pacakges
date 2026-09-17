@@ -93,11 +93,10 @@ export function TestimonialsSection() {
               <SwiperSlide key={item.id} className="h-auto">
                 {({ isActive }) => (
                   <div
-                    className={`relative flex flex-col rounded-xl justify-between bg-white p-7 md:p-8 transition-all duration-500 min-h-[300px] border border-slate-200/80 shadow-sm ${
-                      isActive
-                        ? " -translate-y-0.5 border-[#064e3b]/30"
-                        : "opacity-95"
-                    }`}
+                    className={`relative flex flex-col rounded-xl justify-between bg-white p-7 md:p-8 transition-all duration-500 min-h-[300px] border border-slate-200/80 shadow-sm ${isActive
+                      ? " -translate-y-0.5 border-[#064e3b]/30"
+                      : "opacity-95"
+                      }`}
                   >
                     <div>
                       {/* Card Header: Avatar, Name & Stars */}
@@ -141,11 +140,10 @@ export function TestimonialsSection() {
 
                     {/* Bottom Center Circular Quote Badge */}
                     <div
-                      className={`absolute -bottom-5 left-1/2 -translate-x-1/2 flex h-11 w-11 items-center justify-center rounded-full transition-all duration-500 ${
-                        isActive
-                          ? "bg-[#064e3b] text-white shadow-md shadow-[#064e3b]/30 scale-105 ring-4 ring-white"
-                          : "bg-white text-[#064e3b] shadow-sm border border-slate-200/80"
-                      }`}
+                      className={`absolute -bottom-5 left-1/2 -translate-x-1/2 flex h-11 w-11 items-center justify-center rounded-full transition-all duration-500 ${isActive
+                        ? "bg-[#064e3b] text-white shadow-md shadow-[#064e3b]/30 scale-105 ring-4 ring-white"
+                        : "bg-white text-[#064e3b] shadow-sm border border-slate-200/80"
+                        }`}
                     >
                       <QuotationIcon className="w-4 h-4" />
                     </div>

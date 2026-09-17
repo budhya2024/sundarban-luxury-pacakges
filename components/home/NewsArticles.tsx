@@ -21,7 +21,7 @@ export function NewsArticles() {
   const featuredPosts = blogPosts.slice(0, 8);
 
   return (
-    <section className="py-8 md:py-16 bg-[#fef8e2] relative overflow-hidden border-y border-amber-100/70">
+    <section className="py-8 md:py-16 bg-secondary/5 relative overflow-hidden">
       <div className="container">
         {/* Header row: title and description */}
         <div className="sec-header">
@@ -49,9 +49,8 @@ export function NewsArticles() {
             }}
             pagination={{
               clickable: true,
-              el: ".blog-swiper-pagination",
-              bulletClass: "swiper-pagination-bullet !w-2.5 !h-2.5 !bg-[#fde68a] !border-0 !outline-none !opacity-100 transition-all duration-300",
-              bulletActiveClass: "!w-8 !rounded-full !bg-[#d97706] !border-0 !outline-none",
+              bulletClass: "custom-bullet",
+              bulletActiveClass: "custom-bullet-active",
             }}
             breakpoints={{
               640: {
@@ -63,13 +62,13 @@ export function NewsArticles() {
                 spaceBetween: 28,
               },
             }}
-            className="w-full !overflow-visible"
+            className="news-articles-swiper !overflow-visible pb-12 [&_.swiper-wrapper]:flex [&_.swiper-wrapper]:items-stretch [&_.swiper-slide]:h-auto [&_.swiper-slide]:flex"
           >
             {featuredPosts.map((article) => (
-              <SwiperSlide key={article.slug} className="h-auto">
-                <article className="group flex flex-col h-full bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300">
+              <SwiperSlide key={article.slug} className="h-auto cursor-pointer">
+                <article className="group flex flex-col h-full bg-white rounded-xl overflow-hidden border shadow-sm hover:shadow-lg transition-all duration-300">
                   {/* Image with Category Badge */}
-                  <div className="relative w-full h-[220px] sm:h-[240px] overflow-hidden bg-slate-100">
+                  <div className="relative w-full h-50 sm:h-60 overflow-hidden bg-slate-100">
                     <Image
                       src={article.image}
                       alt={article.title}
@@ -77,8 +76,8 @@ export function NewsArticles() {
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a]/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <span className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm text-[#064e3b] text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-sm border border-slate-100">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm text-primary text-xs font-black px-3 py-1 rounded-full border border-slate-100">
                       {article.category}
                     </span>
                   </div>
@@ -90,13 +89,13 @@ export function NewsArticles() {
                       <span>{article.date}</span>
                       <span className="w-[1px] h-3 bg-slate-300 inline-block" />
                       <span className="flex items-center gap-1.5 text-slate-600">
-                        <Clock className="w-3.5 h-3.5 text-[#d97706]" />
+                        <Clock className="w-3.5 h-3.5 text-secondary" />
                         {article.readTime}
                       </span>
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-[#0f172a] font-bold text-base sm:text-lg leading-snug mb-3 group-hover:text-[#064e3b] transition-colors duration-300 line-clamp-2">
+                    <h3 className="text-foreground font-bold text-base sm:text-lg leading-snug mb-3 group-hover:text-primary transition-colors duration-300 line-clamp-2">
                       <Link href={`/blog/${article.slug}`} className="hover:underline">
                         {article.title}
                       </Link>
@@ -111,10 +110,10 @@ export function NewsArticles() {
                     <div className="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
                       <Link
                         href={`/blog/${article.slug}`}
-                        className="inline-flex items-center gap-2 text-sm font-bold text-[#064e3b] hover:text-[#d97706] transition-colors group-hover:translate-x-1 duration-300"
+                        className="inline-flex items-center gap-2 text-sm font-bold text-primary group-hover:text-secondary transition-all duration-300"
                       >
                         <span>Read Full Story</span>
-                        <ArrowRight className="w-4 h-4 text-[#d97706]" />
+                        <ArrowRight className="w-4 h-4 text-primary group-hover:text-secondary" />
                       </Link>
                     </div>
                   </div>
@@ -122,11 +121,43 @@ export function NewsArticles() {
               </SwiperSlide>
             ))}
           </Swiper>
-
-          {/* Pagination Dots container */}
-          <div className="blog-swiper-pagination flex justify-center items-center gap-2 mt-8" />
         </div>
       </div>
+
+      {/* Global CSS for Swiper pagination bullets */}
+      <style jsx global>{`
+        .news-articles-swiper .swiper-pagination {
+          position: relative !important;
+          margin-top: 1.5rem !important;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+        }
+        .news-articles-swiper .custom-bullet {
+          width: 0.55rem;
+          height: 0.55rem;
+          border-radius: 9999px;
+          border: none !important;
+          outline: none !important;
+          background-color: #fde68a !important;
+          display: inline-block;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          opacity: 1 !important;
+        }
+        .news-articles-swiper .custom-bullet:hover {
+          background-color: #f59e0b !important;
+          border: none !important;
+        }
+        .news-articles-swiper .custom-bullet-active {
+          width: 1.75rem !important;
+          background-color: #d97706 !important;
+          border: none !important;
+          outline: none !important;
+          opacity: 1 !important;
+        }
+      `}</style>
     </section>
   );
 }

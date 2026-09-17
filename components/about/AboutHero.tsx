@@ -26,18 +26,13 @@ export function AboutHero() {
           Pioneering Luxury In Sundarban
         </h1>
 
-        {/* Subdescription */}
-        <p className="max-w-2xl mx-auto text-slate-200 text-sm sm:text-lg font-light leading-relaxed mb-6 drop-shadow-sm">
-          We blend five-star hospitality with deep ecological conservation. Experience the wild beauty of the UNESCO World Heritage mangrove forest aboard our solar-powered luxury vessels.
-        </p>
-
         {/* Breadcrumbs (Double arrow » separator matching reference photo) */}
         <div className="inline-flex items-center gap-2.5 text-base sm:text-lg font-bold text-white">
-          <Link href="/" className="text-white hover:text-[#fbbf24] transition-colors">
+          <Link href="/" className="text-white hover:text-secondary transition-colors">
             Home
           </Link>
           <span className="text-white font-bold">»</span>
-          <span className="text-[#fbbf24]">About Us</span>
+          <span className="text-secondary">About Us</span>
         </div>
       </div>
     </div>

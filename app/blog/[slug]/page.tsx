@@ -127,7 +127,7 @@ export default async function BlogDetailPage({
             {/* Category & Article Title */}
             <div className="mb-6">
 
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0e2a47] tracking-tight leading-snug">
+              <h1 className="text-xl sm:text-2xl  font-extrabold text-[#0e2a47] tracking-tight leading-snug">
                 {post.title}
               </h1>
             </div>
@@ -214,17 +214,17 @@ export default async function BlogDetailPage({
 
             <div className="border-t border-slate-100 my-10" />
 
-            <div className="bg-[#0e2a47] p-7 sm:p-10 text-center relative overflow-hidden">
+            <div className="bg-primary/10 p-7 sm:p-10 text-center relative overflow-hidden">
 
-              <h3 className="text-white text-xl sm:text-2xl font-extrabold mb-3 relative z-10">
+              <h3 className="text-primary text-xl sm:text-xl font-extrabold mb-3 relative z-10">
                 Ready to Experience Sundarban?
               </h3>
-              <p className="text-white/75 text-sm sm:text-base mb-6 max-w-lg mx-auto relative z-10">
+              <p className="text-primary text-sm sm:text-base mb-6 max-w-lg mx-auto relative z-10">
                 Book a luxury Sundarban package and experience the magic of the world's largest mangrove forest.
               </p>
               <Link
                 href="/"
-                className="inline-flex items-center gap-2 bg-[#064e3b] text-white font-bold text-sm px-8 py-3.5 rounded-full hover:bg-[#d97706] hover:text-white transition-all duration-300 shadow-md relative z-10"
+                className="inline-flex items-center gap-2 bg-primary text-white font-bold text-sm px-8 py-3.5 rounded-full hover:bg-secondary hover:text-white transition-all duration-300 shadow-md relative z-10"
               >
                 <span>Plan My Trip</span>
                 <FaArrowRight className="w-3.5 h-3.5" />
@@ -384,44 +384,75 @@ export default async function BlogDetailPage({
         </div>
       </div>
 
-      <section className="bg-[#f0fdf4]/50 py-8 md:py-[60px]">
+      {/* Related Articles Section - Rich Blog List Card Design */}
+      <section className="bg-primary/5 py-8 md:py-16 border-t border-border">
         <div className="container">
-          <h2 className="text-[#0e2a47] text-2xl sm:text-3xl font-extrabold mb-8 md:mb-10 tracking-tight">
-            Related Articles
-          </h2>
+          <div className="mb-8 md:mb-10">
+            <span className="text-secondary font-bold text-xs uppercase tracking-wider block mb-1">
+              Explore More Stories
+            </span>
+            <h2 className="text-foreground text-2xl sm:text-3xl font-extrabold tracking-tight">
+              Related Articles
+            </h2>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {related.map((article) => (
-              <Link
+              <article
                 key={article.slug}
-                href={`/blog/${article.slug}`}
-                className="group flex flex-col bg-white  overflow-hidden  shadow-sm transition-all duration-300 border border-slate-100/80"
+                className="group flex flex-col bg-white rounded-xl overflow-hidden border border-slate-200/80 shadow-xs hover:shadow-lg transition-all duration-300"
               >
-                <div className="relative h-[200px]">
+                {/* Image with Category Badge */}
+                <div className="relative w-full h-52 sm:h-56 overflow-hidden bg-slate-100">
                   <Image
                     src={article.image}
                     alt={article.title}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                </div>
-                <div className="p-6 flex flex-col flex-1">
-                  <span className="text-[11px] font-extrabold text-[#d97706] uppercase tracking-wider mb-2">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm text-primary text-[11px] font-bold px-3 py-1 rounded-md uppercase tracking-wider shadow-sm border border-slate-100">
                     {article.category}
                   </span>
-                  <h3 className="text-[#0e2a47] font-bold text-base leading-snug mb-3 group-hover:text-[#064e3b] transition-colors duration-300 line-clamp-2 flex-1">
-                    {article.title}
-                  </h3>
-                  <div className="flex items-center gap-2 text-xs text-gray-400 font-medium">
+                </div>
+
+                {/* Card Content Body */}
+                <div className="p-6 flex flex-col flex-1">
+                  {/* Meta */}
+                  <div className="flex items-center gap-2 text-xs text-slate-500 font-medium mb-3">
                     <span>{article.date}</span>
-                    <span className="w-[1px] h-3 bg-gray-300 inline-block" />
-                    <span className="flex items-center gap-1">
-                      <FaRegClock className="w-3.5 h-3.5 text-[#d97706]" />
+                    <span className="w-[1px] h-3 bg-slate-300 inline-block" />
+                    <span className="flex items-center gap-1.5 text-slate-600">
+                      <FaRegClock className="w-3.5 h-3.5 text-secondary" />
                       {article.readTime}
                     </span>
                   </div>
+
+                  {/* Title */}
+                  <h3 className="text-foreground font-bold text-base sm:text-lg leading-snug mb-3 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                    <Link href={`/blog/${article.slug}`} className="hover:underline">
+                      {article.title}
+                    </Link>
+                  </h3>
+
+                  {/* Excerpt */}
+                  <p className="text-slate-600 text-xs sm:text-sm leading-relaxed line-clamp-2 mb-6">
+                    {article.excerpt}
+                  </p>
+
+                  {/* Read More button */}
+                  <div className="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <Link
+                      href={`/blog/${article.slug}`}
+                      className="inline-flex items-center gap-2 text-sm font-bold text-primary group-hover:text-secondary transition-all duration-300"
+                    >
+                      <span>Read Full Story</span>
+                      <FaArrowRight className="w-3.5 h-3.5 text-primary group-hover:text-secondary group-hover:translate-x-1 transition-all duration-300" />
+                    </Link>
+                  </div>
                 </div>
-              </Link>
+              </article>
             ))}
           </div>
         </div>

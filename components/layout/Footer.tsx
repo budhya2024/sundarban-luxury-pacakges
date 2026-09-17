@@ -13,8 +13,6 @@ import {
 } from "lucide-react";
 import {
   FaFacebookF,
-  FaTwitter,
-  FaLinkedinIn,
   FaWhatsapp,
   FaInstagram,
 } from "react-icons/fa6";
@@ -63,16 +61,14 @@ const instagramPosts = [
 
 function FooterSundarbanLogo() {
   return (
-    <Link href="/" className="">
-
-      <div className="flex flex-col text-white">
-        <span className="text-xl sm:text-2xl font-black tracking-tight leading-none">
-          Sundarban
-        </span>
-        <span className="text-[10px] sm:text-[11px] font-bold tracking-wider text-[#fbbf24] uppercase mt-0.5">
-          Luxury Package
-        </span>
-      </div>
+    <Link href="/" className="inline-flex items-center">
+      <Image
+        src="/assets/images/brand-logo.png"
+        alt="Sundarban Luxury Package"
+        width={180}
+        height={50}
+        className="h-10 sm:h-12 w-auto object-contain"
+      />
     </Link>
   );
 }
@@ -93,7 +89,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-[#052e16] text-slate-200 pt-16 md:pt-20 relative z-20 border-t border-[#064e3b]">
+    <footer className="bg-brand-green-dark text-slate-200 pt-16 md:pt-20 relative z-20 border-t border-primary">
       <div className="container">
         {/* 1. Top Newsletter Section */}
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 pb-12 md:pb-16">
@@ -117,13 +113,13 @@ export function Footer() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your Email"
                 required
-                className="w-full rounded-full border border-white/20 bg-white/10 px-6 py-3.5 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-[#fbbf24] focus:ring-1 focus:ring-[#fbbf24] transition-all"
+                className="w-full rounded-full border border-white/20 bg-white/10 px-6 py-3.5 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-brand-yellow-light focus:ring-1 focus:ring-brand-yellow-light transition-all"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-[#d97706] hover:bg-[#b45309] text-white px-7 py-3.5 font-semibold text-sm shadow-md transition-all duration-200 cursor-pointer whitespace-nowrap"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-secondary hover:bg-secondary/90 text-white px-7 py-3.5 font-semibold text-sm shadow-md transition-all duration-200 cursor-pointer whitespace-nowrap"
             >
               <span>{subscribed ? "Subscribed!" : "Subscribe Now"}</span>
               <Send className="h-4 w-4" />
@@ -149,35 +145,21 @@ export function Footer() {
             <div className="flex items-center gap-2.5 mt-6">
               <Link
                 href="#facebook"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-amber-300 hover:bg-[#d97706] hover:text-white transition-colors"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-amber-300 hover:bg-secondary hover:text-white transition-colors"
                 aria-label="Facebook"
               >
                 <FaFacebookF className="h-3.5 w-3.5" />
               </Link>
               <Link
-                href="#twitter"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-amber-300 hover:bg-[#d97706] hover:text-white transition-colors"
-                aria-label="Twitter"
-              >
-                <FaTwitter className="h-3.5 w-3.5" />
-              </Link>
-              <Link
-                href="#linkedin"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-amber-300 hover:bg-[#d97706] hover:text-white transition-colors"
-                aria-label="LinkedIn"
-              >
-                <FaLinkedinIn className="h-3.5 w-3.5" />
-              </Link>
-              <Link
                 href="#whatsapp"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-amber-300 hover:bg-[#d97706] hover:text-white transition-colors"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-amber-300 hover:bg-secondary hover:text-white transition-colors"
                 aria-label="WhatsApp"
               >
                 <FaWhatsapp className="h-4 w-4" />
               </Link>
               <Link
                 href="#instagram"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-amber-300 hover:bg-[#d97706] hover:text-white transition-colors"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-amber-300 hover:bg-secondary hover:text-white transition-colors"
                 aria-label="Instagram"
               >
                 <FaInstagram className="h-4 w-4" />
@@ -193,9 +175,9 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="group inline-flex items-center gap-2 hover:text-[#fbbf24] transition-colors"
+                    className="group inline-flex items-center gap-2 hover:text-brand-yellow-light transition-colors"
                   >
-                    <ChevronRight className="h-3.5 w-3.5 text-amber-400 group-hover:text-[#fbbf24] transition-transform group-hover:translate-x-0.5" />
+                    <ChevronRight className="h-3.5 w-3.5 text-amber-400 group-hover:text-brand-yellow-light transition-transform group-hover:translate-x-0.5" />
                     <span>{link.label}</span>
                   </Link>
                 </li>
@@ -209,11 +191,11 @@ export function Footer() {
             <div className="flex flex-col gap-4 text-sm text-white/90">
               {/* Phone */}
               <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-[#fbbf24]">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-yellow-light">
                   <Phone className="h-4 w-4" />
                 </div>
                 <div className="leading-snug">
-                  <a href="tel:+917001403498" className="hover:text-[#fbbf24] transition-colors block">
+                  <a href="tel:+917001403498" className="hover:text-brand-yellow-light transition-colors block">
                     +91 70014 03498
                   </a>
                 </div>
@@ -221,11 +203,11 @@ export function Footer() {
 
               {/* Email */}
               <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-[#fbbf24]">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-yellow-light">
                   <Mail className="h-4 w-4" />
                 </div>
                 <div className="leading-snug">
-                  <a href="mailto:sundarbanluxurypackage@gmail.com" className="hover:text-[#fbbf24] transition-colors block break-all">
+                  <a href="mailto:sundarbanluxurypackage@gmail.com" className="hover:text-brand-yellow-light transition-colors block break-all">
                     sundarbanluxurypackage@gmail.com
                   </a>
                 </div>
@@ -233,7 +215,7 @@ export function Footer() {
 
               {/* Address */}
               <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-[#fbbf24]">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-yellow-light">
                   <MapPin className="h-4 w-4" />
                 </div>
                 <p className="leading-snug">
@@ -260,7 +242,7 @@ export function Footer() {
                     sizes="80px"
                     className="object-cover transition-transform duration-500 ease-out group-hover:scale-115"
                   />
-                  <div className="absolute inset-0 bg-[#064e3b]/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white">
+                  <div className="absolute inset-0 bg-primary/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white">
                     <FaInstagram className="h-4 w-4" />
                   </div>
                 </div>
@@ -272,19 +254,19 @@ export function Footer() {
         {/* 3. Bottom Copyright & Payment Gateways */}
         <div className="border-t border-white/10 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-200">
           <p className="text-center sm:text-left">
-            Copyright 2025 Sundarban Luxury Package. All Rights Reserved.
+            Copyright &copy; {new Date().getFullYear()} Sundarban Luxury Package. All Rights Reserved.
           </p>
 
           <div className="flex items-center gap-4 text-xs text-slate-200">
-            <Link href="/terms-and-conditions" className="hover:text-[#fbbf24] transition-colors">
+            <Link href="/terms-and-conditions" className="hover:text-brand-yellow-light transition-colors">
               Terms &amp; Conditions
             </Link>
             <span className="text-white/30">|</span>
-            <Link href="/sitemap" className="hover:text-[#fbbf24] transition-colors">
+            <Link href="/sitemap" className="hover:text-brand-yellow-light transition-colors">
               Site Map
             </Link>
             <span className="text-white/30">|</span>
-            <Link href="/privacy-policy" className="hover:text-[#fbbf24] transition-colors">
+            <Link href="/privacy-policy" className="hover:text-brand-yellow-light transition-colors">
               Privacy Policy
             </Link>
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnnouncementBar } from "./AnnouncementBar";
@@ -37,9 +38,9 @@ const navItems: NavItem[] = [
         href: "#trip",
         hasDropdown: true,
         dropdownItems: [
-            { label: "1 Day Tour", href: "/tour-details" },
-            { label: "2 Days 1 Night", href: "/tour-details" },
-            { label: "3 Days 2 Nights Luxury", href: "/tour-details" },
+            { label: "1 Day Tour", href: "/tour/sundarban-1-day-tour" },
+            { label: "2 Days 1 Night", href: "/tour/1-night-2-days-luxury-cruise" },
+            { label: "3 Days 2 Nights Luxury", href: "/tour/2-nights-3-days-tiger-trail" },
         ],
     },
     {
@@ -62,18 +63,15 @@ const navItems: NavItem[] = [
 
 function SundarbanLogo() {
     return (
-        <Link href="/" className="">
-
-
-            {/* Brand Text */}
-            <div className="flex flex-col">
-                <span className="text-xl sm:text-2xl font-black tracking-tight leading-none text-[#0f172a]">
-                    Sundarban
-                </span>
-                <span className="text-[10px] sm:text-[11px] font-bold tracking-wider text-[#d97706] uppercase mt-0.5">
-                    Luxury Package
-                </span>
-            </div>
+        <Link href="/" className="inline-flex items-center">
+            <Image
+                src="/assets/images/brand-logo.png"
+                alt="Sundarban Luxury Package"
+                width={180}
+                height={50}
+                priority
+                className="h-10 sm:h-12 w-auto object-contain"
+            />
         </Link>
     );
 }
@@ -150,23 +148,23 @@ export function Header() {
                                     <Link
                                         href={item.href}
                                         className={`relative py-1 inline-flex items-center gap-1.5 transition-colors duration-200 ${active
-                                            ? "text-[#064e3b] font-bold"
-                                            : "text-[#0f172a] hover:text-[#064e3b]"
+                                            ? "text-primary font-bold"
+                                            : "text-foreground hover:text-primary"
                                             }`}
                                     >
                                         <span>{item.label}</span>
                                         {item.hasDropdown && (
                                             <ChevronDown
                                                 className={`h-4 w-4 transition-transform duration-200 group-hover:rotate-180 ${active
-                                                    ? "text-[#064e3b]"
-                                                    : "text-slate-500 group-hover:text-[#064e3b]"
+                                                    ? "text-primary"
+                                                    : "text-slate-500 group-hover:text-primary"
                                                     }`}
                                             />
                                         )}
 
                                         {/* Left-to-right animated bottom border */}
                                         <span
-                                            className={`absolute -bottom-1 left-0 h-[2.5px] bg-[#064e3b] rounded-full transition-all duration-300 ease-out origin-left ${active
+                                            className={`absolute -bottom-1 left-0 h-[2.5px] bg-primary rounded-full transition-all duration-300 ease-out origin-left ${active
                                                 ? "w-full"
                                                 : "w-0 group-hover:w-full"
                                                 }`}
@@ -196,8 +194,8 @@ export function Header() {
                                                                 key={sub.label}
                                                                 href={sub.href}
                                                                 className={`relative group/sub block px-3.5 py-2.5 text-sm hover:bg-secondary/10 rounded-sm font-medium transition-colors duration-150 ${isSubActive
-                                                                    ? "text-[#064e3b] font-bold"
-                                                                    : "text-[#0f172a] hover:text-[#064e3b]"
+                                                                    ? "text-primary font-bold"
+                                                                    : "text-foreground hover:text-primary"
                                                                     }`}
                                                             >
                                                                 <span className="relative inline-block">
@@ -237,7 +235,7 @@ export function Header() {
 
                         <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-white hover:bg-[#064e3b] hover:text-white transition-colors"
+                            className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-white hover:bg-primary/90 hover:text-white transition-colors"
                             aria-label="Toggle navigation menu"
                         >
                             {mobileMenuOpen ? (
@@ -268,7 +266,7 @@ export function Header() {
                     <SundarbanLogo />
                     <button
                         onClick={() => setMobileMenuOpen(false)}
-                        className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700 hover:bg-[#064e3b] hover:text-white transition-colors"
+                        className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700 hover:bg-primary hover:text-white transition-colors"
                         aria-label="Close menu"
                     >
                         <X className="h-5 w-5" />
@@ -306,8 +304,8 @@ export function Header() {
                                             }
                                         }}
                                         className={`flex-1 text-[15px] font-semibold transition-colors ${active
-                                            ? "text-[#064e3b] font-bold"
-                                            : "text-[#0f172a] hover:text-[#064e3b]"
+                                            ? "text-primary font-bold"
+                                            : "text-foreground hover:text-primary"
                                             }`}
                                     >
                                         {item.label}
@@ -316,7 +314,7 @@ export function Header() {
                                     {item.hasDropdown ? (
                                         <ChevronDown
                                             className={`h-4 w-4 transition-transform duration-200 ${activeDropdown === item.label
-                                                ? "rotate-180 text-[#064e3b]"
+                                                ? "rotate-180 text-primary"
                                                 : "text-slate-400"
                                                 }`}
                                         />
@@ -327,7 +325,7 @@ export function Header() {
 
                                 {/* Dropdown Sub Items */}
                                 {item.hasDropdown && activeDropdown === item.label && (
-                                    <div className="ml-2 pl-3 my-1 border-l-2 border-[#064e3b]/30 flex flex-col divide-y divide-slate-100 bg-slate-50/70 rounded-md overflow-hidden">
+                                    <div className="ml-2 pl-3 my-1 border-l-2 border-primary/30 flex flex-col divide-y divide-slate-100 bg-slate-50/70 rounded-md overflow-hidden">
                                         {item.dropdownItems?.map((sub) => {
                                             const isSubActive = pathname === sub.href;
                                             return (
@@ -336,8 +334,8 @@ export function Header() {
                                                     href={sub.href}
                                                     onClick={() => setMobileMenuOpen(false)}
                                                     className={`flex items-center justify-between py-2.5 px-3 text-sm font-medium transition-colors ${isSubActive
-                                                        ? "text-[#064e3b] font-bold bg-emerald-50/80"
-                                                        : "text-slate-600 hover:text-[#064e3b] hover:bg-white"
+                                                        ? "text-primary font-bold bg-brand-green-soft"
+                                                        : "text-slate-600 hover:text-primary hover:bg-white"
                                                         }`}
                                                 >
                                                     <span>{sub.label}</span>

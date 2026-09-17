@@ -196,8 +196,8 @@ const staticItineraryDefaults: Record<string, TourItineraryDay[]> = {
 };
 
 export function TourDetails({
-  packageSlug,
-  packageName = "Sundarban 1 Night 2 Days Package",
+  packageSlug = "2-nights-3-days-tiger-trail",
+  packageName = "2 Nights 3 Days Complete Tiger Trail Expedition",
   packageSubtitle = "Prepare to discover the real beauty of the mangrove forest with our luxury adventure.",
 }: TourDetailsProps) {
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
@@ -205,13 +205,15 @@ export function TourDetails({
   // Load from Admin Context
   const { packages } = useAdmin();
 
-  // Find matching package or fallback to first package or defaults
+  // Find matching package or fallback to 2-nights-3-days package or first package
   const currentPackage =
     packages.find(
       (p) =>
         (packageSlug && p.slug === packageSlug) ||
         (packageName && p.name.toLowerCase() === packageName.toLowerCase())
-    ) || packages[0];
+    ) ||
+    packages.find((p) => p.slug === "2-nights-3-days-tiger-trail") ||
+    packages[0];
 
   // Resolve dynamic values
   const title = currentPackage?.name || packageName;
@@ -346,22 +348,17 @@ export function TourDetails({
             {title}
           </h1>
 
-          {/* Subdescription */}
-          <p className="max-w-2xl mx-auto text-slate-200 text-sm sm:text-lg font-light leading-relaxed mb-6 drop-shadow-sm">
-            {subtitle}
-          </p>
-
           {/* Breadcrumbs */}
           <div className="inline-flex items-center gap-2.5 text-base sm:text-lg font-bold text-white flex-wrap justify-center">
-            <Link href="/" className="text-white hover:text-[#fbbf24] transition-colors">
+            <Link href="/" className="text-white hover:text-secondary transition-colors">
               Home
             </Link>
             <span className="text-white font-bold">»</span>
-            <Link href="/tour-details" className="text-white hover:text-[#fbbf24] transition-colors">
+            <Link href="/tour-details" className="text-white hover:text-secondary transition-colors">
               Sundarban Packages
             </Link>
             <span className="text-white font-bold">»</span>
-            <span className="text-[#fbbf24]">{title}</span>
+            <span className="text-secondary">{title}</span>
           </div>
         </div>
       </section>
@@ -375,7 +372,7 @@ export function TourDetails({
             <div className="lg:col-span-8 space-y-10">
               {/* SECTION A: OVERVIEW */}
               <div className="bg-white p-6 sm:p-8 border border-slate-100 shadow-sm space-y-6">
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0f172a] tracking-tight">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
                   Package Overview
                 </h2>
 
@@ -385,7 +382,7 @@ export function TourDetails({
 
                 {/* Highlight Callout Box */}
                 {highlightQuote && (
-                  <div className="rounded-sm bg-amber-50/70 border-l-4 border-[#d97706] p-5 sm:p-6 text-sm sm:text-base text-[#0f172a] font-medium leading-relaxed shadow-xs">
+                  <div className="rounded-sm bg-amber-50/70 border-l-4 border-secondary p-5 sm:p-6 text-sm sm:text-base text-foreground font-medium leading-relaxed shadow-xs">
                     {highlightQuote}
                   </div>
                 )}
@@ -393,41 +390,41 @@ export function TourDetails({
                 {/* 4 Feature Badges in a Row */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
                   <div className="flex flex-col items-center justify-center p-4 rounded-sm bg-slate-50 border border-slate-200/80 text-center">
-                    <Clock className="w-6 h-6 text-[#d97706] mb-2" />
+                    <Clock className="w-6 h-6 text-secondary mb-2" />
                     <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
                       Duration
                     </span>
-                    <span className="text-sm font-bold text-[#0f172a] mt-0.5">
+                    <span className="text-sm font-bold text-foreground mt-0.5">
                       {duration}
                     </span>
                   </div>
 
                   <div className="flex flex-col items-center justify-center p-4 rounded-sm bg-slate-50 border border-slate-200/80 text-center">
-                    <MapPin className="w-6 h-6 text-[#d97706] mb-2" />
+                    <MapPin className="w-6 h-6 text-secondary mb-2" />
                     <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
                       Pick &amp; Drop
                     </span>
-                    <span className="text-sm font-bold text-[#0f172a] mt-0.5 truncate max-w-full">
+                    <span className="text-sm font-bold text-foreground mt-0.5 truncate max-w-full">
                       {pickupDrop}
                     </span>
                   </div>
 
                   <div className="flex flex-col items-center justify-center p-4 rounded-sm bg-slate-50 border border-slate-200/80 text-center">
-                    <Utensils className="w-6 h-6 text-[#d97706] mb-2" />
+                    <Utensils className="w-6 h-6 text-secondary mb-2" />
                     <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
                       Meals Included
                     </span>
-                    <span className="text-sm font-bold text-[#0f172a] mt-0.5 truncate max-w-full">
+                    <span className="text-sm font-bold text-foreground mt-0.5 truncate max-w-full">
                       {mealsSummary}
                     </span>
                   </div>
 
                   <div className="flex flex-col items-center justify-center p-4 rounded-sm bg-slate-50 border border-slate-200/80 text-center">
-                    <Users className="w-6 h-6 text-[#d97706] mb-2" />
+                    <Users className="w-6 h-6 text-secondary mb-2" />
                     <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
                       Group Size
                     </span>
-                    <span className="text-sm font-bold text-[#0f172a] mt-0.5">
+                    <span className="text-sm font-bold text-foreground mt-0.5">
                       {minGroupSize}
                     </span>
                   </div>
@@ -501,19 +498,19 @@ export function TourDetails({
                   {itinerary.map((day, dayIdx) => (
                     <div
                       key={dayIdx}
-                      className="border-l-4 border-[#064e3b] pl-4 sm:pl-5 space-y-4 py-1"
+                      className="border-l-4 border-primary pl-4 sm:pl-5 space-y-4 py-1"
                     >
-                      <h3 className="text-lg sm:text-xl font-bold text-[#0f172a]">
+                      <h3 className="text-lg sm:text-xl font-bold text-foreground">
                         {day.dayTitle || `Day ${day.dayNumber || dayIdx + 1}`}
                       </h3>
 
                       <div className="space-y-4 pt-1">
                         {day.activities.map((step, actIdx) => (
                           <div key={actIdx} className="space-y-0.5">
-                            <span className="text-[#d97706] font-bold text-xs sm:text-sm block">
+                            <span className="text-secondary font-bold text-xs sm:text-sm block">
                               {step.time}
                             </span>
-                            <h4 className="text-sm sm:text-base font-bold text-[#0f172a]">
+                            <h4 className="text-sm sm:text-base font-bold text-foreground">
                               {step.title}
                             </h4>
                             <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
@@ -528,16 +525,16 @@ export function TourDetails({
               </div>
 
               {/* SECTION D: WHAT'S INCLUDED */}
-              <div className="bg-[#ecfdf5] border border-emerald-200/80 p-6 sm:p-8 space-y-4 rounded-sm">
-                <h3 className="text-xl font-extrabold text-[#064e3b] flex items-center gap-2">
-                  <CheckCircle2 className="w-6 h-6 text-[#047857]" />
+              <div className="bg-brand-green-soft border border-emerald-200/80 p-6 sm:p-8 space-y-4 rounded-sm">
+                <h3 className="text-xl font-extrabold text-primary flex items-center gap-2">
+                  <CheckCircle2 className="w-6 h-6 text-primary" />
                   <span>What&apos;s Included in this Package</span>
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-medium text-emerald-950">
                   {inclusions.map((item, idx) => (
                     <div key={idx} className="flex items-start gap-2.5">
-                      <CheckCircle2 className="w-4 h-4 text-[#047857] flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </div>
                   ))}
@@ -563,15 +560,15 @@ export function TourDetails({
 
               {/* SECTION F: THINGS TO CARRY */}
               <div className="bg-amber-50/60 border border-amber-200/80 p-6 sm:p-8 space-y-4 rounded-sm">
-                <h3 className="text-xl font-extrabold text-[#78350f] flex items-center gap-2">
-                  <Briefcase className="w-6 h-6 text-[#d97706]" />
+                <h3 className="text-xl font-extrabold text-brand-yellow-dark flex items-center gap-2">
+                  <Briefcase className="w-6 h-6 text-secondary" />
                   <span>Things to Carry Checklist</span>
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-medium text-amber-950">
                   {thingsToCarry.map((item, idx) => (
                     <div key={idx} className="flex items-start gap-2.5">
-                      <span className="w-2 h-2 rounded-full bg-[#d97706] flex-shrink-0 mt-1.5" />
+                      <span className="w-2 h-2 rounded-full bg-secondary flex-shrink-0 mt-1.5" />
                       <span>{item}</span>
                     </div>
                   ))}
@@ -581,14 +578,14 @@ export function TourDetails({
               {/* SECTION G: CHILD POLICY */}
               <div className="bg-slate-50 border border-slate-200 p-6 sm:p-8 space-y-4 rounded-sm">
                 <h3 className="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-                  <Users className="w-6 h-6 text-[#064e3b]" />
+                  <Users className="w-6 h-6 text-primary" />
                   <span>Child &amp; Age Policy</span>
                 </h3>
 
                 <div className="space-y-3 text-xs sm:text-sm font-medium text-slate-800">
                   {childPolicy.map((policy, idx) => (
                     <div key={idx} className="flex items-start gap-2.5">
-                      <span className="w-2 h-2 rounded-full bg-[#064e3b] flex-shrink-0 mt-1.5" />
+                      <span className="w-2 h-2 rounded-full bg-primary flex-shrink-0 mt-1.5" />
                       <span>{policy}</span>
                     </div>
                   ))}
@@ -597,8 +594,8 @@ export function TourDetails({
 
               {/* SECTION H: IMPORTANT NOTES */}
               <div className="bg-emerald-50 border border-emerald-200 p-6 sm:p-8 space-y-4 rounded-sm">
-                <h3 className="text-lg font-extrabold text-[#064e3b] flex items-center gap-2">
-                  <Info className="w-5 h-5 text-[#064e3b]" />
+                <h3 className="text-lg font-extrabold text-primary flex items-center gap-2">
+                  <Info className="w-5 h-5 text-primary" />
                   <span>Important Safari Guidelines &amp; Notes</span>
                 </h3>
 
@@ -681,7 +678,7 @@ export function TourDetails({
                       Tariff Per Person
                     </span>
                     <div className="text-right">
-                      <span className="text-2xl font-black text-[#064e3b]">
+                      <span className="text-2xl font-black text-primary">
                         ₹{price.toLocaleString()}
                       </span>
                       {originalPrice > price && (
@@ -720,7 +717,7 @@ export function TourDetails({
                     <span className="text-xs text-slate-500 font-semibold uppercase block">
                       Direct Package Helpline
                     </span>
-                    <span className="text-sm font-extrabold text-[#064e3b]">
+                    <span className="text-sm font-extrabold text-primary">
                       {helplinePhone}
                     </span>
                   </div>
@@ -728,9 +725,9 @@ export function TourDetails({
               </div>
 
               {/* Trust Box */}
-              <div className="bg-emerald-50 border border-emerald-200 p-5 space-y-3 text-xs text-[#0f172a] font-medium rounded-sm">
-                <div className="flex items-center gap-2 font-bold text-sm text-[#064e3b]">
-                  <ShieldCheck className="w-5 h-5 text-[#064e3b]" />
+              <div className="bg-emerald-50 border border-emerald-200 p-5 space-y-3 text-xs text-foreground font-medium rounded-sm">
+                <div className="flex items-center gap-2 font-bold text-sm text-primary">
+                  <ShieldCheck className="w-5 h-5 text-primary" />
                   <span>Why Book With Us</span>
                 </div>
                 <p>✓ Instant Confirmation with WhatsApp Voucher</p>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   X,
   User,
@@ -11,6 +11,8 @@ import {
   Send,
   CheckCircle2,
   Check,
+  ShieldCheck,
+  Clock,
 } from "lucide-react";
 
 import { useAdmin } from "@/context/AdminContext";
@@ -25,24 +27,50 @@ export interface BookingModalProps {
 export function BookingModal({
   isOpen,
   onClose,
-  packageName = "Sundarban 1 Night 2 Days Tour",
-  pricePerPerson = 2999,
+  packageName = "Sundarban 2 Nights 3 Days Complete Tiger Trail Expedition",
+  pricePerPerson = 4999,
 }: BookingModalProps) {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phoneNumber: "",
     travelDate: "",
-    guests: "1",
+    guests: "2",
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { addBooking } = useAdmin();
 
-  if (!isOpen) return null;
+  // Reset form status and lock scroll when opened
+  useEffect(() => {
+    if (isOpen) {
+      setIsSubmitted(false);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  // Handle ESC key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   // Compute today's date in YYYY-MM-DD for min date attribute
-  const todayStr = React.useMemo(() => {
+  const todayStr = useMemo(() => {
     const d = new Date();
     const year = d.getFullYear();
     const month = String(d.getMonth() + 1).padStart(2, "0");
@@ -50,9 +78,11 @@ export function BookingModal({
     return `${year}-${month}-${day}`;
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  if (!isOpen) return null;
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const guestCount = parseInt(formData.guests) || 1;
+    const guestCount = parseInt(formData.guests, 10) || 1;
     const totalCalc = pricePerPerson * guestCount;
 
     try {
@@ -62,7 +92,7 @@ export function BookingModal({
         phone: formData.phoneNumber,
         packageOrRoom: packageName,
         type: "Tour Package",
-        travelDate: formData.travelDate || "2026-10-15",
+        travelDate: formData.travelDate || todayStr,
         guestsCount: guestCount,
         totalAmount: totalCalc,
         paidAmount: 0,
@@ -84,11 +114,13 @@ export function BookingModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-xs animate-in fade-in duration-200"
       onClick={onClose}
+      aria-modal="true"
+      role="dialog"
     >
       <div
-        className="bg-white rounded-2xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative border border-slate-100 transition-all transform animate-in zoom-in-95 duration-200"
+        className="bg-white rounded-2xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative border border-slate-100 transition-all transform animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button in top right */}
@@ -96,7 +128,7 @@ export function BookingModal({
           onClick={onClose}
           type="button"
           aria-label="Close modal"
-          className="absolute top-5 right-5 w-9 h-9 rounded-full bg-[#052e16] hover:bg-[#052e16] text-white flex items-center justify-center transition-colors cursor-pointer shadow-sm"
+          className="absolute top-5 right-5 w-9 h-9 rounded-full bg-primary hover:bg-secondary text-white flex items-center justify-center transition-colors cursor-pointer shadow-xs"
         >
           <X className="w-5 h-5" />
         </button>
@@ -105,16 +137,18 @@ export function BookingModal({
           <div>
             {/* Header */}
             <div className="pr-10 mb-6">
-              <h2 className="text-xl md:text-2xl  font-extrabold text-[#111827] tracking-tight">
-                Book Your Trip
+              <span className="text-secondary font-bold text-xs uppercase tracking-wider block mb-1">
+                Direct Reservation
+              </span>
+              <h2 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
+                Book My Trip
               </h2>
-              <p className="text-slate-600 text-xs sm:text-sm mt-2 leading-relaxed">
-                You are booking for{" "}
-                <strong className="text-[#111827] font-bold">
+              <p className="text-slate-600 text-xs sm:text-sm mt-1.5 leading-relaxed">
+                You are reserving{" "}
+                <strong className="text-foreground font-bold">
                   {packageName}
                 </strong>
-                . Fill in your details and our travel expert will confirm your
-                booking within 24 hours.
+                . Fill in your details below and our safari concierge will confirm your tour within 24 hours.
               </p>
             </div>
 
@@ -123,11 +157,11 @@ export function BookingModal({
               {/* Full Name */}
               <div>
                 <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                  Full Name
+                  Full Name <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative flex items-center">
                   <span className="absolute left-3.5 text-slate-400 pointer-events-none">
-                    <User className="w-5 h-5" />
+                    <User className="w-4 h-4" />
                   </span>
                   <input
                     type="text"
@@ -137,7 +171,7 @@ export function BookingModal({
                       setFormData({ ...formData, fullName: e.target.value })
                     }
                     placeholder="Enter your full name"
-                    className="w-full pl-11 pr-4 py-3 bg-[#f9fafb] border border-slate-200 rounded-sm text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#15803d] focus:outline-none focus:ring-0 transition-colors"
+                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-[4px] text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
                   />
                 </div>
               </div>
@@ -146,11 +180,11 @@ export function BookingModal({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
                   <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                    Email
+                    Email Address <span className="text-rose-500">*</span>
                   </label>
                   <div className="relative flex items-center">
                     <span className="absolute left-3.5 text-slate-400 pointer-events-none">
-                      <Mail className="w-5 h-5" />
+                      <Mail className="w-4 h-4" />
                     </span>
                     <input
                       type="email"
@@ -159,19 +193,19 @@ export function BookingModal({
                       onChange={(e) =>
                         setFormData({ ...formData, email: e.target.value })
                       }
-                      placeholder="Your email"
-                      className="w-full pl-11 pr-4 py-3 bg-[#f9fafb] border border-slate-200 rounded-sm text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#15803d] focus:outline-none focus:ring-0 transition-colors"
+                      placeholder="Your email address"
+                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-[4px] text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
                     />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                    Phone Number
+                    Phone / WhatsApp <span className="text-rose-500">*</span>
                   </label>
                   <div className="relative flex items-center">
                     <span className="absolute left-3.5 text-slate-400 pointer-events-none">
-                      <Phone className="w-5 h-5" />
+                      <Phone className="w-4 h-4" />
                     </span>
                     <input
                       type="tel"
@@ -183,8 +217,8 @@ export function BookingModal({
                           phoneNumber: e.target.value,
                         })
                       }
-                      placeholder="Your phone number"
-                      className="w-full pl-11 pr-4 py-3 bg-[#f9fafb] border border-slate-200 rounded-sm text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#15803d] focus:outline-none focus:ring-0 transition-colors"
+                      placeholder="+91 98765 43210"
+                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-[4px] text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
                     />
                   </div>
                 </div>
@@ -194,40 +228,35 @@ export function BookingModal({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
                   <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                    Travel Date
+                    Travel Date <span className="text-rose-500">*</span>
                   </label>
                   <div className="relative flex items-center">
                     <span className="absolute left-3.5 text-slate-400 pointer-events-none">
-                      <Calendar className="w-5 h-5" />
+                      <Calendar className="w-4 h-4" />
                     </span>
                     <input
                       type="date"
                       required
                       min={todayStr}
                       value={formData.travelDate}
-                      onClick={(e) => {
-                        try {
-                          (e.target as HTMLInputElement).showPicker?.();
-                        } catch { }
-                      }}
                       onChange={(e) =>
                         setFormData({
                           ...formData,
                           travelDate: e.target.value,
                         })
                       }
-                      className="w-full pl-11 pr-4 py-3 bg-[#f9fafb] border border-slate-200 rounded-sm text-sm text-slate-800 focus:bg-white focus:border-[#15803d] focus:outline-none focus:ring-0 transition-colors cursor-pointer"
+                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-[4px] text-sm text-slate-800 focus:bg-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all cursor-pointer"
                     />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                    Guests
+                    Number of Guests <span className="text-rose-500">*</span>
                   </label>
                   <div className="relative flex items-center">
                     <span className="absolute left-3.5 text-slate-400 pointer-events-none">
-                      <Users className="w-5 h-5" />
+                      <Users className="w-4 h-4" />
                     </span>
                     <input
                       type="number"
@@ -238,57 +267,57 @@ export function BookingModal({
                       onChange={(e) =>
                         setFormData({ ...formData, guests: e.target.value })
                       }
-                      placeholder="1"
-                      className="w-full pl-11 pr-4 py-3 bg-[#f9fafb] border border-slate-200 rounded-sm text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#15803d] focus:outline-none focus:ring-0 transition-colors"
+                      placeholder="2"
+                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-[4px] text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Trust Indicators */}
-              <div className="pt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600 font-medium">
+              <div className="pt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 font-medium">
                 <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>No payment required</span>
+                  <ShieldCheck className="w-4 h-4 text-primary" />
+                  <span>Zero upfront payment</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Clock className="w-4 h-4 text-secondary" />
+                  <span>Call back in 24h</span>
                 </span>
                 <span className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Callback within 24 hours</span>
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>WhatsApp support</span>
+                  <span>Free cancellation</span>
                 </span>
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full mt-2 py-3.5 px-6 rounded-sm bg-[#064e3b] hover:bg-[#d97706] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-md shadow-[#064e3b]/25 transition-all cursor-pointer"
+                className="w-full mt-2 py-3 px-6 rounded-full bg-primary hover:bg-secondary text-white font-semibold text-sm  flex items-center justify-center gap-2.5 shadow-md shadow-primary/20 transition-all duration-300 cursor-pointer"
               >
-                <Send className="w-4 h-4 transform -rotate-45" />
-                <span>Confirm Booking</span>
+
+                <span>Confirm Booking Request</span>
               </button>
             </form>
           </div>
         ) : (
           /* Confirmation Success State */
           <div className="text-center py-6 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-amber-100 text-[#064e3b] flex items-center justify-center mx-auto shadow-inner">
+            <div className="w-16 h-16 rounded-full bg-emerald-50 text-primary flex items-center justify-center mx-auto shadow-xs">
               <Check className="w-8 h-8 stroke-[3]" />
             </div>
 
-            <h3 className="text-2xl font-extrabold text-[#111827]">
+            <h3 className="text-xl font-black text-foreground">
               Booking Request Received!
             </h3>
 
             <p className="text-slate-600 text-sm max-w-sm mx-auto leading-relaxed">
               Thank you,{" "}
-              <strong className="text-slate-900">{formData.fullName}</strong>.
+              <strong className="text-foreground">{formData.fullName}</strong>.
               Your reservation request for{" "}
-              <strong className="text-[#064e3b]">{packageName}</strong> has been
-              received. Our Sundarban travel expert will contact you at{" "}
-              <span className="font-semibold text-slate-800">
+              <strong className="text-primary">{packageName}</strong> has been
+              received. Our Sundarban tour coordinator will contact you at{" "}
+              <span className="font-semibold text-foreground">
                 {formData.phoneNumber}
               </span>{" "}
               within 24 hours.
@@ -297,7 +326,7 @@ export function BookingModal({
             <div className="pt-2">
               <button
                 onClick={handleReset}
-                className="px-6 py-2.5 rounded-sm bg-[#064e3b] hover:bg-[#d97706] text-white font-bold text-sm transition-colors cursor-pointer"
+                className="px-7 py-2.5 rounded-lg bg-primary hover:bg-secondary text-white font-bold text-sm transition-all duration-300 cursor-pointer shadow-sm"
               >
                 Close Window
               </button>

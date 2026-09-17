@@ -23,7 +23,7 @@ function ImageCard({
   return (
     <div
       onClick={() => onOpenLightbox(item.id)}
-      className={`group relative overflow-hidden rounded-2xl bg-zinc-100 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer ${className}`}
+      className={`group relative overflow-hidden rounded-2xl bg-zinc-100 shadow-sm transition-all duration-300 hover:shadow-xl cursor-pointer ${className}`}
       role="button"
       tabIndex={0}
       aria-label={`View ${item.title}`}

@@ -41,7 +41,7 @@ export function FaqSection() {
             return (
               <div
                 key={item.id}
-                className={`border transition-all duration-300 overflow-hidden rounded-xl ${isOpen
+                className={`border transition-all duration-300 overflow-hidden rounded-xl cursor-pointer ${isOpen
                   ? "border-[#064e3b] bg-white shadow-md shadow-[#064e3b]/5"
                   : "border-slate-200/90 bg-white hover:border-[#064e3b]/60 hover:bg-emerald-50/20"
                   }`}

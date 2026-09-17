@@ -86,16 +86,8 @@ export function TourMenuSection() {
   return (
     <section
       id="tour-menu"
-      className="relative py-8 md:py-16 bg-[#faf6ee] text-[#0f172a]  overflow-hidden"
+      className="relative py-8 md:py-16 bg-secondary/10 text-foreground overflow-hidden"
     >
-      {/* Food & Culinary Related Texture Pattern Overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.09]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%23064e3b' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 10v10a3 3 0 0 0 3 3v8M18 10v10a3 3 0 0 1-3 3M15 10v6M26 10v21M26 10a4 4 0 0 1 4 4v7h-4'/%3E%3Cpath d='M72 24h24a12 12 0 0 1-24 0zM70 24h28M78 12c1 2-1 4 0 6M84 10c1 2-1 4 0 6M90 12c1 2-1 4 0 6'/%3E%3Cpath d='M42 58c10-8 24-8 32 2-8 10-22 10-32 2l-6 4v-8l6 2zM66 59a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z'/%3E%3Cpath d='M12 104h20v4H12zM14 104a6 6 0 0 1-3-11 7 7 0 0 1 12-4 7 7 0 0 1 12 4 6 6 0 0 1-3 11'/%3E%3Cpath d='M74 106h26M76 106a11 11 0 0 1 22 0M87 95a2 2 0 1 0 0-4 2 2 0 0 0 0 4z'/%3E%3Cpath d='M46 16c4-6 12-4 14 2s-4 8-10 6c-3-1-5-4-4-8zM58 14c2-2 5-2 6 0'/%3E%3Cpath d='M102 54h14v10a7 7 0 0 1-14 0v-10zM116 57h3a2 2 0 0 1 0 4h-3M100 68h18'/%3E%3C/svg%3E")`,
-          backgroundSize: '120px 120px',
-        }}
-      />
 
 
 
@@ -142,11 +134,11 @@ export function TourMenuSection() {
                 spaceBetween: 24,
               },
             }}
-            className="!pb-6 !pt-2"
+            className=""
           >
             {featuredDishes.map((dish) => (
               <SwiperSlide key={dish.id} className="h-auto">
-                <div className="group relative flex flex-col justify-between h-full bg-white border border-amber-900/15 hover:border-[#064e3b] transition-all duration-300 shadow-sm hover:shadow-xl overflow-hidden">
+                <div className="group relative flex flex-col justify-between h-full bg-white border border-border hover:border-primary transition-all duration-300  overflow-hidden rounded-lg">
                   <div>
                     {/* Dish Image */}
                     <div className="relative h-48 md:h-60 w-full overflow-hidden bg-slate-200">
@@ -164,7 +156,7 @@ export function TourMenuSection() {
 
                     {/* Content */}
                     <div className="p-4 sm:p-5">
-                      <h3 className="text-base sm:text-lg font-bold text-[#0f172a] mb-1.5 group-hover:text-[#064e3b] transition-colors line-clamp-1">
+                      <h3 className="text-base sm:text-lg font-bold text-foreground mb-1.5 group-hover:text-primary transition-colors line-clamp-1">
                         {dish.name}
                       </h3>
                       <p className="text-slate-600 text-xs sm:text-sm leading-relaxed line-clamp-2">
@@ -177,7 +169,7 @@ export function TourMenuSection() {
                   <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0">
                     <button
                       onClick={() => handleOpenBooking(dish.name)}
-                      className="btn btn-primary w-full !py-2.5 !px-3 !text-xs font-bold !rounded-md shadow-xs flex items-center justify-center gap-1.5"
+                      className="btn btn-primary w-full !text-xs !py-2 font-bold  shadow-xs flex items-center justify-center gap-1.5"
                     >
                       <span>Book Package</span>
                       <svg

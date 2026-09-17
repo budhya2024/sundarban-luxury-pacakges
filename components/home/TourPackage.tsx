@@ -3,7 +3,7 @@
 import React, { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Clock, Star, Calendar, Utensils } from "lucide-react";
+import { ArrowRight, Clock, Star, Calendar, Utensils, Sparkles, Tag } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay, Pagination } from "swiper/modules";
 import type { Swiper as SwiperClass } from "swiper";
@@ -31,7 +31,7 @@ export function PopularDestinations() {
   };
 
   return (
-    <section className="py-8 md:py-16 bg-[#fef8e2] relative overflow-hidden border-b border-amber-100">
+    <section className="py-8 md:py-16 bg-secondary/10 relative overflow-hidden">
       <div className="container">
         {/* Centered Header Section */}
         <div className="sec-header">
@@ -84,6 +84,10 @@ export function PopularDestinations() {
               const itineraryDays = item.itinerary?.length || 0;
               const menuDays = item.foodMenu?.length || 0;
               const href = `/tour/${item.slug}`;
+              const discountPercent =
+                item.originalPrice && item.originalPrice > item.price
+                  ? Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)
+                  : 15;
 
               return (
                 <SwiperSlide key={item.id} className="h-auto flex flex-col w-full">
@@ -98,11 +102,20 @@ export function PopularDestinations() {
                         unoptimized={item.image?.startsWith("data:")}
                         className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
                       />
-                      <div className="absolute top-3 right-3 bg-amber-500/95 text-white text-[11px] font-extrabold px-2.5 py-1 rounded-full shadow-md flex items-center gap-1 backdrop-blur-xs">
-                        <Star className="w-3 h-3 fill-white" />
-                        <span>{item.rating || 4.9}</span>
+
+                      {/* Top-Left 15% OFF Offer Badge with Smooth Moving Shine Effect */}
+                      <div className="absolute top-3 left-3 z-10">
+                        <div className="offer-shine-badge inline-flex items-center gap-1.5 px-3 py-1 rounded-[4px] bg-red-600 text-white text-[11px] sm:text-xs font-black uppercase tracking-wider shadow-md shadow-red-950/30">
+                          <Tag className="w-3 h-3 text-white" />
+                          <span>{discountPercent}% OFF</span>
+                        </div>
                       </div>
 
+                      {/* Top-Right Star Rating Badge */}
+                      <div className="absolute top-3 right-3 bg-amber-500/95 text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-md flex items-center gap-1 backdrop-blur-xs z-10">
+                        <Star className="w-3 h-3 fill-white" />
+                        <span>{item.rating || 4.9}</span> Google Rating
+                      </div>
                     </div>
 
                     {/* Card Body */}
@@ -110,11 +123,11 @@ export function PopularDestinations() {
                       <div>
                         <div className="flex items-center justify-between gap-2 mb-2">
                           <span className="text-xs font-bold text-[#b45309] flex items-center gap-1">
-                            <Clock className="w-3.5 h-3.5 text-[#d97706]" />
+                            <Clock className="w-3.5 h-3.5 text-secondary" />
                             {item.duration}
                           </span>
                           <div className="text-right">
-                            <span className="text-base md:text-xl font-extrabold text-[#0f172a]">
+                            <span className="text-base md:text-xl font-extrabold text-foreground">
                               ₹{item.price.toLocaleString("en-IN")}
                             </span>
                             {item.originalPrice && item.originalPrice > item.price && (
@@ -125,26 +138,26 @@ export function PopularDestinations() {
                           </div>
                         </div>
 
-                        <h3 className="text-lg font-bold text-[#0f172a] group-hover:text-[#d97706] transition-colors mb-2 line-clamp-2 min-h-[3.25rem] flex items-center">
+                        <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors mb-2 line-clamp-2 min-h-[3.25rem] flex items-center">
                           {item.name}
                         </h3>
 
                         {/* Package Inclusions */}
                         <div className="grid grid-cols-2 gap-x-2 gap-y-2 my-2 pt-2.5 border-t border-slate-100">
                           <div className="flex items-center gap-1.5 text-slate-700">
-                            <FaBinoculars className="w-3.5 h-3.5 text-[#d97706] flex-shrink-0" />
+                            <FaBinoculars className="w-3.5 h-3.5 text-secondary flex-shrink-0" />
                             <span className="text-xs font-medium truncate">Sightseeing</span>
                           </div>
                           <div className="flex items-center gap-1.5 text-slate-700">
-                            <FaVanShuttle className="w-3.5 h-3.5 text-[#d97706] flex-shrink-0" />
+                            <FaVanShuttle className="w-3.5 h-3.5 text-secondary flex-shrink-0" />
                             <span className="text-xs font-medium truncate">Pick &amp; Drop</span>
                           </div>
                           <div className="flex items-center gap-1.5 text-slate-700">
-                            <FaUtensils className="w-3.5 h-3.5 text-[#d97706] flex-shrink-0" />
+                            <FaUtensils className="w-3.5 h-3.5 text-secondary flex-shrink-0" />
                             <span className="text-xs font-medium truncate">All Meals</span>
                           </div>
                           <div className="flex items-center gap-1.5 text-slate-700">
-                            <FaUserDoctor className="w-3.5 h-3.5 text-[#d97706] flex-shrink-0" />
+                            <FaUserDoctor className="w-3.5 h-3.5 text-secondary flex-shrink-0" />
                             <span className="text-xs font-medium truncate">Doctor on Call</span>
                           </div>
                         </div>
@@ -154,7 +167,7 @@ export function PopularDestinations() {
                       <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
                         <Link
                           href={href}
-                          className="text-sm font-bold text-slate-700 hover:text-[#d97706] transition-colors inline-flex items-center gap-1"
+                          className="text-sm font-bold text-slate-700 hover:text-primary transition-colors inline-flex items-center gap-1"
                         >
                           <span>View Day Plan &amp; Menu</span>
                           <ArrowRight className="w-3 h-3" />
@@ -162,7 +175,7 @@ export function PopularDestinations() {
 
                         <button
                           onClick={() => handleOpenBooking(item.name)}
-                          className="btn btn-secondary !py-1.5 !px-3.5 !text-sm shadow-xs rounded-full flex items-center gap-1 font-bold"
+                          className="btn btn-secondary !py-1.5 !px-3.5 !text-sm shadow-xs rounded-full flex items-center gap-1 font-bold cursor-pointer"
                         >
                           <span>Book now</span>
                           <ArrowRight className="w-3 h-3" />
@@ -216,6 +229,36 @@ export function PopularDestinations() {
           border: none !important;
           outline: none !important;
           opacity: 1 !important;
+        }
+
+        /* Smooth Moving Light Shine Effect on Offer Badge */
+        @keyframes offerShine {
+          0% {
+            transform: translateX(-150%) skewX(-20deg);
+          }
+          35%, 100% {
+            transform: translateX(250%) skewX(-20deg);
+          }
+        }
+        .offer-shine-badge {
+          position: relative;
+          overflow: hidden;
+        }
+        .offer-shine-badge::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 55%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.55) 50%,
+            rgba(255, 255, 255, 0) 100%
+          );
+          animation: offerShine 2.8s ease-in-out infinite;
+          pointer-events: none;
         }
       `}</style>
     </section>

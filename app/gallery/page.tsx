@@ -136,7 +136,7 @@ export default function GalleryPage() {
               <div
                 key={item.id || idx}
                 onClick={() => setActiveImageId(item.id)}
-                className="group relative overflow-hidden rounded-2xl bg-zinc-100 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 cursor-pointer h-[190px] sm:h-[240px] md:h-[280px] lg:h-[300px] w-full border border-slate-200/80"
+                className="group relative overflow-hidden rounded-2xl bg-zinc-100 shadow-sm transition-all duration-300 hover:shadow-xl cursor-pointer h-[190px] sm:h-[240px] md:h-[280px] lg:h-[300px] w-full border border-slate-200/80"
                 role="button"
                 tabIndex={0}
                 aria-label={`View ${item.title}`}

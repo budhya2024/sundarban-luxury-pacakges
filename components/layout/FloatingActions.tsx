@@ -50,7 +50,7 @@ export function FloatingActions() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with us on WhatsApp"
-        className="group relative flex h-12 w-12 sm:h-13 sm:w-13 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer"
+        className="group relative flex h-12 w-12 sm:h-13 sm:w-13 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer"
       >
         {/* Subtle Pulse Ring */}
         <span
@@ -71,7 +71,7 @@ export function FloatingActions() {
         type="button"
         onClick={scrollToTop}
         aria-label="Scroll to top of page"
-        className={`group relative flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[#064e3b] hover:bg-[#d97706] text-white shadow-xl hover:shadow-2xl border border-white/20 transition-all duration-300 cursor-pointer ${
+        className={`group relative flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-primary hover:bg-secondary text-white shadow-lg border border-white/20 transition-all duration-300 cursor-pointer ${
           showScrollTop
             ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
             : "opacity-0 translate-y-4 scale-75 pointer-events-none"

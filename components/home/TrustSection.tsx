@@ -96,7 +96,7 @@ function CounterNumber({ targetValue, suffix = "" }: { targetValue: number; suff
 
 export function TrustSection() {
   return (
-    <section className="py-10 sm:py-16 lg:py-20 bg-white relative overflow-hidden">
+    <section className="py-8 md:py-16 bg-white relative overflow-hidden">
       <div className="container px-4">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-4 sm:gap-6 lg:gap-8 items-center justify-items-center py-4 min-h-[320px] sm:min-h-[380px]">
           {stats.map((stat, idx) => {
@@ -109,9 +109,8 @@ export function TrustSection() {
                 style={{
                   animation: `trustBounce 3.5s ease-in-out infinite ${idx * 0.45}s`,
                 }}
-                className={`transition-all duration-700 ease-out ${
-                  isUp ? "lg:-translate-y-8" : "lg:translate-y-8"
-                }`}
+                className={`transition-all duration-700 ease-out ${isUp ? "lg:-translate-y-8" : "lg:translate-y-8"
+                  }`}
               >
                 {/* Outer Ring Wrapper */}
                 <div className="group relative flex items-center justify-center w-[150px] h-[150px] sm:w-[210px] sm:h-[210px] md:w-[230px] md:h-[230px] lg:w-[225px] lg:h-[225px] xl:w-[255px] xl:h-[255px] cursor-pointer">
@@ -119,11 +118,10 @@ export function TrustSection() {
                   <div className="absolute inset-0 rounded-full border border-[#064e3b]/30 transition-transform duration-1000 ease-in-out group-hover:rotate-[360deg] pointer-events-none">
                     {/* Glowing Node Dot placed precisely on the ring perimeter (45 deg angle) */}
                     <div
-                      className={`absolute flex items-center justify-center w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#d97706]/25 z-20 ${
-                        isTopRight
-                          ? "top-[14.6%] right-[14.6%] -translate-y-1/2 translate-x-1/2"
-                          : "bottom-[14.6%] right-[14.6%] translate-y-1/2 translate-x-1/2"
-                      }`}
+                      className={`absolute flex items-center justify-center w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#d97706]/25 z-20 ${isTopRight
+                        ? "top-[14.6%] right-[14.6%] -translate-y-1/2 translate-x-1/2"
+                        : "bottom-[14.6%] right-[14.6%] translate-y-1/2 translate-x-1/2"
+                        }`}
                     >
                       <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#d97706] shadow-sm animate-pulse" />
                     </div>
