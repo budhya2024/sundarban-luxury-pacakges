@@ -87,7 +87,7 @@ export function TestimonialsSection() {
                 centeredSlides: false,
               },
             }}
-            className="!py-6"
+            className="!pb-6"
           >
             {displayItems.map((item) => (
               <SwiperSlide key={item.id} className="h-auto">

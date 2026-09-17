@@ -46,9 +46,8 @@ export function StatCard({
       <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
         {change && (
           <div
-            className={`flex items-center gap-1 font-bold ${
-              isPositive ? "text-blue-600" : "text-rose-600"
-            }`}
+            className={`flex items-center gap-1 font-bold ${isPositive ? "text-blue-600" : "text-rose-600"
+              }`}
           >
             {isPositive ? (
               <TrendingUp className="w-3.5 h-3.5" />

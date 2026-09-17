@@ -266,7 +266,7 @@ export function Header() {
                     <SundarbanLogo />
                     <button
                         onClick={() => setMobileMenuOpen(false)}
-                        className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700 hover:bg-primary hover:text-white transition-colors"
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-primary  hover:bg-secondary text-white transition-colors"
                         aria-label="Close menu"
                     >
                         <X className="h-5 w-5" />

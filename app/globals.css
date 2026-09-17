@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -31,67 +30,35 @@
   --font-mono: var(--font-geist-mono);
   --font-montez: var(--font-montez);
   --font-heading: var(--font-sans);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
   --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
+  --color-muted-foreground: var(--muted-foreground);
   --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
 }
 
 :root {
-  /* Primary Deep Green Palette (Heritage Forest & Mangroves) */
+  /* Primary Deep Green Palette */
   --brand-green-dark: #052e16;
-  /* Deepest Jungle Green (950) */
   --brand-green-primary: #057a28;
-  /* Rich Logo Green (slightly deeper for contrast) */
   --brand-green-medium: #047857;
-  /* Emerald Deep Green (700) */
   --brand-green-light: #10b981;
-  /* Vibrant Green (500) */
   --brand-green-soft: #ecfdf5;
-  /* Light Green Tint (50) */
   --brand-green-border: #a7f3d0;
-  /* Green Border (200) */
 
-  /* Primary Warm Yellow / Gold Palette (Wild Sun & Tiger Gold) */
+  /* Primary Warm Yellow / Gold Palette */
   --brand-yellow-dark: #78350f;
-  /* Deep Amber Bronze (900) */
   --brand-yellow-primary: #d97706;
-  /* Rich Dark Yellow / Gold (600) */
   --brand-yellow-medium: #f59e0b;
-  /* Vibrant Yellow Gold (500) */
   --brand-yellow-light: #fbbf24;
-  /* Bright Sun Gold (400) */
   --brand-yellow-soft: #fef3c7;
-  /* Soft Yellow Tint (100) */
   --brand-yellow-subtle: #fffbeb;
-  /* Pale Yellow Tint (50) */
   --brand-yellow-border: #fde68a;
-  /* Warm Gold Border (200) */
   --brand-yellow-text: #b45309;
-  /* Readable Dark Yellow/Amber (700) */
   --brand-cream-bg: #fef8e2;
-  /* Warm Cream Section Background */
   --brand-cream-light: #fffdf5;
-  /* Ultra Light Cream */
 
   /* Aliases for global utility usage */
   --brand-primary: var(--brand-green-primary);
@@ -100,28 +67,18 @@
   /* Neutral & Base UI */
   --background: #ffffff;
   --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
   --primary: #057a28;
   --primary-foreground: #ffffff;
   --secondary: #d97706;
   --secondary-foreground: #ffffff;
   --muted: #f8fafc;
   --muted-foreground: #64748b;
-  --accent: #f59e0b;
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
   --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #d97706;
-  --radius: 0.625rem;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border, #e2e8f0);
   }
 
   ::selection {
@@ -364,9 +321,9 @@
 
 /* Primary Theme Button (Deep Forest Green base -> Fills with Rich Dark Yellow / Gold from left to right) */
 .btn-primary {
-  background-color: var(--brand-green-primary, #064e3b);
+  background-color: var(--brand-green-primary, #057a28);
   color: #ffffff;
-  border: 1.5px solid var(--brand-green-primary, #064e3b);
+  border: 1px solid var(--brand-green-primary, #057a28);
   --btn-fill-color: var(--brand-yellow-primary, #d97706);
 }
 
@@ -383,8 +340,8 @@
 .btn-amber {
   background-color: var(--brand-yellow-primary, #d97706);
   color: #ffffff;
-  border: 1.5px solid var(--brand-yellow-primary, #d97706);
-  --btn-fill-color: var(--brand-green-primary, #064e3b);
+  border: 1px solid var(--brand-yellow-primary, #d97706);
+  --btn-fill-color: var(--brand-green-primary, #057a28);
 }
 
 .btn-secondary:hover,
@@ -392,7 +349,7 @@
 .btn-yellow:hover,
 .btn-amber:hover {
   color: #ffffff;
-  border-color: var(--brand-green-primary, #064e3b);
+  border-color: var(--brand-green-primary, #057a28);
   box-shadow: none !important;
 }
 
@@ -476,14 +433,14 @@ a.btn:hover {
 /* Outline Theme Button (Transparent base -> Fills with Deep Forest Green from left to right) */
 .btn-outline {
   background-color: transparent;
-  color: var(--brand-green-primary, #064e3b);
-  border: 1.5px solid var(--brand-green-primary, #064e3b);
-  --btn-fill-color: var(--brand-green-primary, #064e3b);
+  color: var(--brand-green-primary, #057a28);
+  border: 1px solid var(--brand-green-primary, #057a28);
+  --btn-fill-color: var(--brand-green-primary, #057a28);
 }
 
 .btn-outline:hover {
   color: #ffffff;
-  border-color: var(--brand-green-primary, #064e3b);
+  border-color: var(--brand-green-primary, #057a28);
   box-shadow: none !important;
 }
 

@@ -81,16 +81,16 @@ export function PlanTripSection() {
     <section className="py-8 md:py-16 relative overflow-hidden " >
       <div className="container">
         {/* Top Split Section: Organic Image Collage + Story */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-14 md:mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-6 md:mb-10">
           {/* Left Column: Clean Single Image Box */}
           <div className="lg:col-span-6 flex items-center justify-center lg:justify-start">
-            <div className="relative w-full max-w-[540px] h-[340px] sm:h-[440px] md:h-[480px] lg:h-[510px] ">
+            <div className="relative">
               <Image
-                src="/assets/images/plan-trip.png"
+                src="/assets/images/plan-trips.png"
                 alt="Plan Your Sundarban Luxury Safari Trip"
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 45vw"
-                className="object-cover "
+                width={800}
+                height={800}
+                className="object-cover w-full h-auto "
                 priority
               />
 
@@ -163,7 +163,7 @@ export function PlanTripSection() {
 
         {/* Bottom 8-Item Concept Amenities Grid (No borders, individual box backgrounds) */}
         <div className="pt-2 sm:pt-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             {tripAmenities.map((item) => {
               const Icon = item.icon;
               return (

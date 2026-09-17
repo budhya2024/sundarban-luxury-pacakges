@@ -95,7 +95,7 @@ export function Footer() {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 pb-12 md:pb-16">
           {/* Title */}
           <div>
-            <h2 className="text-3xl sm:text-4xl lg:text-[40px] font-extrabold text-white leading-tight tracking-tight text-center lg:text-left">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight tracking-tight text-center lg:text-left">
               Get Updated The Latest <br />
               Newsletter
             </h2>
