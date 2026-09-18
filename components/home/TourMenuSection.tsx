@@ -106,7 +106,7 @@ export function TourMenuSection() {
         <div className="cursor-grab active:cursor-grabbing select-none">
           <Swiper
             modules={[Autoplay]}
-            slidesPerView={1.2}
+            slidesPerView={1.3}
             spaceBetween={16}
             grabCursor={true}
             loop={true}
@@ -118,7 +118,7 @@ export function TourMenuSection() {
             }}
             breakpoints={{
               480: {
-                slidesPerView: 1.2,
+                slidesPerView: 1.3,
                 spaceBetween: 16,
               },
               640: {

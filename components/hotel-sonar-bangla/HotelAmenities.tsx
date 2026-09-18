@@ -85,12 +85,12 @@ export function HotelAmenities() {
             return (
               <div
                 key={idx}
-                className="p-6  bg-slate-50 border border-slate-200/80 hover:bg-amber-50/50 hover:border-amber-200 transition-all duration-300 group"
+                className="p-3 md:p-6  rounded-xl bg-white hover:shadow-sm border transition-all duration-300 group"
               >
-                <div className="w-12 h-12 rounded-sm bg-[#064e3b] text-white group-hover:bg-[#d97706] group-hover:text-white flex items-center justify-center mb-5 transition-colors duration-300 shadow-sm">
+                <div className="w-12 h-12 rounded-sm bg-primary text-white  group-hover:text-white flex items-center justify-center mb-5 transition-colors duration-300 shadow-sm">
                   <Icon className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-[#0f172a] mb-2 group-hover:text-[#064e3b] transition-colors">
+                <h3 className="text-sm md:text-lg font-bold text-forground mb-2  transition-colors">
                   {item.title}
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">

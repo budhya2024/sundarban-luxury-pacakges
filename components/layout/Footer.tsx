@@ -89,13 +89,13 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-brand-green-dark text-slate-200 pt-16 md:pt-20 relative z-20 border-t border-primary">
+    <footer className="bg-brand-green-dark text-slate-200 pt-8 md:pt-16 relative z-20 border-t border-primary">
       <div className="container">
         {/* 1. Top Newsletter Section */}
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 pb-12 md:pb-16">
           {/* Title */}
           <div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight tracking-tight text-center lg:text-left">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight tracking-tight text-center lg:text-left">
               Get Updated The Latest <br />
               Newsletter
             </h2>
@@ -144,14 +144,18 @@ export function Footer() {
             {/* Social Icons */}
             <div className="flex items-center gap-2.5 mt-6">
               <Link
-                href="#facebook"
+                href="https://www.facebook.com/profile.php?id=61594403583459"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-amber-300 hover:bg-secondary hover:text-white transition-colors"
                 aria-label="Facebook"
               >
                 <FaFacebookF className="h-3.5 w-3.5" />
               </Link>
               <Link
-                href="#whatsapp"
+                href="https://wa.me/917001403498"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-amber-300 hover:bg-secondary hover:text-white transition-colors"
                 aria-label="WhatsApp"
               >

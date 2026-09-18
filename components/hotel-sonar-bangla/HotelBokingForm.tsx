@@ -60,7 +60,7 @@ export const roomCategories = [
   { id: "royal-suite", name: "Royal Executive Suite", priceDelta: 1600 },
 ];
 
-export function HotelOverview() {
+export function HotelBokingForm() {
   const roomSelectId = useId();
   const dateInputId = useId();
   const adultsSelectId = useId();
@@ -161,14 +161,14 @@ export function HotelOverview() {
                   href={generateWhatsAppUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-base shadow transition-all cursor-pointer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 md:py-2.5 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-base md:text-sm shadow transition-all cursor-pointer"
                 >
-                  <FaWhatsapp className="w-5 h-5" />
+                  <FaWhatsapp className="w-4 h-4" />
                   <span>Connect On WhatsApp Instantly</span>
                 </a>
                 <button
                   onClick={() => setIsSubmitted(false)}
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 rounded-lg border border-slate-300 text-slate-700 font-semibold text-base hover:bg-slate-50 transition-colors cursor-pointer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 md:py-2.5 rounded-lg border border-slate-300 text-slate-700 font-semibold text-base md:text-sm hover:bg-slate-50 transition-colors cursor-pointer"
                 >
                   Edit Booking Details
                 </button>
@@ -521,19 +521,19 @@ export function HotelOverview() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                 <button
                   type="submit"
-                  className="w-full h-13 sm:h-14 rounded-[4px] bg-primary hover:bg-secondary text-white font-black text-base sm:text-lg flex items-center justify-center gap-2.5 shadow-md transition-all duration-300 cursor-pointer"
+                  className="w-full h-12 md:h-11 rounded-[4px] bg-primary hover:bg-secondary text-white font-bold text-base md:text-sm flex items-center justify-center gap-2 shadow-md transition-all duration-300 cursor-pointer"
                 >
                   <span>Confirm Tour Reservation</span>
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-4 h-4" />
                 </button>
 
                 <a
                   href={generateWhatsAppUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full h-13 sm:h-14 rounded-[4px] bg-[#25D366] hover:bg-[#20bd5a] text-white font-black text-base sm:text-lg flex items-center justify-center gap-2.5 shadow-md transition-all duration-300 cursor-pointer"
+                  className="w-full h-12 md:h-11 rounded-[4px] bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-base md:text-sm flex items-center justify-center gap-2 shadow-md transition-all duration-300 cursor-pointer"
                 >
-                  <FaWhatsapp className="w-5 h-5" />
+                  <FaWhatsapp className="w-4 h-4" />
                   <span>Instant WhatsApp Inquiry</span>
                 </a>
               </div>
@@ -559,6 +559,5 @@ export function HotelOverview() {
   );
 }
 
-// Named alias exports for seamless backward compatibility
-export const HotelTourBookingForm = HotelOverview;
-export default HotelOverview;
+export default HotelBokingForm;
+

@@ -34,6 +34,7 @@ interface SeasonData {
   spottingRating: string;
   natureDescription: string;
   image: string;
+  gallery: { src: string; title: string }[];
   keyFauna: string[];
 }
 
@@ -55,7 +56,12 @@ const seasons: SeasonData[] = [
     spottingRating: "5/5 (Highest)",
     natureDescription:
       "Winter is the ideal time to explore the Sundarbans. Crisp morning mists clear into bright sunny days, and wildlife frequently sunbathes along riverbanks during low tide.",
-    image: "/assets/images/royal-bengal-tiger.jpg",
+    image: "/assets/images/winter.jpg",
+    gallery: [
+      { src: "/assets/images/royal-bengal-tiger.jpg", title: "Bengal Tiger" },
+      { src: "/assets/images/spotted-deer.jpg", title: "Spotted Deer" },
+      { src: "/assets/images/boat-safari.jpg", title: "Winter Safari" },
+    ],
     keyFauna: [
       "Royal Bengal Tiger Basking",
       "Migratory Avian Flocks",
@@ -80,7 +86,12 @@ const seasons: SeasonData[] = [
     spottingRating: "4.5/5 (High)",
     natureDescription:
       "During summer, wildlife gathers around fresh-water ponds inside watchtowers like Sudhanyakhali and Dobanki, making it a rewarding season for dedicated wildlife enthusiasts.",
-    image: "/assets/images/watchtower-view.jpg",
+    image: "/assets/images/summer.jpg",
+    gallery: [
+      { src: "/assets/images/watchtower-view.jpg", title: "Watchtower View" },
+      { src: "/assets/images/tiger-photo.jpg", title: "Tiger at Waterhole" },
+      { src: "/assets/images/cruises.jpg", title: "River Channel" },
+    ],
     keyFauna: [
       "Tigers at Sweet-Water Ponds",
       "Wild Boars & Monitors",
@@ -105,7 +116,12 @@ const seasons: SeasonData[] = [
     spottingRating: "4/5 (Good)",
     natureDescription:
       "The monsoons rejuvenate the mangrove ecosystem. Thousands of waterbirds nest at the Sajnekhali Bird Sanctuary amidst lush emerald canopies and misty waterways.",
-    image: "/assets/images/estuary-sunset.jpg",
+    image: "/assets/images/monsoon-sundarban.jpeg",
+    gallery: [
+      { src: "/assets/images/estuary-sunset.jpg", title: "Estuary Sunset" },
+      { src: "/assets/images/boat-safari.jpg", title: "Misty Waterways" },
+      { src: "/assets/images/resort-deck.jpg", title: "Emerald Mangroves" },
+    ],
     keyFauna: [
       "Breeding Water Birds",
       "Mudskippers & Crabs",
@@ -186,18 +202,22 @@ export function SundarbanEnvironmentSection() {
         {/* Main Season Card - Simple 2 Column Layout with subtle corners */}
         <div className="bg-slate-50/70 border border-border rounded-lg p-5 sm:p-7 md:p-8 mb-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* Left Column: Image with Clean Overlay */}
-            <div className="lg:col-span-5">
-              <div className="relative h-64 sm:h-80 lg:h-[380px] w-full rounded-md overflow-hidden shadow-xs bg-slate-200">
+            {/* Left Column: Main Image with Clean Overlay & Related Thumbnails */}
+            <div className="lg:col-span-5 space-y-3">
+              <div className="relative h-64 sm:h-80 lg:h-[320px] w-full rounded-md overflow-hidden shadow-xs bg-slate-200">
                 <Image
                   src={current.image}
                   alt={`${current.name} in Sundarban`}
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-500 hover:scale-105"
                   sizes="(max-width: 1024px) 100vw, 40vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
 
+                {/* Season Badge */}
+                <div className="absolute top-3.5 left-3.5 bg-primary text-white text-xs font-bold px-3 py-1 rounded-sm shadow-xs border border-white/20">
+                  {current.badge}
+                </div>
 
                 {/* Image Bottom Info */}
                 <div className="absolute bottom-3.5 left-3.5 right-3.5 text-white">
@@ -209,6 +229,29 @@ export function SundarbanEnvironmentSection() {
                     {current.tempRange}
                   </div>
                 </div>
+              </div>
+
+              {/* Related Season Photo Thumbnails */}
+              <div className="grid grid-cols-3 gap-2">
+                {current.gallery.map((gImg, gIdx) => (
+                  <div
+                    key={gIdx}
+                    className="relative h-20 sm:h-24 rounded-md overflow-hidden bg-slate-200 border border-border group"
+                  >
+                    <Image
+                      src={gImg.src}
+                      alt={gImg.title}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-110"
+                      sizes="(max-width: 640px) 33vw, 15vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-1.5">
+                      <span className="text-[10px] sm:text-xs font-semibold text-white truncate leading-tight">
+                        {gImg.title}
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 

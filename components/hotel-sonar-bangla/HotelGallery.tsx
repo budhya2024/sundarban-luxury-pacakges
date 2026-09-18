@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Camera, X } from "lucide-react";
+import { Camera, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 const galleryImages = [
   {
@@ -103,11 +103,26 @@ const galleryImages = [
   },
 ];
 
+const ITEMS_PER_PAGE = 8;
+
 export function HotelGallery() {
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const totalPages = Math.ceil(galleryImages.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedImages = galleryImages.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    const el = document.getElementById("gallery");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   return (
-    <section id="gallery" className="py-8 md:py-16">
+    <section id="gallery" className="py-8 md:py-16 scroll-mt-14">
       <div className="container">
         {/* Header */}
         <div className="sec-header">
@@ -124,11 +139,11 @@ export function HotelGallery() {
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {galleryImages.map((img) => (
+          {paginatedImages.map((img) => (
             <div
               key={img.id}
               onClick={() => setSelectedImg(img.src)}
-              className="group relative h-[260px] sm:h-[280px] rounded-xl overflow-hidden bg-slate-200 border border-slate-200 cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
+              className="group relative h-45 sm:h-70 rounded-xl overflow-hidden bg-slate-200 border border-slate-200 cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
             >
               <Image
                 src={img.src}
@@ -155,6 +170,54 @@ export function HotelGallery() {
             </div>
           ))}
         </div>
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+                disabled={currentPage === 1}
+                aria-label="Previous Page"
+                className={`flex items-center justify-center w-10 h-10 rounded-lg border text-sm font-semibold transition-all cursor-pointer ${
+                  currentPage === 1
+                    ? "border-slate-200 text-slate-300 cursor-not-allowed bg-slate-50"
+                    : "border-slate-300 text-slate-700 hover:bg-primary hover:text-white hover:border-primary shadow-xs"
+                }`}
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+
+              {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((pageNum) => (
+                <button
+                  key={pageNum}
+                  onClick={() => handlePageChange(pageNum)}
+                  aria-label={`Go to page ${pageNum}`}
+                  className={`flex items-center justify-center w-10 h-10 rounded-lg text-sm font-bold transition-all cursor-pointer ${
+                    currentPage === pageNum
+                      ? "bg-primary text-white border border-primary shadow-sm"
+                      : "bg-white text-slate-700 border border-slate-300 hover:border-primary hover:text-primary"
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              ))}
+
+              <button
+                onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                aria-label="Next Page"
+                className={`flex items-center justify-center w-10 h-10 rounded-lg border text-sm font-semibold transition-all cursor-pointer ${
+                  currentPage === totalPages
+                    ? "border-slate-200 text-slate-300 cursor-not-allowed bg-slate-50"
+                    : "border-slate-300 text-slate-700 hover:bg-primary hover:text-white hover:border-primary shadow-xs"
+                }`}
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Lightbox Modal */}
