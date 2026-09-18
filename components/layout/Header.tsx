@@ -80,8 +80,8 @@ export function Header() {
     const pathname = usePathname();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-    const [isSticky, setIsSticky] = useState(false);
-    const [isVisible, setIsVisible] = useState(true);
+    const [isPastHero, setIsPastHero] = useState(false);
+    const [isRevealed, setIsRevealed] = useState(false);
     const lastScrollY = useRef(0);
 
     const isItemActive = (item: NavItem) => {
@@ -96,19 +96,40 @@ export function Header() {
     };
 
     useEffect(() => {
+        let ticking = false;
+
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
-            const scrollingUp = currentScrollY < lastScrollY.current;
 
-            if (currentScrollY > 80) {
-                setIsSticky(true);
-                setIsVisible(scrollingUp);
-            } else {
-                setIsSticky(false);
-                setIsVisible(true);
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const delta = currentScrollY - lastScrollY.current;
+                    const heroThreshold = 460; // Complete hero section threshold
+
+                    if (currentScrollY <= heroThreshold) {
+                        // While inside or at the hero section, let the header stay in its natural top place
+                        setIsPastHero(false);
+                        setIsRevealed(false);
+                    } else {
+                        // After completing/passing the hero section
+                        setIsPastHero(true);
+
+                        // Scrolling DOWN -> hide sticky header
+                        if (delta > 6) {
+                            setIsRevealed(false);
+                        }
+                        // Scrolling UP -> smoothly reveal sticky header
+                        else if (delta < -6) {
+                            setIsRevealed(true);
+                        }
+                    }
+
+                    lastScrollY.current = currentScrollY;
+                    ticking = false;
+                });
+
+                ticking = true;
             }
-
-            lastScrollY.current = currentScrollY;
         };
 
         window.addEventListener("scroll", handleScroll, { passive: true });
@@ -116,16 +137,16 @@ export function Header() {
     }, []);
 
     return (
-        <header className="w-full bg-white relative z-40">
+        <header className="w-full relative z-40 bg-white">
             {/* 1. Top Bar — Rotating Sliding Announcement Component */}
             <AnnouncementBar />
 
-            {/* 2. Main Navigation Bar — fixed on scroll-up only */}
+            {/* 2. Main Navigation Bar (Normal Top Flow & Sticky Scroll-Up after Hero) */}
             <div
-                className={`w-full bg-white z-50 transition-transform duration-300 ease-in-out ${isSticky
-                    ? "fixed top-0 left-0 right-0 shadow-md"
-                    : "relative"
-                    } ${isSticky && !isVisible ? "-translate-y-full" : "translate-y-0"
+                className={`w-full z-50 transition-all duration-300 ease-out will-change-transform ${isPastHero
+                    ? `fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md shadow-[0_10px_30px_-5px_rgba(0,0,0,0.08)] border-b border-slate-100 ${isRevealed ? "translate-y-0 opacity-100 pointer-events-auto" : "-translate-y-full opacity-0 pointer-events-none"
+                    }`
+                    : "relative bg-white border-b border-transparent translate-y-0 opacity-100 pointer-events-auto"
                     }`}
             >
                 <div className="container flex items-center justify-between">
