@@ -17,7 +17,53 @@ import {
 } from "react-icons/fa6";
 import { getBlogPost, getRelatedPosts, blogPosts } from "@/lib/blog-data";
 
+import { db } from "@/db";
+import { blogPosts as blogPostsTable } from "@/db/schema";
+import { eq, and, desc } from "drizzle-orm";
+
+function formatInlineMarkdown(text: string): React.ReactNode {
+  const parts = text.split(/(\*\*[^*]+\*\*|__[^_]+__)/g);
+  return parts.map((part, idx) => {
+    if (
+      (part.startsWith("**") && part.endsWith("**")) ||
+      (part.startsWith("__") && part.endsWith("__"))
+    ) {
+      return (
+        <strong key={idx} className="font-bold text-slate-900">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    const italicParts = part.split(/(\*[^*]+\*|_[^_]+_)/g);
+    if (italicParts.length > 1) {
+      return italicParts.map((sub, sIdx) => {
+        if (
+          (sub.startsWith("*") && sub.endsWith("*")) ||
+          (sub.startsWith("_") && sub.endsWith("_"))
+        ) {
+          return (
+            <em key={sIdx} className="italic text-slate-800">
+              {sub.slice(1, -1)}
+            </em>
+          );
+        }
+        return sub;
+      });
+    }
+    return part;
+  });
+}
+
 export async function generateStaticParams() {
+  try {
+    const dbPosts = await db
+      .select({ slug: blogPostsTable.slug })
+      .from(blogPostsTable)
+      .where(eq(blogPostsTable.status, "Published"));
+    if (dbPosts.length > 0) {
+      return dbPosts.map((p) => ({ slug: p.slug }));
+    }
+  } catch {}
   return blogPosts.map((post) => ({ slug: post.slug }));
 }
 
@@ -27,7 +73,20 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getBlogPost(slug);
+  let post: any = null;
+  try {
+    const dbPosts = await db
+      .select()
+      .from(blogPostsTable)
+      .where(and(eq(blogPostsTable.slug, slug), eq(blogPostsTable.status, "Published")))
+      .limit(1);
+    if (dbPosts.length > 0) {
+      post = dbPosts[0];
+    }
+  } catch {}
+  if (!post) {
+    post = getBlogPost(slug);
+  }
   if (!post) return {};
   return {
     title: `${post.title} | Sundarban Luxury Package`,
@@ -41,14 +100,39 @@ export default async function BlogDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getBlogPost(slug);
+  let post: any = null;
+  let allLivePosts: any[] = [];
+
+  try {
+    const dbPosts = await db
+      .select()
+      .from(blogPostsTable)
+      .where(and(eq(blogPostsTable.slug, slug), eq(blogPostsTable.status, "Published")))
+      .limit(1);
+    if (dbPosts.length > 0) {
+      post = dbPosts[0];
+    }
+
+    allLivePosts = await db
+      .select()
+      .from(blogPostsTable)
+      .where(eq(blogPostsTable.status, "Published"))
+      .orderBy(desc(blogPostsTable.createdAt));
+  } catch {}
+
+  if (!post) {
+    post = getBlogPost(slug);
+  }
   if (!post) notFound();
 
-  const related = getRelatedPosts(slug, 3);
-  const recentPosts = blogPosts.slice(0, 4);
+  const sourcePosts = allLivePosts.length > 0 ? allLivePosts : blogPosts;
+  const related = sourcePosts
+    .filter((p) => p.category === post.category && p.slug !== slug)
+    .slice(0, 3);
+  const recentPosts = sourcePosts.filter((p) => p.slug !== slug).slice(0, 4);
 
   // Compute category counts
-  const categoryCounts = blogPosts.reduce<Record<string, number>>((acc, item) => {
+  const categoryCounts = sourcePosts.reduce<Record<string, number>>((acc, item) => {
     acc[item.category] = (acc[item.category] || 0) + 1;
     return acc;
   }, {});
@@ -60,26 +144,130 @@ export default async function BlogDetailPage({
 
   // Popular tags list
   const popularTags = Array.from(
-    new Set(blogPosts.flatMap((item) => item.tags))
+    new Set(sourcePosts.flatMap((item) => item.tags || []))
   );
 
-  const contentBlocks = post.content.split("\n\n").map((block, i) => {
-    if (block.startsWith("## ")) {
+  const contentBlocks = (post.content || "")
+    .split("\n\n")
+    .map((rawBlock: string, i: number) => {
+      const block = rawBlock.trim();
+      if (!block) return null;
+
+      if (block.startsWith("### ")) {
+        return (
+          <h3
+            key={i}
+            className="text-[#0e2a47] text-lg sm:text-xl font-bold mt-6 mb-3 tracking-tight"
+          >
+            {block.replace("### ", "")}
+          </h3>
+        );
+      }
+
+      if (block.startsWith("## ")) {
+        return (
+          <h2
+            key={i}
+            className="text-[#0e2a47] text-xl sm:text-2xl font-extrabold mt-8 mb-4 tracking-tight"
+          >
+            {block.replace("## ", "")}
+          </h2>
+        );
+      }
+
+      if (block.startsWith("# ")) {
+        return (
+          <h2
+            key={i}
+            className="text-[#0e2a47] text-2xl sm:text-3xl font-black mt-8 mb-4 tracking-tight"
+          >
+            {block.replace("# ", "")}
+          </h2>
+        );
+      }
+
+      if (block.startsWith("> ")) {
+        return (
+          <blockquote
+            key={i}
+            className="border-l-4 border-[#d97706] pl-4 py-2 my-5 bg-amber-50/50 rounded-r text-slate-700 italic"
+          >
+            {formatInlineMarkdown(block.replace(/^> \s*/gm, ""))}
+          </blockquote>
+        );
+      }
+
+      if (block.startsWith("- ") || block.startsWith("* ")) {
+        const items = block
+          .split("\n")
+          .filter((l: string) => l.trim().startsWith("- ") || l.trim().startsWith("* "));
+        return (
+          <ul
+            key={i}
+            className="list-disc list-inside space-y-2 mb-5 text-gray-600 text-base sm:text-[17px]"
+          >
+            {items.map((item: string, idx: number) => (
+              <li key={idx}>
+                {formatInlineMarkdown(item.replace(/^[-*]\s+/, ""))}
+              </li>
+            ))}
+          </ul>
+        );
+      }
+
+      if (/^\d+\.\s/.test(block)) {
+        const items = block
+          .split("\n")
+          .filter((l: string) => /^\d+\.\s/.test(l.trim()));
+        return (
+          <ol
+            key={i}
+            className="list-decimal list-inside space-y-2 mb-5 text-gray-600 text-base sm:text-[17px]"
+          >
+            {items.map((item: string, idx: number) => (
+              <li key={idx}>
+                {formatInlineMarkdown(item.replace(/^\d+\.\s+/, ""))}
+              </li>
+            ))}
+          </ol>
+        );
+      }
+
+      if (block.startsWith("![")) {
+        const match = block.match(/!\[(.*?)\]\((.*?)\)/);
+        if (match) {
+          return (
+            <div
+              key={i}
+              className="my-6 rounded-lg overflow-hidden border border-slate-200"
+            >
+              <div className="relative h-64 sm:h-96 w-full">
+                <Image
+                  src={match[2]}
+                  alt={match[1] || "Blog Illustration"}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              {match[1] && (
+                <p className="text-center text-xs text-slate-500 py-2 bg-slate-50 italic">
+                  {match[1]}
+                </p>
+              )}
+            </div>
+          );
+        }
+      }
+
       return (
-        <h2
+        <p
           key={i}
-          className="text-[#0e2a47] text-xl sm:text-2xl font-extrabold mt-8 mb-4 tracking-tight"
+          className="text-gray-600 leading-relaxed mb-5 text-base sm:text-[17px]"
         >
-          {block.replace("## ", "")}
-        </h2>
+          {formatInlineMarkdown(block)}
+        </p>
       );
-    }
-    return (
-      <p key={i} className="text-gray-600 leading-relaxed mb-5 text-base sm:text-[17px]">
-        {block}
-      </p>
-    );
-  });
+    });
 
   return (
     <main className="bg-slate-50/50 min-h-screen">
@@ -136,8 +324,11 @@ export default async function BlogDetailPage({
               <div className="flex items-center gap-3">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-[#064e3b]/30 shrink-0">
                   <Image
-                    src={post.authorImage}
-                    alt={post.author}
+                    src={
+                      post.authorImage ||
+                      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80"
+                    }
+                    alt={post.author || "Author"}
                     fill
                     className="object-cover"
                   />
@@ -159,7 +350,7 @@ export default async function BlogDetailPage({
               </div>
 
               <div className="flex flex-wrap gap-1.5">
-                {post.tags.map((tag) => (
+                {(post.tags || []).map((tag: string) => (
                   <span
                     key={tag}
                     className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#064e3b] bg-amber-50/80 px-3 py-1 rounded-full border border-amber-100/50"

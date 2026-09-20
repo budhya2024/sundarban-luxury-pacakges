@@ -27,7 +27,7 @@ export function RoomModal({
     totalRooms: 10,
     availableRooms: 6,
     status: "Available" as AdminHotelRoom["status"],
-    image: "/assets/sonarbanglahotel.jpg",
+    image: "/assets/images/sonarbanglahotel.jpg",
     amenitiesText: "River View, AC, Buffet Breakfast, Swimming Pool, Jacuzzi",
   });
 
@@ -55,11 +55,12 @@ export function RoomModal({
         totalRooms: 10,
         availableRooms: 6,
         status: "Available",
-        image: "/assets/sonarbanglahotel.jpg",
+        image: "/assets/images/sonarbanglahotel.jpg",
         amenitiesText: "River View, AC, Buffet Breakfast, Swimming Pool, Jacuzzi",
       });
     }
   }, [initialRoom, isOpen]);
+
 
   if (!isOpen) return null;
 
@@ -238,8 +239,9 @@ export function RoomModal({
             label="Room Photo Upload"
             helperText="Drag & drop room image, browse computer file, or pick a resort preset"
             presets={[
-              "/assets/sonarbanglahotel.jpg",
+              "/assets/images/sonarbanglahotel.jpg",
               "/assets/images/hotel/gallery/hotel-sonar-bangla-sundarban-01.jpg",
+
               "/assets/images/hotel/gallery/hotel-sonar-bangla-sundarban-03.jpg",
               "/assets/images/hotel/gallery/hotel-sonar-bangla-sundarban-04.jpg",
               "/assets/images/hotel/gallery/hotel-sonar-bangla-sundarban-05.jpg",

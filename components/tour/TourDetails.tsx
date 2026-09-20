@@ -35,7 +35,7 @@ import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
 import { BookingModal } from "./BookingModal";
 import { useAdmin } from "@/context/AdminContext";
 
-import { TourDayFoodMenu, TourItineraryDay } from "@/lib/admin-data";
+import { AdminTourPackage, TourDayFoodMenu, TourItineraryDay } from "@/lib/admin-data";
 
 // Import Swiper styles
 import "swiper/css";
@@ -47,7 +47,10 @@ interface TourDetailsProps {
   packageSlug?: string;
   packageName?: string;
   packageSubtitle?: string;
+  initialPackage?: AdminTourPackage | null;
 }
+
+
 
 // Guaranteed static defaults for Menu Details matching exact user screenshot
 const staticMenuDefaults: Record<string, TourDayFoodMenu[]> = {
@@ -199,6 +202,7 @@ export function TourDetails({
   packageSlug = "2-nights-3-days-tiger-trail",
   packageName = "2 Nights 3 Days Complete Tiger Trail Expedition",
   packageSubtitle = "Prepare to discover the real beauty of the mangrove forest with our luxury adventure.",
+  initialPackage,
 }: TourDetailsProps) {
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
 
@@ -207,6 +211,7 @@ export function TourDetails({
 
   // Find matching package or fallback to 2-nights-3-days package or first package
   const currentPackage =
+    initialPackage ||
     packages.find(
       (p) =>
         (packageSlug && p.slug === packageSlug) ||
@@ -214,6 +219,7 @@ export function TourDetails({
     ) ||
     packages.find((p) => p.slug === "2-nights-3-days-tiger-trail") ||
     packages[0];
+
 
   // Resolve dynamic values
   const title = currentPackage?.name || packageName;
@@ -247,7 +253,7 @@ export function TourDetails({
       list.push(currentPackage.bannerImage);
     }
     if (currentPackage?.gallery && currentPackage.gallery.length > 0) {
-      currentPackage.gallery.forEach((img) => {
+      currentPackage.gallery.forEach((img: string) => {
         if (img && !list.includes(img)) list.push(img);
       });
     }
@@ -259,11 +265,7 @@ export function TourDetails({
       "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80",
       "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=900&q=80",
     ];
-    for (const img of fallbackList) {
-      if (list.length >= 5) break;
-      if (!list.includes(img)) list.push(img);
-    }
-    return list;
+    return list.length > 0 ? list : fallbackList;
   }, [currentPackage]);
 
   // Determine package duration type (1-day, 2-days, 3-days)
@@ -287,7 +289,7 @@ export function TourDetails({
     currentPackage?.foodMenu && currentPackage.foodMenu.length > 0
       ? currentPackage.foodMenu
       : staticMenuDefaults[pkgCategoryKey];
-  const inclusions = currentPackage?.inclusions || [
+  const inclusions: string[] = (currentPackage?.inclusions as string[]) || [
     "Pick up & Drop from Kolkata in AC Vehicle",
     "Accommodation in Luxury Resort / Boat Cabins",
     "All Meals (2 Breakfast, 2 Lunch, 1 Dinner, Evening Snacks)",
@@ -296,7 +298,7 @@ export function TourDetails({
     "Cultural Folk Dance Show & Evening Bonfire",
     "Luxury Boat Cruise through Mangrove Creeks",
   ];
-  const exclusions = currentPackage?.exclusions || [
+  const exclusions: string[] = (currentPackage?.exclusions as string[]) || [
     "Any Personal Expenses or Tips",
     "Video Camera Permit Charges",
     "Anything Not Mentioned in Inclusions List",
@@ -304,7 +306,7 @@ export function TourDetails({
     "GST 5% Extra Applicable",
     "Personal Beverages & Bottled Water",
   ];
-  const thingsToCarry = currentPackage?.thingsToCarry || [
+  const thingsToCarry: string[] = (currentPackage?.thingsToCarry as string[]) || [
     "Original Photo ID Proof (Aadhaar / Voter ID / Passport)",
     "Comfortable Cotton Clothes & Walking Shoes",
     "Sunscreen Lotion, Sunglasses & Sun Hat",
@@ -313,12 +315,12 @@ export function TourDetails({
     "Insect Repellent Cream",
     "Cash for Personal Shopping & Local Handicrafts",
   ];
-  const childPolicy = currentPackage?.childPolicy || [
+  const childPolicy: string[] = (currentPackage?.childPolicy as string[]) || [
     "Child below 5 years: 100% Complimentary / FREE (sharing parents' bed).",
     "Child between 5 to 10 years: 50% of adult package price applicable.",
     "Child above 10 years: Charged as full adult rate with separate bed & seat.",
   ];
-  const importantNotes = currentPackage?.importantNotes || [
+  const importantNotes: string[] = (currentPackage?.importantNotes as string[]) || [
     "Forest Department entry permissions require government ID submission 24h before cruise departure.",
     "Plastic bottles and plastic bags are strictly prohibited inside Sundarban Tiger Reserve core areas.",
     "Itinerary timings may slightly adjust based on river high-tide and low-tide schedules.",

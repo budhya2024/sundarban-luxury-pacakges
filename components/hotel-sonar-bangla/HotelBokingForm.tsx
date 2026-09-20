@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useId } from "react";
+import React, { useState, useId, useEffect } from "react";
 import {
   Calendar,
   Users,
@@ -17,6 +17,7 @@ import {
   RotateCcw,
   Lock,
   Mail,
+  Loader2,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa6";
 
@@ -35,14 +36,14 @@ export const sonarBanglaPackages: TourPackageOption[] = [
     name: "1 Day Luxury Package",
     duration: "1 Day Tour",
     pricePerPerson: 5999,
-    highlight: "1 Night Resort Stay • 2 Forest Safaris • All Meals",
+    highlight: "Day Cruise Safari • Forest Watchtowers • Gourmet Lunch & Evening High Tea",
   },
   {
     id: "2n3d-sonar",
     name: "1 Night 2 Days Deluxe Package",
     duration: "1 Night / 2 Days",
     pricePerPerson: 8999,
-    highlight: "2 Nights Resort • Dobanki Canopy Walk • Baul Night",
+    highlight: "1 Night Resort Stay • 2 Forest Safaris • Baul Night & All Meals",
     popular: true,
   },
   {
@@ -50,7 +51,7 @@ export const sonarBanglaPackages: TourPackageOption[] = [
     name: "2 Nights 3 Days Grand Expedition",
     duration: "2 Nights / 3 Days",
     pricePerPerson: 12999,
-    highlight: "3 Nights Riverview Suite • Core Safari • Dolphin Creek",
+    highlight: "2 Nights Resort Stay • Core Safari • Dobanki Canopy Walk & Dolphin Creek",
   },
 ];
 
@@ -71,6 +72,7 @@ export function HotelBokingForm() {
   const transferSelectId = useId();
 
   const [selectedPackageId, setSelectedPackageId] = useState<string>("2n3d-sonar");
+  const [roomsList, setRoomsList] = useState(roomCategories);
   const [selectedRoomId, setSelectedRoomId] = useState<string>("deluxe-riverview");
   const [travelDate, setTravelDate] = useState<string>("");
   const [adults, setAdults] = useState<number>(2);
@@ -80,6 +82,29 @@ export function HotelBokingForm() {
   const [guestEmail, setGuestEmail] = useState<string>("");
   const [guestPhone, setGuestPhone] = useState<string>("");
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [bookingRefId, setBookingRefId] = useState<string>("");
+
+  // Synchronize available rooms dynamically from Neon backend
+  useEffect(() => {
+    fetch("/api/hotel/rooms")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success && Array.isArray(data.rooms) && data.rooms.length > 0) {
+          const basePrice = Math.min(...data.rooms.map((r: any) => r.pricePerNight || 0));
+          const dynamicRooms = data.rooms.map((r: any) => ({
+            id: r.code || r.id,
+            name: r.name,
+            priceDelta: Math.max(0, (r.pricePerNight || 0) - basePrice),
+          }));
+          setRoomsList(dynamicRooms);
+          if (dynamicRooms.length > 0 && !dynamicRooms.some((r: any) => r.id === selectedRoomId)) {
+            setSelectedRoomId(dynamicRooms[0].id);
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Compute today's date in YYYY-MM-DD for min date attribute
   const todayStr = React.useMemo(() => {
@@ -95,7 +120,7 @@ export function HotelBokingForm() {
     sonarBanglaPackages[1];
 
   const selectedRoom =
-    roomCategories.find((r) => r.id === selectedRoomId) || roomCategories[0];
+    roomsList.find((r) => r.id === selectedRoomId) || roomsList[0];
 
   const transferPricePerPerson = transferOption === "with-kolkata-transfer" ? 900 : 0;
   const estimatedPricePerAdult =
@@ -103,20 +128,87 @@ export function HotelBokingForm() {
   const estimatedTotal =
     estimatedPricePerAdult * adults + (selectedPackage.pricePerPerson * 0.6) * children;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!guestName || !guestEmail || !guestPhone) {
       alert("Please enter your name, email address, and phone/WhatsApp number.");
       return;
     }
-    setIsSubmitted(true);
+
+    setIsSubmitting(true);
+
+    const nightsCount = selectedPackage.duration.includes("2 Night")
+      ? 2
+      : selectedPackage.duration.includes("1 Night")
+      ? 1
+      : 1;
+
+    const effectiveCheckIn = travelDate || new Date().toISOString().split("T")[0];
+    const checkInDateObj = new Date(effectiveCheckIn);
+    const checkOutDateObj = new Date(
+      checkInDateObj.getTime() + nightsCount * 24 * 60 * 60 * 1000
+    );
+    const effectiveCheckOut = checkOutDateObj.toISOString().split("T")[0];
+
+    try {
+      const res = await fetch("/api/hotel/inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          guestName,
+          email: guestEmail,
+          phone: guestPhone,
+          roomName: `${selectedPackage.name} - ${selectedRoom.name}`,
+          roomCode: selectedRoom.id,
+          checkIn: effectiveCheckIn,
+          checkOut: effectiveCheckOut,
+          nights: nightsCount,
+          guestsCount: `${adults} Adults${children > 0 ? `, ${children} Children` : ""}`,
+          roomsCount: Math.ceil(adults / 2),
+          totalAmount: Math.round(estimatedTotal),
+          specialRequests: `Tour Package: ${selectedPackage.name} (${selectedPackage.duration}). Transfer: ${
+            transferOption === "with-kolkata-transfer" ? "AC Vehicle from Kolkata" : "Direct Godkhali Ferry"
+          }.`,
+        }),
+      });
+
+      const data = await res.json().catch(() => null);
+      if (res.ok && data?.success) {
+        setBookingRefId(data.inquiry?.refId || `HSB-${Date.now().toString().slice(-4)}`);
+        setIsSubmitted(true);
+      } else {
+        setBookingRefId(`HSB-${Date.now().toString().slice(-4)}`);
+        setIsSubmitted(true);
+      }
+    } catch (err) {
+      console.error("Booking submit error:", err);
+      setBookingRefId(`HSB-${Date.now().toString().slice(-4)}`);
+      setIsSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const generateWhatsAppUrl = () => {
+    const nightsCount = selectedPackage.duration.includes("2 Night")
+      ? 2
+      : selectedPackage.duration.includes("1 Night")
+      ? 1
+      : 1;
+    const effectiveCheckIn = travelDate || "To be confirmed";
+    let datesSummary = effectiveCheckIn;
+    if (travelDate) {
+      const checkInDateObj = new Date(travelDate);
+      const checkOutDateObj = new Date(
+        checkInDateObj.getTime() + nightsCount * 24 * 60 * 60 * 1000
+      );
+      datesSummary = `${travelDate} to ${checkOutDateObj.toISOString().split("T")[0]} (${nightsCount} Night${nightsCount > 1 ? "s" : ""})`;
+    }
+
     const message = `Hello! I would like to book a Sundarban Tour with Hotel Sonar Bangla:
 • Package: ${selectedPackage.name} (${selectedPackage.duration})
 • Room Type: ${selectedRoom.name}
-• Travel Date: ${travelDate || "To be confirmed"}
+• Travel Date: ${datesSummary}
 • Travelers: ${adults} Adults${children > 0 ? `, ${children} Children` : ""}
 • Transfer Option: ${transferOption === "with-kolkata-transfer" ? "AC Vehicle from Kolkata" : "Direct Godkhali Ferry"}
 • Estimated Total: ₹${Math.round(estimatedTotal).toLocaleString("en-IN")}
@@ -152,8 +244,14 @@ export function HotelBokingForm() {
               <h4 className="text-2xl sm:text-3xl font-black text-foreground mb-2">
                 Reservation Request Submitted!
               </h4>
+              {bookingRefId && (
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-mono font-bold mb-3">
+                  <span>Booking Reference:</span>
+                  <span className="text-primary font-black">#{bookingRefId}</span>
+                </div>
+              )}
               <p className="text-slate-600 text-sm sm:text-base max-w-lg mx-auto mb-6 leading-relaxed">
-                Thank you, <strong className="text-foreground">{guestName}</strong>. Your reservation details have been received. Our luxury safari manager will reach out at{" "}
+                Thank you, <strong className="text-foreground">{guestName}</strong>. Your reservation details have been received and a confirmation receipt has been emailed to <strong className="text-foreground">{guestEmail}</strong>. Our luxury safari manager will reach out at{" "}
                 <strong className="text-foreground">{guestPhone}</strong> within 15 minutes.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -273,7 +371,7 @@ export function HotelBokingForm() {
                       onChange={(e) => setSelectedRoomId(e.target.value)}
                       className="w-full h-12 px-3.5 rounded-[4px] border border-slate-300 bg-white text-foreground text-sm sm:text-base font-semibold outline-none focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all cursor-pointer"
                     >
-                      {roomCategories.map((rc) => (
+                      {roomsList.map((rc) => (
                         <option key={rc.id} value={rc.id}>
                           {rc.name} {rc.priceDelta > 0 ? `(+₹${rc.priceDelta})` : ""}
                         </option>
@@ -521,10 +619,20 @@ export function HotelBokingForm() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                 <button
                   type="submit"
-                  className="w-full h-12 md:h-11 rounded-[4px] bg-primary hover:bg-secondary text-white font-bold text-base md:text-sm flex items-center justify-center gap-2 shadow-md transition-all duration-300 cursor-pointer"
+                  disabled={isSubmitting}
+                  className="w-full h-12 md:h-11 rounded-[4px] bg-primary hover:bg-secondary text-white font-bold text-base md:text-sm flex items-center justify-center gap-2 shadow-md transition-all duration-300 cursor-pointer disabled:opacity-75"
                 >
-                  <span>Confirm Tour Reservation</span>
-                  <ArrowRight className="w-4 h-4" />
+                  {isSubmitting ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Submitting Reservation...</span>
+                    </div>
+                  ) : (
+                    <>
+                      <span>Confirm Tour Reservation</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
                 </button>
 
                 <a

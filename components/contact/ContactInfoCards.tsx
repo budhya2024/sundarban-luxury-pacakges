@@ -4,6 +4,32 @@ import React from "react";
 import { FaPhone, FaEnvelope, FaLocationDot, FaClock } from "react-icons/fa6";
 
 export function ContactInfoCards() {
+  const [info, setInfo] = React.useState({
+    phone: "+91 70014 03498",
+    email: "sundarbanluxurypackage@gmail.com",
+    address: "Godkhali Ferry Ghat, Canning Town, South 24 Parganas, West Bengal 743329",
+    workingHours: ["Mon - Sat: 9:00 AM - 6:00 PM", "Sunday: 10:00 AM - 4:00 PM"],
+  });
+
+  React.useEffect(() => {
+    fetch("/api/contact")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.generalInfo) {
+          const g = data.generalInfo;
+          setInfo({
+            phone: g.helpdeskPhone || "+91 70014 03498",
+            email: g.officialEmail || "sundarbanluxurypackage@gmail.com",
+            address: g.mainAddress || "Godkhali Ferry Ghat, Canning Town, South 24 Parganas, West Bengal 743329",
+            workingHours: g.workingHours
+              ? g.workingHours.split("\n").filter(Boolean)
+              : ["Mon - Sat: 9:00 AM - 6:00 PM", "Sunday: 10:00 AM - 4:00 PM"],
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <section className="py-10 sm:py-16 bg-[#f5f8f5]/80">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,10 +50,10 @@ export function ContactInfoCards() {
             </div>
             <div>
               <a
-                href="tel:+917001403498"
+                href={`tel:${info.phone.replace(/[^0-9+]/g, "")}`}
                 className="text-sm font-bold text-slate-900 hover:text-[#1c4e3a] transition-colors"
               >
-                +91 70014 03498
+                {info.phone}
               </a>
             </div>
           </div>
@@ -47,10 +73,10 @@ export function ContactInfoCards() {
             </div>
             <div>
               <a
-                href="mailto:sundarbanluxurypackage@gmail.com"
+                href={`mailto:${info.email}`}
                 className="text-xs sm:text-sm font-bold text-slate-900 hover:text-[#e78d1f] transition-colors break-all"
               >
-                sundarbanluxurypackage@gmail.com
+                {info.email}
               </a>
             </div>
           </div>
@@ -70,7 +96,7 @@ export function ContactInfoCards() {
             </div>
             <div>
               <p className="text-xs sm:text-sm font-medium text-slate-800 leading-snug">
-                Godkhali Ferry Ghat, Canning Town, South 24 Parganas, West Bengal 743329
+                {info.address}
               </p>
             </div>
           </div>
@@ -89,8 +115,9 @@ export function ContactInfoCards() {
               </p>
             </div>
             <div className="space-y-0.5 text-xs sm:text-sm font-medium text-slate-800">
-              <p>Mon - Sat: 9:00 AM - 6:00 PM</p>
-              <p>Sunday: 10:00 AM - 4:00 PM</p>
+              {info.workingHours.map((line, idx) => (
+                <p key={idx}>{line}</p>
+              ))}
             </div>
           </div>
 

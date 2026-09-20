@@ -39,12 +39,18 @@ export function BookingModal({
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [confirmedCode, setConfirmedCode] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const { addBooking } = useAdmin();
 
   // Reset form status and lock scroll when opened
   useEffect(() => {
     if (isOpen) {
       setIsSubmitted(false);
+      setIsSubmitting(false);
+      setConfirmedCode("");
+      setErrorMessage("");
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -80,35 +86,76 @@ export function BookingModal({
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setErrorMessage("");
+
     const guestCount = parseInt(formData.guests, 10) || 1;
     const totalCalc = pricePerPerson * guestCount;
 
     try {
-      addBooking({
-        guestName: formData.fullName,
-        email: formData.email,
-        phone: formData.phoneNumber,
-        packageOrRoom: packageName,
-        type: "Tour Package",
-        travelDate: formData.travelDate || todayStr,
-        guestsCount: guestCount,
-        totalAmount: totalCalc,
-        paidAmount: 0,
-        paymentStatus: "Unpaid",
-        bookingStatus: "Pending",
-        specialRequests: `Booked via website Tour Details modal for ${packageName}.`,
+      const res = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          email: formData.email,
+          phoneNumber: formData.phoneNumber,
+          packageName,
+          travelDate: formData.travelDate || todayStr,
+          guests: guestCount,
+          totalAmount: totalCalc,
+          type: "Tour Package",
+          specialRequests: `Direct reservation request for ${packageName}.`,
+        }),
       });
-    } catch {
-      // ignore
-    }
 
-    setIsSubmitted(true);
+      const data = await res.json().catch(() => null);
+
+      if (res.ok && data?.success && data.booking) {
+        setConfirmedCode(data.booking.bookingCode);
+        try {
+          addBooking(data.booking);
+        } catch {
+          // ignore
+        }
+        setIsSubmitted(true);
+      } else {
+        setErrorMessage(data?.error || "Unable to process booking request. Please try again or call our helpline.");
+      }
+    } catch (err) {
+      console.error("Booking submission error:", err);
+      // Fallback local booking
+      try {
+        addBooking({
+          guestName: formData.fullName,
+          email: formData.email,
+          phone: formData.phoneNumber,
+          packageOrRoom: packageName,
+          type: "Tour Package",
+          travelDate: formData.travelDate || todayStr,
+          guestsCount: guestCount,
+          totalAmount: totalCalc,
+          paidAmount: 0,
+          paymentStatus: "Unpaid",
+          bookingStatus: "Pending",
+          specialRequests: `Direct reservation request for ${packageName}.`,
+        });
+      } catch {
+        // ignore
+      }
+      setIsSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleReset = () => {
     setIsSubmitted(false);
+    setIsSubmitting(false);
+    setConfirmedCode("");
+    setErrorMessage("");
     onClose();
   };
 
@@ -290,13 +337,26 @@ export function BookingModal({
                 </span>
               </div>
 
+              {errorMessage && (
+                <div className="p-3 rounded-[4px] bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium">
+                  {errorMessage}
+                </div>
+              )}
+
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full mt-2 py-3 px-6 rounded-full bg-primary hover:bg-secondary text-white font-semibold text-sm  flex items-center justify-center gap-2.5 shadow-md shadow-primary/20 transition-all duration-300 cursor-pointer"
+                disabled={isSubmitting}
+                className="w-full mt-2 py-3 px-6 rounded-full bg-primary hover:bg-secondary text-white font-semibold text-sm flex items-center justify-center gap-2.5 shadow-md shadow-primary/20 transition-all duration-300 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
               >
-
-                <span>Confirm Booking Request</span>
+                {isSubmitting ? (
+                  <>
+                    <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin inline-block" />
+                    <span>Processing Reservation...</span>
+                  </>
+                ) : (
+                  <span>Confirm Booking Request</span>
+                )}
               </button>
             </form>
           </div>
@@ -310,6 +370,12 @@ export function BookingModal({
             <h3 className="text-xl font-black text-foreground">
               Booking Request Received!
             </h3>
+
+            {confirmedCode && (
+              <div className="inline-block px-4 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-xs font-mono font-bold">
+                Booking ID: {confirmedCode}
+              </div>
+            )}
 
             <p className="text-slate-600 text-sm max-w-sm mx-auto leading-relaxed">
               Thank you,{" "}

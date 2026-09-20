@@ -1,14 +1,58 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { monthlyRevenueData } from "@/lib/admin-data";
 import { TrendingUp, DollarSign } from "lucide-react";
+import { useAdmin } from "@/context/AdminContext";
 
 export function RevenueChart() {
+  const { bookings } = useAdmin();
   const [hoveredMonth, setHoveredMonth] = useState<number | null>(null);
 
-  const maxRevenue = Math.max(...monthlyRevenueData.map((d) => d.revenue));
-  const chartHeight = 180;
+  // Compute dynamic monthly revenue combining actual live bookings with baseline seasonality
+  const dynamicMonthlyData = useMemo(() => {
+    const monthNames = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+
+    return monthlyRevenueData.map((item) => {
+      const monthIdx = monthNames.indexOf(item.month.toLowerCase());
+
+      const matchingBookings = bookings.filter((b) => {
+        const dateStr = (b.travelDate || b.createdAt || "").toLowerCase();
+        if (dateStr.includes(item.month.toLowerCase())) return true;
+        // Check ISO format YYYY-MM-DD
+        const match = dateStr.match(/^\d{4}-(\d{2})-\d{2}/);
+        if (match && parseInt(match[1], 10) - 1 === monthIdx) return true;
+        return false;
+      });
+
+      const liveRevenue = matchingBookings.reduce(
+        (acc, b) => acc + (b.paidAmount || b.totalAmount || 0),
+        0
+      );
+      const liveBookingsCount = matchingBookings.length;
+
+      return {
+        month: item.month,
+        revenue: Math.max(item.revenue, liveRevenue),
+        bookings: Math.max(item.bookings, liveBookingsCount),
+        liveBookingsCount,
+        liveRevenue,
+        hasLiveBookings: liveBookingsCount > 0,
+      };
+    });
+  }, [bookings]);
+
+  const maxRevenue = Math.max(...dynamicMonthlyData.map((d) => d.revenue));
+  const currentMonthShort = new Date().toLocaleDateString("en-US", { month: "short" });
+
+  const peakMonth = dynamicMonthlyData.reduce(
+    (max, cur) => (cur.revenue > max.revenue ? cur : max),
+    dynamicMonthlyData[0]
+  );
+  const highestBookingMonth = dynamicMonthlyData.reduce(
+    (max, cur) => (cur.bookings > max.bookings ? cur : max),
+    dynamicMonthlyData[0]
+  );
 
   return (
     <div className="bg-white border border-slate-200/90 rounded-[4px] p-5 sm:p-6 shadow-2xs">
@@ -42,10 +86,10 @@ export function RevenueChart() {
       {/* Bar Chart Visualization */}
       <div className="mt-6 pt-4">
         <div className="flex items-end justify-between gap-1.5 sm:gap-3 h-48 px-1">
-          {monthlyRevenueData.map((item, idx) => {
-            const heightPercent = (item.revenue / maxRevenue) * 100;
+          {dynamicMonthlyData.map((item, idx) => {
+            const heightPercent = maxRevenue > 0 ? (item.revenue / maxRevenue) * 100 : 0;
             const isHovered = hoveredMonth === idx;
-            const isPeak = item.month === "Dec" || item.month === "Jan";
+            const isPeak = item.month === peakMonth.month || item.month === "Dec" || item.month === "Jan";
 
             return (
               <div
@@ -58,13 +102,13 @@ export function RevenueChart() {
                 {isHovered && (
                   <div className="absolute -top-14 z-20 bg-slate-900 text-white text-[11px] font-bold py-1.5 px-2.5 rounded-[3px] shadow-lg pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95 duration-100 border border-slate-700">
                     <span className="block text-slate-300 text-[10px]">
-                      {item.month} 2026
+                      {item.month} 2026 {item.month === currentMonthShort ? "• Current Month" : ""}
                     </span>
                     <span className="text-white">
                       ₹{(item.revenue / 100000).toFixed(2)} Lakhs
                     </span>
                     <span className="block text-blue-400 text-[10px]">
-                      {item.bookings} confirmed tours
+                      {item.bookings} confirmed tours{item.liveBookingsCount > 0 ? ` (${item.liveBookingsCount} live)` : ""}
                     </span>
                   </div>
                 )}
@@ -76,7 +120,7 @@ export function RevenueChart() {
                       ? "bg-slate-900 group-hover:bg-blue-600"
                       : "bg-blue-600 group-hover:bg-blue-700"
                   } ${isHovered ? "ring-2 ring-blue-400 shadow-md" : ""}`}
-                  style={{ height: `${heightPercent}%` }}
+                  style={{ height: `${Math.max(8, heightPercent)}%` }}
                 />
 
                 {/* Month label */}
@@ -84,6 +128,8 @@ export function RevenueChart() {
                   className={`text-[11px] font-bold transition-colors ${
                     isHovered
                       ? "text-blue-700 font-extrabold"
+                      : item.month === currentMonthShort
+                      ? "text-blue-600 font-bold underline decoration-blue-400 underline-offset-2"
                       : "text-slate-500"
                   }`}
                 >
@@ -100,11 +146,11 @@ export function RevenueChart() {
         <div className="flex items-center gap-1.5">
           <TrendingUp className="w-3.5 h-3.5 text-blue-700" />
           <span>
-            Winter Peak: <strong className="text-slate-800">Dec - Jan</strong>{" "}
-            (₹32.0 Lakhs projected)
+            Seasonal Peak: <strong className="text-slate-800">{peakMonth.month}</strong>{" "}
+            (₹{(peakMonth.revenue / 100000).toFixed(1)} Lakhs volume)
           </span>
         </div>
-        <span>Highest Booking Rate: 148 Tours / Month</span>
+        <span>Highest Volume: {highestBookingMonth.bookings} Tours ({highestBookingMonth.month})</span>
       </div>
     </div>
   );

@@ -20,13 +20,15 @@ export function PopularDestinations() {
   const swiperRef = useRef<SwiperClass | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTour, setSelectedTour] = useState("Sundarban 1 Night 2 Days Tour");
+  const [selectedPrice, setSelectedPrice] = useState(4999);
   const { packages } = useAdmin();
 
   // Filter active packages or fallback
   const displayPackages = packages.filter((p) => p.status !== "Draft");
 
-  const handleOpenBooking = (tourName: string) => {
+  const handleOpenBooking = (tourName: string, price?: number) => {
     setSelectedTour(tourName);
+    if (price) setSelectedPrice(price);
     setIsModalOpen(true);
   };
 
@@ -174,7 +176,7 @@ export function PopularDestinations() {
                         </Link>
 
                         <button
-                          onClick={() => handleOpenBooking(item.name)}
+                          onClick={() => handleOpenBooking(item.name, item.price)}
                           className="btn btn-secondary !py-1.5 !px-3.5 !text-sm shadow-xs rounded-full flex items-center gap-1 font-bold cursor-pointer"
                         >
                           <span>Book now</span>
@@ -194,6 +196,7 @@ export function PopularDestinations() {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           packageName={selectedTour}
+          pricePerPerson={selectedPrice}
         />
       </div>
 

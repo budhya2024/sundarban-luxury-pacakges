@@ -136,6 +136,45 @@ function PackageEditorForm() {
     }
   }, [existingPackage]);
 
+  useEffect(() => {
+    if (packageId && !existingPackage) {
+      fetch(`/api/admin/packages/${packageId}`)
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (data?.success && data.package) {
+            const p = data.package;
+            setName(p.name || "");
+            setSlug(p.slug || "");
+            setSubtitle(p.subtitle || "");
+            setDuration(p.duration || "2 Days / 1 Night");
+            setPrice(p.price || 2999);
+            setOriginalPrice(p.originalPrice || 3999);
+            setRating(p.rating || 4.9);
+            setReviewsCount(p.reviewsCount || 128);
+            setImage(p.image || "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=900&q=80");
+            setBannerImage(p.bannerImage || p.image || "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=1600&q=80");
+            setStatus(p.status || "Active");
+            setMaxGuests(p.maxGuests || 45);
+            setDeparture(p.departure || "Godkhali Ferry Ghat (8:30 AM)");
+            setPickupDrop(p.pickupDrop || "Kolkata / Canning / Godkhali");
+            setMealsSummary(p.mealsSummary || "6 Times Fresh Cooked Bengali Buffet Meals");
+            setMinGroupSize(p.minGroupSize || "Min 2 People");
+            setOverview(p.overview || "");
+            setHighlightQuote(p.highlightQuote || "");
+            setHelplinePhone(p.helplinePhone || "+91 70014 03498");
+            setFeatured(!!p.featured);
+            if (p.itinerary?.length) setItinerary(p.itinerary);
+            if (p.foodMenu?.length) setFoodMenu(p.foodMenu);
+            if (p.inclusions?.length) setInclusions(p.inclusions);
+            if (p.exclusions?.length) setExclusions(p.exclusions);
+            if (p.thingsToCarry?.length) setThingsToCarry(p.thingsToCarry);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [packageId, existingPackage]);
+
+
   function defaultItinerary(): TourItineraryDay[] {
     return [
       {

@@ -15,10 +15,22 @@ import { blogPosts } from "@/lib/blog-data";
 export default function BlogListPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 9;
+  const [postsList, setPostsList] = useState(blogPosts);
 
-  const totalPages = Math.ceil(blogPosts.length / postsPerPage) || 1;
+  React.useEffect(() => {
+    fetch("/api/blog?limit=100")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success && Array.isArray(data.posts) && data.posts.length > 0) {
+          setPostsList(data.posts);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const totalPages = Math.ceil(postsList.length / postsPerPage) || 1;
   const startIndex = (currentPage - 1) * postsPerPage;
-  const currentPosts = blogPosts.slice(startIndex, startIndex + postsPerPage);
+  const currentPosts = postsList.slice(startIndex, startIndex + postsPerPage);
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
@@ -133,7 +145,7 @@ export default function BlogListPage() {
 
                   {/* Tags */}
                   <div className="flex flex-wrap gap-1.5 mb-5">
-                    {post.tags.slice(0, 3).map((tag) => (
+                    {(post.tags || []).slice(0, 3).map((tag) => (
                       <span
                         key={tag}
                         className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#064e3b] bg-amber-50/80 px-2.5 py-1 rounded-full border border-amber-100/50"
@@ -162,10 +174,10 @@ export default function BlogListPage() {
               <strong className="font-bold text-slate-800">{startIndex + 1}</strong>{" "}
               to{" "}
               <strong className="font-bold text-slate-800">
-                {Math.min(startIndex + postsPerPage, blogPosts.length)}
+                {Math.min(startIndex + postsPerPage, postsList.length)}
               </strong>{" "}
               of{" "}
-              <strong className="font-bold text-slate-800">{blogPosts.length}</strong>{" "}
+              <strong className="font-bold text-slate-800">{postsList.length}</strong>{" "}
               articles
             </div>
 

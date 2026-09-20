@@ -16,9 +16,18 @@ import "swiper/css/pagination";
 
 export function NewsArticles() {
   const swiperRef = useRef<SwiperClass | null>(null);
+  const [articles, setArticles] = React.useState(blogPosts.slice(0, 8));
 
-  // Take featured posts for the home carousel
-  const featuredPosts = blogPosts.slice(0, 8);
+  React.useEffect(() => {
+    fetch("/api/blog?limit=8")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success && Array.isArray(data.posts) && data.posts.length > 0) {
+          setArticles(data.posts);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <section className="py-8 md:py-16 bg-secondary/5 relative overflow-hidden">
@@ -64,7 +73,7 @@ export function NewsArticles() {
             }}
             className="news-articles-swiper !overflow-visible pb-12 [&_.swiper-wrapper]:flex [&_.swiper-wrapper]:items-stretch [&_.swiper-slide]:h-auto [&_.swiper-slide]:flex"
           >
-            {featuredPosts.map((article) => (
+            {articles.map((article) => (
               <SwiperSlide key={article.slug} className="h-auto cursor-pointer">
                 <article className="group flex flex-col h-full bg-white rounded-xl overflow-hidden border shadow-sm hover:shadow-lg transition-all duration-300">
                   {/* Image with Category Badge */}

@@ -45,6 +45,24 @@ export default function AdminContactManagerPage() {
     emergencyHotline: contactGeneralInfo.emergencyHotline,
   });
 
+  // Sync when contactGeneralInfo is populated from DB
+  React.useEffect(() => {
+    if (contactGeneralInfo) {
+      setGeneralForm({
+        heroTitle: contactGeneralInfo.heroTitle || "",
+        heroSubtitle: contactGeneralInfo.heroSubtitle || "",
+        helpdeskPhone: contactGeneralInfo.helpdeskPhone || "",
+        whatsappNumber: contactGeneralInfo.whatsappNumber || "",
+        officialEmail: contactGeneralInfo.officialEmail || "",
+        supportEmail: contactGeneralInfo.supportEmail || "",
+        mainAddress: contactGeneralInfo.mainAddress || "",
+        workingHours: contactGeneralInfo.workingHours || "",
+        googleMapEmbedUrl: contactGeneralInfo.googleMapEmbedUrl || "",
+        emergencyHotline: contactGeneralInfo.emergencyHotline || "",
+      });
+    }
+  }, [contactGeneralInfo]);
+
   // Modal state
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [activeCardToEdit, setActiveCardToEdit] = useState<AdminContactCard | null>(null);
