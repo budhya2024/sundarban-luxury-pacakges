@@ -7,7 +7,7 @@ const JWT_SECRET = new TextEncoder().encode(
 
 const ADMIN_COOKIE_NAME = "sb_admin_session";
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Only protect /admin routes
