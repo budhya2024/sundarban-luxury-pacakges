@@ -42,10 +42,10 @@ export default function AdminInquiriesPage() {
 
   const filteredInquiries = inquiries.filter((inq) => {
     const matchesSearch =
-      inq.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      inq.phone.includes(searchTerm) ||
-      (inq.email && inq.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (inq.subject && inq.subject.toLowerCase().includes(searchTerm.toLowerCase()));
+      (inq.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (inq.phone || "").includes(searchTerm) ||
+      ((inq.email || "").toLowerCase().includes(searchTerm.toLowerCase())) ||
+      ((inq.subject || "").toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesStatus = statusFilter === "all" || inq.status === statusFilter;
     return matchesSearch && matchesStatus;
   });

@@ -15,14 +15,64 @@ export function ContactFormSection() {
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [hotlineInfo, setHotlineInfo] = useState({
+    phone: "+91 70014 03498",
+    whatsapp: "917001403498",
+    addressSummary: "📍 Primary luxury cruise departure point at Godkhali Ghat. Pickups available from Kolkata Airport & Howrah Railway Station.",
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  React.useEffect(() => {
+    fetch("/api/contact")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.generalInfo) {
+          const g = data.generalInfo;
+          const cleanWa = (g.whatsappNumber || "").replace(/[^0-9]/g, "");
+          setHotlineInfo({
+            phone: g.emergencyHotline || g.helpdeskPhone || "+91 70014 03498",
+            whatsapp: cleanWa || "917001403498",
+            addressSummary: g.mainAddress
+              ? `📍 Office / Departure: ${g.mainAddress}. Pickups available from Kolkata Airport & Howrah Railway Station.`
+              : "📍 Primary luxury cruise departure point at Godkhali Ghat. Pickups available from Kolkata Airport & Howrah Railway Station.",
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
+    setErrorMessage(null);
+
+    try {
+      const res = await fetch("/api/contact/inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          subject: formData.subject || "Sundarban Luxury Website Inquiry",
+          message: formData.message,
+          source: "Contact Form",
+        }),
+      });
+
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        const result = await res.json().catch(() => null);
+        setErrorMessage(
+          result?.error || "Unable to send your inquiry right now. Please call our hotline."
+        );
+      }
+    } catch (err) {
+      setErrorMessage("Network error occurred. Please try again or reach our hotline directly.");
+    } finally {
       setLoading(false);
-      setSubmitted(true);
-    }, 1000);
+    }
   };
 
   return (
@@ -148,6 +198,12 @@ export function ContactFormSection() {
                   />
                 </div>
 
+                {errorMessage && (
+                  <div className="p-3 text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-sm">
+                    {errorMessage}
+                  </div>
+                )}
+
                 {/* Submit Button */}
                 <button
                   type="submit"
@@ -201,7 +257,7 @@ export function ContactFormSection() {
               </div>
 
               <p className="text-xs text-slate-500 mt-3 font-normal">
-                📍 Primary luxury cruise departure point at Godkhali Ghat. Pickups available from Kolkata Airport & Howrah Railway Station.
+                {hotlineInfo.addressSummary}
               </p>
             </div>
 
@@ -219,14 +275,14 @@ export function ContactFormSection() {
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <a
-                  href="tel:+917001403498"
+                  href={`tel:${hotlineInfo.phone.replace(/[^0-9+]/g, "")}`}
                   className="flex-1 flex items-center justify-center gap-2 rounded-sm bg-[#064e3b] hover:bg-[#d97706] text-white py-3 px-4 font-bold text-sm transition-colors shadow-md"
                 >
                   <Phone className="w-4 h-4" />
-                  <span>+91 70014 03498</span>
+                  <span>{hotlineInfo.phone}</span>
                 </a>
                 <a
-                  href="https://wa.me/917001403498"
+                  href={`https://wa.me/${hotlineInfo.whatsapp}`}
                   target="_blank"
                   rel="noreferrer"
                   className="flex-1 flex items-center justify-center gap-2 rounded-sm bg-[#25d366] hover:bg-[#20bd5a] text-white py-3 px-4 font-bold text-sm transition-colors shadow-md"

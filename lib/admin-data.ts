@@ -463,8 +463,9 @@ export const initialAdminPackages: AdminTourPackage[] = [
     category: "Resort Stay",
     rating: 4.8,
     reviewsCount: 92,
-    image: "/assets/sonarbanglahotel.jpg",
+    image: "/assets/images/sonarbanglahotel.jpg",
     status: "Active",
+
     maxGuests: 50,
     departure: "Gosaba / Godkhali Jetty",
     pickupDrop: "Private Luxury AC Car Transfer from Kolkata Doorstep",
@@ -812,7 +813,7 @@ export const initialAdminRooms: AdminHotelRoom[] = [
     totalRooms: 16,
     availableRooms: 6,
     status: "Available",
-    image: "/assets/sonarbanglahotel.jpg",
+    image: "/assets/images/sonarbanglahotel.jpg",
     amenities: ["River Facing Balcony", "Air Conditioned", "Buffet Breakfast", "Swimming Pool Access", "Free Wi-Fi"],
   },
   {
@@ -825,7 +826,7 @@ export const initialAdminRooms: AdminHotelRoom[] = [
     totalRooms: 8,
     availableRooms: 2,
     status: "Available",
-    image: "/assets/sonarbanglahotel.jpg",
+    image: "/assets/images/sonarbanglahotel.jpg",
     amenities: ["Spacious Living Area", "Jacuzzi", "Forest & River Panorama", "Butler Service", "24/7 Dining"],
   },
   {
@@ -838,7 +839,7 @@ export const initialAdminRooms: AdminHotelRoom[] = [
     totalRooms: 20,
     availableRooms: 9,
     status: "Available",
-    image: "/assets/sonarbanglahotel.jpg",
+    image: "/assets/images/sonarbanglahotel.jpg",
     amenities: ["Garden View", "Air Conditioning", "LED TV", "Tea/Coffee Maker", "Attached Luxury Bath"],
   },
   {
@@ -851,9 +852,10 @@ export const initialAdminRooms: AdminHotelRoom[] = [
     totalRooms: 4,
     availableRooms: 0,
     status: "Sold Out",
-    image: "/assets/sonarbanglahotel.jpg",
+    image: "/assets/images/sonarbanglahotel.jpg",
     amenities: ["Private Lawn", "Direct Jetty Access", "Personal Chef", "Complimentary High Tea", "Eco-friendly Wooden Interior"],
   },
+
 ];
 
 export const initialAdminMenuItems: AdminMenuItem[] = [

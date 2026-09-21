@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, X } from "lucide-react";
 
 interface ShowcaseCard {
-  id: number;
+  id: number | string;
   title: string;
   image: string;
 }
@@ -101,9 +101,28 @@ const showcaseItems: ShowcaseCard[] = [
 
 export function HotelSonarBanglaSection() {
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
+  const [items, setItems] = useState<ShowcaseCard[]>(showcaseItems);
+
+  // Synchronize resort photos dynamically from Neon backend
+  useEffect(() => {
+    fetch("/api/hotel/photos")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success && Array.isArray(data.photos) && data.photos.length > 0) {
+          const dynamicItems: ShowcaseCard[] = data.photos.map((p: any) => ({
+            id: p.id,
+            title: p.title,
+            image: p.imageUrl,
+          }));
+          // Prepend/merge dynamic with default items
+          setItems([...dynamicItems, ...showcaseItems.slice(dynamicItems.length)]);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Duplicate items for continuous seamless infinite looping track
-  const scrollItems = [...showcaseItems, ...showcaseItems];
+  const scrollItems = [...items, ...items];
 
   return (
     <section className="py-8 md:py-16 relative overflow-hidden">
@@ -136,6 +155,7 @@ export function HotelSonarBanglaSection() {
                 fill
                 sizes="290px"
                 className="object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
+                unoptimized={item.image.startsWith("data:")}
               />
 
             </div>
@@ -173,7 +193,7 @@ export function HotelSonarBanglaSection() {
       {/* MOBILE VIEW: Only 4 Static Images in 2x2 Grid */}
       <div className="block md:hidden container relative">
         <div className="grid grid-cols-2 gap-3">
-          {showcaseItems.slice(0, 4).map((item) => (
+          {items.slice(0, 4).map((item) => (
             <div
               key={`mob-${item.id}`}
               onClick={() => setSelectedImg(item.image)}
@@ -185,6 +205,7 @@ export function HotelSonarBanglaSection() {
                 fill
                 sizes="50vw"
                 className="object-cover"
+                unoptimized={item.image.startsWith("data:")}
               />
               {/* Subtle hover overlay */}
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -341,6 +362,7 @@ export function HotelSonarBanglaSection() {
               alt="Sundarban Hotel Sonar Bangla Gallery Lightbox"
               fill
               className="object-contain"
+              unoptimized={selectedImg.startsWith("data:")}
             />
           </div>
         </div>

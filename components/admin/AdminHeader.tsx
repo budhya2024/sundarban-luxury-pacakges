@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Menu,
   Bell,
@@ -12,6 +13,7 @@ import {
   ChevronRight,
   ShieldCheck,
   CheckCircle,
+  LogOut,
 } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
 
@@ -24,8 +26,24 @@ export function AdminHeader({
   title: string;
   subtitle?: string;
 }) {
+  const router = useRouter();
   const { inquiries, bookings } = useAdmin();
   const [showNotifications, setShowNotifications] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/auth/logout", { method: "POST" });
+      router.push("/admin/login");
+      router.refresh();
+    } catch {
+      router.push("/admin/login");
+    }
+  };
 
   const pendingBookings = bookings.filter((b) => b.bookingStatus === "Pending");
   const newInquiries = inquiries.filter((i) => i.status === "New");
@@ -67,7 +85,7 @@ export function AdminHeader({
         {/* Date chip */}
         <div className="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-[3px] bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-600">
           <Calendar className="w-3.5 h-3.5 text-blue-600" />
-          <span>{todayStr}</span>
+          <span suppressHydrationWarning>{todayStr}</span>
         </div>
 
         {/* Live Public Site Shortcut */}
@@ -89,7 +107,7 @@ export function AdminHeader({
             aria-label="Notifications"
           >
             <Bell className="w-4 h-4" />
-            {unreadCount > 0 && (
+            {mounted && unreadCount > 0 && (
               <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-blue-600" />
             )}
           </button>
@@ -101,7 +119,7 @@ export function AdminHeader({
                   Notifications &amp; Activity
                 </span>
                 <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-[2px] bg-blue-50 text-blue-700 border border-blue-200">
-                  {unreadCount} Actionable
+                  {mounted ? unreadCount : 0} Actionable
                 </span>
               </div>
 
@@ -180,6 +198,14 @@ export function AdminHeader({
               Operations Lead
             </span>
           </div>
+          <button
+            onClick={handleLogout}
+            className="p-1.5 ml-1 rounded-[3px] text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+            title="Sign Out"
+            aria-label="Sign Out"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
         </div>
       </div>
     </header>

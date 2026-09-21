@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -16,6 +16,7 @@ import {
     X,
     Globe,
 } from "lucide-react";
+import { useAdmin } from "@/context/AdminContext";
 
 interface NavItem {
     label: string;
@@ -24,41 +25,12 @@ interface NavItem {
     dropdownItems?: { label: string; href: string }[];
 }
 
-const navItems: NavItem[] = [
-    {
-        label: "Home",
-        href: "/",
-    },
-    {
-        label: "About Us",
-        href: "/about",
-    },
-    {
-        label: "Trip",
-        href: "#trip",
-        hasDropdown: true,
-        dropdownItems: [
-            { label: "1 Day Tour", href: "/tour/sundarban-1-day-tour" },
-            { label: "2 Days 1 Night", href: "/tour/1-night-2-days-luxury-cruise" },
-            { label: "3 Days 2 Nights Luxury", href: "/tour/2-nights-3-days-tiger-trail" },
-        ],
-    },
-    {
-        label: "Hotel",
-        href: "/hotel-sonar-bangla",
-    },
-    {
-        label: "Gallery",
-        href: "/gallery",
-    },
-    {
-        label: "Blog",
-        href: "/blog",
-    },
-    {
-        label: "Contact Us",
-        href: "/contact",
-    },
+const DEFAULT_TRIP_DROPDOWN = [
+    { label: "1 Night 2 Days Luxury Cruise Package", href: "/tour/1-night-2-days-luxury-cruise" },
+    { label: "2 Nights 3 Days Complete Tiger Trail Expedition", href: "/tour/2-nights-3-days-tiger-trail" },
+    { label: "Hotel Sonar Bangla 5-Star Resort Stay & Cruise", href: "/tour/hotel-sonar-bangla-resort-package" },
+    { label: "1 Day Sundarban Day Safari", href: "/tour/1-day-sundarban-day-safari" },
+    { label: "Private Luxury Houseboat Royal Charter", href: "/tour/private-luxury-houseboat-charter" },
 ];
 
 function SundarbanLogo() {
@@ -78,11 +50,87 @@ function SundarbanLogo() {
 
 export function Header() {
     const pathname = usePathname();
+    const { packages } = useAdmin();
+    const [apiTripItems, setApiTripItems] = useState<{ label: string; href: string }[] | null>(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [isPastHero, setIsPastHero] = useState(false);
     const [isRevealed, setIsRevealed] = useState(false);
     const lastScrollY = useRef(0);
+
+    // Fetch live tour packages sorted by createdAt ascending
+    useEffect(() => {
+        fetch("/api/packages?sort=createdAt_asc&status=Active")
+            .then((res) => (res.ok ? res.json() : null))
+            .then((data) => {
+                if (data?.success && Array.isArray(data.packages) && data.packages.length > 0) {
+                    setApiTripItems(
+                        data.packages.map((pkg: any) => ({
+                            label: pkg.name,
+                            href: `/tour/${pkg.slug}`,
+                        }))
+                    );
+                }
+            })
+            .catch(() => {});
+    }, []);
+
+    // Memoize Trip Dropdown in created datetime ascending manner
+    const tripDropdownItems = useMemo(() => {
+        if (apiTripItems && apiTripItems.length > 0) {
+            return apiTripItems;
+        }
+        if (packages && packages.length > 0) {
+            const activePkgs = [...packages].filter((p) => p.status === "Active");
+            activePkgs.sort((a, b) => {
+                const timeA = (a as any).createdAt ? new Date((a as any).createdAt).getTime() : 0;
+                const timeB = (b as any).createdAt ? new Date((b as any).createdAt).getTime() : 0;
+                return timeA - timeB;
+            });
+            return activePkgs.map((pkg) => ({
+                label: pkg.name,
+                href: `/tour/${pkg.slug}`,
+            }));
+        }
+        return DEFAULT_TRIP_DROPDOWN;
+    }, [apiTripItems, packages]);
+
+    const navItems: NavItem[] = useMemo(
+        () => [
+            {
+                label: "Home",
+                href: "/",
+            },
+            {
+                label: "About Us",
+                href: "/about",
+            },
+            {
+                label: "Trip",
+                href: "#trip",
+                hasDropdown: true,
+                dropdownItems: tripDropdownItems,
+            },
+            {
+                label: "Hotel",
+                href: "/hotel-sonar-bangla",
+            },
+            {
+                label: "Gallery",
+                href: "/gallery",
+            },
+            {
+                label: "Blog",
+                href: "/blog",
+            },
+            {
+                label: "Contact Us",
+                href: "/contact",
+            },
+        ],
+        [tripDropdownItems]
+    );
+
 
     const isItemActive = (item: NavItem) => {
         if (item.href === "/" && pathname === "/") return true;

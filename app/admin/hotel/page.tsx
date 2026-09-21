@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -14,10 +14,17 @@ import {
   Calendar,
   Eye,
   X,
+  Edit,
+  BedDouble,
+  Users,
+  CheckCircle2,
+  Sparkles,
 } from "lucide-react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { ImageUploadDropzone } from "@/components/admin/ImageUploadDropzone";
+import { RoomModal } from "@/components/admin/RoomModal";
 import { useAdmin } from "@/context/AdminContext";
+import { AdminHotelRoom } from "@/lib/admin-data";
 
 interface ResortPhoto {
   id: string;
@@ -198,7 +205,7 @@ const initialHotelInquiries: HotelInquiry[] = [
 
 export default function AdminHotelPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"photos" | "inquiries">("photos");
+  const [activeTab, setActiveTab] = useState<"photos" | "inquiries" | "rooms">("photos");
 
   // Photos state
   const [resortPhotos, setResortPhotos] = useState<ResortPhoto[]>(initialResortPhotos);
@@ -213,47 +220,167 @@ export default function AdminHotelPage() {
   const [inquiryStatusFilter, setInquiryStatusFilter] = useState("all");
   const [selectedInquiry, setSelectedInquiry] = useState<HotelInquiry | null>(null);
 
-  const { showToast } = useAdmin();
+  // Room Inventory State
+  const [roomModalOpen, setRoomModalOpen] = useState(false);
+  const [editingRoom, setEditingRoom] = useState<AdminHotelRoom | null>(null);
+
+  const { rooms, addRoom, updateRoom, deleteRoom, showToast, updateBookingStatus, deleteBooking, refreshBookings } = useAdmin();
+
+  // Synchronize live data from Neon backend
+  useEffect(() => {
+    fetch("/api/admin/hotel/photos")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success && Array.isArray(data.photos) && data.photos.length > 0) {
+          setResortPhotos(data.photos);
+        }
+      })
+      .catch(() => {});
+
+    const fetchInquiries = () => {
+      fetch("/api/admin/hotel/inquiries")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (data?.success && Array.isArray(data.inquiries) && data.inquiries.length > 0) {
+            setHotelInquiries(data.inquiries);
+          }
+        })
+        .catch(() => {});
+    };
+
+    fetchInquiries();
+    const interval = setInterval(fetchInquiries, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Photo Handlers
-  const handleAddPhotoSubmit = (e: React.FormEvent) => {
+  const handleAddPhotoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newPhotoTitle.trim() || !newPhotoUrl.trim()) return;
 
-    const newPhoto: ResortPhoto = {
-      id: `ph-${Date.now()}`,
-      title: newPhotoTitle,
-      category: newPhotoCategory,
-      imageUrl: newPhotoUrl,
-      featured: false,
-    };
+    try {
+      const res = await fetch("/api/admin/hotel/photos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: newPhotoTitle.trim(),
+          category: newPhotoCategory,
+          imageUrl: newPhotoUrl.trim(),
+        }),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok && data?.success && data.photo) {
+        setResortPhotos((prev) => [data.photo, ...prev]);
+        showToast("Uploaded new resort photo successfully!");
+      } else {
+        showToast(data?.error || "Failed to upload photo");
+      }
+    } catch (err) {
+      console.error("Error creating photo:", err);
+      const newPhoto: ResortPhoto = {
+        id: `ph-${Date.now()}`,
+        title: newPhotoTitle,
+        category: newPhotoCategory,
+        imageUrl: newPhotoUrl,
+        featured: false,
+      };
+      setResortPhotos([newPhoto, ...resortPhotos]);
+      showToast("Uploaded photo locally.");
+    }
 
-    setResortPhotos([newPhoto, ...resortPhotos]);
     setNewPhotoTitle("");
     setNewPhotoUrl("");
     setAddPhotoModalOpen(false);
-    showToast("Uploaded new resort photo successfully!");
   };
 
-  const handleDeletePhoto = (id: string) => {
+  const handleDeletePhoto = async (id: string) => {
     if (confirm("Are you sure you want to remove this photo?")) {
-      setResortPhotos(resortPhotos.filter((p) => p.id !== id));
-      showToast("Removed resort photo.");
+      setResortPhotos((prev) => prev.filter((p) => p.id !== id));
+      try {
+        const res = await fetch(`/api/admin/hotel/photos/${encodeURIComponent(id)}`, {
+          method: "DELETE",
+        });
+        const data = await res.json().catch(() => null);
+        if (res.ok && data?.success) {
+          showToast("Removed resort photo.");
+        } else {
+          showToast(data?.error || "Failed to remove photo on server.");
+        }
+      } catch (err) {
+        console.error("Error deleting photo:", err);
+        showToast("Removed photo locally.");
+      }
     }
   };
 
   // Inquiry Status Handler
-  const handleToggleInquiryStatus = (id: string, nextStatus: HotelInquiry["status"]) => {
-    setHotelInquiries(
-      hotelInquiries.map((inq) => (inq.id === id ? { ...inq, status: nextStatus } : inq))
+  const handleToggleInquiryStatus = async (id: string, nextStatus: HotelInquiry["status"]) => {
+    setHotelInquiries((prev) =>
+      prev.map((inq) => (inq.id === id ? { ...inq, status: nextStatus } : inq))
     );
-    showToast(`Updated booking inquiry status to ${nextStatus}`);
+
+    // Immediately update unified bookings in context so notification bell clears instantly
+    const mappedBookingStatus =
+      nextStatus === "Checked In" ? "Confirmed" : nextStatus;
+    updateBookingStatus(`b-${id}`, mappedBookingStatus);
+
+    try {
+      const res = await fetch(`/api/admin/hotel/inquiries/${encodeURIComponent(id)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: nextStatus }),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok && data?.success) {
+        showToast(`Updated booking inquiry status to ${nextStatus}`);
+        refreshBookings?.();
+      } else {
+        showToast(data?.error || "Failed to update inquiry status.");
+      }
+    } catch (err) {
+      console.error("Failed to update inquiry:", err);
+      showToast(`Updated status locally to ${nextStatus}`);
+    }
   };
 
-  const handleDeleteInquiry = (id: string, refId: string) => {
+  const handleDeleteInquiry = async (id: string, refId: string) => {
     if (confirm(`Delete inquiry #${refId}?`)) {
-      setHotelInquiries(hotelInquiries.filter((inq) => inq.id !== id));
-      showToast(`Deleted inquiry #${refId}`);
+      setHotelInquiries((prev) => prev.filter((inq) => inq.id !== id));
+      // Immediately delete from unified bookings in context
+      deleteBooking(`b-${id}`);
+
+      try {
+        const res = await fetch(`/api/admin/hotel/inquiries/${encodeURIComponent(id)}`, {
+          method: "DELETE",
+        });
+        const data = await res.json().catch(() => null);
+        if (res.ok && data?.success) {
+          showToast(`Deleted inquiry #${refId}`);
+          refreshBookings?.();
+        } else {
+          showToast(data?.error || "Failed to delete inquiry on server.");
+        }
+      } catch (err) {
+        console.error("Failed to delete inquiry:", err);
+        showToast(`Deleted inquiry #${refId} locally`);
+      }
+    }
+  };
+
+  // Room Handlers
+  const handleSaveRoom = (roomData: Omit<AdminHotelRoom, "id">) => {
+    if (editingRoom) {
+      updateRoom(editingRoom.id, roomData);
+    } else {
+      addRoom(roomData);
+    }
+    setRoomModalOpen(false);
+    setEditingRoom(null);
+  };
+
+  const handleDeleteRoom = (id: string, roomName: string) => {
+    if (confirm(`Delete room category "${roomName}"?`)) {
+      deleteRoom(id);
     }
   };
 
@@ -308,6 +435,17 @@ export default function AdminHotelPage() {
                 {hotelInquiries.filter((i) => i.status === "Pending").length}
               </span>
             )}
+          </button>
+
+          <button
+            onClick={() => setActiveTab("rooms")}
+            className={`px-4 py-2 text-xs font-bold rounded-[3px] transition-all flex items-center gap-2 ${activeTab === "rooms"
+              ? "bg-blue-600 text-white shadow-xs"
+              : "text-slate-600 hover:bg-slate-200/60"
+              }`}
+          >
+            <Building2 className="w-4 h-4" />
+            <span>Room Inventory ({rooms.length})</span>
           </button>
         </div>
 
@@ -551,6 +689,164 @@ export default function AdminHotelPage() {
             </div>
           </div>
         )}
+
+        {/* TAB 3: RESORT ROOM INVENTORY & SUITES */}
+        {activeTab === "rooms" && (
+          <div className="space-y-6">
+            {/* KPI Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="p-3.5 bg-white border border-slate-200 rounded-[4px] shadow-2xs">
+                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Room Categories</div>
+                <div className="text-xl font-bold text-slate-900 mt-0.5">{rooms.length}</div>
+              </div>
+              <div className="p-3.5 bg-white border border-slate-200 rounded-[4px] shadow-2xs">
+                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Total Units</div>
+                <div className="text-xl font-bold text-slate-900 mt-0.5">
+                  {rooms.reduce((sum, r) => sum + (r.totalRooms || 0), 0)}
+                </div>
+              </div>
+              <div className="p-3.5 bg-white border border-slate-200 rounded-[4px] shadow-2xs">
+                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Available Units</div>
+                <div className="text-xl font-bold text-emerald-600 mt-0.5">
+                  {rooms.reduce((sum, r) => sum + (r.availableRooms || 0), 0)}
+                </div>
+              </div>
+              <div className="p-3.5 bg-white border border-slate-200 rounded-[4px] shadow-2xs">
+                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Active Inventory</div>
+                <div className="text-xl font-bold text-blue-600 mt-0.5">
+                  {rooms.filter((r) => r.status === "Available").length}
+                </div>
+              </div>
+            </div>
+
+            {/* Header & Add Room */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 rounded-[4px] border border-slate-200">
+              <div>
+                <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                  <Building2 className="w-4 h-4 text-blue-600" />
+                  <span>Resort Rooms &amp; Suites Inventory</span>
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Manage hotel room categories, nightly rates, guest capacities, and room allocations.
+                </p>
+              </div>
+
+              <button
+                onClick={() => {
+                  setEditingRoom(null);
+                  setRoomModalOpen(true);
+                }}
+                className="px-3.5 py-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-[3px] flex items-center gap-1.5 shadow-xs transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add Room Category</span>
+              </button>
+            </div>
+
+            {/* Room Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {rooms.map((room) => (
+                <div
+                  key={room.id}
+                  className="bg-white border border-slate-200 rounded-[4px] shadow-2xs overflow-hidden flex flex-col group hover:shadow-xs transition-all"
+                >
+                  <div className="relative h-44 w-full bg-slate-100 overflow-hidden">
+                    <Image
+                      src={room.image || "/assets/images/sonarbanglahotel.jpg"}
+                      alt={room.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      unoptimized={room.image?.startsWith("data:")}
+                    />
+                    <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+                      <span className="px-2 py-0.5 rounded-[2px] bg-slate-900/90 text-white font-mono font-bold text-[10px]">
+                        {room.code}
+                      </span>
+                      <span
+                        className={`px-2 py-0.5 rounded-[2px] font-bold text-[10px] ${
+                          room.status === "Available"
+                            ? "bg-emerald-600 text-white"
+                            : room.status === "Sold Out"
+                            ? "bg-rose-600 text-white"
+                            : "bg-amber-500 text-slate-900"
+                        }`}
+                      >
+                        {room.status}
+                      </span>
+                    </div>
+
+                    <div className="absolute top-2.5 right-2.5 flex items-center gap-1">
+                      <button
+                        onClick={() => {
+                          setEditingRoom(room);
+                          setRoomModalOpen(true);
+                        }}
+                        className="p-1.5 rounded-full bg-white/90 text-slate-700 hover:bg-white hover:text-blue-600 transition-colors shadow-xs"
+                        title="Edit Room"
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteRoom(room.id, room.name)}
+                        className="p-1.5 rounded-full bg-rose-600/90 text-white hover:bg-rose-700 transition-colors shadow-xs"
+                        title="Delete Room"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                    <div>
+                      <div className="flex items-baseline justify-between gap-2">
+                        <h4 className="text-sm font-bold text-slate-900 line-clamp-1">{room.name}</h4>
+                      </div>
+                      <div className="mt-1 flex items-baseline gap-1">
+                        <span className="text-base font-extrabold text-blue-700">₹{room.pricePerNight.toLocaleString()}</span>
+                        <span className="text-[11px] text-slate-500 font-medium">/ night</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5 pt-2 border-t border-slate-100 text-xs text-slate-600">
+                      <div className="flex items-center gap-2">
+                        <Users className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                        <span className="truncate">{room.capacity}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <BedDouble className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                        <span className="truncate">{room.bedType}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-[11px] pt-1">
+                        <span className="text-slate-500 font-medium">Availability</span>
+                        <span className="font-bold text-slate-900">
+                          {room.availableRooms} / {room.totalRooms} rooms
+                        </span>
+                      </div>
+                    </div>
+
+                    {room.amenities && room.amenities.length > 0 && (
+                      <div className="flex flex-wrap gap-1 pt-1">
+                        {room.amenities.slice(0, 3).map((amenity, idx) => (
+                          <span
+                            key={idx}
+                            className="px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded-[2px] text-[10px] font-medium"
+                          >
+                            {amenity}
+                          </span>
+                        ))}
+                        {room.amenities.length > 3 && (
+                          <span className="px-1.5 py-0.5 bg-slate-100 text-slate-500 rounded-[2px] text-[10px] font-medium">
+                            +{room.amenities.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </main>
 
       {/* Add Resort Photo Modal */}
@@ -715,6 +1011,17 @@ export default function AdminHotelPage() {
           </div>
         </div>
       )}
+
+      {/* Room Modal */}
+      <RoomModal
+        isOpen={roomModalOpen}
+        onClose={() => {
+          setRoomModalOpen(false);
+          setEditingRoom(null);
+        }}
+        initialRoom={editingRoom}
+        onSave={handleSaveRoom}
+      />
     </div>
   );
 }

@@ -26,10 +26,8 @@ import {
   Link as LinkIcon,
   Image as ImageIcon,
   Table as TableIcon,
-  Minus,
   Sparkles,
   AlertCircle,
-  HelpCircle,
   Undo2,
   Redo2,
   Calendar,
@@ -41,12 +39,8 @@ import {
   FileText,
   Search,
   ExternalLink,
-  ChevronRight,
-  Globe,
-  Settings,
   X,
   UploadCloud,
-  Check,
 } from "lucide-react";
 
 const AUTHORS_PRESETS = [
@@ -92,6 +86,170 @@ const SAMPLE_GALLERY_IMAGES = [
   "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80",
 ];
 
+// Helper to render markdown content in Live Preview accurately
+function MarkdownPreviewRenderer({ content }: { content: string }) {
+  if (!content) {
+    return <em className="text-slate-400">No content written yet...</em>;
+  }
+
+  const lines = content.split("\n");
+  const elements: React.ReactNode[] = [];
+  let inList = false;
+  let listItems: string[] = [];
+
+  const flushList = () => {
+    if (inList && listItems.length > 0) {
+      elements.push(
+        <ul key={`list-${elements.length}`} className="list-disc pl-5 space-y-1 my-3 text-slate-700">
+          {listItems.map((item, i) => (
+            <li key={i}>{formatInline(item)}</li>
+          ))}
+        </ul>
+      );
+      listItems = [];
+      inList = false;
+    }
+  };
+
+  const formatInline = (text: string): React.ReactNode => {
+    // Basic inline formatting: bold, italic, code, links
+    const parts = text.split(/(\*\*.*?\*\*|\*.*?\*|`.*?`|\[.*?\]\(.*?\)|<u>.*?<\/u>|~~.*?~~)/g);
+    return parts.map((part, index) => {
+      if (part.startsWith("**") && part.endsWith("**")) {
+        return <strong key={index} className="font-bold text-slate-900">{part.slice(2, -2)}</strong>;
+      }
+      if (part.startsWith("*") && part.endsWith("*") && !part.startsWith("**")) {
+        return <em key={index} className="italic">{part.slice(1, -1)}</em>;
+      }
+      if (part.startsWith("`") && part.endsWith("`")) {
+        return <code key={index} className="px-1.5 py-0.5 rounded bg-slate-100 font-mono text-xs text-rose-600">{part.slice(1, -1)}</code>;
+      }
+      if (part.startsWith("<u>") && part.endsWith("</u>")) {
+        return <span key={index} className="underline">{part.slice(3, -4)}</span>;
+      }
+      if (part.startsWith("~~") && part.endsWith("~~")) {
+        return <span key={index} className="line-through text-slate-400">{part.slice(2, -2)}</span>;
+      }
+      const linkMatch = part.match(/^\[(.*?)\]\((.*?)\)$/);
+      if (linkMatch) {
+        return (
+          <a key={index} href={linkMatch[2]} target="_blank" rel="noreferrer" className="text-blue-600 underline font-semibold hover:text-blue-800">
+            {linkMatch[1]}
+          </a>
+        );
+      }
+      return part;
+    });
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Image markdown: ![alt](url)
+    const imgMatch = line.match(/^!\[(.*?)\]\((.*?)\)$/);
+    if (imgMatch) {
+      flushList();
+      elements.push(
+        <div key={i} className="my-5 rounded-lg overflow-hidden border border-slate-200 bg-slate-50">
+          <div className="relative h-64 sm:h-80 w-full">
+            <Image src={imgMatch[2]} alt={imgMatch[1] || "Article Photo"} fill className="object-cover" unoptimized={imgMatch[2].startsWith("data:")} />
+          </div>
+          {imgMatch[1] && (
+            <p className="text-xs text-slate-500 italic p-2 text-center bg-slate-50 border-t border-slate-100">
+              {imgMatch[1]}
+            </p>
+          )}
+        </div>
+      );
+      continue;
+    }
+
+    // Headings
+    if (line.startsWith("### ")) {
+      flushList();
+      elements.push(
+        <h3 key={i} className="text-lg font-bold text-slate-900 mt-5 mb-2">
+          {formatInline(line.slice(4))}
+        </h3>
+      );
+      continue;
+    }
+    if (line.startsWith("## ")) {
+      flushList();
+      elements.push(
+        <h2 key={i} className="text-xl font-black text-slate-900 mt-6 mb-3 pb-1 border-b border-slate-100">
+          {formatInline(line.slice(3))}
+        </h2>
+      );
+      continue;
+    }
+    if (line.startsWith("# ")) {
+      flushList();
+      elements.push(
+        <h1 key={i} className="text-2xl font-black text-slate-900 mt-6 mb-3">
+          {formatInline(line.slice(2))}
+        </h1>
+      );
+      continue;
+    }
+
+    // Blockquote & Callouts
+    if (line.startsWith("> ")) {
+      flushList();
+      const quoteText = line.slice(2);
+      elements.push(
+        <blockquote key={i} className="border-l-4 border-[#d97706] pl-4 py-2 my-4 bg-amber-50/50 rounded-r text-slate-800 italic text-sm">
+          {formatInline(quoteText)}
+        </blockquote>
+      );
+      continue;
+    }
+
+    // Lists
+    if (line.startsWith("- ") || line.startsWith("* ")) {
+      inList = true;
+      listItems.push(line.slice(2));
+      continue;
+    }
+
+    // Table rows
+    if (line.startsWith("|") && line.endsWith("|")) {
+      flushList();
+      const cells = line.split("|").filter((c) => c.trim().length > 0);
+      if (cells.some((c) => c.includes("---"))) {
+        continue; // delimiter row
+      }
+      elements.push(
+        <div key={i} className="my-1 overflow-x-auto">
+          <div className="grid grid-flow-col auto-cols-fr gap-2 p-2 bg-slate-50 border border-slate-200 text-xs font-medium rounded">
+            {cells.map((cell, cIdx) => (
+              <div key={cIdx} className="text-slate-800">{formatInline(cell.trim())}</div>
+            ))}
+          </div>
+        </div>
+      );
+      continue;
+    }
+
+    // Empty line
+    if (!line.trim()) {
+      flushList();
+      continue;
+    }
+
+    // Normal paragraph
+    flushList();
+    elements.push(
+      <p key={i} className="text-sm leading-relaxed text-slate-700 my-3">
+        {formatInline(line)}
+      </p>
+    );
+  }
+
+  flushList();
+  return <div className="space-y-1">{elements}</div>;
+}
+
 function WordPressBlogEditorContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -126,6 +284,11 @@ function WordPressBlogEditorContent() {
   const [viewMode, setViewMode] = useState<"edit" | "split" | "preview">("edit");
   const [activeInspectorTab, setActiveInspectorTab] = useState<"document" | "seo">("document");
   const [isSaved, setIsSaved] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // History states for Undo / Redo
+  const [history, setHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
 
   // Modals for insert tool
   const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
@@ -139,29 +302,106 @@ function WordPressBlogEditorContent() {
 
   const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Load existing post if editing
+  // Load existing post if editing from API, fallback to context
   useEffect(() => {
     if (editSlug) {
-      const existing = blogPostsList.find((p) => p.slug === editSlug);
-      if (existing) {
-        setTitle(existing.title);
-        setSlug(existing.slug);
-        setIsSlugManual(true);
-        setExcerpt(existing.excerpt);
-        setContent(existing.content);
-        setFeaturedImage(existing.image || SAMPLE_GALLERY_IMAGES[0]);
-        setCategory(existing.category || "Wildlife");
-        setPublishDate(existing.date || "Today");
-        setSelectedAuthor(existing.author || AUTHORS_PRESETS[0].name);
-        setAuthorImage(existing.authorImage || AUTHORS_PRESETS[0].image);
-        setTags(existing.tags || ["Sundarban"]);
-        setStatus(existing.status || "Published");
-        setIsFeatured(existing.featured || false);
-        setMetaTitle(existing.metaTitle || existing.title);
-        setMetaDescription(existing.metaDescription || existing.excerpt);
-      }
+      fetch(`/api/admin/blog/${editSlug}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success && data.post) {
+            const p = data.post;
+            setTitle(p.title || "");
+            setSlug(p.slug || "");
+            setIsSlugManual(true);
+            setExcerpt(p.excerpt || "");
+            setContent(p.content || "");
+            setFeaturedImage(p.image || SAMPLE_GALLERY_IMAGES[0]);
+            setCategory(p.category || "Wildlife");
+            setPublishDate(p.date || "Today");
+            setSelectedAuthor(p.author || AUTHORS_PRESETS[0].name);
+            setAuthorImage(p.authorImage || AUTHORS_PRESETS[0].image);
+            setTags(Array.isArray(p.tags) ? p.tags : ["Sundarban"]);
+            setStatus(p.status || "Published");
+            setIsFeatured(p.featured || false);
+            setMetaTitle(p.metaTitle || p.title);
+            setMetaDescription(p.metaDescription || p.excerpt);
+            setHistory([p.content || ""]);
+            setHistoryIndex(0);
+            return;
+          }
+          // Fallback to blogPostsList
+          const existing = blogPostsList.find((p) => p.slug === editSlug);
+          if (existing) {
+            setTitle(existing.title);
+            setSlug(existing.slug);
+            setIsSlugManual(true);
+            setExcerpt(existing.excerpt);
+            setContent(existing.content);
+            setFeaturedImage(existing.image || SAMPLE_GALLERY_IMAGES[0]);
+            setCategory(existing.category || "Wildlife");
+            setPublishDate(existing.date || "Today");
+            setSelectedAuthor(existing.author || AUTHORS_PRESETS[0].name);
+            setAuthorImage(existing.authorImage || AUTHORS_PRESETS[0].image);
+            setTags(existing.tags || ["Sundarban"]);
+            setStatus(existing.status || "Published");
+            setIsFeatured(existing.featured || false);
+            setMetaTitle(existing.metaTitle || existing.title);
+            setMetaDescription(existing.metaDescription || existing.excerpt);
+            setHistory([existing.content || ""]);
+            setHistoryIndex(0);
+          }
+        })
+        .catch(() => {
+          const existing = blogPostsList.find((p) => p.slug === editSlug);
+          if (existing) {
+            setTitle(existing.title);
+            setSlug(existing.slug);
+            setIsSlugManual(true);
+            setExcerpt(existing.excerpt);
+            setContent(existing.content);
+            setFeaturedImage(existing.image || SAMPLE_GALLERY_IMAGES[0]);
+            setCategory(existing.category || "Wildlife");
+            setPublishDate(existing.date || "Today");
+            setSelectedAuthor(existing.author || AUTHORS_PRESETS[0].name);
+            setAuthorImage(existing.authorImage || AUTHORS_PRESETS[0].image);
+            setTags(existing.tags || ["Sundarban"]);
+            setStatus(existing.status || "Published");
+            setIsFeatured(existing.featured || false);
+            setMetaTitle(existing.metaTitle || existing.title);
+            setMetaDescription(existing.metaDescription || existing.excerpt);
+            setHistory([existing.content || ""]);
+            setHistoryIndex(0);
+          }
+        });
     }
-  }, [editSlug, blogPostsList]);
+  }, [editSlug]);
+
+  // Push to history when content changes
+  const setContentWithHistory = (newVal: string) => {
+    setContent(newVal);
+    setIsSaved(false);
+    setHistory((prev) => {
+      const next = prev.slice(0, historyIndex + 1);
+      return [...next, newVal];
+    });
+    setHistoryIndex((prev) => prev + 1);
+  };
+
+  const handleUndo = () => {
+    if (historyIndex > 0) {
+      const nextIdx = historyIndex - 1;
+      setHistoryIndex(nextIdx);
+      setContent(history[nextIdx]);
+    }
+  };
+
+  const handleRedo = () => {
+    if (historyIndex < history.length - 1) {
+      const nextIdx = historyIndex + 1;
+      setHistoryIndex(nextIdx);
+      setContent(history[nextIdx]);
+    }
+  };
 
   // Auto-generate slug and meta title from Title if not manual
   const handleTitleChange = (newTitle: string) => {
@@ -218,13 +458,34 @@ function WordPressBlogEditorContent() {
     const replacement = `${prefix}${selectedText}${suffix}`;
     const newContent = content.substring(0, start) + replacement + content.substring(end);
 
-    setContent(newContent);
-    setIsSaved(false);
+    setContentWithHistory(newContent);
 
     setTimeout(() => {
       textarea.focus();
       textarea.setSelectionRange(start + prefix.length, start + prefix.length + selectedText.length);
     }, 10);
+  };
+
+  // Keyboard shortcut listener for textarea
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "b") {
+      e.preventDefault();
+      insertFormatting("**", "**", "bold text");
+    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "i") {
+      e.preventDefault();
+      insertFormatting("*", "*", "italic text");
+    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
+      if (e.shiftKey) {
+        e.preventDefault();
+        handleRedo();
+      } else {
+        e.preventDefault();
+        handleUndo();
+      }
+    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y") {
+      e.preventDefault();
+      handleRedo();
+    }
   };
 
   const handleInsertLink = (e: React.FormEvent) => {
@@ -240,7 +501,7 @@ function WordPressBlogEditorContent() {
   const handleInsertImage = (e: React.FormEvent) => {
     e.preventDefault();
     if (!imageUrl) return;
-    const formatted = `\n![${imageAlt || "Sundarban image"}](${imageUrl})\n*${imageCaption || imageAlt}*\n`;
+    const formatted = `\n![${imageAlt || "Sundarban image"}](${imageUrl})\n`;
     insertFormatting(formatted, "", "");
     setImageUrl("");
     setImageAlt("");
@@ -271,8 +532,8 @@ function WordPressBlogEditorContent() {
     insertFormatting(callout, "", "");
   };
 
-  // Save/Publish Post
-  const handleSaveOrPublish = (postStatus: "Published" | "Draft" = status === "Draft" ? "Draft" : "Published") => {
+  // Save/Publish Post via API + Context
+  const handleSaveOrPublish = async (postStatus: "Published" | "Draft" = status === "Draft" ? "Draft" : "Published") => {
     if (!title.trim()) {
       alert("Please provide an article title before saving.");
       return;
@@ -298,16 +559,48 @@ function WordPressBlogEditorContent() {
       metaDescription: metaDescription || excerpt,
     };
 
-    if (editSlug) {
-      updateBlogPost(editSlug, postData);
-      showToast(`Updated article "${title}" successfully`);
-    } else {
-      addBlogPost(postData);
-      showToast(`Published new article "${title}" successfully`);
-    }
+    setIsSubmitting(true);
 
-    setIsSaved(true);
-    router.push("/admin/blog");
+    try {
+      if (editSlug) {
+        const res = await fetch(`/api/admin/blog/${editSlug}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(postData),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to update article");
+        updateBlogPost(editSlug, postData);
+        showToast(`Updated article "${title}" successfully`);
+      } else {
+        const res = await fetch("/api/admin/blog", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(postData),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to create article");
+        addBlogPost(data.post || postData);
+        showToast(`Published new article "${title}" successfully`);
+      }
+
+      setIsSaved(true);
+      router.push("/admin/blog");
+      router.refresh();
+    } catch (err: any) {
+      console.error(err);
+      // Fallback update to context
+      if (editSlug) {
+        updateBlogPost(editSlug, postData);
+      } else {
+        addBlogPost(postData);
+      }
+      showToast(err?.message || `Saved article "${title}"`);
+      setIsSaved(true);
+      router.push("/admin/blog");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -366,7 +659,8 @@ function WordPressBlogEditorContent() {
 
           <button
             onClick={() => handleSaveOrPublish("Draft")}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-[3px] transition-colors"
+            disabled={isSubmitting}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-[3px] transition-colors disabled:opacity-50"
           >
             <Save className="w-3.5 h-3.5 text-slate-400" />
             <span className="hidden sm:inline">Save Draft</span>
@@ -374,9 +668,14 @@ function WordPressBlogEditorContent() {
 
           <button
             onClick={() => handleSaveOrPublish("Published")}
-            className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-black text-white bg-blue-600 hover:bg-blue-500 rounded-[3px] shadow-sm transition-colors"
+            disabled={isSubmitting}
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-black text-white bg-blue-600 hover:bg-blue-500 rounded-[3px] shadow-sm transition-colors disabled:opacity-50 cursor-pointer"
           >
-            <Send className="w-3.5 h-3.5" />
+            {isSubmitting ? (
+              <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+            ) : (
+              <Send className="w-3.5 h-3.5" />
+            )}
             <span>{editSlug ? "Update & Publish" : "Publish Now"}</span>
           </button>
         </div>
@@ -399,12 +698,10 @@ function WordPressBlogEditorContent() {
                 />
               </div>
 
-              {/* Permalink URL */}
-              <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 text-xs">
-                <span className="font-bold text-slate-400 flex items-center gap-1">
-                  <Globe className="w-3.5 h-3.5" /> Permalink:
-                </span>
-                <span className="text-slate-500 font-mono">/blog/</span>
+              {/* Permalink bar */}
+              <div className="flex items-center flex-wrap gap-2 text-xs text-slate-500 pt-2 border-t border-slate-100">
+                <span className="font-semibold text-slate-400">Permalink:</span>
+                <span className="font-mono text-slate-600">/blog/</span>
                 <input
                   type="text"
                   value={slug}
@@ -430,6 +727,28 @@ function WordPressBlogEditorContent() {
 
             {/* STICKY RICH WORDPRESS EDITOR TOOLBAR */}
             <div className="sticky top-[53px] z-30 bg-white/95 backdrop-blur-md border border-slate-200 rounded-[4px] shadow-sm p-1.5 flex flex-wrap items-center gap-1">
+              {/* Undo / Redo */}
+              <div className="flex items-center border-r border-slate-200 pr-1 mr-1 gap-0.5">
+                <button
+                  type="button"
+                  onClick={handleUndo}
+                  disabled={historyIndex <= 0}
+                  className="p-1.5 hover:bg-slate-100 rounded text-slate-700 disabled:opacity-30"
+                  title="Undo (Ctrl+Z)"
+                >
+                  <Undo2 className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleRedo}
+                  disabled={historyIndex >= history.length - 1}
+                  className="p-1.5 hover:bg-slate-100 rounded text-slate-700 disabled:opacity-30"
+                  title="Redo (Ctrl+Y)"
+                >
+                  <Redo2 className="w-4 h-4" />
+                </button>
+              </div>
+
               {/* Headings */}
               <div className="flex items-center border-r border-slate-200 pr-1 mr-1">
                 <button
@@ -490,7 +809,7 @@ function WordPressBlogEditorContent() {
                   <List className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => insertFormatting("\n1. ", "", "Numbered list item")}
+                  onClick={() => insertFormatting("\n1. ", "", "Numbered item")}
                   className="p-1.5 hover:bg-slate-100 rounded text-slate-700 text-xs"
                   title="Numbered List"
                 >
@@ -579,10 +898,8 @@ function WordPressBlogEditorContent() {
                     ref={contentTextareaRef}
                     rows={20}
                     value={content}
-                    onChange={(e) => {
-                      setContent(e.target.value);
-                      setIsSaved(false);
-                    }}
+                    onChange={(e) => setContentWithHistory(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     placeholder={`Write your article story here... You can use headings (##), lists (-), quotes (>), bold (**word**), links, images, tables, and callouts.`}
                     className="w-full p-6 text-sm font-sans text-slate-800 focus:outline-none leading-relaxed border-none resize-y min-h-[450px]"
                   />
@@ -615,6 +932,7 @@ function WordPressBlogEditorContent() {
                           alt={title || "Featured Image"}
                           fill
                           className="object-cover"
+                          unoptimized={featuredImage.startsWith("data:")}
                         />
                       </div>
                     )}
@@ -623,7 +941,7 @@ function WordPressBlogEditorContent() {
 
                     <div className="flex items-center gap-3 text-xs text-slate-500 pb-3 border-b border-slate-200">
                       <div className="relative w-6 h-6 rounded-full overflow-hidden bg-slate-200">
-                        <Image src={authorImage} alt={selectedAuthor} fill className="object-cover" />
+                        <Image src={authorImage} alt={selectedAuthor} fill className="object-cover" unoptimized={authorImage.startsWith("data:")} />
                       </div>
                       <span className="font-bold text-slate-700">{selectedAuthor}</span>
                       <span>•</span>
@@ -632,10 +950,8 @@ function WordPressBlogEditorContent() {
                       <span className="font-mono text-blue-600 font-bold">{calculatedReadTime}</span>
                     </div>
 
-                    {/* Formatted Content Output */}
-                    <div className="text-sm leading-relaxed text-slate-700 whitespace-pre-wrap font-sans">
-                      {content || <em className="text-slate-400">No content written yet...</em>}
-                    </div>
+                    {/* Rich Markdown Preview Output */}
+                    <MarkdownPreviewRenderer content={content} />
                   </div>
                 </div>
               )}
@@ -653,78 +969,68 @@ function WordPressBlogEditorContent() {
                   setExcerpt(e.target.value);
                   setIsSaved(false);
                 }}
-                placeholder="A compelling 1-2 sentence preview that shows on the blog listing card..."
-                className="w-full px-3 py-2 text-xs text-slate-800 border border-slate-300 rounded focus:outline-none focus:border-blue-600 leading-relaxed"
+                placeholder="A compelling 1-2 sentence lead summary of the article..."
+                className="w-full px-3 py-2 text-xs border border-slate-300 rounded focus:outline-none focus:border-blue-600"
               />
             </div>
           </div>
         </main>
 
-        {/* Right: WordPress Inspector Sidebar */}
+        {/* Right: WordPress Gutenberg-Style Inspector Panel */}
         <aside className="w-full lg:w-80 bg-white border-t lg:border-t-0 lg:border-l border-slate-200 flex flex-col shrink-0">
           {/* Tab Switcher */}
-          <div className="flex items-center border-b border-slate-200 bg-slate-50 text-xs font-bold">
+          <div className="flex border-b border-slate-200 bg-slate-50 text-xs font-bold">
             <button
               onClick={() => setActiveInspectorTab("document")}
-              className={`flex-1 py-3 px-4 text-center border-b-2 transition-colors ${
+              className={`flex-1 py-2.5 text-center transition-colors ${
                 activeInspectorTab === "document"
-                  ? "border-blue-600 text-blue-600 bg-white"
-                  : "border-transparent text-slate-500 hover:text-slate-800"
+                  ? "bg-white text-blue-600 border-b-2 border-blue-600"
+                  : "text-slate-600 hover:text-slate-900"
               }`}
             >
               Post Settings
             </button>
             <button
               onClick={() => setActiveInspectorTab("seo")}
-              className={`flex-1 py-3 px-4 text-center border-b-2 transition-colors ${
+              className={`flex-1 py-2.5 text-center transition-colors ${
                 activeInspectorTab === "seo"
-                  ? "border-blue-600 text-blue-600 bg-white"
-                  : "border-transparent text-slate-500 hover:text-slate-800"
+                  ? "bg-white text-blue-600 border-b-2 border-blue-600"
+                  : "text-slate-600 hover:text-slate-900"
               }`}
             >
-              SEO &amp; Google
+              SEO &amp; Social
             </button>
           </div>
 
-          <div className="p-4 space-y-5 overflow-y-auto max-h-[calc(100vh-120px)] text-xs">
+          <div className="p-5 overflow-y-auto space-y-6 text-xs flex-1">
             {activeInspectorTab === "document" ? (
               <>
-                {/* Status & Visibility Box */}
-                <div className="space-y-3 pb-4 border-b border-slate-200">
-                  <h3 className="font-extrabold uppercase tracking-wider text-slate-800 text-[11px]">
-                    Publish Details
-                  </h3>
+                {/* Status & Visibility */}
+                <div className="space-y-3 pb-5 border-b border-slate-100">
+                  <span className="font-extrabold text-slate-900 uppercase tracking-wider block">
+                    Publication Status
+                  </span>
 
-                  <div>
-                    <label className="block text-slate-500 font-semibold mb-1">Status</label>
-                    <select
-                      value={status}
-                      onChange={(e) => {
-                        setStatus(e.target.value as "Published" | "Draft" | "Scheduled");
-                        setIsSaved(false);
-                      }}
-                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded font-bold text-slate-800 focus:outline-none focus:border-blue-600"
-                    >
-                      <option value="Published">Published (Live Online)</option>
-                      <option value="Draft">Draft (Hidden)</option>
-                      <option value="Scheduled">Scheduled Future</option>
-                    </select>
+                  <div className="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded">
+                    {(["Published", "Draft", "Scheduled"] as const).map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        onClick={() => {
+                          setStatus(s);
+                          setIsSaved(false);
+                        }}
+                        className={`py-1 text-center font-bold rounded transition-colors ${
+                          status === s ? "bg-white text-blue-600 shadow-2xs" : "text-slate-600"
+                        }`}
+                      >
+                        {s}
+                      </button>
+                    ))}
                   </div>
 
-                  <div>
-                    <label className="block text-slate-500 font-semibold mb-1">Publish Date</label>
-                    <input
-                      type="text"
-                      value={publishDate}
-                      onChange={(e) => {
-                        setPublishDate(e.target.value);
-                        setIsSaved(false);
-                      }}
-                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded font-medium text-slate-800 focus:outline-none focus:border-blue-600"
-                    />
-                  </div>
-
-                  <label className="flex items-center gap-2 cursor-pointer pt-1">
+                  <div className="flex items-center justify-between pt-1">
+                    <span className="text-slate-600">Featured Article</span>
                     <input
                       type="checkbox"
                       checked={isFeatured}
@@ -732,133 +1038,65 @@ function WordPressBlogEditorContent() {
                         setIsFeatured(e.target.checked);
                         setIsSaved(false);
                       }}
-                      className="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-0"
+                      className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500"
                     />
-                    <span className="font-bold text-slate-800">Pin as Featured Hero Post</span>
-                  </label>
-                </div>
-
-                {/* Author Selector */}
-                <div className="space-y-3 pb-4 border-b border-slate-200">
-                  <h3 className="font-extrabold uppercase tracking-wider text-slate-800 text-[11px]">
-                    Author &amp; Byline
-                  </h3>
-                  <select
-                    value={selectedAuthor}
-                    onChange={(e) => handleAuthorChange(e.target.value)}
-                    className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded font-bold text-slate-800 focus:outline-none focus:border-blue-600"
-                  >
-                    {AUTHORS_PRESETS.map((a) => (
-                      <option key={a.name} value={a.name}>
-                        {a.name} ({a.role.split("&")[0]})
-                      </option>
-                    ))}
-                  </select>
-
-                  <div className="flex items-center gap-2 p-2 bg-slate-50 rounded border border-slate-200">
-                    <div className="relative w-8 h-8 rounded-full overflow-hidden bg-slate-300 shrink-0">
-                      <Image src={authorImage} alt={selectedAuthor} fill className="object-cover" />
-                    </div>
-                    <div>
-                      <div className="font-bold text-slate-900">{selectedAuthor}</div>
-                      <div className="text-[10px] text-slate-500">Verified Travel Specialist</div>
-                    </div>
                   </div>
                 </div>
 
-                {/* Featured Image */}
-                <div className="space-y-3 pb-4 border-b border-slate-200">
-                  <ImageUploadDropzone
-                    value={featuredImage}
-                    onChange={(newImg) => {
-                      setFeaturedImage(newImg);
-                      setIsSaved(false);
-                    }}
-                    label="Featured Cover Photo"
-                    helperText="Upload cover photo from your device, drag & drop, or pick a preset"
-                    presets={SAMPLE_GALLERY_IMAGES}
-                    aspectRatio="wide"
-                  />
+                {/* Author Selection */}
+                <div className="space-y-2 pb-5 border-b border-slate-100">
+                  <label className="font-extrabold text-slate-900 uppercase tracking-wider block">
+                    Author &amp; Byline
+                  </label>
+                  <select
+                    value={selectedAuthor}
+                    onChange={(e) => handleAuthorChange(e.target.value)}
+                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-semibold text-slate-800 focus:outline-none focus:border-blue-600"
+                  >
+                    {AUTHORS_PRESETS.map((author) => (
+                      <option key={author.name} value={author.name}>
+                        {author.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
-                {/* Categories */}
-                <div className="space-y-3 pb-4 border-b border-slate-200">
-                  <h3 className="font-extrabold uppercase tracking-wider text-slate-800 text-[11px]">
-                    Category
-                  </h3>
-
-                  <div className="space-y-1.5 max-h-40 overflow-y-auto">
+                {/* Category Selection */}
+                <div className="space-y-2 pb-5 border-b border-slate-100">
+                  <label className="font-extrabold text-slate-900 uppercase tracking-wider block">
+                    Primary Category
+                  </label>
+                  <div className="space-y-1 max-h-36 overflow-y-auto pr-1">
                     {DEFAULT_CATEGORIES.map((cat) => (
                       <label
                         key={cat}
-                        className="flex items-center gap-2 p-1.5 rounded hover:bg-slate-50 cursor-pointer"
+                        className="flex items-center gap-2 p-1 rounded hover:bg-slate-50 cursor-pointer"
                       >
                         <input
                           type="radio"
-                          name="category-radio"
+                          name="category"
                           checked={category === cat}
                           onChange={() => {
                             setCategory(cat);
                             setIsSaved(false);
                           }}
-                          className="w-3.5 h-3.5 text-blue-600 focus:ring-0"
+                          className="text-blue-600 focus:ring-blue-500"
                         />
-                        <span className="text-slate-800 font-medium">{cat}</span>
+                        <span className="font-medium text-slate-700">{cat}</span>
                       </label>
                     ))}
                   </div>
-
-                  {/* Add New Category */}
-                  <div className="flex gap-1 pt-1">
-                    <input
-                      type="text"
-                      placeholder="+ Custom Category"
-                      value={customCategoryInput}
-                      onChange={(e) => setCustomCategoryInput(e.target.value)}
-                      className="flex-1 px-2 py-1 text-xs border border-slate-300 rounded focus:outline-none"
-                    />
-                    <button
-                      onClick={() => {
-                        if (customCategoryInput.trim()) {
-                          setCategory(customCategoryInput.trim());
-                          setCustomCategoryInput("");
-                          setIsSaved(false);
-                        }
-                      }}
-                      className="px-2.5 py-1 bg-slate-800 text-white font-bold rounded text-xs"
-                    >
-                      Set
-                    </button>
-                  </div>
                 </div>
 
-                {/* Tags */}
-                <div className="space-y-3">
-                  <h3 className="font-extrabold uppercase tracking-wider text-slate-800 text-[11px]">
+                {/* Tags Management */}
+                <div className="space-y-2 pb-5 border-b border-slate-100">
+                  <label className="font-extrabold text-slate-900 uppercase tracking-wider block">
                     Tags &amp; Keywords
-                  </h3>
-
-                  <div className="flex flex-wrap gap-1.5">
-                    {tags.map((t) => (
-                      <span
-                        key={t}
-                        className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-100 text-slate-700 rounded text-[11px] font-medium border border-slate-200"
-                      >
-                        #{t}
-                        <button
-                          onClick={() => handleRemoveTag(t)}
-                          className="hover:text-rose-600 ml-0.5"
-                        >
-                          <X className="w-3 h-3" />
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex gap-1">
+                  </label>
+                  <div className="flex gap-1.5">
                     <input
                       type="text"
-                      placeholder="Add tag and press Add..."
+                      placeholder="Add new tag..."
                       value={tagInput}
                       onChange={(e) => setTagInput(e.target.value)}
                       onKeyDown={(e) => {
@@ -867,41 +1105,76 @@ function WordPressBlogEditorContent() {
                           handleAddTag();
                         }
                       }}
-                      className="flex-1 px-2.5 py-1 text-xs border border-slate-300 rounded focus:outline-none focus:border-blue-600"
+                      className="flex-1 px-2.5 py-1 border border-slate-300 rounded focus:outline-none focus:border-blue-600"
                     />
                     <button
+                      type="button"
                       onClick={handleAddTag}
-                      className="px-3 py-1 bg-blue-600 text-white font-bold rounded text-xs"
+                      className="px-2.5 py-1 bg-slate-800 text-white font-bold rounded hover:bg-slate-900"
                     >
                       Add
                     </button>
                   </div>
+
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {tags.map((t) => (
+                      <span
+                        key={t}
+                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold text-[11px] border border-blue-200"
+                      >
+                        <span>{t}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveTag(t)}
+                          className="hover:text-rose-600"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Featured Image Box */}
+                <div className="space-y-2">
+                  <label className="font-extrabold text-slate-900 uppercase tracking-wider block">
+                    Featured Cover Image
+                  </label>
+                  <ImageUploadDropzone
+                    value={featuredImage}
+                    onChange={(val) => {
+                      setFeaturedImage(val);
+                      setIsSaved(false);
+                    }}
+                    label=""
+                    helperText="Upload cover image or pick a delta photo"
+                    presets={SAMPLE_GALLERY_IMAGES}
+
+                    aspectRatio="video"
+                  />
                 </div>
               </>
             ) : (
-              /* SEO & Google Search Snippet Preview Tab */
+              /* SEO Inspector Tab */
               <div className="space-y-4">
-                <h3 className="font-extrabold uppercase tracking-wider text-slate-800 text-[11px]">
-                  Google SERP Search Preview
-                </h3>
-
-                {/* Google Snippet Card */}
-                <div className="p-3 bg-white border border-slate-200 rounded shadow-xs space-y-1">
-                  <div className="text-[11px] text-[#202124] flex items-center gap-1 font-sans">
-                    <Globe className="w-3 h-3 text-slate-400" />
-                    <span>https://sundarban-luxury-package.com/blog/{slug || "post-slug"}</span>
+                <div className="p-3 bg-blue-50/70 border border-blue-200 rounded text-blue-900">
+                  <span className="font-bold block mb-1">Google SERP Snippet Preview</span>
+                  <div className="bg-white p-3 rounded border border-slate-200 space-y-1 font-sans">
+                    <span className="text-[11px] text-emerald-800 block truncate">
+                      https://sundarbanluxurypackage.com/blog/{slug || "article-url"}
+                    </span>
+                    <h4 className="text-sm font-bold text-blue-800 leading-snug line-clamp-1 hover:underline cursor-pointer">
+                      {metaTitle || title || "Article Headline Preview"}
+                    </h4>
+                    <p className="text-[11px] text-slate-600 line-clamp-2 leading-relaxed">
+                      {metaDescription || excerpt || "Write an effective description that helps searchers understand your Sundarban travel article..."}
+                    </p>
                   </div>
-                  <h4 className="text-sm font-semibold text-[#1a0dab] hover:underline cursor-pointer line-clamp-1 font-sans">
-                    {metaTitle || title || "Article Meta Title Preview"} - Sundarban Luxury
-                  </h4>
-                  <p className="text-[11px] text-[#4d5156] line-clamp-2 font-sans">
-                    {metaDescription || excerpt || "Detailed guide and insights on Sundarban Royal Bengal Tiger trails, boat cruises, and wildlife photography..."}
-                  </p>
                 </div>
 
-                <div>
-                  <label className="block text-slate-600 font-bold mb-1">
-                    SEO Meta Title ({metaTitle.length}/60 chars)
+                <div className="space-y-1">
+                  <label className="block font-bold text-slate-700 uppercase tracking-wider text-[11px]">
+                    SEO Meta Title
                   </label>
                   <input
                     type="text"
@@ -910,14 +1183,17 @@ function WordPressBlogEditorContent() {
                       setMetaTitle(e.target.value);
                       setIsSaved(false);
                     }}
-                    placeholder={title || "SEO optimized title"}
-                    className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-xs focus:outline-none focus:border-blue-600"
+                    placeholder="Defaults to Post Title"
+                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-blue-600"
                   />
+                  <span className="text-[10px] text-slate-400">
+                    Recommended: 50-60 characters ({metaTitle.length}/60)
+                  </span>
                 </div>
 
-                <div>
-                  <label className="block text-slate-600 font-bold mb-1">
-                    SEO Meta Description ({metaDescription.length}/160 chars)
+                <div className="space-y-1">
+                  <label className="block font-bold text-slate-700 uppercase tracking-wider text-[11px]">
+                    SEO Meta Description
                   </label>
                   <textarea
                     rows={3}
@@ -926,9 +1202,12 @@ function WordPressBlogEditorContent() {
                       setMetaDescription(e.target.value);
                       setIsSaved(false);
                     }}
-                    placeholder={excerpt || "Search engine description snippet..."}
-                    className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-xs focus:outline-none focus:border-blue-600"
+                    placeholder="Defaults to Excerpt summary"
+                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-blue-600 leading-relaxed"
                   />
+                  <span className="text-[10px] text-slate-400">
+                    Recommended: 150-160 characters ({metaDescription.length}/160)
+                  </span>
                 </div>
               </div>
             )}
@@ -936,7 +1215,7 @@ function WordPressBlogEditorContent() {
         </aside>
       </div>
 
-      {/* Insert Hyperlink Modal */}
+      {/* Insert Link Modal */}
       {isLinkModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-[4px] p-5 w-full max-w-md shadow-2xl border border-slate-200 space-y-4 animate-in fade-in zoom-in-95">
@@ -955,22 +1234,22 @@ function WordPressBlogEditorContent() {
 
             <form onSubmit={handleInsertLink} className="space-y-3 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 mb-1">URL Target *</label>
+                <label className="block font-bold text-slate-700 mb-1">Destination URL *</label>
                 <input
                   type="url"
                   required
-                  placeholder="https://example.com or /tour/2-nights-3-days"
+                  placeholder="https://... or /tour/2-nights-3-days..."
                   value={linkUrl}
                   onChange={(e) => setLinkUrl(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded focus:outline-none focus:border-blue-600 font-mono"
+                  className="w-full px-3 py-2 border border-slate-300 rounded focus:outline-none focus:border-blue-600"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Link Display Text</label>
+                <label className="block font-bold text-slate-700 mb-1">Anchor Text (Optional)</label>
                 <input
                   type="text"
-                  placeholder="e.g. Explore Tiger Safari Package"
+                  placeholder="Click here or descriptive text"
                   value={linkText}
                   onChange={(e) => setLinkText(e.target.value)}
                   className="w-full px-3 py-2 border border-slate-300 rounded focus:outline-none focus:border-blue-600"
@@ -1021,6 +1300,7 @@ function WordPressBlogEditorContent() {
                 label="Article Photo Upload *"
                 helperText="Upload image from computer, drop file, or pick a preset"
                 presets={SAMPLE_GALLERY_IMAGES}
+
                 aspectRatio="wide"
               />
 
@@ -1056,7 +1336,7 @@ function WordPressBlogEditorContent() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 bg-emerald-600 text-white font-bold rounded shadow-xs"
+                  className="px-4 py-1.5 bg-emerald-600 text-white font-bold rounded shadow-xs cursor-pointer"
                 >
                   Insert Photo
                 </button>

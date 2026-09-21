@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -26,6 +26,11 @@ export function AdminSidebar({
 }) {
   const pathname = usePathname();
   const { bookings } = useAdmin();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const pendingBookingsCount = bookings.filter((b) => b.bookingStatus === "Pending").length;
 
@@ -177,7 +182,7 @@ export function AdminSidebar({
               <CalendarCheck className="w-4 h-4 text-blue-400" />
               <span>Bookings Ledger</span>
             </div>
-            {pendingBookingsCount > 0 && (
+            {mounted && pendingBookingsCount > 0 && (
               <span className="px-2 py-0.5 text-[11px] font-black rounded bg-amber-500 text-slate-950 shadow-xs">
                 {pendingBookingsCount}
               </span>

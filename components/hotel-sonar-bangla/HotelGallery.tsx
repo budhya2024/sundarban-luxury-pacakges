@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Camera, X, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -108,10 +108,29 @@ const ITEMS_PER_PAGE = 8;
 export function HotelGallery() {
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [images, setImages] = useState(galleryImages);
 
-  const totalPages = Math.ceil(galleryImages.length / ITEMS_PER_PAGE);
+  // Synchronize resort photos dynamically from Neon backend
+  useEffect(() => {
+    fetch("/api/hotel/photos")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success && Array.isArray(data.photos) && data.photos.length > 0) {
+          const dynamicPhotos = data.photos.map((p: any) => ({
+            id: p.id,
+            title: p.title,
+            category: p.category,
+            src: p.imageUrl,
+          }));
+          setImages(dynamicPhotos);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const totalPages = Math.ceil(images.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedImages = galleryImages.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const paginatedImages = images.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -151,6 +170,7 @@ export function HotelGallery() {
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className="object-cover group-hover:scale-108 transition-transform duration-500"
+                unoptimized={img.src.startsWith("data:")}
               />
 
               {/* Middle Cubic-Bezier Animated Overlay */}
@@ -242,6 +262,7 @@ export function HotelGallery() {
               alt="Hotel Sonar Bangla Gallery Lightbox"
               fill
               className="object-contain"
+              unoptimized={selectedImg.startsWith("data:")}
             />
           </div>
         </div>

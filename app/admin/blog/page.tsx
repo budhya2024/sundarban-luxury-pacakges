@@ -40,17 +40,22 @@ export default function AdminBlogManagerPage() {
   const [statusFilter, setStatusFilter] = useState("all");
 
   // Extract unique categories
-  const categories = ["all", ...Array.from(new Set(blogPostsList.map((p) => p.category)))];
+  const categories = [
+    "all",
+    ...Array.from(new Set(blogPostsList.map((p) => p.category || "Wildlife"))),
+  ];
 
   const filteredPosts = blogPostsList.filter((post) => {
     const matchesSearch =
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.slug.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (post.tags && post.tags.some((t) => t.toLowerCase().includes(searchTerm.toLowerCase())));
-    const matchesCategory = categoryFilter === "all" || post.category === categoryFilter;
+      (post.title || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (post.excerpt || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (post.slug || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ((post.tags || []).some((t) => (t || "").toLowerCase().includes(searchTerm.toLowerCase())));
+    const matchesCategory =
+      categoryFilter === "all" || (post.category || "Wildlife") === categoryFilter;
     const postStatus = post.status || "Published";
-    const matchesStatus = statusFilter === "all" || postStatus.toLowerCase() === statusFilter.toLowerCase();
+    const matchesStatus =
+      statusFilter === "all" || postStatus.toLowerCase() === statusFilter.toLowerCase();
 
     return matchesSearch && matchesCategory && matchesStatus;
   });
