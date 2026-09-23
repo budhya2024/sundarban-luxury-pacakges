@@ -103,7 +103,7 @@ export function HotelBokingForm() {
           }
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   // Compute today's date in YYYY-MM-DD for min date attribute
@@ -140,8 +140,8 @@ export function HotelBokingForm() {
     const nightsCount = selectedPackage.duration.includes("2 Night")
       ? 2
       : selectedPackage.duration.includes("1 Night")
-      ? 1
-      : 1;
+        ? 1
+        : 1;
 
     const effectiveCheckIn = travelDate || new Date().toISOString().split("T")[0];
     const checkInDateObj = new Date(effectiveCheckIn);
@@ -166,9 +166,8 @@ export function HotelBokingForm() {
           guestsCount: `${adults} Adults${children > 0 ? `, ${children} Children` : ""}`,
           roomsCount: Math.ceil(adults / 2),
           totalAmount: Math.round(estimatedTotal),
-          specialRequests: `Tour Package: ${selectedPackage.name} (${selectedPackage.duration}). Transfer: ${
-            transferOption === "with-kolkata-transfer" ? "AC Vehicle from Kolkata" : "Direct Godkhali Ferry"
-          }.`,
+          specialRequests: `Tour Package: ${selectedPackage.name} (${selectedPackage.duration}). Transfer: ${transferOption === "with-kolkata-transfer" ? "AC Vehicle from Kolkata" : "Direct Godkhali Ferry"
+            }.`,
         }),
       });
 
@@ -193,8 +192,8 @@ export function HotelBokingForm() {
     const nightsCount = selectedPackage.duration.includes("2 Night")
       ? 2
       : selectedPackage.duration.includes("1 Night")
-      ? 1
-      : 1;
+        ? 1
+        : 1;
     const effectiveCheckIn = travelDate || "To be confirmed";
     let datesSummary = effectiveCheckIn;
     if (travelDate) {
@@ -222,13 +221,13 @@ export function HotelBokingForm() {
   return (
     <section id="booking-form" className="py-8 md:py-16 scroll-mt-20">
       <div className="container">
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 sm:p-8 lg:p-10 relative">
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 sm:p-6 md:p-10 relative">
           {/* Form Header */}
           <div className="border-b border-slate-200 pb-6 mb-8">
             <span className="text-secondary font-bold text-xs uppercase tracking-wider block mb-1">
               Direct Hotel &amp; Safari Booking
             </span>
-            <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">
+            <h3 className="text-xl md:text-2xl font-black text-foreground tracking-tight">
               Select Tour Package With Hotel Sonar Bangla
             </h3>
             <p className="text-sm sm:text-base text-slate-600 mt-2 leading-relaxed max-w-3xl">

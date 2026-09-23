@@ -87,8 +87,8 @@ export function HotelAmenities() {
                 key={idx}
                 className="p-3 md:p-6  rounded-xl bg-white hover:shadow-sm border transition-all duration-300 group"
               >
-                <div className="w-12 h-12 rounded-sm bg-primary text-white  group-hover:text-white flex items-center justify-center mb-5 transition-colors duration-300 shadow-sm">
-                  <Icon className="w-6 h-6" />
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-sm bg-primary text-white  group-hover:text-white flex items-center justify-center mb-5 transition-colors duration-300 shadow-sm">
+                  <Icon className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
                 <h3 className="text-sm md:text-lg font-bold text-forground mb-2  transition-colors">
                   {item.title}

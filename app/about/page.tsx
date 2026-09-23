@@ -2,8 +2,9 @@ import React from "react";
 import { Metadata } from "next";
 import { AboutHero } from "@/components/about/AboutHero";
 import { AboutStorySection } from "@/components/about/AboutStorySection";
-import { AboutMissionVision } from "@/components/about/AboutMissionVision";
+import { BestServiceSection } from "@/components/about/BestServiceSection";
 import { TrustSection } from "@/components/home/TrustSection";
+import TestimonialsSection from "@/components/home/TestimonialsSection";
 
 export const metadata: Metadata = {
   title: "About Us | Sundarban Luxury Package & Safari Cruises",
@@ -16,9 +17,9 @@ export default function AboutPage() {
     <main className="min-h-screen bg-white">
       <AboutHero />
       <AboutStorySection />
-      <AboutMissionVision />
+      <BestServiceSection />
       <TrustSection />
-
+      <TestimonialsSection />
     </main>
   );
 }

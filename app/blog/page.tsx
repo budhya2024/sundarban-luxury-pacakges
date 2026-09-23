@@ -25,7 +25,7 @@ export default function BlogListPage() {
           setPostsList(data.posts);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const totalPages = Math.ceil(postsList.length / postsPerPage) || 1;
@@ -167,7 +167,7 @@ export default function BlogListPage() {
           </div>
 
           {/* Professional Pagination Structure */}
-          <div className="mt-12 md:mt-16 pt-8 border-t border-slate-200/70 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="mt-8 md:mt-16 pt-8 border-t border-slate-200/70 flex flex-col sm:flex-row items-center justify-between gap-4">
             {/* Left side text: Showing 1 to 9 of 20 articles */}
             <div className="text-xs sm:text-sm text-slate-500 font-normal">
               Showing{" "}

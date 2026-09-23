@@ -38,10 +38,10 @@ export function PopularDestinations() {
         {/* Centered Header Section */}
         <div className="sec-header">
           <span className="sec-tagline">
-            Sundarban Tour Packages
+            popular  Packages
           </span>
           <h2 className="sec-title">
-            Popular Sundarban Packages
+            Sundarban Tour Packages
           </h2>
         </div>
 
@@ -140,7 +140,7 @@ export function PopularDestinations() {
                           </div>
                         </div>
 
-                        <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors mb-2 line-clamp-2 min-h-[3.25rem] flex items-center">
+                        <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors mb-2 line-clamp-2 min-h-[3.25rem] flex items-center">
                           {item.name}
                         </h3>
 
@@ -177,7 +177,7 @@ export function PopularDestinations() {
 
                         <button
                           onClick={() => handleOpenBooking(item.name, item.price)}
-                          className="btn btn-secondary !py-1.5 !px-3.5 !text-sm shadow-xs rounded-full flex items-center gap-1 font-bold cursor-pointer"
+                          className="btn btn-secondary !py-1.5 !px-3.5  sm:!text-sm shadow-xs rounded-full flex items-center gap-1 font-bold cursor-pointer"
                         >
                           <span>Book now</span>
                           <ArrowRight className="w-3 h-3" />

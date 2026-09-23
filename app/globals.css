@@ -233,6 +233,9 @@
    Global Button Components (Left-to-Right Background Fill Animation)
    ========================================================================== */
 
+
+
+
 .btn,
 .btn-fill-slide,
 .btn-primary,
@@ -247,8 +250,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.75rem;
-  font-size: 0.95rem;
+  padding: 0.60rem 1rem;
+  font-size: .80rem;
   font-weight: 700;
   line-height: 1.25;
   border-radius: 9999px;
@@ -258,6 +261,23 @@
   text-decoration: none;
   transition: color 0.4s ease, border-color 0.4s ease, transform 0.2s ease, box-shadow 0.3s ease;
   user-select: none;
+}
+
+@media(min-width:640px) {
+
+  .btn,
+  .btn-fill-slide,
+  .btn-primary,
+  .btn-secondary,
+  .btn-gold,
+  .btn-yellow,
+  .btn-amber,
+  .btn-outline,
+  .btn-glass {
+
+    font-size: 1rem;
+    padding: 0.75rem 1.75rem;
+  }
 }
 
 /* Ensure inner content stays strictly above the sliding background fill */
@@ -430,7 +450,6 @@ a.btn:hover {
   box-shadow: none !important;
 }
 
-/* Outline Theme Button (Transparent base -> Fills with Deep Forest Green from left to right) */
 .btn-outline {
   background-color: transparent;
   color: var(--brand-green-primary, #057a28);
@@ -490,13 +509,13 @@ video::-webkit-media-controls-mute-button {
 
 .sec-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   position: relative;
 }
 
 @media (min-width: 768px) {
   .sec-header {
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
   }
 }
 
@@ -512,7 +531,6 @@ video::-webkit-media-controls-mute-button {
 .sec-tagline {
   font-family: var(--font-montez), cursive;
   font-size: 1.375rem;
-  /* 22px (reduced for mobile) */
   line-height: 1.25;
   color: var(--brand-yellow-primary, #d97706);
   letter-spacing: 0.025em;
@@ -523,11 +541,10 @@ video::-webkit-media-controls-mute-button {
 @media (min-width: 768px) {
   .sec-tagline {
     font-size: 2.25rem;
-    /* 36px (text-4xl) */
+
   }
 }
 
-/* Light / Golden variant for dark hero sections */
 .sec-tagline-light {
   color: #fbbf24;
 }
@@ -566,13 +583,10 @@ video::-webkit-media-controls-mute-button {
 /* Supporting Description / Subtitle Paragraph */
 .sec-desc {
   font-size: 0.875rem;
-  /* 14px */
   line-height: 1.625;
   color: #475569;
-
   font-weight: 400;
   max-width: 42rem;
-  /* max-w-2xl */
   margin-left: auto;
   margin-right: auto;
   margin-top: 0.5rem;
@@ -581,11 +595,10 @@ video::-webkit-media-controls-mute-button {
 @media (min-width: 640px) {
   .sec-desc {
     font-size: 1rem;
-    /* 16px */
+
   }
 }
 
-/* Description when header is left aligned */
 .sec-header.text-left .sec-desc {
   margin-left: 0;
   margin-right: 0;

@@ -24,11 +24,11 @@ export function AnnouncementBar() {
 
   return (
     <div
-      className="bg-primary text-white text-xs sm:text-sm py-2.5 overflow-hidden select-none relative z-50 border-b border-primary/20"
+      className="bg-primary text-white text-xs sm:text-sm py-2 sm:py-2.5 overflow-hidden select-none relative z-50 border-b border-primary/20"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="container relative h-5 sm:h-5.5 flex items-center justify-center overflow-hidden">
+      <div className="container relative min-h-[28px] sm:min-h-[24px] flex items-center justify-center overflow-hidden">
         {announcements.map((text, idx) => {
           const isActive = idx === currentIndex;
           const isPrev =
@@ -44,9 +44,9 @@ export function AnnouncementBar() {
           return (
             <div
               key={idx}
-              className={`absolute inset-0 flex items-center justify-center text-center transition-all duration-700 ease-in-out px-4 ${positionClasses}`}
+              className={`absolute inset-0 flex items-center justify-center text-center transition-all duration-700 ease-in-out px-2 sm:px-4 ${positionClasses}`}
             >
-              <p className="text-white/95 text-xs sm:text-sm font-medium tracking-wide truncate max-w-4xl">
+              <p className="text-white/95 text-xs sm:text-sm font-medium tracking-wide leading-snug">
                 {text}
               </p>
             </div>

@@ -163,7 +163,7 @@ export function SundarbanEnvironmentSection() {
     <section className="py-8 md:py-16 bg-primary/5">
       <div className="container">
         {/* Simple & Clean Header */}
-        <div className="text-center max-w-2xl mx-auto mb-10">
+        <div className="text-center max-w-2xl sec-header">
           <p className="sec-tagline">
             Ecosystem & Seasons
           </p>
@@ -200,7 +200,7 @@ export function SundarbanEnvironmentSection() {
         </div>
 
         {/* Main Season Card - Simple 2 Column Layout with subtle corners */}
-        <div className="bg-slate-50/70 border border-border rounded-lg p-5 sm:p-7 md:p-8 mb-10">
+        <div className="bg-slate-50/70 border border-border rounded-lg p-4 md::p-7 md:p-8 mb-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Column: Main Image with Clean Overlay & Related Thumbnails */}
             <div className="lg:col-span-5 space-y-3">
@@ -214,10 +214,7 @@ export function SundarbanEnvironmentSection() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
 
-                {/* Season Badge */}
-                <div className="absolute top-3.5 left-3.5 bg-primary text-white text-xs font-bold px-3 py-1 rounded-sm shadow-xs border border-white/20">
-                  {current.badge}
-                </div>
+
 
                 {/* Image Bottom Info */}
                 <div className="absolute bottom-3.5 left-3.5 right-3.5 text-white">
@@ -341,7 +338,7 @@ export function SundarbanEnvironmentSection() {
         </div>
 
         {/* 4 Clean Minimal Nature Highlights */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
           {natureHighlights.map((item, idx) => {
             const Icon = item.icon;
             return (

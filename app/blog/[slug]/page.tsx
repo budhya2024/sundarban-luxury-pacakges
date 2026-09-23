@@ -63,7 +63,7 @@ export async function generateStaticParams() {
     if (dbPosts.length > 0) {
       return dbPosts.map((p) => ({ slug: p.slug }));
     }
-  } catch {}
+  } catch { }
   return blogPosts.map((post) => ({ slug: post.slug }));
 }
 
@@ -83,7 +83,7 @@ export async function generateMetadata({
     if (dbPosts.length > 0) {
       post = dbPosts[0];
     }
-  } catch {}
+  } catch { }
   if (!post) {
     post = getBlogPost(slug);
   }
@@ -118,7 +118,7 @@ export default async function BlogDetailPage({
       .from(blogPostsTable)
       .where(eq(blogPostsTable.status, "Published"))
       .orderBy(desc(blogPostsTable.createdAt));
-  } catch {}
+  } catch { }
 
   if (!post) {
     post = getBlogPost(slug);
@@ -288,11 +288,11 @@ export default async function BlogDetailPage({
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Breadcrumbs */}
           <div className="inline-flex items-center gap-2.5 text-base sm:text-lg font-bold text-white flex-wrap justify-center">
-            <Link href="/" className="text-white hover:text-[#fbbf24] transition-colors">
+            <Link href="/" className="text-white hover:text-white transition-colors">
               Home
             </Link>
             <span className="text-white font-bold">»</span>
-            <Link href="/blog" className="text-white hover:text-[#fbbf24] transition-colors">
+            <Link href="/blog" className="text-white hover:text-white transition-colors">
               Blog
             </Link>
             <span className="text-white font-bold">»</span>
@@ -311,15 +311,16 @@ export default async function BlogDetailPage({
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          <div className=" lg:col-span-8 bg-white p-6 sm:p-8 md:p-10 border border-slate-100 shadow-sm">
+          <div className=" lg:col-span-8 bg-white p-4 sm:p-6 md:p-10 border border-slate-100 shadow-sm rounded-sm">
             {/* Category & Article Title */}
-            <div className="mb-6">
+            <div className="mb-4">
 
-              <h1 className="text-xl sm:text-2xl  font-extrabold text-[#0e2a47] tracking-tight leading-snug">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#0e2a47] tracking-tight leading-snug">
                 {post.title}
               </h1>
             </div>
 
+            {/* Author & Meta Section */}
             <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-8 border-b border-slate-100">
               <div className="flex items-center gap-3">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-[#064e3b]/30 shrink-0">
@@ -362,13 +363,27 @@ export default async function BlogDetailPage({
               </div>
             </div>
 
-            <p className="text-[#0e2a47] text-lg sm:text-xl font-medium leading-relaxed mb-8 border-l-4 border-[#064e3b] pl-5 bg-amber-50/40 py-5 pr-5">
+            {/* Featured Blog Image (Under Author Section) */}
+            {post.image && (
+              <div className="relative w-full h-[260px] sm:h-[380px] md:h-[440px] mb-8 rounded-sm overflow-hidden bg-slate-100 shadow-sm">
+                <Image
+                  src={post.image}
+                  alt={post.title}
+                  fill
+                  priority
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 800px"
+                />
+              </div>
+            )}
+
+            <p className="text-primary text-base  sm:text-lg md:text-xl font-medium leading-relaxed mb-8 border-l-4 border-[#064e3b] pl-5 bg-amber-50/40 py-2 sm:py-3 md:py-5 pr-5">
               {post.excerpt}
             </p>
 
             <div className="prose prose-slate max-w-none">{contentBlocks}</div>
 
-            <div className="flex flex-wrap items-center justify-between gap-4 mt-10 pt-6 border-t border-slate-100 bg-slate-50/80 p-4 sm:p-5">
+            <div className="flex flex-wrap items-center justify-between gap-4 mt-6 md:mt-10 pt-6 border-t border-slate-100 bg-slate-50/80 p-4 sm:p-5">
               <span className="text-[#0e2a47] font-bold text-sm flex items-center gap-2">
                 <FaShareNodes className="w-4 h-4 text-[#064e3b]" /> Share this article:
               </span>
@@ -377,7 +392,7 @@ export default async function BlogDetailPage({
                   href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://sundarbanluxury.com/blog/${post.slug}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-[#064e3b] hover:text-[#fbbf24] hover:border-[#064e3b] transition-colors"
+                  className="w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-primary hover:text-white hover:border-[#064e3b] transition-colors"
                   aria-label="Share on Facebook"
                 >
                   <FaFacebookF className="w-3.5 h-3.5" />
@@ -386,7 +401,7 @@ export default async function BlogDetailPage({
                   href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://sundarbanluxury.com/blog/${post.slug}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-[#064e3b] hover:text-[#fbbf24] hover:border-[#064e3b] transition-colors"
+                  className="w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-primary hover:text-white hover:border-[#064e3b] transition-colors"
                   aria-label="Share on Twitter"
                 >
                   <FaTwitter className="w-3.5 h-3.5" />
@@ -395,7 +410,7 @@ export default async function BlogDetailPage({
                   href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`https://sundarbanluxury.com/blog/${post.slug}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-[#064e3b] hover:text-[#fbbf24] hover:border-[#064e3b] transition-colors"
+                  className="w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-primary hover:text-white hover:border-[#064e3b] transition-colors"
                   aria-label="Share on LinkedIn"
                 >
                   <FaLinkedinIn className="w-3.5 h-3.5" />
@@ -425,7 +440,7 @@ export default async function BlogDetailPage({
 
           <aside className="lg:col-span-4 space-y-8">
             {/* 1. Recent Posts Widget (FIRST) */}
-            <div className="bg-white  p-6 sm:p-7 border border-slate-100 shadow-sm">
+            <div className="bg-white  p-4 sm:p-7 border border-slate-100 shadow-sm">
               <h3 className="text-lg font-extrabold text-[#0e2a47] mb-5 flex items-center gap-2.5 pb-3 border-b border-slate-100">
                 <FaRegClock className="w-4 h-4 text-[#d97706]" />
                 <span>Recent Posts</span>
@@ -460,7 +475,7 @@ export default async function BlogDetailPage({
             </div>
 
             {/* 2. Categories Widget */}
-            <div className="bg-white  p-6 sm:p-7 border border-slate-100 shadow-sm">
+            <div className="bg-white  p-4 sm:p-7 border border-slate-100 shadow-sm">
               <h3 className="text-lg font-extrabold text-[#0e2a47] mb-5 flex items-center gap-2.5 pb-3 border-b border-slate-100">
                 <FaRegFolderOpen className="w-4 h-4 text-[#064e3b]" />
                 <span>Categories</span>
@@ -485,7 +500,7 @@ export default async function BlogDetailPage({
             </div>
 
             {/* 3. Popular Tags Widget */}
-            <div className="bg-white  p-6 sm:p-7 border border-slate-100 shadow-sm">
+            <div className="bg-white  p-4 sm:p-7 border border-slate-100 shadow-sm">
               <h3 className="text-lg font-extrabold text-[#0e2a47] mb-5 flex items-center gap-2.5 pb-3 border-b border-slate-100">
                 <FaTag className="w-4 h-4 text-[#d97706]" />
                 <span>Popular Tags</span>
@@ -495,7 +510,7 @@ export default async function BlogDetailPage({
                   <Link
                     key={tag}
                     href="/blog"
-                    className="text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-[#064e3b] hover:text-[#fbbf24] px-3.5 py-1.5 rounded-full transition-all duration-200 shadow-2xs"
+                    className="text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-primary hover:text-white px-3.5 py-1.5 rounded-full transition-all duration-200 shadow-2xs"
                   >
                     #{tag}
                   </Link>
@@ -504,7 +519,7 @@ export default async function BlogDetailPage({
             </div>
 
             {/* 4. Share Widget */}
-            <div className="bg-white  p-6 sm:p-7 border border-slate-100 shadow-sm">
+            <div className="bg-white  p-4 sm:p-7 border border-slate-100 shadow-sm">
               <h3 className="text-lg font-extrabold text-[#0e2a47] mb-4 flex items-center gap-2.5 pb-3 border-b border-slate-100">
                 <FaShareNodes className="w-4 h-4 text-[#064e3b]" />
                 <span>Share This Post</span>
@@ -544,7 +559,7 @@ export default async function BlogDetailPage({
             </div>
 
             {/* 5. Subscribe to Newsletter Widget (LAST / BOTTOM) */}
-            <div className="bg-gradient-to-br from-[#052e16] via-[#064e3b] to-[#022c22]  rounded-sm p-6 sm:p-7 text-white relative overflow-hidden border border-[#fbbf24]/20">
+            <div className="bg-gradient-to-br from-[#052e16] via-[#064e3b] to-[#022c22]  rounded-sm p-4 sm:p-7 text-white relative overflow-hidden border border-[#fbbf24]/20">
               <div className="absolute -right-8 -top-8 w-32 h-32 bg-[#d97706]/20 rounded-full blur-xl pointer-events-none" />
               <div className="flex items-center gap-2.5 text-[#fbbf24] font-bold text-xs uppercase tracking-widest mb-2.5 relative z-10">
                 <FaRegEnvelope className="w-4 h-4" />

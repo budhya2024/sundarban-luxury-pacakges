@@ -14,8 +14,8 @@ export function HotelHero() {
   }, []);
 
   return (
-    <section className="relative bg-black text-white py-20 sm:py-28 lg:py-36 overflow-hidden min-h-[380px] sm:min-h-[480px] lg:min-h-[520px] flex items-center justify-center">
-      {/* Background Video with 100% full opacity & no overlay layers */}
+    <section className="relative bg-black text-white aspect-video md:aspect-[16/6] flex items-center justify-center">
+
       <video
         ref={videoRef}
         autoPlay
@@ -25,11 +25,11 @@ export function HotelHero() {
         controls={false}
         disablePictureInPicture
         disableRemotePlayback
-        poster="/assets/images/sonar-bangla-hotel-bg.jpg"
+        poster="/assets/images/sonarbanglahotel.jpg"
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
       >
         <source
-          src="/assets/video/sonar-bangla.mp4"
+          src="/assets/video/sonar-bangla-hotel.mp4"
           type="video/mp4"
         />
       </video>
@@ -44,6 +44,7 @@ export function HotelHero() {
         >
           Hotel Sonar Bangla
         </h1>
+
       </div>
     </section>
   );

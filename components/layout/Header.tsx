@@ -107,7 +107,7 @@ export function Header() {
             },
             {
                 label: "Trip",
-                href: "#trip",
+                href: "/packages",
                 hasDropdown: true,
                 dropdownItems: tripDropdownItems,
             },
@@ -288,17 +288,6 @@ export function Header() {
                         })}
                     </nav>
 
-                    {/* Right: CTA Button */}
-                    <div className="hidden lg:flex items-center gap-4">
-                        <Link
-                            href="#quote"
-                            className="btn btn-primary cursor-pointer !px-7 !py-3"
-                        >
-                            <span>Request A Quote</span>
-                            <ArrowRight className="h-4 w-4" />
-                        </Link>
-                    </div>
-
                     {/* Mobile Menu Toggle Button */}
                     <div className="flex xl:hidden items-center gap-3">
 
@@ -421,14 +410,6 @@ export function Header() {
 
                 {/* Drawer Footer */}
                 <div className="p-4 border-t border-slate-200 bg-slate-50/60 flex flex-col gap-3">
-                    <Link
-                        href="#quote"
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="btn btn-primary cursor-pointer w-full !py-3 flex items-center justify-center gap-2"
-                    >
-                        <span>Request A Quote</span>
-                        <ArrowRight className="h-4 w-4" />
-                    </Link>
                     <div className="flex items-center gap-2 text-xs text-slate-500 justify-center">
                         <Clock className="h-3.5 w-3.5 text-amber-600" />
                         <span>Mon to Sun: 8.00 am - 9.00 pm</span>

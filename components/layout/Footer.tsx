@@ -22,7 +22,7 @@ const quickLinks = [
   { label: "About Us", href: "/about" },
   { label: "Hotel Sonar Bangla", href: "/hotel-sonar-bangla" },
   { label: "Photo Gallery", href: "/gallery" },
-  { label: "Tour Packages", href: "/tour-details" },
+  { label: "Tour Packages", href: "/packages" },
   { label: "Contact Us", href: "/contact" },
 ];
 
@@ -92,7 +92,7 @@ export function Footer() {
     <footer className="bg-brand-green-dark text-slate-200 pt-8 md:pt-16 relative z-20 border-t border-primary">
       <div className="container">
         {/* 1. Top Newsletter Section */}
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 pb-12 md:pb-16">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 pb-8 md:pb-16">
           {/* Title */}
           <div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight tracking-tight text-center lg:text-left">
@@ -131,7 +131,7 @@ export function Footer() {
         <div className="border-t border-white/10" />
 
         {/* 2. Main 4-Column Footer Content */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 py-14 md:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 py-8 md:py-16">
           {/* Col 1: Brand Info & Socials (4 Cols) */}
           <div className="lg:col-span-4 flex flex-col justify-between">
             <div>
@@ -162,7 +162,9 @@ export function Footer() {
                 <FaWhatsapp className="h-4 w-4" />
               </Link>
               <Link
-                href="#instagram"
+                href="https://www.instagram.com/sundarbanluxurypackage/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-amber-300 hover:bg-secondary hover:text-white transition-colors"
                 aria-label="Instagram"
               >
@@ -222,10 +224,17 @@ export function Footer() {
                 <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-yellow-light">
                   <MapPin className="h-4 w-4" />
                 </div>
-                <p className="leading-snug">
-                  Godkhali Ferry Ghat, Canning Town, <br />
-                  South 24 Parganas, West Bengal 743329
-                </p>
+                <div className="leading-snug">
+                  <a
+                    href="https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-brand-yellow-light transition-colors block"
+                  >
+                    Sundarban Luxury Package, <br />
+                    Dulki, Gosaba, West Bengal 743370
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -235,9 +244,12 @@ export function Footer() {
             <h3 className="text-lg font-bold text-white mb-5">Instagram Post</h3>
             <div className="grid grid-cols-3 gap-2.5 max-w-[260px]">
               {instagramPosts.map((post) => (
-                <div
+                <a
                   key={post.id}
-                  className="group relative h-18 w-18 md:h-19 md:w-19 rounded-xl overflow-hidden bg-white/5 cursor-pointer"
+                  href="https://www.instagram.com/sundarbanluxurypackage/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative h-18 w-18 md:h-19 md:w-19 rounded-xl overflow-hidden bg-white/5 cursor-pointer block"
                 >
                   <Image
                     src={post.src}
@@ -249,7 +261,7 @@ export function Footer() {
                   <div className="absolute inset-0 bg-primary/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white">
                     <FaInstagram className="h-4 w-4" />
                   </div>
-                </div>
+                </a>
               ))}
             </div>
           </div>

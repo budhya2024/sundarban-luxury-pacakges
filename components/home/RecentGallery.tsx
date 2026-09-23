@@ -71,19 +71,20 @@ export function RecentGallery() {
 
   const [activeImageId, setActiveImageId] = useState<string | null>(null);
 
-  // Distribute items into 5 columns
+  // Distribute items into 5 columns with a strict 7-photo desktop limit (1 + 2 + 1 + 2 + 1 = 7)
   const col1 = displayItems.filter((i) => i.column === "col1");
   const col2 = displayItems.filter((i) => i.column === "col2");
   const col3 = displayItems.filter((i) => i.column === "col3");
   const col4 = displayItems.filter((i) => i.column === "col4");
   const col5 = displayItems.filter((i) => i.column === "col5");
 
-  // Fallbacks if columns are not evenly populated
-  const col1Items = col1.length > 0 ? col1 : [displayItems[0] || displayItems[0]];
-  const col2Items = col2.length > 0 ? col2 : displayItems.slice(1, 3);
-  const col3Items = col3.length > 0 ? col3 : [displayItems[3] || displayItems[0]];
-  const col4Items = col4.length > 0 ? col4 : displayItems.slice(4, 6);
-  const col5Items = col5.length > 0 ? col5 : [displayItems[6] || displayItems[displayItems.length - 1]];
+  // Fallbacks ensuring exactly the designated count per column:
+  // Col 1: 1 photo, Col 2: 2 photos, Col 3: 1 photo (centerpiece), Col 4: 2 photos, Col 5: 1 photo -> Total: 7 photos
+  const col1Items = col1.length >= 1 ? col1.slice(0, 1) : displayItems.slice(0, 1);
+  const col2Items = col2.length >= 2 ? col2.slice(0, 2) : displayItems.slice(1, 3);
+  const col3Items = col3.length >= 1 ? col3.slice(0, 1) : displayItems.slice(3, 4);
+  const col4Items = col4.length >= 2 ? col4.slice(0, 2) : displayItems.slice(4, 6);
+  const col5Items = col5.length >= 1 ? col5.slice(0, 1) : displayItems.slice(6, 7);
 
   const activeIndex = displayItems.findIndex((img) => img.id === activeImageId);
   const activeImage = activeIndex !== -1 ? displayItems[activeIndex] : null;

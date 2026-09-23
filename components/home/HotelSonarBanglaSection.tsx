@@ -118,7 +118,7 @@ export function HotelSonarBanglaSection() {
           setItems([...dynamicItems, ...showcaseItems.slice(dynamicItems.length)]);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   // Duplicate items for continuous seamless infinite looping track
@@ -126,7 +126,7 @@ export function HotelSonarBanglaSection() {
 
   return (
     <section className="py-8 md:py-16 relative overflow-hidden">
-      <div className="container mb-8 md:mb-12">
+      <div className="container">
         {/* Section Header */}
         <div className="sec-header max-w-3xl mx-auto text-center">
           <p className="sec-tagline">Luxury Stay &amp; Safaris</p>

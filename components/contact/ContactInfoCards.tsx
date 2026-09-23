@@ -7,7 +7,8 @@ export function ContactInfoCards() {
   const [info, setInfo] = React.useState({
     phone: "+91 70014 03498",
     email: "sundarbanluxurypackage@gmail.com",
-    address: "Godkhali Ferry Ghat, Canning Town, South 24 Parganas, West Bengal 743329",
+    address: "Sundarban Luxury Package, Dulki, Gosaba, West Bengal 743370",
+    mapLink: "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
     workingHours: ["Mon - Sat: 9:00 AM - 6:00 PM", "Sunday: 10:00 AM - 4:00 PM"],
   });
 
@@ -20,20 +21,21 @@ export function ContactInfoCards() {
           setInfo({
             phone: g.helpdeskPhone || "+91 70014 03498",
             email: g.officialEmail || "sundarbanluxurypackage@gmail.com",
-            address: g.mainAddress || "Godkhali Ferry Ghat, Canning Town, South 24 Parganas, West Bengal 743329",
+            address: g.mainAddress || "Sundarban Luxury Package, Dulki, Gosaba, West Bengal 743370",
+            mapLink: "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
             workingHours: g.workingHours
               ? g.workingHours.split("\n").filter(Boolean)
               : ["Mon - Sat: 9:00 AM - 6:00 PM", "Sunday: 10:00 AM - 4:00 PM"],
           });
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   return (
-    <section className="py-10 sm:py-16 bg-[#f5f8f5]/80">
+    <section className="py-8 sm:py-16 bg-secondary/5 ">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 lg:gap-6">
 
           {/* 1. Call Us */}
           <div className="bg-[#f9fbf9] rounded-2xl p-6 sm:p-7 border border-[#e1e9e1] shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-md transition-all duration-300 flex flex-col justify-between">
@@ -95,9 +97,14 @@ export function ContactInfoCards() {
               </p>
             </div>
             <div>
-              <p className="text-xs sm:text-sm font-medium text-slate-800 leading-snug">
+              <a
+                href={info.mapLink || "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs sm:text-sm font-medium text-slate-800 leading-snug hover:text-[#237c73] transition-colors block"
+              >
                 {info.address}
-              </p>
+              </a>
             </div>
           </div>
 

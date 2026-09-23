@@ -958,9 +958,9 @@ export const initialAdminContactCards: AdminContactCard[] = [
     iconKey: "location",
     title: "Head Office",
     subtitle: "Launch & Reservation Center",
-    details: ["Godkhali Ferry Ghat, Canning Town", "South 24 Parganas, West Bengal 743329"],
+    details: ["Sundarban Luxury Package, Dulki, Gosaba", "South 24 Parganas, West Bengal 743370"],
     actionType: "map",
-    actionValue: "https://maps.google.com",
+    actionValue: "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
     isPrimary: true,
     status: "Active",
   },
@@ -1016,9 +1016,9 @@ export const initialAdminContactGeneralInfo: AdminContactGeneralInfo = {
   whatsappNumber: "+91 70014 03498",
   officialEmail: "sundarbanluxurypackage@gmail.com",
   supportEmail: "sundarbanluxurypackage@gmail.com",
-  mainAddress: "Godkhali Ferry Ghat, Canning Town, South 24 Parganas, West Bengal 743329",
+  mainAddress: "Sundarban Luxury Package, Dulki, Gosaba, South 24 Parganas, West Bengal 743370",
   workingHours: "Monday to Sunday: 8:00 AM – 9:00 PM IST",
-  googleMapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d118228.4550882196!2d88.65780529999999!3d22.2152865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a0210f69a538221%3A0x6b4fb6c17e657e5e!2sGodkhali%20Ferry%20Ghat!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin",
+  googleMapEmbedUrl: "https://maps.google.com/maps?q=Sundarban+Luxury+Package,+Dulki,+Gosaba,+West+Bengal+743370&t=&z=15&ie=UTF8&iwloc=&output=embed",
   emergencyHotline: "+91 70014 03498",
 };
 

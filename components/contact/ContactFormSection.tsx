@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Send, CheckCircle2, Phone, MapPin } from "lucide-react";
+import { Send, CheckCircle2, Phone, MapPin, ExternalLink } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa6";
 
 export function ContactFormSection() {
@@ -19,7 +19,9 @@ export function ContactFormSection() {
   const [hotlineInfo, setHotlineInfo] = useState({
     phone: "+91 70014 03498",
     whatsapp: "917001403498",
-    addressSummary: "📍 Primary luxury cruise departure point at Godkhali Ghat. Pickups available from Kolkata Airport & Howrah Railway Station.",
+    addressSummary: "📍 Sundarban Luxury Package, Dulki, Gosaba, South 24 Parganas, West Bengal 743370. Pickups available from Kolkata Airport & Howrah Railway Station.",
+    mapEmbedUrl: "https://maps.google.com/maps?q=Sundarban+Luxury+Package,+Dulki,+Gosaba,+West+Bengal+743370&t=&z=15&ie=UTF8&iwloc=&output=embed",
+    mapLink: "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
   });
 
   React.useEffect(() => {
@@ -34,11 +36,13 @@ export function ContactFormSection() {
             whatsapp: cleanWa || "917001403498",
             addressSummary: g.mainAddress
               ? `📍 Office / Departure: ${g.mainAddress}. Pickups available from Kolkata Airport & Howrah Railway Station.`
-              : "📍 Primary luxury cruise departure point at Godkhali Ghat. Pickups available from Kolkata Airport & Howrah Railway Station.",
+              : "📍 Sundarban Luxury Package, Dulki, Gosaba, South 24 Parganas, West Bengal 743370. Pickups available from Kolkata Airport & Howrah Railway Station.",
+            mapEmbedUrl: g.googleMapEmbedUrl || "https://maps.google.com/maps?q=Sundarban+Luxury+Package,+Dulki,+Gosaba,+West+Bengal+743370&t=&z=15&ie=UTF8&iwloc=&output=embed",
+            mapLink: "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
           });
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -80,11 +84,11 @@ export function ContactFormSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column: Interactive Contact Form (7 cols) */}
-          <div className="lg:col-span-7 rounded-sm bg-[#f9fafb] border border-emerald-100/80 p-6 sm:p-10 shadow-sm">
+          <div className="lg:col-span-7 rounded-sm bg-[#f9fafb] border border-emerald-100/80 p-4 sm:p-6 md:p-10 shadow-sm">
             <div className="mb-8">
 
               <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0f172a] tracking-tight">
-                Get In Touch With Us
+                Get In Touch
               </h2>
               <p className="text-slate-600 text-sm sm:text-base mt-2">
                 Have a question or feedback? Send us a message and our team will get back to you promptly.
@@ -234,18 +238,26 @@ export function ContactFormSection() {
             {/* Interactive Map Frame Card */}
             <div className="rounded-sm bg-white border border-slate-100 p-6 shadow-sm overflow-hidden">
               <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2 text-[#0f172a] font-bold text-lg">
+                <div className="flex flex-wrap items-center gap-2 text-[#0f172a] font-bold text-base md:text-lg">
                   <MapPin className="w-5 h-5 text-[#d97706]" />
                   <span>Departure & Office Location</span>
                 </div>
-
+                <a
+                  href={hotlineInfo.mapLink || "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-semibold text-primary hover:text-secondary flex items-center gap-1.5 transition-colors"
+                >
+                  <span>Open in Maps</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
               </div>
 
               {/* Styled Google Maps Iframe */}
               <div className="relative w-full h-[250px] rounded-sm overflow-hidden border border-slate-200/80 shadow-inner">
                 <iframe
-                  title="Sundarban Luxury Departure Location Map"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d118147.68202029704!2d88.750000!3d22.250000!2m3!1f0!2f0!3f0!2m3!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a0029efb7bb6f71%3A0x7d6f51fbc102bc45!2sSundarbans!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                  title="Sundarban Luxury Package Location Map"
+                  src={hotlineInfo.mapEmbedUrl || "https://maps.google.com/maps?q=Sundarban+Luxury+Package,+Dulki,+Gosaba,+West+Bengal+743370&t=&z=15&ie=UTF8&iwloc=&output=embed"}
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -262,7 +274,7 @@ export function ContactFormSection() {
             </div>
 
             {/* Direct WhatsApp & Hotline Badge */}
-            <div className="rounded-sm bg-gradient-to-br from-[#0f172a] to-[#052e16] p-7 text-white shadow-xl relative overflow-hidden">
+            <div className="rounded-sm bg-brand-green-dark p-3 md:p-7 text-white shadow-xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#d97706]/20 rounded-full blur-2xl pointer-events-none" />
 
               <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
