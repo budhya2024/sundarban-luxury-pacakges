@@ -280,9 +280,8 @@ function WordPressBlogEditorContent() {
   const [metaDescription, setMetaDescription] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
 
-  // Editor View Mode: "edit" | "split" | "preview"
-  const [viewMode, setViewMode] = useState<"edit" | "split" | "preview">("edit");
-  const [activeInspectorTab, setActiveInspectorTab] = useState<"document" | "seo">("document");
+  // Editor View Mode: "edit"
+  const [viewMode] = useState<"edit">("edit");
   const [isSaved, setIsSaved] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -417,15 +416,6 @@ function WordPressBlogEditorContent() {
     if (!metaTitle || metaTitle === title) {
       setMetaTitle(newTitle);
     }
-  };
-
-  const handleAuthorChange = (name: string) => {
-    setSelectedAuthor(name);
-    const author = AUTHORS_PRESETS.find((a) => a.name === name);
-    if (author) {
-      setAuthorImage(author.image);
-    }
-    setIsSaved(false);
   };
 
   // Add tag
@@ -628,35 +618,8 @@ function WordPressBlogEditorContent() {
           </div>
         </div>
 
-        {/* View mode switcher & actions */}
+        {/* Header Actions */}
         <div className="flex items-center gap-2">
-          <div className="bg-slate-800 p-0.5 rounded-[3px] flex items-center text-xs">
-            <button
-              onClick={() => setViewMode("edit")}
-              className={`px-2.5 py-1 rounded-[2px] font-bold transition-colors ${
-                viewMode === "edit" ? "bg-blue-600 text-white" : "text-slate-300 hover:text-white"
-              }`}
-            >
-              Visual Editor
-            </button>
-            <button
-              onClick={() => setViewMode("split")}
-              className={`px-2.5 py-1 rounded-[2px] font-bold transition-colors ${
-                viewMode === "split" ? "bg-blue-600 text-white" : "text-slate-300 hover:text-white"
-              }`}
-            >
-              Split View
-            </button>
-            <button
-              onClick={() => setViewMode("preview")}
-              className={`px-2.5 py-1 rounded-[2px] font-bold transition-colors ${
-                viewMode === "preview" ? "bg-blue-600 text-white" : "text-slate-300 hover:text-white"
-              }`}
-            >
-              Live Preview
-            </button>
-          </div>
-
           <button
             onClick={() => handleSaveOrPublish("Draft")}
             disabled={isSubmitting}
@@ -682,7 +645,7 @@ function WordPressBlogEditorContent() {
       </header>
 
       {/* Main Workspace Area (Canvas + Inspector Sidebar) */}
-      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden mt-2">
         {/* Left: Editor Canvas */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-8 space-y-6">
           <div className="max-w-4xl mx-auto space-y-6">
@@ -694,35 +657,11 @@ function WordPressBlogEditorContent() {
                   placeholder="Enter Post Title Here..."
                   value={title}
                   onChange={(e) => handleTitleChange(e.target.value)}
-                  className="w-full text-2xl sm:text-3xl font-black text-slate-900 border-none outline-none focus:ring-0 p-0 placeholder-slate-300 resize-none leading-tight"
+                  className="w-full  text-xl md:text-2xl font-black text-slate-900 border-none outline-none focus:ring-0 p-0 placeholder-slate-300 resize-none leading-tight"
                 />
               </div>
 
-              {/* Permalink bar */}
-              <div className="flex items-center flex-wrap gap-2 text-xs text-slate-500 pt-2 border-t border-slate-100">
-                <span className="font-semibold text-slate-400">Permalink:</span>
-                <span className="font-mono text-slate-600">/blog/</span>
-                <input
-                  type="text"
-                  value={slug}
-                  onChange={(e) => {
-                    setSlug(e.target.value);
-                    setIsSlugManual(true);
-                    setIsSaved(false);
-                  }}
-                  placeholder="custom-post-url-slug"
-                  className="px-2 py-0.5 text-xs font-mono font-bold text-blue-700 bg-blue-50/70 border border-blue-200 rounded focus:bg-white focus:outline-none focus:border-blue-600"
-                />
-                {slug && (
-                  <Link
-                    href={`/blog/${slug}`}
-                    target="_blank"
-                    className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-500 hover:text-blue-600 underline ml-2"
-                  >
-                    <ExternalLink className="w-3 h-3" /> View Public
-                  </Link>
-                )}
-              </div>
+
             </div>
 
             {/* STICKY RICH WORDPRESS EDITOR TOOLBAR */}
@@ -878,84 +817,27 @@ function WordPressBlogEditorContent() {
               </div>
             </div>
 
-            {/* Editor Textarea / Split Preview / Live Preview */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-              {/* Left Column: Markdown Code Editor */}
-              {(viewMode === "edit" || viewMode === "split") && (
-                <div
-                  className={`bg-white rounded-[4px] border border-slate-200 overflow-hidden shadow-2xs ${
-                    viewMode === "split" ? "lg:col-span-6" : "lg:col-span-12"
-                  }`}
-                >
-                  <div className="p-2.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs text-slate-500 font-semibold">
-                    <span>Markdown / Visual Canvas</span>
-                    <span className="font-mono text-[11px]">
-                      {wordCount} Words | {calculatedReadTime}
-                    </span>
-                  </div>
+            {/* Editor Textarea */}
+            <div className="bg-white rounded-[4px] border border-slate-200 overflow-hidden shadow-2xs lg:col-span-12">
+              <div className="p-2.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs text-slate-500 font-semibold">
+                <span>Markdown / Visual Canvas</span>
+                <span className="font-mono text-[11px]">
+                  {wordCount} Words | {calculatedReadTime}
+                </span>
+              </div>
 
-                  <textarea
-                    ref={contentTextareaRef}
-                    rows={20}
-                    value={content}
-                    onChange={(e) => setContentWithHistory(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder={`Write your article story here... You can use headings (##), lists (-), quotes (>), bold (**word**), links, images, tables, and callouts.`}
-                    className="w-full p-6 text-sm font-sans text-slate-800 focus:outline-none leading-relaxed border-none resize-y min-h-[450px]"
-                  />
-                </div>
-              )}
-
-              {/* Right Column: Live Formatted Preview */}
-              {(viewMode === "preview" || viewMode === "split") && (
-                <div
-                  className={`bg-white rounded-[4px] border border-slate-200 overflow-hidden shadow-2xs ${
-                    viewMode === "split" ? "lg:col-span-6" : "lg:col-span-12"
-                  }`}
-                >
-                  <div className="p-2.5 bg-slate-900 text-white flex items-center justify-between text-xs font-bold">
-                    <span className="flex items-center gap-1.5">
-                      <Eye className="w-3.5 h-3.5 text-blue-400" />
-                      Live Formatted Public Reader View
-                    </span>
-                    <span className="text-[10px] uppercase tracking-wider text-slate-400">
-                      Sundarban Theme Style
-                    </span>
-                  </div>
-
-                  <div className="p-6 sm:p-8 prose prose-slate max-w-none space-y-4">
-                    {/* Featured Image Header */}
-                    {featuredImage && (
-                      <div className="relative h-60 w-full rounded overflow-hidden shadow-sm">
-                        <Image
-                          src={featuredImage}
-                          alt={title || "Featured Image"}
-                          fill
-                          className="object-cover"
-                          unoptimized={featuredImage.startsWith("data:")}
-                        />
-                      </div>
-                    )}
-
-                    <h1 className="text-2xl font-extrabold text-slate-900">{title || "Untitled Article"}</h1>
-
-                    <div className="flex items-center gap-3 text-xs text-slate-500 pb-3 border-b border-slate-200">
-                      <div className="relative w-6 h-6 rounded-full overflow-hidden bg-slate-200">
-                        <Image src={authorImage} alt={selectedAuthor} fill className="object-cover" unoptimized={authorImage.startsWith("data:")} />
-                      </div>
-                      <span className="font-bold text-slate-700">{selectedAuthor}</span>
-                      <span>•</span>
-                      <span>{publishDate}</span>
-                      <span>•</span>
-                      <span className="font-mono text-blue-600 font-bold">{calculatedReadTime}</span>
-                    </div>
-
-                    {/* Rich Markdown Preview Output */}
-                    <MarkdownPreviewRenderer content={content} />
-                  </div>
-                </div>
-              )}
+              <textarea
+                ref={contentTextareaRef}
+                rows={20}
+                value={content}
+                onChange={(e) => setContentWithHistory(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={`Write your article story here... You can use headings (##), lists (-), quotes (>), bold (**word**), links, images, tables, and callouts.`}
+                className="w-full p-6 text-sm font-sans text-slate-800 focus:outline-none leading-relaxed border-none resize-y min-h-[450px]"
+              />
             </div>
+
+
 
             {/* Excerpt Box */}
             <div className="bg-white rounded-[4px] border border-slate-200 p-5 shadow-2xs space-y-2">
@@ -977,240 +859,168 @@ function WordPressBlogEditorContent() {
         </main>
 
         {/* Right: WordPress Gutenberg-Style Inspector Panel */}
-        <aside className="w-full lg:w-80 bg-white border-t lg:border-t-0 lg:border-l border-slate-200 flex flex-col shrink-0">
-          {/* Tab Switcher */}
-          <div className="flex border-b border-slate-200 bg-slate-50 text-xs font-bold">
-            <button
-              onClick={() => setActiveInspectorTab("document")}
-              className={`flex-1 py-2.5 text-center transition-colors ${
-                activeInspectorTab === "document"
-                  ? "bg-white text-blue-600 border-b-2 border-blue-600"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              Post Settings
-            </button>
-            <button
-              onClick={() => setActiveInspectorTab("seo")}
-              className={`flex-1 py-2.5 text-center transition-colors ${
-                activeInspectorTab === "seo"
-                  ? "bg-white text-blue-600 border-b-2 border-blue-600"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              SEO &amp; Social
-            </button>
-          </div>
+        <aside className="w-full lg:w-80 bg-slate-50 border-t lg:border-t-0 lg:border-l border-slate-200 flex flex-col shrink-0 overflow-hidden">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs">
+            {/* Publication Status */}
+            <div className="bg-white border border-slate-200 rounded-[4px] p-3.5 space-y-2.5 shadow-2xs">
+              <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">
+                Publication Status
+              </span>
 
-          <div className="p-5 overflow-y-auto space-y-6 text-xs flex-1">
-            {activeInspectorTab === "document" ? (
-              <>
-                {/* Status & Visibility */}
-                <div className="space-y-3 pb-5 border-b border-slate-100">
-                  <span className="font-extrabold text-slate-900 uppercase tracking-wider block">
-                    Publication Status
-                  </span>
+              <div className="grid grid-cols-2 gap-1 p-1 bg-slate-100 rounded-[3px]">
+                {(["Published", "Draft"] as const).map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => {
+                      setStatus(s);
+                      setIsSaved(false);
+                    }}
+                    className={`py-1.5 text-center font-bold rounded-[2px] transition-all text-[11px] cursor-pointer ${status === s ? "bg-white text-blue-600 shadow-xs border border-slate-200" : "text-slate-500 hover:text-slate-900"
+                      }`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
 
-                  <div className="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded">
-                    {(["Published", "Draft", "Scheduled"] as const).map((s) => (
-                      <button
-                        key={s}
-                        type="button"
-                        onClick={() => {
-                          setStatus(s);
-                          setIsSaved(false);
-                        }}
-                        className={`py-1 text-center font-bold rounded transition-colors ${
-                          status === s ? "bg-white text-blue-600 shadow-2xs" : "text-slate-600"
-                        }`}
-                      >
-                        {s}
-                      </button>
-                    ))}
-                  </div>
+              <label className="flex items-center justify-between cursor-pointer pt-0.5">
+                <span className="font-semibold text-slate-700 text-xs">Featured Article</span>
+                <input
+                  type="checkbox"
+                  checked={isFeatured}
+                  onChange={(e) => {
+                    setIsFeatured(e.target.checked);
+                    setIsSaved(false);
+                  }}
+                  className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500"
+                />
+              </label>
+            </div>
 
-                  <div className="flex items-center justify-between pt-1">
-                    <span className="text-slate-600">Featured Article</span>
+
+            {/* Category */}
+            <div className="bg-white border border-slate-200 rounded-[4px] p-3.5 space-y-2 shadow-2xs">
+              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">
+                Primary Category
+              </label>
+              <div className="space-y-1 max-h-36 overflow-y-auto pr-1">
+                {DEFAULT_CATEGORIES.map((cat) => (
+                  <label
+                    key={cat}
+                    className="flex items-center gap-2 px-2 py-1.5 rounded-[3px] hover:bg-slate-50 cursor-pointer transition-colors"
+                  >
                     <input
-                      type="checkbox"
-                      checked={isFeatured}
-                      onChange={(e) => {
-                        setIsFeatured(e.target.checked);
+                      type="radio"
+                      name="category"
+                      checked={category === cat}
+                      onChange={() => {
+                        setCategory(cat);
                         setIsSaved(false);
                       }}
-                      className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500"
+                      className="text-blue-600 focus:ring-blue-500"
                     />
-                  </div>
-                </div>
-
-                {/* Author Selection */}
-                <div className="space-y-2 pb-5 border-b border-slate-100">
-                  <label className="font-extrabold text-slate-900 uppercase tracking-wider block">
-                    Author &amp; Byline
+                    <span className="font-medium text-slate-700 text-xs">{cat}</span>
                   </label>
-                  <select
-                    value={selectedAuthor}
-                    onChange={(e) => handleAuthorChange(e.target.value)}
-                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-semibold text-slate-800 focus:outline-none focus:border-blue-600"
+                ))}
+              </div>
+            </div>
+
+            {/* Tags */}
+            <div className="bg-white border border-slate-200 rounded-[4px] p-3.5 space-y-2.5 shadow-2xs">
+              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">
+                Tags &amp; Keywords
+              </label>
+              <div className="flex gap-1.5">
+                <input
+                  type="text"
+                  placeholder="Add new tag..."
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleAddTag();
+                    }
+                  }}
+                  className="flex-1 px-2.5 py-1.5 border border-slate-300 rounded-[3px] text-xs focus:outline-none focus:border-blue-600"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddTag}
+                  className="px-2.5 py-1.5 bg-slate-800 text-white font-bold rounded-[3px] hover:bg-slate-900 text-xs transition-colors"
+                >
+                  Add
+                </button>
+              </div>
+
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {tags.map((t) => (
+                  <span
+                    key={t}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold text-[11px] border border-blue-200"
                   >
-                    {AUTHORS_PRESETS.map((author) => (
-                      <option key={author.name} value={author.name}>
-                        {author.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Category Selection */}
-                <div className="space-y-2 pb-5 border-b border-slate-100">
-                  <label className="font-extrabold text-slate-900 uppercase tracking-wider block">
-                    Primary Category
-                  </label>
-                  <div className="space-y-1 max-h-36 overflow-y-auto pr-1">
-                    {DEFAULT_CATEGORIES.map((cat) => (
-                      <label
-                        key={cat}
-                        className="flex items-center gap-2 p-1 rounded hover:bg-slate-50 cursor-pointer"
-                      >
-                        <input
-                          type="radio"
-                          name="category"
-                          checked={category === cat}
-                          onChange={() => {
-                            setCategory(cat);
-                            setIsSaved(false);
-                          }}
-                          className="text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="font-medium text-slate-700">{cat}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Tags Management */}
-                <div className="space-y-2 pb-5 border-b border-slate-100">
-                  <label className="font-extrabold text-slate-900 uppercase tracking-wider block">
-                    Tags &amp; Keywords
-                  </label>
-                  <div className="flex gap-1.5">
-                    <input
-                      type="text"
-                      placeholder="Add new tag..."
-                      value={tagInput}
-                      onChange={(e) => setTagInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          handleAddTag();
-                        }
-                      }}
-                      className="flex-1 px-2.5 py-1 border border-slate-300 rounded focus:outline-none focus:border-blue-600"
-                    />
+                    <span>{t}</span>
                     <button
                       type="button"
-                      onClick={handleAddTag}
-                      className="px-2.5 py-1 bg-slate-800 text-white font-bold rounded hover:bg-slate-900"
+                      onClick={() => handleRemoveTag(t)}
+                      className="hover:text-rose-600"
                     >
-                      Add
+                      <X className="w-3 h-3" />
                     </button>
-                  </div>
-
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {tags.map((t) => (
-                      <span
-                        key={t}
-                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold text-[11px] border border-blue-200"
-                      >
-                        <span>{t}</span>
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveTag(t)}
-                          className="hover:text-rose-600"
-                        >
-                          <X className="w-3 h-3" />
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Featured Image Box */}
-                <div className="space-y-2">
-                  <label className="font-extrabold text-slate-900 uppercase tracking-wider block">
-                    Featured Cover Image
-                  </label>
-                  <ImageUploadDropzone
-                    value={featuredImage}
-                    onChange={(val) => {
-                      setFeaturedImage(val);
-                      setIsSaved(false);
-                    }}
-                    label=""
-                    helperText="Upload cover image or pick a delta photo"
-                    presets={SAMPLE_GALLERY_IMAGES}
-
-                    aspectRatio="video"
-                  />
-                </div>
-              </>
-            ) : (
-              /* SEO Inspector Tab */
-              <div className="space-y-4">
-                <div className="p-3 bg-blue-50/70 border border-blue-200 rounded text-blue-900">
-                  <span className="font-bold block mb-1">Google SERP Snippet Preview</span>
-                  <div className="bg-white p-3 rounded border border-slate-200 space-y-1 font-sans">
-                    <span className="text-[11px] text-emerald-800 block truncate">
-                      https://sundarbanluxurypackage.com/blog/{slug || "article-url"}
-                    </span>
-                    <h4 className="text-sm font-bold text-blue-800 leading-snug line-clamp-1 hover:underline cursor-pointer">
-                      {metaTitle || title || "Article Headline Preview"}
-                    </h4>
-                    <p className="text-[11px] text-slate-600 line-clamp-2 leading-relaxed">
-                      {metaDescription || excerpt || "Write an effective description that helps searchers understand your Sundarban travel article..."}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="block font-bold text-slate-700 uppercase tracking-wider text-[11px]">
-                    SEO Meta Title
-                  </label>
-                  <input
-                    type="text"
-                    value={metaTitle}
-                    onChange={(e) => {
-                      setMetaTitle(e.target.value);
-                      setIsSaved(false);
-                    }}
-                    placeholder="Defaults to Post Title"
-                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-blue-600"
-                  />
-                  <span className="text-[10px] text-slate-400">
-                    Recommended: 50-60 characters ({metaTitle.length}/60)
                   </span>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="block font-bold text-slate-700 uppercase tracking-wider text-[11px]">
-                    SEO Meta Description
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={metaDescription}
-                    onChange={(e) => {
-                      setMetaDescription(e.target.value);
-                      setIsSaved(false);
-                    }}
-                    placeholder="Defaults to Excerpt summary"
-                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-blue-600 leading-relaxed"
-                  />
-                  <span className="text-[10px] text-slate-400">
-                    Recommended: 150-160 characters ({metaDescription.length}/160)
-                  </span>
-                </div>
+                ))}
               </div>
-            )}
+            </div>
+
+
+
+
+            {/* SEO Meta Title */}
+            <div className="bg-white border border-slate-200 rounded-[4px] p-3.5 space-y-2 shadow-2xs">
+              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">
+                SEO Meta Title
+              </label>
+              <input
+                type="text"
+                value={metaTitle}
+                onChange={(e) => {
+                  setMetaTitle(e.target.value);
+                  setIsSaved(false);
+                }}
+                placeholder="Defaults to Post Title"
+                className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-blue-600"
+              />
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] text-slate-400">Recommended: 50–60 chars</span>
+                <span className={`text-[10px] font-bold ${metaTitle.length > 60 ? "text-rose-500" : metaTitle.length >= 50 ? "text-emerald-600" : "text-slate-400"}`}>
+                  {metaTitle.length}/60
+                </span>
+              </div>
+            </div>
+
+            {/* SEO Meta Description */}
+            <div className="bg-white border border-slate-200 rounded-[4px] p-3.5 space-y-2 shadow-2xs">
+              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">
+                SEO Meta Description
+              </label>
+              <textarea
+                rows={3}
+                value={metaDescription}
+                onChange={(e) => {
+                  setMetaDescription(e.target.value);
+                  setIsSaved(false);
+                }}
+                placeholder="Defaults to Excerpt summary"
+                className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-blue-600 leading-relaxed"
+              />
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] text-slate-400">Recommended: 140–160 chars</span>
+                <span className={`text-[10px] font-bold ${metaDescription.length > 160 ? "text-rose-500" : metaDescription.length >= 140 ? "text-emerald-600" : "text-slate-400"}`}>
+                  {metaDescription.length}/160
+                </span>
+              </div>
+            </div>
           </div>
         </aside>
       </div>

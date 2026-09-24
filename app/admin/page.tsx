@@ -32,7 +32,7 @@ export default function AdminDashboardPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<AdminBooking | null>(null);
   const [bookingSearch, setBookingSearch] = useState("");
-  const [bookingFilter, setBookingFilter] = useState<"all" | "confirmed" | "pending" | "paid" | "resort">("all");
+  const [bookingFilter, setBookingFilter] = useState<"all" | "confirmed" | "pending" | "resort">("all");
 
   const { bookings, packages, rooms, inquiries, blogPostsList } = useAdmin();
 
@@ -79,7 +79,6 @@ export default function AdminDashboardPage() {
       let matchesFilter = true;
       if (bookingFilter === "confirmed") matchesFilter = b.bookingStatus === "Confirmed";
       else if (bookingFilter === "pending") matchesFilter = b.bookingStatus === "Pending";
-      else if (bookingFilter === "paid") matchesFilter = b.paymentStatus === "Paid";
       else if (bookingFilter === "resort") matchesFilter = b.type === "Hotel Resort";
 
       return matchesSearch && matchesFilter;
@@ -359,16 +358,6 @@ export default function AdminDashboardPage() {
                 Pending ({pendingCount})
               </button>
               <button
-                onClick={() => setBookingFilter("paid")}
-                className={`px-2.5 py-1 text-[11px] font-bold rounded-[3px] transition-colors whitespace-nowrap ${
-                  bookingFilter === "paid"
-                    ? "bg-emerald-600 text-white"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                }`}
-              >
-                Paid ({bookings.filter((b) => b.paymentStatus === "Paid").length})
-              </button>
-              <button
                 onClick={() => setBookingFilter("resort")}
                 className={`px-2.5 py-1 text-[11px] font-bold rounded-[3px] transition-colors whitespace-nowrap ${
                   bookingFilter === "resort"
@@ -385,12 +374,11 @@ export default function AdminDashboardPage() {
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase text-[10px] tracking-wider">
                 <tr>
-                  <th className="py-2.5 px-3">Booking Code</th>
+                  <th className="py-2.5 px-3 whitespace-nowrap">Sl. No.</th>
                   <th className="py-2.5 px-3">Guest Name</th>
-                  <th className="py-2.5 px-3">Package / Room</th>
+                  <th className="py-2.5 px-3">Selected Package</th>
                   <th className="py-2.5 px-3">Travel Date</th>
                   <th className="py-2.5 px-3">Amount</th>
-                  <th className="py-2.5 px-3">Payment</th>
                   <th className="py-2.5 px-3">Status</th>
                   <th className="py-2.5 px-3 text-right">Action</th>
                 </tr>
@@ -398,7 +386,7 @@ export default function AdminDashboardPage() {
               <tbody className="divide-y divide-slate-100 font-medium">
                 {recentBookings.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="py-8 text-center text-slate-400">
+                    <td colSpan={7} className="py-8 text-center text-slate-400">
                       <p className="text-xs font-semibold">
                         No reservations found matching your criteria.
                       </p>
@@ -416,10 +404,10 @@ export default function AdminDashboardPage() {
                     </td>
                   </tr>
                 ) : (
-                  recentBookings.map((b) => (
+                  recentBookings.map((b, index) => (
                     <tr key={b.id} className="hover:bg-slate-50/80 transition-colors">
-                      <td className="py-3 px-3 font-mono font-bold text-slate-900">
-                        {b.bookingCode}
+                      <td className="py-3 px-3 whitespace-nowrap font-mono font-bold text-slate-900">
+                        #{index + 1}
                       </td>
                       <td className="py-3 px-3 font-bold text-slate-900">
                         <div>{b.guestName}</div>
@@ -439,19 +427,6 @@ export default function AdminDashboardPage() {
                       <td className="py-3 px-3">
                         <span
                           className={`px-2 py-0.5 rounded-[2px] text-[10px] font-bold ${
-                            b.paymentStatus === "Paid"
-                              ? "bg-blue-50 text-blue-800 border border-blue-200"
-                              : b.paymentStatus === "Partial"
-                              ? "bg-amber-50 text-amber-800 border border-amber-200"
-                              : "bg-rose-50 text-rose-800 border border-rose-200"
-                          }`}
-                        >
-                          {b.paymentStatus}
-                        </span>
-                      </td>
-                      <td className="py-3 px-3">
-                        <span
-                          className={`px-2 py-0.5 rounded-[2px] text-[10px] font-bold ${
                             b.bookingStatus === "Confirmed"
                               ? "bg-blue-50 text-blue-800 border border-blue-200"
                               : b.bookingStatus === "Pending"
@@ -467,9 +442,9 @@ export default function AdminDashboardPage() {
                       <td className="py-3 px-3 text-right">
                         <button
                           onClick={() => setSelectedBooking(b)}
-                          className="px-2.5 py-1 rounded-[3px] bg-slate-100 hover:bg-blue-600 hover:text-white font-bold text-[11px] transition-colors"
+                          className="px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white font-bold text-xs transition-colors cursor-pointer"
                         >
-                          Inspect
+                          View Details
                         </button>
                       </td>
                     </tr>

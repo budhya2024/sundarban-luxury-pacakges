@@ -67,7 +67,7 @@ export interface AdminBooking {
   totalAmount: number;
   paidAmount: number;
   paymentStatus: "Paid" | "Partial" | "Unpaid";
-  bookingStatus: "Confirmed" | "Pending" | "Completed" | "Cancelled";
+  bookingStatus: "Confirmed" | "Pending" | "Checked In" | "Completed" | "Cancelled";
   createdAt: string;
   specialRequests?: string;
 }

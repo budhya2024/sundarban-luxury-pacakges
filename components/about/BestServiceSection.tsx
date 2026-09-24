@@ -31,7 +31,7 @@ export function BestServiceSection() {
       <div className="container">
         <div className="bg-secondary/10 rounded-2xl p-4 sm:p-6 md:p-10 shadow-xs">
           {/* Main Title */}
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground text-center tracking-tight mb-8 md:mb-12 border-b border-primary/9 pb-6">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground text-center tracking-tight mb-8 md:mb-12 border-b border-primary/9 pb-6">
             Best Sundarban Tour Packages provided by Us
           </h2>
 

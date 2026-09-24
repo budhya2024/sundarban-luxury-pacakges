@@ -1,4 +1,5 @@
 import { HeroSlider } from "@/components/home/HeroSlider";
+import { HeroFeaturesBar } from "@/components/home/HeroFeaturesBar";
 import { TourMenuSection } from "@/components/home/TourMenuSection";
 import { PopularDestinations } from "@/components/home/TourPackage";
 import { HotelSonarBanglaSection } from "@/components/home/HotelSonarBanglaSection";
@@ -14,9 +15,9 @@ export default function Home() {
   return (
     <main>
       <HeroSlider />
+      <HeroFeaturesBar />
       <PopularDestinations />
       <HotelSonarBanglaSection />
-
       <TourMenuSection />
       <PlanTripSection />
       <SundarbanEnvironmentSection />

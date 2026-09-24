@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import Image from "next/image";
-import { UploadCloud, Image as ImageIcon, X, Check, Link as LinkIcon, RefreshCw, AlertCircle } from "lucide-react";
+import { UploadCloud, X, RefreshCw, AlertCircle } from "lucide-react";
 
 interface ImageUploadDropzoneProps {
   value: string;
@@ -42,8 +42,6 @@ export function ImageUploadDropzone({
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [showUrlInput, setShowUrlInput] = useState(false);
-  const [urlInputValue, setUrlInputValue] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -158,13 +156,6 @@ export function ImageUploadDropzone({
     }
   };
 
-  const handleApplyUrl = () => {
-    if (urlInputValue.trim()) {
-      onChange(urlInputValue.trim());
-      setUrlInputValue("");
-      setShowUrlInput(false);
-    }
-  };
 
   const heightClass =
     aspectRatio === "square" ? "h-40 w-40" : aspectRatio === "wide" ? "h-36 w-full" : "h-48 w-full";
@@ -172,40 +163,11 @@ export function ImageUploadDropzone({
   return (
     <div className="space-y-2">
       {label && (
-        <div className="flex items-center justify-between">
-          <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
-            {label}
-          </label>
-          <button
-            type="button"
-            onClick={() => setShowUrlInput(!showUrlInput)}
-            className="text-[11px] font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1"
-          >
-            <LinkIcon className="w-3 h-3" />
-            <span>{showUrlInput ? "Use File Upload" : "Or enter direct link"}</span>
-          </button>
-        </div>
+        <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
+          {label}
+        </label>
       )}
 
-      {/* Manual URL Input dropdown if toggled */}
-      {showUrlInput ? (
-        <div className="flex gap-2 p-2 bg-slate-50 border border-slate-200 rounded-[3px]">
-          <input
-            type="text"
-            placeholder="Paste direct image URL (https://... or /assets/...)"
-            value={urlInputValue || value}
-            onChange={(e) => setUrlInputValue(e.target.value)}
-            className="flex-1 px-3 py-1.5 text-xs border border-slate-300 rounded focus:outline-none focus:border-blue-600 font-mono bg-white"
-          />
-          <button
-            type="button"
-            onClick={handleApplyUrl}
-            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded transition-colors"
-          >
-            Set URL
-          </button>
-        </div>
-      ) : null}
 
       {/* Main Upload Dropzone & Live Preview */}
       {value ? (

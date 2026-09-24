@@ -151,7 +151,7 @@ export function PlanTripSection() {
             {/* Learn More CTA Button */}
             <div>
               <Link
-                href="/tour-details"
+                href="/packages"
                 className="btn btn-primary !px-8 !py-3.5"
               >
                 <span>Learn More</span>

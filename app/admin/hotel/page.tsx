@@ -4,27 +4,21 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Building2,
   Plus,
   Trash2,
-  ExternalLink,
   Search,
   Image as ImageIcon,
   Phone,
   Calendar,
-  Eye,
   X,
-  Edit,
-  BedDouble,
   Users,
-  CheckCircle2,
-  Sparkles,
+  Clock,
+  User,
+  Mail,
 } from "lucide-react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { ImageUploadDropzone } from "@/components/admin/ImageUploadDropzone";
-import { RoomModal } from "@/components/admin/RoomModal";
 import { useAdmin } from "@/context/AdminContext";
-import { AdminHotelRoom } from "@/lib/admin-data";
 
 interface ResortPhoto {
   id: string;
@@ -205,7 +199,7 @@ const initialHotelInquiries: HotelInquiry[] = [
 
 export default function AdminHotelPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"photos" | "inquiries" | "rooms">("photos");
+  const [activeTab, setActiveTab] = useState<"photos" | "inquiries">("photos");
 
   // Photos state
   const [resortPhotos, setResortPhotos] = useState<ResortPhoto[]>(initialResortPhotos);
@@ -220,11 +214,9 @@ export default function AdminHotelPage() {
   const [inquiryStatusFilter, setInquiryStatusFilter] = useState("all");
   const [selectedInquiry, setSelectedInquiry] = useState<HotelInquiry | null>(null);
 
-  // Room Inventory State
-  const [roomModalOpen, setRoomModalOpen] = useState(false);
-  const [editingRoom, setEditingRoom] = useState<AdminHotelRoom | null>(null);
 
-  const { rooms, addRoom, updateRoom, deleteRoom, showToast, updateBookingStatus, deleteBooking, refreshBookings } = useAdmin();
+
+  const { showToast, updateBookingStatus, deleteBooking, refreshBookings } = useAdmin();
 
   // Synchronize live data from Neon backend
   useEffect(() => {
@@ -367,22 +359,7 @@ export default function AdminHotelPage() {
     }
   };
 
-  // Room Handlers
-  const handleSaveRoom = (roomData: Omit<AdminHotelRoom, "id">) => {
-    if (editingRoom) {
-      updateRoom(editingRoom.id, roomData);
-    } else {
-      addRoom(roomData);
-    }
-    setRoomModalOpen(false);
-    setEditingRoom(null);
-  };
 
-  const handleDeleteRoom = (id: string, roomName: string) => {
-    if (confirm(`Delete room category "${roomName}"?`)) {
-      deleteRoom(id);
-    }
-  };
 
   // Filtered Inquiries
   const filteredInquiries = hotelInquiries.filter((inq) => {
@@ -437,16 +414,7 @@ export default function AdminHotelPage() {
             )}
           </button>
 
-          <button
-            onClick={() => setActiveTab("rooms")}
-            className={`px-4 py-2 text-xs font-bold rounded-[3px] transition-all flex items-center gap-2 ${activeTab === "rooms"
-              ? "bg-blue-600 text-white shadow-xs"
-              : "text-slate-600 hover:bg-slate-200/60"
-              }`}
-          >
-            <Building2 className="w-4 h-4" />
-            <span>Room Inventory ({rooms.length})</span>
-          </button>
+
         </div>
 
         {/* TAB 1: RESORT PHOTO GALLERY */}
@@ -577,7 +545,7 @@ export default function AdminHotelPage() {
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
                     <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-600">
-                      <th className="py-3 px-4 w-12">Ref ID</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Sl. No.</th>
                       <th className="py-3 px-4">Guest Details</th>
                       <th className="py-3 px-4">Room Category</th>
                       <th className="py-3 px-4">Check-In / Out</th>
@@ -596,10 +564,10 @@ export default function AdminHotelPage() {
                         </td>
                       </tr>
                     ) : (
-                      filteredInquiries.map((inq) => (
+                      filteredInquiries.map((inq, index) => (
                         <tr key={inq.id} className="hover:bg-slate-50/80 transition-colors">
-                          <td className="py-3.5 px-4 font-mono font-bold text-blue-700 text-[11px]">
-                            {inq.refId}
+                          <td className="py-3.5 px-4 whitespace-nowrap font-mono font-bold text-slate-900 text-xs">
+                            #{index + 1}
                           </td>
 
                           <td className="py-3.5 px-4">
@@ -624,61 +592,32 @@ export default function AdminHotelPage() {
 
                           <td className="py-3.5 px-4 whitespace-nowrap">
                             <div className="font-extrabold text-slate-900">₹{inq.totalAmount.toLocaleString()}</div>
-                            <span
-                              className={`text-[9px] font-bold uppercase px-1.5 py-0.2 rounded ${inq.paymentStatus === "Paid"
-                                ? "bg-emerald-50 text-emerald-700"
-                                : inq.paymentStatus === "Partial"
-                                  ? "bg-amber-50 text-amber-700"
-                                  : "bg-rose-50 text-rose-700"
-                                }`}
-                            >
-                              {inq.paymentStatus}
-                            </span>
                           </td>
 
                           <td className="py-3.5 px-4 whitespace-nowrap">
-                            <select
-                              value={inq.status}
-                              onChange={(e) =>
-                                handleToggleInquiryStatus(inq.id, e.target.value as HotelInquiry["status"])
-                              }
-                              className={`px-2 py-0.5 rounded-[2px] text-[10px] font-bold uppercase tracking-wider border cursor-pointer ${inq.status === "Confirmed"
-                                ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                            <span
+                              className={`px-2 py-0.5 rounded-[2px] text-[10px] font-bold uppercase tracking-wider ${inq.status === "Confirmed"
+                                ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                                 : inq.status === "Checked In"
-                                  ? "bg-blue-50 text-blue-700 border-blue-200"
+                                  ? "bg-blue-50 text-blue-700 border border-blue-200"
                                   : inq.status === "Pending"
-                                    ? "bg-amber-50 text-amber-700 border-amber-200"
+                                    ? "bg-amber-50 text-amber-700 border border-amber-200"
                                     : inq.status === "Completed"
-                                      ? "bg-slate-100 text-slate-700 border-slate-200"
-                                      : "bg-rose-50 text-rose-700 border-rose-200"
+                                      ? "bg-slate-100 text-slate-700 border border-slate-200"
+                                      : "bg-rose-50 text-rose-700 border border-rose-200"
                                 }`}
                             >
-                              <option value="Pending">Pending</option>
-                              <option value="Confirmed">Confirmed</option>
-                              <option value="Checked In">Checked In</option>
-                              <option value="Completed">Completed</option>
-                              <option value="Cancelled">Cancelled</option>
-                            </select>
+                              {inq.status}
+                            </span>
                           </td>
 
                           <td className="py-3.5 px-4 text-right whitespace-nowrap">
-                            <div className="flex items-center justify-end gap-1.5">
-                              <button
-                                onClick={() => setSelectedInquiry(inq)}
-                                className="p-1.5 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors border border-slate-200"
-                                title="View Inquiry Details"
-                              >
-                                <Eye className="w-3.5 h-3.5" />
-                              </button>
-
-                              <button
-                                onClick={() => handleDeleteInquiry(inq.id, inq.refId)}
-                                className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded transition-colors border border-slate-200"
-                                title="Delete Inquiry"
-                              >
-                                <Trash2 className="w-3.5 h-3.5" />
-                              </button>
-                            </div>
+                            <button
+                              onClick={() => setSelectedInquiry(inq)}
+                              className="px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white font-bold text-xs transition-colors cursor-pointer"
+                            >
+                              View Details
+                            </button>
                           </td>
                         </tr>
                       ))
@@ -690,163 +629,7 @@ export default function AdminHotelPage() {
           </div>
         )}
 
-        {/* TAB 3: RESORT ROOM INVENTORY & SUITES */}
-        {activeTab === "rooms" && (
-          <div className="space-y-6">
-            {/* KPI Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="p-3.5 bg-white border border-slate-200 rounded-[4px] shadow-2xs">
-                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Room Categories</div>
-                <div className="text-xl font-bold text-slate-900 mt-0.5">{rooms.length}</div>
-              </div>
-              <div className="p-3.5 bg-white border border-slate-200 rounded-[4px] shadow-2xs">
-                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Total Units</div>
-                <div className="text-xl font-bold text-slate-900 mt-0.5">
-                  {rooms.reduce((sum, r) => sum + (r.totalRooms || 0), 0)}
-                </div>
-              </div>
-              <div className="p-3.5 bg-white border border-slate-200 rounded-[4px] shadow-2xs">
-                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Available Units</div>
-                <div className="text-xl font-bold text-emerald-600 mt-0.5">
-                  {rooms.reduce((sum, r) => sum + (r.availableRooms || 0), 0)}
-                </div>
-              </div>
-              <div className="p-3.5 bg-white border border-slate-200 rounded-[4px] shadow-2xs">
-                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Active Inventory</div>
-                <div className="text-xl font-bold text-blue-600 mt-0.5">
-                  {rooms.filter((r) => r.status === "Available").length}
-                </div>
-              </div>
-            </div>
 
-            {/* Header & Add Room */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 rounded-[4px] border border-slate-200">
-              <div>
-                <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
-                  <Building2 className="w-4 h-4 text-blue-600" />
-                  <span>Resort Rooms &amp; Suites Inventory</span>
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Manage hotel room categories, nightly rates, guest capacities, and room allocations.
-                </p>
-              </div>
-
-              <button
-                onClick={() => {
-                  setEditingRoom(null);
-                  setRoomModalOpen(true);
-                }}
-                className="px-3.5 py-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-[3px] flex items-center gap-1.5 shadow-xs transition-colors"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Add Room Category</span>
-              </button>
-            </div>
-
-            {/* Room Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {rooms.map((room) => (
-                <div
-                  key={room.id}
-                  className="bg-white border border-slate-200 rounded-[4px] shadow-2xs overflow-hidden flex flex-col group hover:shadow-xs transition-all"
-                >
-                  <div className="relative h-44 w-full bg-slate-100 overflow-hidden">
-                    <Image
-                      src={room.image || "/assets/images/sonarbanglahotel.jpg"}
-                      alt={room.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      unoptimized={room.image?.startsWith("data:")}
-                    />
-                    <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-                      <span className="px-2 py-0.5 rounded-[2px] bg-slate-900/90 text-white font-mono font-bold text-[10px]">
-                        {room.code}
-                      </span>
-                      <span
-                        className={`px-2 py-0.5 rounded-[2px] font-bold text-[10px] ${
-                          room.status === "Available"
-                            ? "bg-emerald-600 text-white"
-                            : room.status === "Sold Out"
-                            ? "bg-rose-600 text-white"
-                            : "bg-amber-500 text-slate-900"
-                        }`}
-                      >
-                        {room.status}
-                      </span>
-                    </div>
-
-                    <div className="absolute top-2.5 right-2.5 flex items-center gap-1">
-                      <button
-                        onClick={() => {
-                          setEditingRoom(room);
-                          setRoomModalOpen(true);
-                        }}
-                        className="p-1.5 rounded-full bg-white/90 text-slate-700 hover:bg-white hover:text-blue-600 transition-colors shadow-xs"
-                        title="Edit Room"
-                      >
-                        <Edit className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteRoom(room.id, room.name)}
-                        className="p-1.5 rounded-full bg-rose-600/90 text-white hover:bg-rose-700 transition-colors shadow-xs"
-                        title="Delete Room"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
-                    <div>
-                      <div className="flex items-baseline justify-between gap-2">
-                        <h4 className="text-sm font-bold text-slate-900 line-clamp-1">{room.name}</h4>
-                      </div>
-                      <div className="mt-1 flex items-baseline gap-1">
-                        <span className="text-base font-extrabold text-blue-700">₹{room.pricePerNight.toLocaleString()}</span>
-                        <span className="text-[11px] text-slate-500 font-medium">/ night</span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-1.5 pt-2 border-t border-slate-100 text-xs text-slate-600">
-                      <div className="flex items-center gap-2">
-                        <Users className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span className="truncate">{room.capacity}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <BedDouble className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span className="truncate">{room.bedType}</span>
-                      </div>
-                      <div className="flex items-center justify-between text-[11px] pt-1">
-                        <span className="text-slate-500 font-medium">Availability</span>
-                        <span className="font-bold text-slate-900">
-                          {room.availableRooms} / {room.totalRooms} rooms
-                        </span>
-                      </div>
-                    </div>
-
-                    {room.amenities && room.amenities.length > 0 && (
-                      <div className="flex flex-wrap gap-1 pt-1">
-                        {room.amenities.slice(0, 3).map((amenity, idx) => (
-                          <span
-                            key={idx}
-                            className="px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded-[2px] text-[10px] font-medium"
-                          >
-                            {amenity}
-                          </span>
-                        ))}
-                        {room.amenities.length > 3 && (
-                          <span className="px-1.5 py-0.5 bg-slate-100 text-slate-500 rounded-[2px] text-[10px] font-medium">
-                            +{room.amenities.length - 3}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </main>
 
       {/* Add Resort Photo Modal */}
@@ -926,84 +709,184 @@ export default function AdminHotelPage() {
         </div>
       )}
 
-      {/* Inquiry Detail Modal */}
+      {/* Inquiry Detail Right-Side Drawer */}
       {selectedInquiry && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-[4px] shadow-xl w-full max-w-lg overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between p-4 border-b border-slate-100 bg-slate-900 text-white">
+        <div className="fixed inset-0 z-50 flex justify-end bg-slate-900/40 backdrop-blur-xs animate-in fade-in duration-200">
+          {/* Backdrop click to dismiss */}
+          <div className="fixed inset-0" onClick={() => setSelectedInquiry(null)} />
+
+          {/* Right-Side Drawer Panel */}
+          <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-right duration-300 text-slate-800 text-xs border-l border-slate-200">
+            {/* Top Header with Clean White Background */}
+            <div className="px-6 py-4.5 bg-white border-b border-slate-200 flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-mono text-blue-400 font-bold block uppercase tracking-wider">
-                  Booking Inquiry #{selectedInquiry.refId}
-                </span>
-                <h3 className="font-extrabold text-base text-white mt-0.5">
-                  {selectedInquiry.guestName}
-                </h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-black tracking-tight text-slate-900">
+                    Hotel Booking Details
+                  </h3>
+                  <span
+                    className={`px-2 py-0.5 rounded-sm text-[10px] font-bold ${
+                      selectedInquiry.status === "Confirmed"
+                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                        : selectedInquiry.status === "Checked In"
+                        ? "bg-blue-50 text-blue-700 border border-blue-200"
+                        : selectedInquiry.status === "Pending"
+                        ? "bg-amber-50 text-amber-700 border border-amber-200"
+                        : selectedInquiry.status === "Completed"
+                        ? "bg-slate-100 text-slate-700 border border-slate-200"
+                        : "bg-rose-50 text-rose-700 border border-rose-200"
+                    }`}
+                  >
+                    {selectedInquiry.status}
+                  </span>
+                </div>
+                <p className="text-slate-500 text-[11px] font-medium flex items-center gap-1.5 mt-0.5">
+                  <Clock className="w-3 h-3 text-slate-400" />
+                  <span>Booked on {selectedInquiry.date}</span>
+                </p>
               </div>
               <button
                 onClick={() => setSelectedInquiry(null)}
-                className="p-1 text-slate-400 hover:text-white rounded"
+                className="p-1.5 rounded-sm text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+                aria-label="Close drawer"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="p-5 space-y-4 text-xs text-slate-700">
-              <div className="grid grid-cols-2 gap-4 bg-slate-50 p-3 rounded border border-slate-100">
+            {/* Drawer Body */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+              {/* Guest Details Card */}
+              <div className="p-4 rounded-sm bg-slate-50 border border-slate-200/80 space-y-3">
                 <div>
-                  <span className="text-[10px] text-slate-400 font-bold uppercase block">Phone</span>
-                  <a href={`tel:${selectedInquiry.phone}`} className="font-bold text-blue-700 hover:underline">
-                    {selectedInquiry.phone}
-                  </a>
-                </div>
-                <div>
-                  <span className="text-[10px] text-slate-400 font-bold uppercase block">Email</span>
-                  <span className="font-bold text-slate-800">{selectedInquiry.email}</span>
-                </div>
-              </div>
-
-              <div className="space-y-2 border-t border-slate-100 pt-3">
-                <div className="flex justify-between">
-                  <span className="text-slate-500 font-medium">Room Category:</span>
-                  <span className="font-bold text-slate-900">{selectedInquiry.roomName}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500 font-medium">Check-In / Out:</span>
-                  <span className="font-bold text-slate-900">{selectedInquiry.checkIn} — {selectedInquiry.checkOut}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500 font-medium">Guests &amp; Rooms:</span>
-                  <span className="font-bold text-slate-900">{selectedInquiry.guestsCount} ({selectedInquiry.roomsCount} Room)</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500 font-medium">Total Tariff:</span>
-                  <span className="font-extrabold text-blue-700 text-sm">₹{selectedInquiry.totalAmount.toLocaleString()}</span>
-                </div>
-              </div>
-
-              {selectedInquiry.specialRequests && (
-                <div className="bg-amber-50 p-3 rounded border border-amber-200/80">
-                  <span className="text-[10px] font-bold text-amber-800 uppercase block mb-1">
-                    Special Guests Requests:
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+                    Primary Guest
                   </span>
-                  <p className="text-xs text-amber-950 font-medium">
-                    {selectedInquiry.specialRequests}
-                  </p>
+                  <span className="text-sm font-extrabold text-slate-900 flex items-center gap-1.5">
+                    <User className="w-3.5 h-3.5 text-slate-500" />
+                    <span>{selectedInquiry.guestName}</span>
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 border-t border-slate-200/70 text-[11px]">
+                  <div>
+                    <span className="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">
+                      Phone Number
+                    </span>
+                    <span className="font-semibold text-slate-900 flex items-center gap-1 mt-0.5">
+                      <Phone className="w-3 h-3 text-slate-400" />
+                      <span>{selectedInquiry.phone}</span>
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">
+                      Email Address
+                    </span>
+                    <span className="font-semibold text-slate-900 flex items-center gap-1 mt-0.5 truncate">
+                      <Mail className="w-3 h-3 text-slate-400 shrink-0" />
+                      <span className="truncate">{selectedInquiry.email}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Room & Stay Details Card */}
+              <div className="p-4 rounded-sm bg-blue-50/40 border border-blue-100 space-y-3">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 block mb-0.5">
+                    Selected Suite / Room
+                  </span>
+                  <h4 className="text-xs font-extrabold text-slate-900 leading-snug">
+                    {selectedInquiry.roomName}
+                  </h4>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2.5 pt-2.5 border-t border-blue-100 text-[11px]">
+                  <div>
+                    <span className="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">
+                      Stay Dates
+                    </span>
+                    <span className="font-bold text-slate-900 flex items-center gap-1 mt-0.5">
+                      <Calendar className="w-3 h-3 text-blue-600" />
+                      <span>{selectedInquiry.checkIn} — {selectedInquiry.checkOut}</span>
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">
+                      Guests &amp; Rooms
+                    </span>
+                    <span className="font-bold text-slate-900 flex items-center gap-1 mt-0.5">
+                      <Users className="w-3 h-3 text-blue-600" />
+                      <span>{selectedInquiry.guestsCount} ({selectedInquiry.roomsCount} Room)</span>
+                    </span>
+                  </div>
+
+                  <div className="sm:col-span-2 pt-1 border-t border-blue-100 flex items-center justify-between">
+                    <span className="text-slate-500 font-bold uppercase text-[10px]">
+                      Total Tariff
+                    </span>
+                    <span className="font-black text-slate-900 text-sm">
+                      ₹{selectedInquiry.totalAmount.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Special Guest Custom Notes if present */}
+              {selectedInquiry.specialRequests && (
+                <div className="p-3 rounded-sm bg-amber-50/70 border border-amber-200/80 text-[11px] text-amber-900">
+                  <span className="font-bold block text-[10px] uppercase tracking-wider text-amber-800 mb-0.5">
+                    Special Guest Note / Request
+                  </span>
+                  <p className="leading-relaxed">{selectedInquiry.specialRequests}</p>
                 </div>
               )}
+
+              {/* Status Update Selector */}
+              <div className="space-y-1.5 pt-1">
+                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                  Update Booking Status
+                </label>
+                <div className="grid grid-cols-5 gap-1">
+                  {(["Pending", "Confirmed", "Checked In", "Completed", "Cancelled"] as const).map(
+                    (st) => {
+                      const isActive = selectedInquiry.status === st;
+                      return (
+                        <button
+                          key={st}
+                          type="button"
+                          onClick={() => {
+                            handleToggleInquiryStatus(selectedInquiry.id, st);
+                            setSelectedInquiry({ ...selectedInquiry, status: st });
+                          }}
+                          className={`py-2 px-0.5 rounded-sm text-[10px] font-bold text-center transition-all cursor-pointer border ${
+                            isActive
+                              ? st === "Confirmed" || st === "Checked In"
+                                ? "bg-blue-600 text-white border-blue-600 shadow-xs"
+                                : st === "Pending"
+                                ? "bg-amber-500 text-white border-amber-500 shadow-xs"
+                                : st === "Completed"
+                                ? "bg-emerald-600 text-white border-emerald-600 shadow-xs"
+                                : "bg-rose-600 text-white border-rose-600 shadow-xs"
+                              : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+                          }`}
+                        >
+                          {st}
+                        </button>
+                      );
+                    }
+                  )}
+                </div>
+              </div>
             </div>
 
-            <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-              <a
-                href={`tel:${selectedInquiry.phone}`}
-                className="px-3.5 py-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-[3px] flex items-center gap-1.5 shadow-xs"
-              >
-                <Phone className="w-3.5 h-3.5" />
-                <span>Call Customer</span>
-              </a>
-
+            {/* Drawer Footer Actions */}
+            <div className="px-6 py-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between gap-3">
               <button
+                type="button"
                 onClick={() => setSelectedInquiry(null)}
-                className="px-4 py-1.5 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 rounded-[3px] border border-slate-200"
+                className="w-full py-2 px-3 rounded-sm border border-slate-300 bg-white text-slate-700 font-bold hover:bg-slate-100 transition-colors text-center cursor-pointer"
               >
                 Close
               </button>
@@ -1012,16 +895,7 @@ export default function AdminHotelPage() {
         </div>
       )}
 
-      {/* Room Modal */}
-      <RoomModal
-        isOpen={roomModalOpen}
-        onClose={() => {
-          setRoomModalOpen(false);
-          setEditingRoom(null);
-        }}
-        initialRoom={editingRoom}
-        onSave={handleSaveRoom}
-      />
+
     </div>
   );
 }

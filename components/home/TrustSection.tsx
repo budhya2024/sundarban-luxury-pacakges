@@ -38,8 +38,8 @@ const stats: StatItem[] = [
   },
   {
     id: "travellers",
-    value: 19,
-    suffix: "k",
+    value: 10,
+    suffix: "k+",
     label: "Happy Travellers",
     dotPosition: "top-right",
     offset: "up",

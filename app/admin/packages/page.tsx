@@ -194,15 +194,14 @@ export default function AdminPackagesPage() {
                   key={st}
                   type="button"
                   onClick={() => setStatusFilter(st)}
-                  className={`px-2.5 py-1 rounded transition-colors cursor-pointer ${
-                    statusFilter === st
-                      ? st === "Active"
-                        ? "bg-emerald-600 text-white shadow-2xs font-extrabold"
-                        : st === "Draft"
+                  className={`px-2.5 py-1 rounded transition-colors cursor-pointer ${statusFilter === st
+                    ? st === "Active"
+                      ? "bg-emerald-600 text-white shadow-2xs font-extrabold"
+                      : st === "Draft"
                         ? "bg-amber-500 text-white shadow-2xs font-extrabold"
                         : "bg-white text-blue-600 shadow-2xs font-extrabold"
-                      : "text-slate-600 hover:text-slate-900"
-                  }`}
+                    : "text-slate-600 hover:text-slate-900"
+                    }`}
                 >
                   {st}
                 </button>
@@ -213,9 +212,8 @@ export default function AdminPackagesPage() {
               <button
                 type="button"
                 onClick={() => setViewMode("list")}
-                className={`p-1.5 rounded transition-colors ${
-                  viewMode === "list" ? "bg-white text-blue-600 shadow-2xs" : "text-slate-400 hover:text-slate-700"
-                }`}
+                className={`p-1.5 rounded transition-colors ${viewMode === "list" ? "bg-white text-blue-600 shadow-2xs" : "text-slate-400 hover:text-slate-700"
+                  }`}
                 title="List Table View"
               >
                 <List className="w-4 h-4" />
@@ -223,9 +221,8 @@ export default function AdminPackagesPage() {
               <button
                 type="button"
                 onClick={() => setViewMode("grid")}
-                className={`p-1.5 rounded transition-colors ${
-                  viewMode === "grid" ? "bg-white text-blue-600 shadow-2xs" : "text-slate-400 hover:text-slate-700"
-                }`}
+                className={`p-1.5 rounded transition-colors ${viewMode === "grid" ? "bg-white text-blue-600 shadow-2xs" : "text-slate-400 hover:text-slate-700"
+                  }`}
                 title="Cards Grid View"
               >
                 <LayoutGrid className="w-4 h-4" />
@@ -270,7 +267,7 @@ export default function AdminPackagesPage() {
                   <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-600">
                     <th className="py-3 px-4">Package</th>
                     <th className="py-3 px-4">Duration &amp; Capacity</th>
-                    <th className="py-3 px-4">Tariff / Price</th>
+                    <th className="py-3 px-4">Price</th>
                     <th className="py-3 px-4">Status</th>
                     <th className="py-3 px-4 text-right">Actions</th>
                   </tr>
@@ -336,20 +333,17 @@ export default function AdminPackagesPage() {
                             title={`Click to switch status to ${pkg.status === "Active" ? "Inactive" : "Active"}`}
                           >
                             <div
-                              className={`w-9 h-5 flex items-center rounded-full p-0.5 transition-colors duration-200 ease-in-out ${
-                                pkg.status === "Active" ? "bg-blue-600" : "bg-slate-300"
-                              }`}
+                              className={`w-9 h-5 flex items-center rounded-full p-0.5 transition-colors duration-200 ease-in-out ${pkg.status === "Active" ? "bg-blue-600" : "bg-slate-300"
+                                }`}
                             >
                               <div
-                                className={`w-4 h-4 bg-white rounded-full shadow-xs transform transition-transform duration-200 ease-in-out ${
-                                  pkg.status === "Active" ? "translate-x-4" : "translate-x-0"
-                                }`}
+                                className={`w-4 h-4 bg-white rounded-full shadow-xs transform transition-transform duration-200 ease-in-out ${pkg.status === "Active" ? "translate-x-4" : "translate-x-0"
+                                  }`}
                               />
                             </div>
                             <span
-                              className={`text-[11px] font-bold uppercase tracking-wider ${
-                                pkg.status === "Active" ? "text-blue-700" : "text-slate-500"
-                              }`}
+                              className={`text-[11px] font-bold uppercase tracking-wider ${pkg.status === "Active" ? "text-blue-700" : "text-slate-500"
+                                }`}
                             >
                               {pkg.status === "Active" ? "Active" : "Inactive"}
                             </span>
@@ -431,11 +425,10 @@ export default function AdminPackagesPage() {
                       <button
                         type="button"
                         onClick={() => handleToggleStatus(pkg)}
-                        className={`absolute top-2.5 right-2.5 px-2 py-0.5 rounded-[2px] text-[10px] font-bold cursor-pointer transition-opacity hover:opacity-90 ${
-                          pkg.status === "Active"
-                            ? "bg-blue-600 text-white shadow-xs"
-                            : "bg-slate-800 text-slate-200"
-                        }`}
+                        className={`absolute top-2.5 right-2.5 px-2 py-0.5 rounded-[2px] text-[10px] font-bold cursor-pointer transition-opacity hover:opacity-90 ${pkg.status === "Active"
+                          ? "bg-blue-600 text-white shadow-xs"
+                          : "bg-slate-800 text-slate-200"
+                          }`}
                         title="Click to toggle status"
                       >
                         {pkg.status}
@@ -531,11 +524,10 @@ export default function AdminPackagesPage() {
                       {/* Featured toggle */}
                       <button
                         onClick={() => handleToggleFeatured(pkg)}
-                        className={`p-1.5 rounded-[3px] transition-colors ${
-                          pkg.featured
-                            ? "text-amber-500 bg-amber-50 hover:bg-amber-100"
-                            : "text-slate-400 hover:text-amber-500 hover:bg-white"
-                        }`}
+                        className={`p-1.5 rounded-[3px] transition-colors ${pkg.featured
+                          ? "text-amber-500 bg-amber-50 hover:bg-amber-100"
+                          : "text-slate-400 hover:text-amber-500 hover:bg-white"
+                          }`}
                         title={pkg.featured ? "Remove from Featured" : "Mark as Featured"}
                       >
                         <Star className={`w-3.5 h-3.5 ${pkg.featured ? "fill-amber-500" : ""}`} />

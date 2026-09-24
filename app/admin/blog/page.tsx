@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -11,23 +11,12 @@ import {
   BookOpen,
   Plus,
   Search,
-  Filter,
   Edit2,
   Trash2,
-  Copy,
   ExternalLink,
-  Calendar,
-  Clock,
-  Tag,
-  Eye,
-  CheckCircle,
-  FileText,
-  Layers,
-  Sparkles,
-  ArrowUpRight,
-  MoreVertical,
-  Globe,
   Star,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 export default function AdminBlogManagerPage() {
@@ -38,6 +27,8 @@ export default function AdminBlogManagerPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   // Extract unique categories
   const categories = [
@@ -59,6 +50,22 @@ export default function AdminBlogManagerPage() {
 
     return matchesSearch && matchesCategory && matchesStatus;
   });
+
+  // Pagination
+  const totalPages = Math.max(1, Math.ceil(filteredPosts.length / pageSize));
+  const safePage = Math.min(currentPage, totalPages);
+  const paginatedPosts = filteredPosts.slice((safePage - 1) * pageSize, safePage * pageSize);
+
+  const handlePageChange = (p: number) => setCurrentPage(Math.max(1, Math.min(p, totalPages)));
+  const handleFilterChange = (fn: () => void) => { fn(); setCurrentPage(1); };
+
+  const pageNumbers = useMemo(() => {
+    const pages: number[] = [];
+    const start = Math.max(1, safePage - 2);
+    const end = Math.min(totalPages, start + 4);
+    for (let i = start; i <= end; i++) pages.push(i);
+    return pages;
+  }, [safePage, totalPages]);
 
   const handleDuplicatePost = (post: BlogPost) => {
     const duplicated: BlogPost = {
@@ -153,7 +160,7 @@ export default function AdminBlogManagerPage() {
             type="text"
             placeholder="Search blogs by title, slug, tags..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => handleFilterChange(() => setSearchTerm(e.target.value))}
             className="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-300 rounded-[3px] focus:outline-hidden focus:border-blue-600 bg-white"
           />
         </div>
@@ -164,7 +171,7 @@ export default function AdminBlogManagerPage() {
             <span className="font-semibold text-slate-500">Status:</span>
             <select
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
+              onChange={(e) => handleFilterChange(() => setStatusFilter(e.target.value))}
               className="px-2.5 py-1 text-xs border border-slate-300 rounded-[3px] bg-white font-medium focus:outline-hidden focus:border-blue-600"
             >
               <option value="all">All Status</option>
@@ -178,7 +185,7 @@ export default function AdminBlogManagerPage() {
             <span className="font-semibold text-slate-500">Category:</span>
             <select
               value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
+              onChange={(e) => handleFilterChange(() => setCategoryFilter(e.target.value))}
               className="px-2.5 py-1 text-xs border border-slate-300 rounded-[3px] bg-white font-medium focus:outline-hidden focus:border-blue-600"
             >
               {categories.map((c) => (
@@ -197,7 +204,7 @@ export default function AdminBlogManagerPage() {
           <table className="w-full text-left border-collapse text-xs">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-600">
-                <th className="py-3 px-4 w-12">#</th>
+                <th className="py-3 px-4 whitespace-nowrap">Sl. No.</th>
                 <th className="py-3 px-4 min-w-[280px]">Title</th>
                 <th className="py-3 px-4">Category</th>
                 <th className="py-3 px-4">Author</th>
@@ -228,9 +235,8 @@ export default function AdminBlogManagerPage() {
                       key={post.slug}
                       className="hover:bg-slate-50/80 transition-colors group"
                     >
-                      {/* Serial / Number */}
-                      <td className="py-3.5 px-4 text-slate-400 font-mono text-[11px]">
-                        {index + 1}
+                      <td className="py-3.5 px-4 whitespace-nowrap font-mono font-bold text-slate-900">
+                        #{(safePage - 1) * pageSize + index + 1}
                       </td>
 
                       {/* Title & Cover Image Only */}

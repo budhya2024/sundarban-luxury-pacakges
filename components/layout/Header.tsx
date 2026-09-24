@@ -15,8 +15,10 @@ import {
     Menu,
     X,
     Globe,
+    Search,
 } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
+import { HeaderSearchModal } from "@/components/search/HeaderSearchModal";
 
 interface NavItem {
     label: string;
@@ -53,10 +55,33 @@ export function Header() {
     const { packages } = useAdmin();
     const [apiTripItems, setApiTripItems] = useState<{ label: string; href: string }[] | null>(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [isPastHero, setIsPastHero] = useState(false);
     const [isRevealed, setIsRevealed] = useState(false);
     const lastScrollY = useRef(0);
+
+    // Dynamic Animated Search Placeholder (Bottom to Top Slide Animation)
+    const SEARCH_PHRASES = useMemo(
+        () => [
+            "Search \"Tiger Safari Packages\"...",
+            "Search \"Hotel Sonar Bangla Resort\"...",
+            "Search \"1 Night 2 Days Tour\"...",
+            "Search \"2 Nights 3 Days Safari\"...",
+            "Search \"Luxury Boat Cruise\"...",
+            "Search \"Sundarban Food Menu\"...",
+            "Search \"Wildlife Photography\"...",
+        ],
+        []
+    );
+    const [slideIndex, setSlideIndex] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setSlideIndex((prev) => (prev + 1) % SEARCH_PHRASES.length);
+        }, 2800);
+        return () => clearInterval(interval);
+    }, [SEARCH_PHRASES.length]);
 
     // Fetch live tour packages sorted by createdAt ascending
     useEffect(() => {
@@ -72,7 +97,7 @@ export function Header() {
                     );
                 }
             })
-            .catch(() => {});
+            .catch(() => { });
     }, []);
 
     // Memoize Trip Dropdown in created datetime ascending manner
@@ -204,7 +229,7 @@ export function Header() {
                     </div>
 
                     {/* Center Navigation Links (Desktop) */}
-                    <nav className="hidden xl:flex items-center gap-7 text-[15px] font-semibold">
+                    <nav className="hidden xl:flex items-center gap-5 2xl:gap-6.5 text-[14px] 2xl:text-[15px] font-semibold">
                         {navItems.map((item) => {
                             const active = isItemActive(item);
                             return (
@@ -288,23 +313,62 @@ export function Header() {
                         })}
                     </nav>
 
-                    {/* Mobile Menu Toggle Button */}
-                    <div className="flex xl:hidden items-center gap-3">
+                    {/* Right Desktop Actions: Professional 360px Search Input Bar */}
+                    <div className="hidden xl:flex items-center">
+                        <button
+                            type="button"
+                            onClick={() => setIsSearchOpen(true)}
+                            className="group relative flex items-center w-80 h-10 px-3.5 rounded-full bg-slate-50/90 text-slate-500 border border-slate-200/90 hover:border-primary/50 transition-colors duration-300 ease-out cursor-pointer shadow-2xs text-left"
+                            aria-label="Search tour packages, hotel and travel guides"
+                        >
+                            <div className="flex items-center gap-3 flex-1 min-w-0">
+                                <Search className="w-5 h-5 text-primary transition-transform duration-300  flex-shrink-0" />
+
+                                {/* Bottom to Top Sliding Placeholder Carousel */}
+                                <div className="relative h-5 overflow-hidden flex-1 min-w-0 flex items-center">
+                                    <div
+                                        className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                                        style={{ transform: `translateY(-${slideIndex * 20}px)` }}
+                                    >
+                                        {SEARCH_PHRASES.map((phrase, idx) => (
+                                            <span
+                                                key={idx}
+                                                className="h-5 flex items-center text-sm font-medium text-slate-500 group-hover:text-slate-800 truncate select-none"
+                                            >
+                                                {phrase}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+
+                    {/* Mobile Menu & Search Toggle Buttons */}
+                    <div className="flex xl:hidden items-center gap-2">
+                        <button
+                            type="button"
+                            onClick={() => setIsSearchOpen(true)}
+                            className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors border border-slate-200 cursor-pointer"
+                            aria-label="Search tours and guides"
+                        >
+                            <Search className="h-4 w-4" />
+                        </button>
 
                         <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-white hover:bg-primary/90 hover:text-white transition-colors"
+                            className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white hover:bg-primary/90 hover:text-white transition-colors cursor-pointer"
                             aria-label="Toggle navigation menu"
                         >
                             {mobileMenuOpen ? (
-                                <X className="h-6 w-6" />
+                                <X className="h-5 w-5" />
                             ) : (
-                                <Menu className="h-6 w-6" />
+                                <Menu className="h-5 w-5" />
                             )}
                         </button>
                     </div>
                 </div>
-            </div>
+            </div >
 
             {/* 3. Mobile Slide-out Left Drawer (Full Height, 360px) */}
             {/* Backdrop */}
@@ -324,10 +388,39 @@ export function Header() {
                     <SundarbanLogo />
                     <button
                         onClick={() => setMobileMenuOpen(false)}
-                        className="flex h-10 w-10 items-center justify-center rounded-full bg-primary  hover:bg-secondary text-white transition-colors"
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-primary  hover:bg-secondary text-white transition-colors cursor-pointer"
                         aria-label="Close menu"
                     >
                         <X className="h-5 w-5" />
+                    </button>
+                </div>
+
+                {/* Mobile Drawer Quick Search */}
+                <div className="px-4 py-3 border-b border-slate-100 bg-slate-50/70">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setMobileMenuOpen(false);
+                            setIsSearchOpen(true);
+                        }}
+                        className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-full bg-white border border-slate-200 text-slate-500 text-xs font-medium shadow-2xs hover:border-primary transition-all cursor-pointer text-left"
+                    >
+                        <Search className="w-4 h-4 text-primary flex-shrink-0" />
+                        <div className="relative h-5 overflow-hidden flex-1 min-w-0 flex items-center">
+                            <div
+                                className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                                style={{ transform: `translateY(-${slideIndex * 20}px)` }}
+                            >
+                                {SEARCH_PHRASES.map((phrase, idx) => (
+                                    <span
+                                        key={idx}
+                                        className="h-5 flex items-center text-xs font-medium text-slate-500 truncate"
+                                    >
+                                        {phrase}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
                     </button>
                 </div>
 
@@ -416,7 +509,13 @@ export function Header() {
                     </div>
                 </div>
             </div>
-        </header>
+
+            {/* 4. Global Search Modal Component */}
+            <HeaderSearchModal
+                isOpen={isSearchOpen}
+                onClose={() => setIsSearchOpen(false)}
+            />
+        </header >
     );
 }
 

@@ -163,7 +163,7 @@ export function SundarbanEnvironmentSection() {
     <section className="py-8 md:py-16 bg-primary/5">
       <div className="container">
         {/* Simple & Clean Header */}
-        <div className="text-center max-w-2xl sec-header">
+        <div className="text-center max-w-2xl sec-header mx-auto">
           <p className="sec-tagline">
             Ecosystem & Seasons
           </p>
@@ -326,7 +326,7 @@ export function SundarbanEnvironmentSection() {
                   Daily departures with luxury AC boat suites & guided safaris.
                 </span>
                 <Link
-                  href="/tour-details"
+                  href="/packages"
                   className="btn btn-primary   font-bold shadow-xs flex items-center justify-center gap-1.5"
                 >
                   <span>Explore Packages</span>

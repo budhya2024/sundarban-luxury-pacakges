@@ -8,6 +8,7 @@ import { BookingModal } from "@/components/tour/BookingModal";
 
 // Import Swiper styles
 import "swiper/css";
+import Link from "next/link";
 
 interface SpecialDish {
   id: string;
@@ -138,7 +139,7 @@ export function TourMenuSection() {
           >
             {featuredDishes.map((dish) => (
               <SwiperSlide key={dish.id} className="h-auto">
-                <div className="group relative flex flex-col justify-between h-full bg-white border border-border hover:border-primary transition-all duration-300  overflow-hidden rounded-lg">
+                <div className="group relative flex flex-col justify-between h-full bg-white border border-border hover:border-secondary transition-all duration-300  overflow-hidden rounded-lg">
                   <div>
                     {/* Dish Image */}
                     <div className="relative h-48 md:h-60 w-full overflow-hidden bg-slate-200">
@@ -167,11 +168,11 @@ export function TourMenuSection() {
 
                   {/* Included in package footer */}
                   <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0">
-                    <button
-                      onClick={() => handleOpenBooking(dish.name)}
-                      className="btn btn-primary w-full !text-xs !py-2 font-bold  shadow-xs flex items-center justify-center gap-1.5"
+                    <Link href="/packages"
+
+                      className="btn btn-secondary w-full !text-xs !py-2 font-bold  shadow-xs flex items-center justify-center gap-1.5"
                     >
-                      <span>Book Package</span>
+                      <span>View all package</span>
                       <svg
                         className="w-3.5 h-3.5"
                         fill="none"
@@ -185,7 +186,7 @@ export function TourMenuSection() {
                           d="M14 5l7 7m0 0l-7 7m7-7H3"
                         />
                       </svg>
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </SwiperSlide>
@@ -194,11 +195,7 @@ export function TourMenuSection() {
         </div>
       </div>
 
-      <BookingModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        packageName={selectedPackage}
-      />
+
     </section>
   );
 }

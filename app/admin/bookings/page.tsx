@@ -1,19 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
-  CalendarCheck,
   Search,
-  Filter,
   Download,
-  Plus,
-  Trash2,
-  Eye,
-  CheckCircle,
-  Clock,
-  AlertCircle,
-  Phone,
-  Mail,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { useAdmin } from "@/context/AdminContext";
@@ -24,8 +16,9 @@ export default function AdminBookingsPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
-  const [paymentFilter, setPaymentFilter] = useState("All");
   const [selectedBooking, setSelectedBooking] = useState<AdminBooking | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const { bookings, deleteBooking, showToast } = useAdmin();
 
@@ -38,11 +31,35 @@ export default function AdminBookingsPage() {
 
     const matchesStatus =
       statusFilter === "All" || b.bookingStatus === statusFilter;
-    const matchesPayment =
-      paymentFilter === "All" || b.paymentStatus === paymentFilter;
 
-    return matchesSearch && matchesStatus && matchesPayment;
+    return matchesSearch && matchesStatus;
   });
+
+  // Pagination calculations
+  const totalPages = Math.max(1, Math.ceil(filteredBookings.length / pageSize));
+  const safePage = Math.min(currentPage, totalPages);
+  const paginatedBookings = filteredBookings.slice(
+    (safePage - 1) * pageSize,
+    safePage * pageSize
+  );
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(Math.max(1, Math.min(page, totalPages)));
+  };
+
+  const handleFilterChange = (fn: () => void) => {
+    fn();
+    setCurrentPage(1);
+  };
+
+  // Generate visible page numbers (max 5 shown)
+  const pageNumbers = useMemo(() => {
+    const pages: number[] = [];
+    const start = Math.max(1, safePage - 2);
+    const end = Math.min(totalPages, start + 4);
+    for (let i = start; i <= end; i++) pages.push(i);
+    return pages;
+  }, [safePage, totalPages]);
 
   const handleDelete = (id: string, code: string) => {
     if (confirm(`Are you sure you want to cancel & delete booking #${code}?`)) {
@@ -52,23 +69,21 @@ export default function AdminBookingsPage() {
 
   const handleExportCSV = () => {
     const headers = [
-      "Booking Code",
+      "Sl. No.",
       "Guest Name",
       "Phone",
       "Email",
-      "Package / Room",
+      "Selected Package",
       "Type",
       "Travel Date",
       "Guests",
       "Total Amount (₹)",
-      "Paid Amount (₹)",
-      "Payment Status",
       "Booking Status",
       "Created At",
     ];
 
-    const rows = filteredBookings.map((b) => [
-      b.bookingCode,
+    const rows = filteredBookings.map((b, index) => [
+      index + 1,
       `"${b.guestName}"`,
       `"${b.phone}"`,
       b.email,
@@ -77,8 +92,6 @@ export default function AdminBookingsPage() {
       b.travelDate,
       b.guestsCount,
       b.totalAmount,
-      b.paidAmount,
-      b.paymentStatus,
       b.bookingStatus,
       b.createdAt,
     ]);
@@ -105,7 +118,7 @@ export default function AdminBookingsPage() {
       <AdminHeader
         onOpenMobile={() => setIsMobileOpen(true)}
         title="Bookings &amp; Safari Reservations"
-        subtitle="Manage tourist guest manifests, payment reconciliation, and departure dates"
+        subtitle="Manage tourist guest manifests, travel dates, and safari bookings"
       />
 
       <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6">
@@ -116,7 +129,7 @@ export default function AdminBookingsPage() {
             <input
               type="text"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => handleFilterChange(() => setSearchTerm(e.target.value))}
               placeholder="Search booking code, guest name, phone..."
               className="w-full h-10 pl-9 pr-3 rounded-[3px] border border-slate-300 bg-white text-slate-900 text-xs font-semibold focus:outline-none focus:border-blue-600"
             />
@@ -125,25 +138,15 @@ export default function AdminBookingsPage() {
           <div className="flex flex-wrap items-center gap-2.5">
             <select
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
+              onChange={(e) => handleFilterChange(() => setStatusFilter(e.target.value))}
               className="h-10 px-3 rounded-[3px] border border-slate-300 bg-white text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-600"
             >
               <option value="All">All Booking Status</option>
               <option value="Confirmed">Confirmed</option>
               <option value="Pending">Pending</option>
+              <option value="Checked In">Checked In</option>
               <option value="Completed">Completed</option>
               <option value="Cancelled">Cancelled</option>
-            </select>
-
-            <select
-              value={paymentFilter}
-              onChange={(e) => setPaymentFilter(e.target.value)}
-              className="h-10 px-3 rounded-[3px] border border-slate-300 bg-white text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-600"
-            >
-              <option value="All">All Payments</option>
-              <option value="Paid">Paid in Full</option>
-              <option value="Partial">Partial</option>
-              <option value="Unpaid">Unpaid</option>
             </select>
 
             <button
@@ -162,35 +165,34 @@ export default function AdminBookingsPage() {
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase text-[10px] tracking-wider">
                 <tr>
-                  <th className="py-3 px-4">Code</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Sl. No.</th>
                   <th className="py-3 px-4">Guest Details</th>
-                  <th className="py-3 px-4">Expedition / Room</th>
+                  <th className="py-3 px-4">Selected Package</th>
                   <th className="py-3 px-4">Travel Date</th>
                   <th className="py-3 px-4">Guests</th>
                   <th className="py-3 px-4">Amount</th>
-                  <th className="py-3 px-4">Payment</th>
                   <th className="py-3 px-4">Status</th>
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-medium">
-                {filteredBookings.length === 0 ? (
+                {paginatedBookings.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={9}
+                      colSpan={8}
                       className="py-8 text-center text-slate-400 text-xs"
                     >
                       No reservations found matching current filter criteria.
                     </td>
                   </tr>
                 ) : (
-                  filteredBookings.map((b) => (
+                  paginatedBookings.map((b, index) => (
                     <tr
                       key={b.id}
                       className="hover:bg-slate-50/80 transition-colors"
                     >
-                      <td className="py-3.5 px-4 font-mono font-bold text-slate-900">
-                        {b.bookingCode}
+                      <td className="py-3.5 px-4 whitespace-nowrap font-mono font-bold text-slate-900">
+                        #{(safePage - 1) * pageSize + index + 1}
                       </td>
 
                       <td className="py-3.5 px-4">
@@ -223,23 +225,6 @@ export default function AdminBookingsPage() {
                         <div className="font-extrabold text-slate-900">
                           ₹{b.totalAmount.toLocaleString()}
                         </div>
-                        <div className="text-[10px] text-slate-400">
-                          Paid: ₹{b.paidAmount.toLocaleString()}
-                        </div>
-                      </td>
-
-                      <td className="py-3.5 px-4">
-                        <span
-                          className={`px-2 py-0.5 rounded-[2px] text-[10px] font-bold ${
-                            b.paymentStatus === "Paid"
-                              ? "bg-blue-50 text-blue-800 border border-blue-200"
-                              : b.paymentStatus === "Partial"
-                              ? "bg-amber-50 text-amber-800 border border-amber-200"
-                              : "bg-rose-50 text-rose-800 border border-rose-200"
-                          }`}
-                        >
-                          {b.paymentStatus}
-                        </span>
                       </td>
 
                       <td className="py-3.5 px-4">
@@ -257,21 +242,12 @@ export default function AdminBookingsPage() {
                       </td>
 
                       <td className="py-3.5 px-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
-                          <button
-                            onClick={() => setSelectedBooking(b)}
-                            className="px-2.5 py-1 rounded-[3px] bg-slate-100 hover:bg-blue-600 hover:text-white font-bold text-[11px] transition-colors"
-                          >
-                            Inspect
-                          </button>
-                          <button
-                            onClick={() => handleDelete(b.id, b.bookingCode)}
-                            className="p-1.5 rounded-[3px] text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
-                            title="Cancel Booking"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
+                        <button
+                          onClick={() => setSelectedBooking(b)}
+                          className="px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white font-bold text-xs transition-colors cursor-pointer"
+                        >
+                          View Details
+                        </button>
                       </td>
                     </tr>
                   ))
@@ -279,6 +255,71 @@ export default function AdminBookingsPage() {
               </tbody>
             </table>
           </div>
+
+          {/* Pagination Footer */}
+          {filteredBookings.length > 0 && (
+            <div className="px-4 py-3 border-t border-slate-200 bg-white flex flex-col sm:flex-row items-center justify-between gap-3">
+              {/* Results summary */}
+              <div className="text-[11px] text-slate-500 font-medium">
+                Showing{" "}
+                <span className="font-bold text-slate-800">
+                  {(safePage - 1) * pageSize + 1}–{Math.min(safePage * pageSize, filteredBookings.length)}
+                </span>{" "}
+                of{" "}
+                <span className="font-bold text-slate-800">{filteredBookings.length}</span>{" "}
+                bookings
+              </div>
+
+              <div className="flex items-center gap-2">
+                {/* Page size selector */}
+                <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
+                  <span className="font-medium">Rows:</span>
+                  <select
+                    value={pageSize}
+                    onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(1); }}
+                    className="h-7 px-2 text-[11px] font-bold border border-slate-300 rounded-[3px] bg-white text-slate-800 focus:outline-none focus:border-blue-600"
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={50}>50</option>
+                  </select>
+                </div>
+
+                {/* Prev button */}
+                <button
+                  onClick={() => handlePageChange(safePage - 1)}
+                  disabled={safePage === 1}
+                  className="h-7 w-7 flex items-center justify-center rounded-[3px] border border-slate-300 bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                </button>
+
+                {/* Page number buttons */}
+                {pageNumbers.map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => handlePageChange(p)}
+                    className={`h-7 min-w-7 px-2 text-[11px] font-bold rounded-[3px] border transition-colors ${
+                      p === safePage
+                        ? "bg-blue-600 text-white border-blue-600 shadow-xs"
+                        : "border-slate-300 bg-white text-slate-700 hover:bg-slate-100"
+                    }`}
+                  >
+                    {p}
+                  </button>
+                ))}
+
+                {/* Next button */}
+                <button
+                  onClick={() => handlePageChange(safePage + 1)}
+                  disabled={safePage === totalPages}
+                  className="h-7 w-7 flex items-center justify-center rounded-[3px] border border-slate-300 bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </main>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import {
   X,
   User,
@@ -43,6 +43,37 @@ export function BookingModal({
   const [confirmedCode, setConfirmedCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const { addBooking } = useAdmin();
+  const dateInputRef = useRef<HTMLInputElement>(null);
+
+  // Format date for display on all devices
+  const displayDateText = useMemo(() => {
+    if (!formData.travelDate) return "Select Travel Date";
+    try {
+      const [y, m, d] = formData.travelDate.split("-").map(Number);
+      const dateObj = new Date(y, m - 1, d);
+      return dateObj.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
+    } catch {
+      return formData.travelDate;
+    }
+  }, [formData.travelDate]);
+
+  const handleDateClick = () => {
+    if (dateInputRef.current) {
+      if (typeof dateInputRef.current.showPicker === "function") {
+        try {
+          dateInputRef.current.showPicker();
+        } catch {
+          dateInputRef.current.focus();
+        }
+      } else {
+        dateInputRef.current.focus();
+      }
+    }
+  };
 
   // Reset form status and lock scroll when opened
   useEffect(() => {
@@ -184,9 +215,6 @@ export function BookingModal({
           <div>
             {/* Header */}
             <div className="pr-10 mb-6">
-              <span className="text-secondary font-bold text-xs uppercase tracking-wider block mb-1">
-                Direct Reservation
-              </span>
               <h2 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
                 Book My Trip
               </h2>
@@ -277,11 +305,19 @@ export function BookingModal({
                   <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">
                     Travel Date <span className="text-rose-500">*</span>
                   </label>
-                  <div className="relative flex items-center">
-                    <span className="absolute left-3.5 text-slate-400 pointer-events-none">
-                      <Calendar className="w-4 h-4" />
+                  <div
+                    onClick={handleDateClick}
+                    className="relative flex items-center bg-slate-50 border border-slate-200 rounded-[4px] py-2.5 px-3.5 cursor-pointer group focus-within:bg-white focus-within:border-primary   transition-all h-[42px]"
+                  >
+                    <Calendar className="w-4 h-4 text-slate-400 mr-2.5 flex-shrink-0 group-hover:text-primary transition-colors" />
+                    <span
+                      className={`text-sm select-none truncate flex-1 ${formData.travelDate ? "text-slate-800 font-medium" : "text-slate-400"
+                        }`}
+                    >
+                      {displayDateText}
                     </span>
                     <input
+                      ref={dateInputRef}
                       type="date"
                       required
                       min={todayStr}
@@ -292,7 +328,8 @@ export function BookingModal({
                           travelDate: e.target.value,
                         })
                       }
-                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-[4px] text-sm text-slate-800 focus:bg-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all cursor-pointer"
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      aria-label="Travel Date"
                     />
                   </div>
                 </div>
