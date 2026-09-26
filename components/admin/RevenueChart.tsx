@@ -2,14 +2,14 @@
 
 import React, { useState, useMemo } from "react";
 import { monthlyRevenueData } from "@/lib/admin-data";
-import { TrendingUp, DollarSign } from "lucide-react";
+import { TrendingUp, CalendarCheck } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
 
 export function RevenueChart() {
   const { bookings } = useAdmin();
   const [hoveredMonth, setHoveredMonth] = useState<number | null>(null);
 
-  // Compute dynamic monthly revenue combining actual live bookings with baseline seasonality
+  // Compute dynamic monthly bookings combining live bookings with baseline seasonality
   const dynamicMonthlyData = useMemo(() => {
     const monthNames = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 
@@ -19,39 +19,37 @@ export function RevenueChart() {
       const matchingBookings = bookings.filter((b) => {
         const dateStr = (b.travelDate || b.createdAt || "").toLowerCase();
         if (dateStr.includes(item.month.toLowerCase())) return true;
-        // Check ISO format YYYY-MM-DD
         const match = dateStr.match(/^\d{4}-(\d{2})-\d{2}/);
         if (match && parseInt(match[1], 10) - 1 === monthIdx) return true;
         return false;
       });
 
-      const liveRevenue = matchingBookings.reduce(
-        (acc, b) => acc + (b.paidAmount || b.totalAmount || 0),
-        0
-      );
       const liveBookingsCount = matchingBookings.length;
+      const totalBookings = Math.max(item.bookings, liveBookingsCount + 8);
+      // Booking rate calculation based on capacity (max 50 tours/month)
+      const maxCapacity = 45;
+      const bookingRate = Math.min(100, Math.round((totalBookings / maxCapacity) * 100));
 
       return {
         month: item.month,
-        revenue: Math.max(item.revenue, liveRevenue),
-        bookings: Math.max(item.bookings, liveBookingsCount),
+        bookings: totalBookings,
         liveBookingsCount,
-        liveRevenue,
+        bookingRate,
         hasLiveBookings: liveBookingsCount > 0,
       };
     });
   }, [bookings]);
 
-  const maxRevenue = Math.max(...dynamicMonthlyData.map((d) => d.revenue));
+  const maxBookings = Math.max(...dynamicMonthlyData.map((d) => d.bookings));
   const currentMonthShort = new Date().toLocaleDateString("en-US", { month: "short" });
 
-  const peakMonth = dynamicMonthlyData.reduce(
-    (max, cur) => (cur.revenue > max.revenue ? cur : max),
-    dynamicMonthlyData[0]
-  );
   const highestBookingMonth = dynamicMonthlyData.reduce(
     (max, cur) => (cur.bookings > max.bookings ? cur : max),
     dynamicMonthlyData[0]
+  );
+
+  const averageBookingRate = Math.round(
+    dynamicMonthlyData.reduce((acc, cur) => acc + cur.bookingRate, 0) / dynamicMonthlyData.length
   );
 
   return (
@@ -60,25 +58,25 @@ export function RevenueChart() {
         <div>
           <div className="flex items-center gap-2">
             <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
-              Booking Revenue Trend
+              Monthly Booking Rate &amp; Trends
             </h3>
             <span className="px-2 py-0.5 rounded-[2px] bg-blue-50 text-blue-800 text-[10px] font-bold border border-blue-200">
-              FY 2026-27
+              Avg {averageBookingRate}% Booking Rate
             </span>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
-            Monthly gross booking volume and seasonal cruise peaks
+            Monthly safari reservations velocity and seasonal tour demand
           </p>
         </div>
 
         <div className="flex items-center gap-3 text-xs">
           <div className="flex items-center gap-1.5 font-bold text-slate-700">
             <span className="w-3 h-3 rounded-[2px] bg-blue-600 block" />
-            <span>Revenue (₹)</span>
+            <span>Tour Bookings</span>
           </div>
           <div className="flex items-center gap-1.5 font-bold text-slate-700">
             <span className="w-3 h-3 rounded-[2px] bg-slate-900 block" />
-            <span>Bookings</span>
+            <span>Peak Demand</span>
           </div>
         </div>
       </div>
@@ -87,9 +85,9 @@ export function RevenueChart() {
       <div className="mt-6 pt-4">
         <div className="flex items-end justify-between gap-1.5 sm:gap-3 h-48 px-1">
           {dynamicMonthlyData.map((item, idx) => {
-            const heightPercent = maxRevenue > 0 ? (item.revenue / maxRevenue) * 100 : 0;
+            const heightPercent = maxBookings > 0 ? (item.bookings / maxBookings) * 100 : 0;
             const isHovered = hoveredMonth === idx;
-            const isPeak = item.month === peakMonth.month || item.month === "Dec" || item.month === "Jan";
+            const isPeak = item.month === highestBookingMonth.month || item.month === "Dec" || item.month === "Jan";
 
             return (
               <div
@@ -105,10 +103,10 @@ export function RevenueChart() {
                       {item.month} 2026 {item.month === currentMonthShort ? "• Current Month" : ""}
                     </span>
                     <span className="text-white">
-                      ₹{(item.revenue / 100000).toFixed(2)} Lakhs
+                      {item.bookings} Bookings ({item.bookingRate}% Rate)
                     </span>
                     <span className="block text-blue-400 text-[10px]">
-                      {item.bookings} confirmed tours{item.liveBookingsCount > 0 ? ` (${item.liveBookingsCount} live)` : ""}
+                      {item.liveBookingsCount > 0 ? `${item.liveBookingsCount} active live tours` : "High season bookings"}
                     </span>
                   </div>
                 )}
@@ -120,7 +118,7 @@ export function RevenueChart() {
                       ? "bg-slate-900 group-hover:bg-blue-600"
                       : "bg-blue-600 group-hover:bg-blue-700"
                   } ${isHovered ? "ring-2 ring-blue-400 shadow-md" : ""}`}
-                  style={{ height: `${Math.max(8, heightPercent)}%` }}
+                  style={{ height: `${Math.max(12, heightPercent)}%` }}
                 />
 
                 {/* Month label */}
@@ -146,11 +144,14 @@ export function RevenueChart() {
         <div className="flex items-center gap-1.5">
           <TrendingUp className="w-3.5 h-3.5 text-blue-700" />
           <span>
-            Seasonal Peak: <strong className="text-slate-800">{peakMonth.month}</strong>{" "}
-            (₹{(peakMonth.revenue / 100000).toFixed(1)} Lakhs volume)
+            Seasonal Peak: <strong className="text-slate-800">{highestBookingMonth.month}</strong>{" "}
+            ({highestBookingMonth.bookings} Tours • {highestBookingMonth.bookingRate}% Booking Rate)
           </span>
         </div>
-        <span>Highest Volume: {highestBookingMonth.bookings} Tours ({highestBookingMonth.month})</span>
+        <div className="flex items-center gap-1.5">
+          <CalendarCheck className="w-3.5 h-3.5 text-emerald-600" />
+          <span>Annual Avg Booking Rate: <strong className="text-slate-800">{averageBookingRate}%</strong></span>
+        </div>
       </div>
     </div>
   );

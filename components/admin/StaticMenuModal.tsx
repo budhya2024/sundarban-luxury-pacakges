@@ -3,21 +3,28 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { X, UtensilsCrossed, UploadCloud, Trash2, Check, RefreshCw } from "lucide-react";
-import { AdminMenuItem } from "@/lib/admin-data";
 
-interface DishModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (item: Omit<AdminMenuItem, "id">) => void;
-  initialItem?: AdminMenuItem | null;
+export interface StaticMenuItem {
+  id: string;
+  name: string;
+  tagline?: string;
+  description?: string;
+  photo: string;
 }
 
-export function DishModal({
+interface StaticMenuModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (item: { name: string; tagline?: string; description?: string; photo: string }) => void;
+  initialItem?: StaticMenuItem | null;
+}
+
+export function StaticMenuModal({
   isOpen,
   onClose,
   onSave,
   initialItem,
-}: DishModalProps) {
+}: StaticMenuModalProps) {
   const [name, setName] = useState("");
   const [tagline, setTagline] = useState("");
   const [description, setDescription] = useState("");
@@ -29,9 +36,9 @@ export function DishModal({
   useEffect(() => {
     if (initialItem) {
       setName(initialItem.name || "");
-      setTagline(initialItem.tag || "");
+      setTagline(initialItem.tagline || "");
       setDescription(initialItem.description || "");
-      setPhoto(initialItem.image || "");
+      setPhoto(initialItem.photo || "");
       setFileName(null);
     } else {
       setName("");
@@ -81,13 +88,9 @@ export function DishModal({
 
     onSave({
       name: name.trim(),
-      category: initialItem?.category || "Bengali Non-Veg",
-      priceTag: initialItem?.priceTag || "Included in Package",
-      tag: tagline.trim() || "Special Dish",
-      image: photo.trim(),
-      description: description.trim() || "Authentic traditional Bengali cuisine specialty.",
-      isChefSpecial: initialItem?.isChefSpecial ?? true,
-      status: initialItem?.status || "Active",
+      tagline: tagline.trim(),
+      description: description.trim(),
+      photo: photo.trim(),
     });
     onClose();
   };
@@ -103,10 +106,10 @@ export function DishModal({
             </div>
             <div>
               <h3 className="text-base font-extrabold text-slate-900">
-                {initialItem ? "Edit Special Dish" : "Add New Special Dish"}
+                {initialItem ? "Edit Special Menu Item" : "Add Special Menu Item"}
               </h3>
               <p className="text-xs text-slate-500">
-                Bengali cuisine buffet and on-cruise dining
+                Sundarban buffet cuisine and cruise dining item
               </p>
             </div>
           </div>
@@ -129,14 +132,14 @@ export function DishModal({
           {/* 1. Menu Name */}
           <div>
             <label className="block font-bold text-slate-700 mb-1 text-xs">
-              Dish Name <span className="text-rose-600">*</span>
+              Menu Name <span className="text-rose-600">*</span>
             </label>
             <input
               type="text"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Royal Bengali Mutton Kosha"
+              placeholder="e.g. Royal Mutton Kosha, Gold Prawn Malai Curry"
               className="w-full h-9 px-3 rounded-[3px] border border-slate-300 bg-white text-slate-900 font-semibold focus:outline-none focus:border-blue-600 text-xs"
             />
           </div>
@@ -144,13 +147,13 @@ export function DishModal({
           {/* 2. Tagline */}
           <div>
             <label className="block font-bold text-slate-700 mb-1 text-xs">
-              Badge / Tag
+              Tagline / Badge
             </label>
             <input
               type="text"
               value={tagline}
               onChange={(e) => setTagline(e.target.value)}
-              placeholder="e.g. Signature Catch, Royal Delicacy"
+              placeholder="e.g. Royal Delicacy, Bengal Special, Fresh Catch"
               className="w-full h-9 px-3 rounded-[3px] border border-slate-300 bg-white text-slate-900 font-semibold focus:outline-none focus:border-blue-600 text-xs"
             />
           </div>
@@ -158,13 +161,13 @@ export function DishModal({
           {/* 3. Description */}
           <div>
             <label className="block font-bold text-slate-700 mb-1 text-xs">
-              Description &amp; Preparation Note
+              Description
             </label>
             <textarea
               rows={3}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="e.g. Fresh river bhetki cutlets simmered in mustard and fragrant panch phoron gravy..."
+              placeholder="e.g. Tender goat meat slow-cooked with golden potatoes & authentic Bengali garam masala."
               className="w-full p-2.5 rounded-[3px] border border-slate-300 bg-white text-slate-900 font-medium focus:outline-none focus:border-blue-600 text-xs leading-relaxed"
             />
           </div>

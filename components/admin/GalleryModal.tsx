@@ -69,26 +69,26 @@ export function GalleryModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs">
-      <div className="bg-white border border-slate-200 rounded-md shadow-2xl w-full max-w-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-150">
+      <div className="bg-white border border-slate-200 rounded-[4px] shadow-2xl w-full max-w-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-200 bg-slate-900 text-white flex items-center justify-between">
+        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded bg-emerald-600 flex items-center justify-center text-white">
-              <ImageIcon className="w-4 h-4" />
+            <div className="p-2 bg-emerald-100 text-emerald-700 rounded-[3px]">
+              <ImageIcon className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-extrabold text-white">
+              <h3 className="text-base font-extrabold text-slate-900">
                 {initialGalleryItem ? "Edit Photo Gallery Item" : "Add Photo to Gallery"}
               </h3>
-              <p className="text-xs text-slate-300">
+              <p className="text-xs text-slate-500">
                 Configure photos, captions, and grid placement in Recent Gallery
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-[3px] text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -105,52 +105,18 @@ export function GalleryModal({
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div>
-              <label className="block font-bold text-slate-800 mb-1">
-                Photo Title / Heading *
-              </label>
-              <input
-                type="text"
-                required
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. Royal Bengal Tiger"
-                className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-slate-900 font-semibold focus:outline-none focus:border-blue-600"
-              />
-            </div>
-
-            <div>
-              <label className="block font-bold text-slate-800 mb-1">
-                Location / Tag *
-              </label>
-              <input
-                type="text"
-                required
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="e.g. Dobanki Watch Tower"
-                className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-slate-900 font-semibold focus:outline-none focus:border-blue-600"
-              />
-            </div>
-
-            <div>
-              <label className="block font-bold text-slate-800 mb-1">
-                Category
-              </label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full h-9 px-2.5 rounded border border-slate-300 bg-white text-slate-900 font-bold focus:outline-none focus:border-blue-600"
-              >
-                <option value="Wildlife">Wildlife</option>
-                <option value="Boat Safari">Boat Safari</option>
-                <option value="Resort Stay">Resort Stay</option>
-                <option value="Watchtower">Watchtower</option>
-                <option value="Landscape">Landscape &amp; Sunset</option>
-                <option value="Cruises">Cruises</option>
-              </select>
-            </div>
+          <div>
+            <label className="block font-bold text-slate-800 mb-1">
+              Photo Title / Heading *
+            </label>
+            <input
+              type="text"
+              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="e.g. Royal Bengal Tiger"
+              className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-slate-900 font-semibold focus:outline-none focus:border-blue-600"
+            />
           </div>
 
           <div className="flex items-center justify-between pt-3 border-t border-slate-100">

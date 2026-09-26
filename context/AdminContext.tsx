@@ -85,7 +85,7 @@ interface AdminContextType {
   deleteBlogPost: (slug: string) => Promise<void> | void;
 
   // Page-wise Content & Alert Actions
-  updatePageHero: (pageKey: string, heroData: { heroTitle?: string; heroSubtitle?: string; heroBadge?: string; metaDescription?: string }) => void;
+  updatePageHero: (pageKey: string, heroData: { heroTitle?: string; heroSubtitle?: string; heroBadge?: string; heroBackgroundImage?: string; metaDescription?: string }) => void;
   addPageSection: (pageKey: string, section: Omit<AdminPageSection, "id">) => void;
   updatePageSection: (pageKey: string, sectionId: string, section: Partial<AdminPageSection>) => void;
   deletePageSection: (pageKey: string, sectionId: string) => void;
@@ -908,12 +908,16 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   // Page-wise Content & Section Actions
   const updatePageHero = (
     pageKey: string,
-    heroData: { heroTitle?: string; heroSubtitle?: string; heroBadge?: string; metaDescription?: string }
+    heroData: { heroTitle?: string; heroSubtitle?: string; heroBadge?: string; heroBackgroundImage?: string; metaDescription?: string }
   ) => {
-    setPageContents((prev) =>
-      prev.map((p) => (p.pageKey === pageKey ? { ...p, ...heroData } : p))
-    );
-    showToast("Page header & metadata updated successfully.");
+    setPageContents((prev) => {
+      const updated = prev.map((p) => (p.pageKey === pageKey ? { ...p, ...heroData } : p));
+      try {
+        localStorage.setItem("sb_admin_page_contents", JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
+    showToast("Page header & background photo updated successfully.");
   };
 
   const addPageSection = (pageKey: string, section: Omit<AdminPageSection, "id">) => {

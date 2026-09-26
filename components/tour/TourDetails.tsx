@@ -306,25 +306,34 @@ export function TourDetails({
     "GST 5% Extra Applicable",
     "Personal Beverages & Bottled Water",
   ];
-  const thingsToCarry: string[] = (currentPackage?.thingsToCarry as string[]) || [
-    "Original Photo ID Proof (Aadhaar / Voter ID / Passport)",
-    "Comfortable Cotton Clothes & Walking Shoes",
-    "Sunscreen Lotion, Sunglasses & Sun Hat",
-    "Personal Medicines & Basic First Aid Kit",
-    "Camera with Extra Memory Card & Power Bank",
-    "Insect Repellent Cream",
-    "Cash for Personal Shopping & Local Handicrafts",
+  const thingsToCarry: string[] = [
+    "Original Photo ID Proof (Aadhaar Card / Voter ID / Passport / Driving License) - Mandatory for Forest Permissions",
+    "Light Cotton Clothes & Comfortable Earth-toned Outfits (neutral colors recommended for jungle safaris)",
+    "Sturdy Walking Shoes / Trekking Sandals & Extra Pair of Cotton Socks",
+    "Sun Protection: Wide-brim Sun Hat, UV Sunglasses & High-SPF Sunscreen Lotion",
+    "Personal Prescription Medicines, Anti-motion Sickness Pills & Basic First-Aid Kit",
+    "High-Power Binoculars (8x42 or 10x50 recommended for birdwatching & wildlife spotting)",
+    "DSLR / Mirrorless Camera with Zoom Lens, Extra Memory Cards & High-Capacity Power Bank",
+    "Mosquito & Insect Repellent Cream / Spray (Odomos / Herbal)",
+    "Light Winter Jacket / Shawl / Windcheater (for early morning & evening river breeze during Oct - March)",
+    "Personal Reusable Water Bottle / Sipper for eco-friendly hydration",
+    "Sufficient Cash for local tribal handicrafts, honey, and personal tips (limited ATMs in Sundarban islands)",
   ];
-  const childPolicy: string[] = (currentPackage?.childPolicy as string[]) || [
-    "Child below 5 years: 100% Complimentary / FREE (sharing parents' bed).",
-    "Child between 5 to 10 years: 50% of adult package price applicable.",
-    "Child above 10 years: Charged as full adult rate with separate bed & seat.",
+
+  const childPolicy: string[] = [
+    "Infants & Children (Below 5 Years): 100% Complimentary / FREE of charge (sharing parents' room bed & vehicle seat).",
+    "Children (Between 5 to 9 Years): 50% of the Adult Package Tariff applicable (includes separate seat in vehicle & cruise boat, all buffet meals, and sharing bed with parents).",
+    "Children (10 Years & Above): Charged at Full Adult Rate with separate bed, full seat allocation, and forest entry permits.",
+    "Senior Citizens & Elderly Guests: Special assistance for boat boarding and ground-floor room allocation available upon prior request.",
   ];
-  const importantNotes: string[] = (currentPackage?.importantNotes as string[]) || [
-    "Forest Department entry permissions require government ID submission 24h before cruise departure.",
-    "Plastic bottles and plastic bags are strictly prohibited inside Sundarban Tiger Reserve core areas.",
-    "Itinerary timings may slightly adjust based on river high-tide and low-tide schedules.",
-    "Swimming in mangrove river creeks is strictly forbidden for wildlife safety.",
+
+  const importantNotes: string[] = [
+    "Forest Department Permissions: Forest entry permits and boat clearance strictly require valid government photo ID submission 24 hours prior to travel.",
+    "Eco-Sensitive Anti-Plastic Zone: Sundarban Tiger Reserve is a strictly declared plastic-free eco zone. Carrying single-use plastic bags or discarding waste into rivers is strictly prohibited and attracts heavy forest penalties.",
+    "Tide & River Timings: Cruise navigation and watchtower sequence are governed by estuarine river high-tide (Jowar) and low-tide (Bhata) conditions. Naturalists will optimize routes for maximum wildlife sightings.",
+    "Wildlife Safety & Ethics: Do not lean over boat railings or step into mangrove mudflats. Maintain strict silence near watchtowers, canopy walks, and creek channels.",
+    "Mobile Network Connectivity: Jio, Airtel, and BSNL provide network up to Gosaba & Sajnekhali; core forest creek channels have intermittent or no signal — enjoy the digital detox!",
+    "Alcohol & Smoking Regulations: Consumption of alcohol and smoking inside protected forest watchtowers and during boat safaris are strictly prohibited by Forest Department laws.",
   ];
 
   return (

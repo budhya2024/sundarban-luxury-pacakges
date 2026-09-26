@@ -20,9 +20,18 @@ import { useAdmin } from "@/context/AdminContext";
 import { AdminGalleryItem } from "@/lib/admin-data";
 
 export default function GalleryPage() {
-  const { galleryItems, contactGeneralInfo } = useAdmin();
+  const { galleryItems, contactGeneralInfo, pageContents } = useAdmin();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [activeImageId, setActiveImageId] = useState<string | null>(null);
+
+  const galleryPage = pageContents.find((p) => p.pageKey === "gallery");
+  const heroTitle = galleryPage?.heroTitle || "Photo & Safari Gallery";
+  const heroSubtitle =
+    galleryPage?.heroSubtitle ||
+    "Immerse yourself in authentic moments from our luxury boat safaris, Royal Bengal Tiger sightings, Hotel Sonar Bangla resort stays, and cultural evenings.";
+  const heroBgImage =
+    galleryPage?.heroBackgroundImage ||
+    "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=2000&q=80";
 
   // Filter only active items or fallback to all items
   const activeItems = useMemo(() => {
@@ -95,9 +104,9 @@ export default function GalleryPage() {
       <section className="relative bg-black text-white py-20 lg:py-28 overflow-hidden">
         {/* Background Image with Dark Black Overlay */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50 transition-all duration-700"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=2000&q=80')`,
+            backgroundImage: `url('${heroBgImage}')`,
           }}
         />
 
@@ -105,16 +114,18 @@ export default function GalleryPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/50" />
         <div className="absolute inset-0 bg-black/40" />
 
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl">
           {/* Title */}
           <h1 className="text-2xl sm:text-4xl font-black text-white leading-snug drop-shadow-md mb-4">
-            Photo &amp; Safari Gallery
+            {heroTitle}
           </h1>
 
           {/* Subtitle */}
-          <p className="max-w-2xl mx-auto text-slate-200 text-sm sm:text-lg font-light leading-relaxed mb-6 drop-shadow-sm">
-            Immerse yourself in authentic moments from our luxury boat safaris, Royal Bengal Tiger sightings, Hotel Sonar Bangla resort stays, and cultural evenings.
-          </p>
+          {heroSubtitle && (
+            <p className="max-w-2xl mx-auto text-slate-200 text-sm sm:text-base font-light leading-relaxed mb-6 drop-shadow-sm">
+              {heroSubtitle}
+            </p>
+          )}
 
           {/* Breadcrumbs */}
           <div className="inline-flex items-center gap-2.5 text-base sm:text-lg font-bold text-white flex-wrap justify-center">

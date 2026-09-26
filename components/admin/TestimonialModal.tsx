@@ -70,28 +70,28 @@ export function TestimonialModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs">
-      <div className="bg-white border border-slate-200 rounded-md shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-150">
+      <div className="bg-white border border-slate-200 rounded-[4px] shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-150">
         {/* Header */}
-        <div className="px-5 py-3.5 border-b border-slate-200 bg-slate-900 text-white flex items-center justify-between">
+        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded bg-amber-600 flex items-center justify-center text-white">
-              <MessageSquare className="w-3.5 h-3.5" />
+            <div className="p-2 bg-amber-100 text-amber-700 rounded-[3px]">
+              <MessageSquare className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-extrabold text-white">
+              <h3 className="text-base font-extrabold text-slate-900">
                 {initialTestimonial ? "Edit Client Review" : "Add Client Review"}
               </h3>
-              <p className="text-[11px] text-slate-300">
+              <p className="text-xs text-slate-500">
                 Manage traveler review shown on website
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-[3px] text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 

@@ -8,11 +8,6 @@ import {
   Edit2,
   Trash2,
   CheckCircle,
-  XCircle,
-  ChevronDown,
-  Filter,
-  Layers,
-  ArrowUpDown,
 } from "lucide-react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { useAdmin } from "@/context/AdminContext";
@@ -22,33 +17,20 @@ import { FaqModal } from "@/components/admin/FaqModal";
 export default function AdminFaqPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
   const [modalOpen, setModalOpen] = useState(false);
   const [editingFaq, setEditingFaq] = useState<AdminFaqItem | null>(null);
 
   const { faqs, addFaq, updateFaq, deleteFaq } = useAdmin();
 
-  const categories = [
-    "All",
-    "Booking & Reservations",
-    "Wildlife & Safari",
-    "Package Inclusions",
-    "Safety & Guidelines",
-    "Preparation & Packing",
-    "General Information",
-  ];
-
   const filteredFaqs = faqs.filter((faq) => {
     const matchesSearch =
       faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
       faq.answer.toLowerCase().includes(searchTerm.toLowerCase()) ||
       faq.questionNumber.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory =
-      categoryFilter === "All" || faq.category === categoryFilter;
     const matchesStatus =
       statusFilter === "All" || faq.status === statusFilter;
-    return matchesSearch && matchesCategory && matchesStatus;
+    return matchesSearch && matchesStatus;
   });
 
   const handleOpenCreate = () => {
@@ -93,7 +75,7 @@ export default function AdminFaqPage() {
 
       <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6">
         {/* Metric Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-white border border-slate-200 rounded p-4 shadow-2xs flex items-center justify-between">
             <div>
               <span className="text-[11px] font-bold uppercase text-slate-500 block">
@@ -121,20 +103,6 @@ export default function AdminFaqPage() {
               <CheckCircle className="w-5 h-5" />
             </div>
           </div>
-
-          <div className="bg-white border border-slate-200 rounded p-4 shadow-2xs flex items-center justify-between col-span-2 sm:col-span-1">
-            <div>
-              <span className="text-[11px] font-bold uppercase text-slate-500 block">
-                Categories
-              </span>
-              <span className="text-2xl font-black text-amber-600 mt-1 block">
-                {categories.length - 1}
-              </span>
-            </div>
-            <div className="w-10 h-10 rounded bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
-              <Layers className="w-5 h-5" />
-            </div>
-          </div>
         </div>
 
         {/* Filter & Action Bar */}
@@ -151,22 +119,6 @@ export default function AdminFaqPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5">
-            <div className="flex items-center gap-1 bg-slate-50 px-2 py-1 rounded border border-slate-200 text-xs font-bold text-slate-600">
-              <Filter className="w-3.5 h-3.5" />
-              <span>Category:</span>
-              <select
-                value={categoryFilter}
-                onChange={(e) => setCategoryFilter(e.target.value)}
-                className="bg-transparent border-0 text-slate-900 font-bold focus:outline-none cursor-pointer text-xs"
-              >
-                {categories.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </div>
-
             <div className="flex items-center gap-1 bg-slate-50 px-2 py-1 rounded border border-slate-200 text-xs font-bold text-slate-600">
               <span>Status:</span>
               <select
@@ -219,11 +171,6 @@ export default function AdminFaqPage() {
                   </div>
 
                   <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-                    {faq.category && (
-                      <span className="px-2.5 py-0.5 rounded bg-blue-50 text-blue-700 font-bold text-[10px] border border-blue-200">
-                        {faq.category}
-                      </span>
-                    )}
                     <button
                       onClick={() => handleToggleStatus(faq)}
                       className={`px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer transition-colors ${

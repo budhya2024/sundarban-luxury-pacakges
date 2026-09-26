@@ -1,61 +1,35 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import {
   Compass,
   CalendarCheck,
   Building2,
-  DollarSign,
   TrendingUp,
-  Clock,
-  CheckCircle2,
   Users,
-  AlertCircle,
-  ExternalLink,
-  Plus,
-  ArrowRight,
-  Phone,
-  Mail,
-  Search,
-  Check,
-  Filter,
 } from "lucide-react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { StatCard } from "@/components/admin/StatCard";
 import { RevenueChart } from "@/components/admin/RevenueChart";
 import { useAdmin } from "@/context/AdminContext";
-import { BookingDetailModal } from "@/components/admin/BookingDetailModal";
-import { AdminBooking } from "@/lib/admin-data";
 
 export default function AdminDashboardPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [selectedBooking, setSelectedBooking] = useState<AdminBooking | null>(null);
-  const [bookingSearch, setBookingSearch] = useState("");
-  const [bookingFilter, setBookingFilter] = useState<"all" | "confirmed" | "pending" | "resort">("all");
-
   const { bookings, packages, rooms, inquiries, blogPostsList } = useAdmin();
 
   // Compute live overview metrics from real database data
-  const totalRevenue = useMemo(() => {
-    return bookings
-      .filter((b) => b.paymentStatus === "Paid" || b.paymentStatus === "Partial")
-      .reduce((acc, b) => acc + (b.paidAmount || 0), 0);
-  }, [bookings]);
-
-  const totalGrossAmount = useMemo(() => {
-    return bookings.reduce((acc, b) => acc + (b.totalAmount || 0), 0);
-  }, [bookings]);
-
-  const pendingBalance = Math.max(0, totalGrossAmount - totalRevenue);
-  const collectionRate = totalGrossAmount > 0 ? Math.round((totalRevenue / totalGrossAmount) * 100) : 100;
-
   const pendingCount = bookings.filter((b) => b.bookingStatus === "Pending").length;
   const confirmedCount = bookings.filter((b) => b.bookingStatus === "Confirmed").length;
   const completedCount = bookings.filter((b) => b.bookingStatus === "Completed").length;
 
+  const bookingConfirmationRate =
+    bookings.length > 0 ? Math.round(((confirmedCount + completedCount) / bookings.length) * 100) : 100;
+
   const newInquiriesCount = inquiries.filter((i) => i.status === "New").length;
   const convertedInquiriesCount = inquiries.filter((i) => i.status === "Converted").length;
+  const inquiryConversionRate =
+    inquiries.length > 0 ? Math.round((convertedInquiriesCount / inquiries.length) * 100) : 0;
 
   const totalRoomCapacity = rooms.reduce((acc, r) => acc + (r.totalRooms || 0), 0);
   const totalAvailableRooms = rooms.reduce((acc, r) => acc + (r.availableRooms || 0), 0);
@@ -64,33 +38,6 @@ export default function AdminDashboardPage() {
     : 0;
 
   const totalGuestsServiced = bookings.reduce((acc, b) => acc + (b.guestsCount || 1), 0);
-
-  // Filtered recent bookings based on search & active filter
-  const filteredBookings = useMemo(() => {
-    return bookings.filter((b) => {
-      const q = bookingSearch.toLowerCase().trim();
-      const matchesSearch =
-        !q ||
-        (b.bookingCode || "").toLowerCase().includes(q) ||
-        (b.guestName || "").toLowerCase().includes(q) ||
-        (b.phone || "").toLowerCase().includes(q) ||
-        (b.packageOrRoom || "").toLowerCase().includes(q);
-
-      let matchesFilter = true;
-      if (bookingFilter === "confirmed") matchesFilter = b.bookingStatus === "Confirmed";
-      else if (bookingFilter === "pending") matchesFilter = b.bookingStatus === "Pending";
-      else if (bookingFilter === "resort") matchesFilter = b.type === "Hotel Resort";
-
-      return matchesSearch && matchesFilter;
-    });
-  }, [bookings, bookingSearch, bookingFilter]);
-
-  const recentBookings = filteredBookings.slice(0, 6);
-
-  const formattedRevenue =
-    totalRevenue >= 100000
-      ? `₹${(totalRevenue / 100000).toFixed(2)} L`
-      : `₹${totalRevenue.toLocaleString()}`;
 
   return (
     <div className="flex-1 flex flex-col">
@@ -104,16 +51,12 @@ export default function AdminDashboardPage() {
         {/* 4 KPI Metric Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           <StatCard
-            title="Collected Revenue"
-            value={formattedRevenue}
-            change={`+${collectionRate}% Collected`}
+            title="Booking Rate"
+            value={`${bookingConfirmationRate}%`}
+            change={`+${confirmedCount + completedCount} Confirmed`}
             isPositive={true}
-            subtext={
-              pendingBalance > 0
-                ? `₹${pendingBalance.toLocaleString()} pending`
-                : "All balances cleared"
-            }
-            icon={DollarSign}
+            subtext={`${pendingCount} Awaiting Confirmation`}
+            icon={TrendingUp}
             iconBg="bg-blue-50"
             iconColor="text-blue-700"
           />
@@ -138,11 +81,11 @@ export default function AdminDashboardPage() {
             iconColor="text-blue-700"
           />
           <StatCard
-            title="Customer Leads"
-            value={`${inquiries.length} Inquiries`}
-            change={`${newInquiriesCount} Awaiting`}
-            isPositive={newInquiriesCount === 0}
-            subtext={`${convertedInquiriesCount} Converted to Tours`}
+            title="Inquiry Conversion"
+            value={`${inquiryConversionRate}% Rate`}
+            change={`${convertedInquiriesCount} Converted`}
+            isPositive={convertedInquiriesCount > 0}
+            subtext={`${newInquiriesCount} Inquiries Awaiting Reply`}
             icon={Users}
             iconBg="bg-purple-50"
             iconColor="text-purple-700"
@@ -292,175 +235,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
         </div>
-
-        {/* Recent Bookings Table */}
-        <div className="bg-white border border-slate-200/90 rounded-[4px] p-5 shadow-2xs space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-            <div>
-              <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
-                Recent Bookings &amp; Safari Departures
-              </h3>
-              <p className="text-[11px] text-slate-500">
-                Latest transactions across tour packages &amp; resort reservations ({filteredBookings.length} matching)
-              </p>
-            </div>
-            <Link
-              href="/admin/bookings"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:underline"
-            >
-              <span>View All Bookings</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          {/* Search & Status Quick Filter Controls */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1">
-            <div className="relative flex-1 max-w-sm">
-              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="text"
-                value={bookingSearch}
-                onChange={(e) => setBookingSearch(e.target.value)}
-                placeholder="Search guest, code, package, phone..."
-                className="w-full text-xs pl-8 pr-3 py-1.5 border border-slate-200 rounded-[3px] focus:outline-hidden focus:border-blue-600 bg-slate-50/50"
-              />
-            </div>
-
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
-              <button
-                onClick={() => setBookingFilter("all")}
-                className={`px-2.5 py-1 text-[11px] font-bold rounded-[3px] transition-colors whitespace-nowrap ${
-                  bookingFilter === "all"
-                    ? "bg-slate-900 text-white"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                }`}
-              >
-                All ({bookings.length})
-              </button>
-              <button
-                onClick={() => setBookingFilter("confirmed")}
-                className={`px-2.5 py-1 text-[11px] font-bold rounded-[3px] transition-colors whitespace-nowrap ${
-                  bookingFilter === "confirmed"
-                    ? "bg-blue-600 text-white"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                }`}
-              >
-                Confirmed ({confirmedCount})
-              </button>
-              <button
-                onClick={() => setBookingFilter("pending")}
-                className={`px-2.5 py-1 text-[11px] font-bold rounded-[3px] transition-colors whitespace-nowrap ${
-                  bookingFilter === "pending"
-                    ? "bg-amber-500 text-white"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                }`}
-              >
-                Pending ({pendingCount})
-              </button>
-              <button
-                onClick={() => setBookingFilter("resort")}
-                className={`px-2.5 py-1 text-[11px] font-bold rounded-[3px] transition-colors whitespace-nowrap ${
-                  bookingFilter === "resort"
-                    ? "bg-blue-800 text-white"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                }`}
-              >
-                Resort ({bookings.filter((b) => b.type === "Hotel Resort").length})
-              </button>
-            </div>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase text-[10px] tracking-wider">
-                <tr>
-                  <th className="py-2.5 px-3 whitespace-nowrap">Sl. No.</th>
-                  <th className="py-2.5 px-3">Guest Name</th>
-                  <th className="py-2.5 px-3">Selected Package</th>
-                  <th className="py-2.5 px-3">Travel Date</th>
-                  <th className="py-2.5 px-3">Amount</th>
-                  <th className="py-2.5 px-3">Status</th>
-                  <th className="py-2.5 px-3 text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 font-medium">
-                {recentBookings.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="py-8 text-center text-slate-400">
-                      <p className="text-xs font-semibold">
-                        No reservations found matching your criteria.
-                      </p>
-                      {(bookingSearch || bookingFilter !== "all") && (
-                        <button
-                          onClick={() => {
-                            setBookingSearch("");
-                            setBookingFilter("all");
-                          }}
-                          className="mt-2 text-[11px] font-bold text-blue-700 hover:underline"
-                        >
-                          Reset filters
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ) : (
-                  recentBookings.map((b, index) => (
-                    <tr key={b.id} className="hover:bg-slate-50/80 transition-colors">
-                      <td className="py-3 px-3 whitespace-nowrap font-mono font-bold text-slate-900">
-                        #{index + 1}
-                      </td>
-                      <td className="py-3 px-3 font-bold text-slate-900">
-                        <div>{b.guestName}</div>
-                        <div className="text-[11px] text-slate-400 font-normal">
-                          {b.phone}
-                        </div>
-                      </td>
-                      <td className="py-3 px-3 text-slate-700 max-w-[200px] truncate">
-                        {b.packageOrRoom}
-                      </td>
-                      <td className="py-3 px-3 text-slate-600 whitespace-nowrap">
-                        {b.travelDate}
-                      </td>
-                      <td className="py-3 px-3 font-bold text-slate-900">
-                        ₹{b.totalAmount.toLocaleString()}
-                      </td>
-                      <td className="py-3 px-3">
-                        <span
-                          className={`px-2 py-0.5 rounded-[2px] text-[10px] font-bold ${
-                            b.bookingStatus === "Confirmed"
-                              ? "bg-blue-50 text-blue-800 border border-blue-200"
-                              : b.bookingStatus === "Pending"
-                              ? "bg-amber-50 text-amber-800 border border-amber-200"
-                              : b.bookingStatus === "Completed"
-                              ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
-                              : "bg-slate-100 text-slate-700"
-                          }`}
-                        >
-                          {b.bookingStatus}
-                        </span>
-                      </td>
-                      <td className="py-3 px-3 text-right">
-                        <button
-                          onClick={() => setSelectedBooking(b)}
-                          className="px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white font-bold text-xs transition-colors cursor-pointer"
-                        >
-                          View Details
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
       </main>
-
-      {/* Booking Inspection Modal */}
-      <BookingDetailModal
-        booking={selectedBooking}
-        onClose={() => setSelectedBooking(null)}
-      />
     </div>
   );
 }

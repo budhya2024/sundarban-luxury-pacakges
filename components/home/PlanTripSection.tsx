@@ -147,17 +147,6 @@ export function PlanTripSection() {
                 </div>
               </div>
             </div>
-
-            {/* Learn More CTA Button */}
-            <div>
-              <Link
-                href="/packages"
-                className="btn btn-primary !px-8 !py-3.5"
-              >
-                <span>Learn More</span>
-                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-              </Link>
-            </div>
           </div>
         </div>
 

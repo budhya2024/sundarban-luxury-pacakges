@@ -133,6 +133,18 @@ export interface AdminContactGeneralInfo {
   workingHours: string;
   googleMapEmbedUrl: string;
   emergencyHotline: string;
+  callCardTitle?: string;
+  callCardSubtitle?: string;
+  callCardStatus?: "Active" | "Inactive";
+  emailCardTitle?: string;
+  emailCardSubtitle?: string;
+  emailCardStatus?: "Active" | "Inactive";
+  visitCardTitle?: string;
+  visitCardSubtitle?: string;
+  visitCardStatus?: "Active" | "Inactive";
+  hoursCardTitle?: string;
+  hoursCardSubtitle?: string;
+  hoursCardStatus?: "Active" | "Inactive";
 }
 
 export interface AdminPageSection {
@@ -149,12 +161,13 @@ export interface AdminPageSection {
 }
 
 export interface AdminPageContent {
-  pageKey: "home" | "about" | "hotel" | "tours" | "contact";
+  pageKey: "home" | "about" | "hotel" | "tours" | "contact" | "gallery";
   pageName: string;
   pageRoute: string;
   heroTitle: string;
   heroSubtitle: string;
   heroBadge?: string;
+  heroBackgroundImage?: string;
   metaDescription?: string;
   sections: AdminPageSection[];
 }
@@ -1030,6 +1043,7 @@ export const initialAdminPages: AdminPageContent[] = [
     heroTitle: "Luxury Eco Expeditions in the World's Largest Mangrove Delta",
     heroSubtitle: "Experience Royal Bengal Tiger sightings, boutique river cruisers, gourmet dining, and 5-star Hotel Sonar Bangla hospitality.",
     heroBadge: "Official Sundarban Tourism Partner",
+    heroBackgroundImage: "/assets/images/royal-bengal-tiger.jpg",
     metaDescription: "Sundarban Luxury Tour packages, 5-star river safaris, and luxury resort stays in the Sundarbans mangrove forest.",
     sections: [
       {
@@ -1062,9 +1076,10 @@ export const initialAdminPages: AdminPageContent[] = [
     pageKey: "about",
     pageName: "About Us Page",
     pageRoute: "/about",
-    heroTitle: "Crafting Unforgettable Sundarban Wildlife Adventures",
-    heroSubtitle: "Dedicated to sustainable eco-tourism, local community empowerment, and unforgettable luxury wilderness expeditions.",
+    heroTitle: "Pioneering Luxury In Sundarban",
+    heroSubtitle: "Dedicated to sustainable eco-tourism, local community empowerment, and unforgettable luxury wilderness expeditions in the Sundarbans delta.",
     heroBadge: "Our Legacy & Heritage",
+    heroBackgroundImage: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80&w=2000",
     metaDescription: "Learn about Sundarban Luxury Package history, eco-conservation pledges, and professional expedition team.",
     sections: [
       {
@@ -1089,12 +1104,48 @@ export const initialAdminPages: AdminPageContent[] = [
     ],
   },
   {
+    pageKey: "contact",
+    pageName: "Contact & Assistance",
+    pageRoute: "/contact",
+    heroTitle: "Contact Sundarban Luxury",
+    heroSubtitle: "Have questions about our luxury river cruises, customized tiger safari packages, or private resort bookings? Our expert travel advisors are available 24/7 to assist you.",
+    heroBadge: "24/7 Fast Response",
+    heroBackgroundImage: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80&w=2000",
+    metaDescription: "Contact Sundarban Luxury Tours for instant quotes, customized itineraries, and phone assistance.",
+    sections: [
+      {
+        id: "sec-c1",
+        title: "Emergency Cruise Helpline & Instant WhatsApp Support",
+        subtitle: "24/7 Assistance",
+        content: "For immediate booking confirmations or boarding inquiries for tomorrow morning's Godkhali departure, call our 24/7 on-duty cruise master directly at +91 70014 03498.",
+        styleType: "alert-red",
+        badgeText: "24/7 Hotline",
+        ctaText: "Call Hotline",
+        ctaUrl: "tel:+917001403498",
+        order: 1,
+        isActive: true,
+      },
+    ],
+  },
+  {
+    pageKey: "gallery",
+    pageName: "Photo Gallery Page",
+    pageRoute: "/gallery",
+    heroTitle: "Sundarban Moments & Safari Highlights",
+    heroSubtitle: "Explore high-definition captures of wild royal tigers, exotic mangrove birds, sunset cruises, and luxury resort stays.",
+    heroBadge: "Visual Wilderness",
+    heroBackgroundImage: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=2000&q=80",
+    metaDescription: "Visual gallery of Sundarban luxury tours, royal Bengal tiger tracking, river cruises, and Hotel Sonar Bangla resort moments.",
+    sections: [],
+  },
+  {
     pageKey: "hotel",
     pageName: "Hotel Sonar Bangla",
     pageRoute: "/hotel-sonar-bangla",
     heroTitle: "Hotel Sonar Bangla Sundarban — 5-Star Riverfront Luxury",
     heroSubtitle: "Immerse yourself in lush landscaped gardens, infinity swimming pool, multi-cuisine dining, and luxury suites facing the calm mangrove waters.",
     heroBadge: "Exclusive Resort Partner",
+    heroBackgroundImage: "/assets/images/sonarbanglahotel.jpg",
     metaDescription: "Book luxury rooms, presidential suites, and villa cottages at Hotel Sonar Bangla resort in the Sundarbans.",
     sections: [
       {
@@ -1126,6 +1177,7 @@ export const initialAdminPages: AdminPageContent[] = [
     heroTitle: "Handcrafted Luxury Cruise Itineraries",
     heroSubtitle: "From 1-Day Day Safaris to 3D/2N Royal Houseboat Charters — All-Inclusive Luxury with Gourmet Dining & Forest Permits.",
     heroBadge: "All-Inclusive Safaris",
+    heroBackgroundImage: "/assets/images/boat-safari.jpg",
     metaDescription: "Explore all Sundarban tour packages, pricing itineraries, inclusions, and boat safari schedules.",
     sections: [
       {
@@ -1135,29 +1187,6 @@ export const initialAdminPages: AdminPageContent[] = [
         content: "In the event of severe weather advisories issued by IMD / Forest Department, 100% free date rescheduling is guaranteed. Cancellations made 7+ days before departure receive immediate refund processing.",
         styleType: "alert-red",
         badgeText: "Booking Assurance",
-        order: 1,
-        isActive: true,
-      },
-    ],
-  },
-  {
-    pageKey: "contact",
-    pageName: "Contact & Assistance",
-    pageRoute: "/contact",
-    heroTitle: "Connect With Our Sundarban Expedition Planners",
-    heroSubtitle: "24/7 Hotline Support, WhatsApp Instant Desk, and Kolkata Office Coordination.",
-    heroBadge: "24/7 Fast Response",
-    metaDescription: "Contact Sundarban Luxury Tours for instant quotes, customized itineraries, and phone assistance.",
-    sections: [
-      {
-        id: "sec-c1",
-        title: "Emergency Cruise Helpline & Instant WhatsApp Support",
-        subtitle: "24/7 Assistance",
-        content: "For immediate booking confirmations or boarding inquiries for tomorrow morning's Godkhali departure, call our 24/7 on-duty cruise master directly at +91 70014 03498.",
-        styleType: "alert-red",
-        badgeText: "24/7 Hotline",
-        ctaText: "Call Hotline",
-        ctaUrl: "tel:+917001403498",
         order: 1,
         isActive: true,
       },

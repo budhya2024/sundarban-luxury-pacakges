@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
   LayoutDashboard,
   Home,
@@ -13,6 +13,7 @@ import {
   CalendarCheck,
   Newspaper,
   Settings,
+  Image as ImageIcon,
   X,
 } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
@@ -25,6 +26,8 @@ export function AdminSidebar({
   onCloseMobile: () => void;
 }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const pageParam = searchParams ? searchParams.get("page") : null;
   const { bookings } = useAdmin();
   const [mounted, setMounted] = useState(false);
 
@@ -36,6 +39,10 @@ export function AdminSidebar({
 
   const isLinkActive = (href: string) => {
     if (href === "/admin") return pathname === "/admin";
+    if (href.startsWith("/admin/pages?page=")) {
+      const targetPage = href.split("page=")[1];
+      return pathname === "/admin/pages" && (pageParam === targetPage || (!pageParam && targetPage === "home"));
+    }
     return pathname.startsWith(href);
   };
 
@@ -73,8 +80,8 @@ export function AdminSidebar({
             href="/admin"
             onClick={onCloseMobile}
             className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${pathname === "/admin"
-                ? "bg-blue-600 text-white shadow-sm font-black"
-                : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
+              ? "bg-blue-600 text-white shadow-sm font-black"
+              : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
           >
             <LayoutDashboard className="w-4 h-4 text-blue-400" />
@@ -92,9 +99,9 @@ export function AdminSidebar({
           <Link
             href="/admin/pages?page=home"
             onClick={onCloseMobile}
-            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${pathname === "/admin/pages"
-                ? "bg-blue-600 text-white shadow-sm font-black"
-                : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
+            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/pages?page=home")
+              ? "bg-blue-600 text-white shadow-sm font-black"
+              : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
           >
             <Home className="w-4 h-4 text-blue-400" />
@@ -105,7 +112,10 @@ export function AdminSidebar({
           <Link
             href="/admin/pages?page=about"
             onClick={onCloseMobile}
-            className="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold text-slate-300 hover:bg-slate-800/90 hover:text-white transition-all duration-200"
+            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/pages?page=about")
+              ? "bg-blue-600 text-white shadow-sm font-black"
+              : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
+              }`}
           >
             <FileText className="w-4 h-4 text-blue-400" />
             <span>About Page</span>
@@ -116,12 +126,25 @@ export function AdminSidebar({
             href="/admin/contact"
             onClick={onCloseMobile}
             className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/contact")
-                ? "bg-blue-600 text-white shadow-sm font-black"
-                : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
+              ? "bg-blue-600 text-white shadow-sm font-black"
+              : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
           >
             <PhoneCall className="w-4 h-4 text-blue-400" />
             <span>Contact Us Page</span>
+          </Link>
+
+          {/* Photo Gallery Page */}
+          <Link
+            href="/admin/pages?page=gallery"
+            onClick={onCloseMobile}
+            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/pages?page=gallery")
+              ? "bg-blue-600 text-white shadow-sm font-black"
+              : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
+              }`}
+          >
+            <ImageIcon className="w-4 h-4 text-blue-400" />
+            <span>Photo Gallery Page</span>
           </Link>
 
           {/* Tour Packages */}
@@ -129,8 +152,8 @@ export function AdminSidebar({
             href="/admin/packages"
             onClick={onCloseMobile}
             className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/packages")
-                ? "bg-blue-600 text-white shadow-sm font-black"
-                : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
+              ? "bg-blue-600 text-white shadow-sm font-black"
+              : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
           >
             <Compass className="w-4 h-4 text-blue-400" />
@@ -142,8 +165,8 @@ export function AdminSidebar({
             href="/admin/hotel"
             onClick={onCloseMobile}
             className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/hotel")
-                ? "bg-blue-600 text-white shadow-sm font-black"
-                : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
+              ? "bg-blue-600 text-white shadow-sm font-black"
+              : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
           >
             <Building2 className="w-4 h-4 text-blue-400" />
@@ -155,8 +178,8 @@ export function AdminSidebar({
             href="/admin/blog"
             onClick={onCloseMobile}
             className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/blog")
-                ? "bg-blue-600 text-white shadow-sm font-black"
-                : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
+              ? "bg-blue-600 text-white shadow-sm font-black"
+              : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
           >
             <Newspaper className="w-4 h-4 text-blue-400" />
@@ -174,8 +197,8 @@ export function AdminSidebar({
             href="/admin/bookings"
             onClick={onCloseMobile}
             className={`flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/bookings")
-                ? "bg-blue-600 text-white shadow-sm font-black"
-                : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
+              ? "bg-blue-600 text-white shadow-sm font-black"
+              : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
           >
             <div className="flex items-center gap-3">
@@ -201,8 +224,8 @@ export function AdminSidebar({
           href="/admin/settings"
           onClick={onCloseMobile}
           className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/settings")
-              ? "bg-blue-600 text-white shadow-sm font-black"
-              : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
+            ? "bg-blue-600 text-white shadow-sm font-black"
+            : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
             }`}
         >
           <Settings className="w-4 h-4 text-slate-400" />

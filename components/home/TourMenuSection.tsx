@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
+import { useAdmin } from "@/context/AdminContext";
 import { BookingModal } from "@/components/tour/BookingModal";
 
 // Import Swiper styles
@@ -18,7 +19,7 @@ interface SpecialDish {
   description: string;
 }
 
-const featuredDishes: SpecialDish[] = [
+const defaultFeaturedDishes: SpecialDish[] = [
   {
     id: "mutton-curry",
     name: "Royal Mutton Kosha",
@@ -68,12 +69,25 @@ const featuredDishes: SpecialDish[] = [
     tag: "Fresh Catch",
     description: "Mouth-watering delta delicacy of succulent Hilsa pieces steamed in banana leaf.",
   },
-
 ];
 
 export function TourMenuSection() {
+  const { menuItems } = useAdmin();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState("Sundarban Tour Package With Authentic Bengali Menu");
+
+  const dishes = useMemo(() => {
+    if (menuItems && menuItems.length > 0) {
+      return menuItems.map((m) => ({
+        id: m.id,
+        name: m.name,
+        image: m.image,
+        tag: m.tag || "Special Dish",
+        description: m.description || "Authentic traditional Bengali cuisine specialty.",
+      }));
+    }
+    return defaultFeaturedDishes;
+  }, [menuItems]);
 
   const handleOpenBooking = (dishName?: string) => {
     setSelectedPackage(
@@ -137,7 +151,7 @@ export function TourMenuSection() {
             }}
             className=""
           >
-            {featuredDishes.map((dish) => (
+            {dishes.map((dish) => (
               <SwiperSlide key={dish.id} className="h-auto">
                 <div className="group relative flex flex-col justify-between h-full bg-white border border-border hover:border-secondary transition-all duration-300  overflow-hidden rounded-lg">
                   <div>

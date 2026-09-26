@@ -20,7 +20,6 @@ export function FaqModal({
   const [questionNumber, setQuestionNumber] = useState("Q1");
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
-  const [category, setCategory] = useState("Booking & Reservations");
   const [order, setOrder] = useState(1);
   const [status, setStatus] = useState<AdminFaqItem["status"]>("Active");
 
@@ -29,14 +28,12 @@ export function FaqModal({
       setQuestionNumber(initialFaq.questionNumber || "Q1");
       setQuestion(initialFaq.question || "");
       setAnswer(initialFaq.answer || "");
-      setCategory(initialFaq.category || "Booking & Reservations");
       setOrder(initialFaq.order || 1);
       setStatus(initialFaq.status || "Active");
     } else {
       setQuestionNumber("Q1");
       setQuestion("");
       setAnswer("");
-      setCategory("Booking & Reservations");
       setOrder(1);
       setStatus("Active");
     }
@@ -50,7 +47,6 @@ export function FaqModal({
       questionNumber: questionNumber || "Q",
       question: question.trim(),
       answer: answer.trim(),
-      category,
       order: Number(order),
       status,
     });
@@ -58,26 +54,26 @@ export function FaqModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs">
-      <div className="bg-white border border-slate-200 rounded-md shadow-2xl w-full max-w-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-150">
+      <div className="bg-white border border-slate-200 rounded-[4px] shadow-2xl w-full max-w-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-200 bg-slate-900 text-white flex items-center justify-between">
+        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded bg-blue-600 flex items-center justify-center text-white">
-              <HelpCircle className="w-4 h-4" />
+            <div className="p-2 bg-blue-100 text-blue-700 rounded-[3px]">
+              <HelpCircle className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-extrabold text-white">
+              <h3 className="text-base font-extrabold text-slate-900">
                 {initialFaq ? "Edit FAQ Question" : "Create New FAQ Question"}
               </h3>
-              <p className="text-xs text-slate-300">
+              <p className="text-xs text-slate-500">
                 Manage questions shown on homepage FAQ accordion
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-[3px] text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -85,7 +81,7 @@ export function FaqModal({
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs">
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block font-bold text-slate-800 mb-1">
                 Question Badge / No.
@@ -98,24 +94,6 @@ export function FaqModal({
                 placeholder="Q1, Q2, etc."
                 className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-slate-900 font-bold focus:outline-none focus:border-blue-600"
               />
-            </div>
-
-            <div>
-              <label className="block font-bold text-slate-800 mb-1">
-                Category
-              </label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full h-9 px-2.5 rounded border border-slate-300 bg-white text-slate-900 font-bold focus:outline-none focus:border-blue-600"
-              >
-                <option value="Booking & Reservations">Booking &amp; Reservations</option>
-                <option value="Wildlife & Safari">Wildlife &amp; Safari</option>
-                <option value="Package Inclusions">Package Inclusions</option>
-                <option value="Safety & Guidelines">Safety &amp; Guidelines</option>
-                <option value="Preparation & Packing">Preparation &amp; Packing</option>
-                <option value="General Information">General Information</option>
-              </select>
             </div>
 
             <div>
