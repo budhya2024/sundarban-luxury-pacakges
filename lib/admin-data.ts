@@ -193,7 +193,32 @@ export interface AdminTestimonialItem {
   date?: string;
   featured?: boolean;
   status: "Active" | "Inactive";
+  source?: "manual" | "google";
 }
+
+export interface AdminTestimonialSettings {
+  id: string;
+  displayMode: "manual" | "google";
+  googlePlaceId: string;
+  googlePlaceUrl: string;
+  featurableId?: string;
+  googleApiKey?: string;
+  googleRating: number;
+  googleReviewsCount: number;
+  googleBadgeText: string;
+}
+
+export const initialAdminTestimonialSettings: AdminTestimonialSettings = {
+  id: "default",
+  displayMode: "google",
+  googlePlaceId: "ChIJtRQ1dQCLAToR6rAo34zLXEo",
+  googlePlaceUrl: "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
+  featurableId: "3244b520-3369-414c-a09e-339ea6dbd9e9",
+  googleApiKey: "",
+  googleRating: 4.9,
+  googleReviewsCount: 32,
+  googleBadgeText: "Verified Google Business Rating",
+};
 
 export interface AdminGalleryItem {
   id: string;

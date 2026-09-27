@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { usePathname } from "next/navigation";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 
@@ -20,10 +20,16 @@ export default function AdminLayout({
   return (
     <div className="flex min-h-screen bg-slate-100 text-slate-900 font-sans antialiased">
       {/* Sidebar Navigation */}
-      <AdminSidebar
-        isMobileOpen={isMobileOpen}
-        onCloseMobile={() => setIsMobileOpen(false)}
-      />
+      <Suspense
+        fallback={
+          <aside className="hidden lg:flex w-64 bg-slate-900 border-r border-slate-800 shrink-0 h-screen sticky top-0" />
+        }
+      >
+        <AdminSidebar
+          isMobileOpen={isMobileOpen}
+          onCloseMobile={() => setIsMobileOpen(false)}
+        />
+      </Suspense>
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden">

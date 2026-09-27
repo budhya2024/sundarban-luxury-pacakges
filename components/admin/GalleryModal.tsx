@@ -40,8 +40,8 @@ export function GalleryModal({
       setOrder(initialGalleryItem.order || 1);
       setStatus(initialGalleryItem.status || "Active");
     } else {
-      setSrc("/assets/images/royal-bengal-tiger.jpg");
-      setAlt("Sundarban mangrove wildlife");
+      setSrc("");
+      setAlt("");
       setTitle("");
       setLocation("Sundarban Tiger Reserve");
       setColumn("col3");
@@ -55,14 +55,18 @@ export function GalleryModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!src.trim()) {
+      alert("Please upload or enter an image URL for this photo.");
+      return;
+    }
     onSave({
       src: src.trim(),
       alt: alt.trim() || title.trim(),
       title: title.trim(),
-      location: location.trim(),
+      location: location.trim() || "Sundarban Tiger Reserve",
       column,
       category,
-      order: Number(order),
+      order: Number(order) || 1,
       status,
     });
     onClose();
@@ -105,18 +109,70 @@ export function GalleryModal({
             />
           </div>
 
-          <div>
-            <label className="block font-bold text-slate-800 mb-1">
-              Photo Title / Heading *
-            </label>
-            <input
-              type="text"
-              required
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. Royal Bengal Tiger"
-              className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-slate-900 font-semibold focus:outline-none focus:border-blue-600"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block font-bold text-slate-800 mb-1">
+                Photo Title / Heading *
+              </label>
+              <input
+                type="text"
+                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="e.g. Royal Bengal Tiger"
+                className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-slate-900 font-semibold focus:outline-none focus:border-blue-600"
+              />
+            </div>
+
+            <div>
+              <label className="block font-bold text-slate-800 mb-1">
+                Location Tag
+              </label>
+              <input
+                type="text"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="e.g. Sudhanyakhali Watchtower"
+                className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-slate-900 font-semibold focus:outline-none focus:border-blue-600"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block font-bold text-slate-800 mb-1">
+                Category
+              </label>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full h-9 px-2.5 rounded border border-slate-300 bg-white text-slate-900 font-bold focus:outline-none focus:border-blue-600"
+              >
+                <option value="Wildlife">Wildlife</option>
+                <option value="Boat Safari">Boat Safari</option>
+                <option value="Resort Stay">Resort Stay</option>
+                <option value="Watchtower">Watchtower</option>
+                <option value="Landscape">Landscape</option>
+                <option value="Cruises">Cruises</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block font-bold text-slate-800 mb-1">
+                5-Column Grid Position
+              </label>
+              <select
+                value={column}
+                onChange={(e) => setColumn(e.target.value as AdminGalleryItem["column"])}
+                className="w-full h-9 px-2.5 rounded border border-slate-300 bg-white text-slate-900 font-bold focus:outline-none focus:border-blue-600"
+              >
+                <option value="col1">Column 1 (Left Square)</option>
+                <option value="col2">Column 2 (Stacked Top/Bottom)</option>
+                <option value="col3">Column 3 (Center Featured Tall)</option>
+                <option value="col4">Column 4 (Stacked Top/Bottom)</option>
+                <option value="col5">Column 5 (Right Square)</option>
+              </select>
+            </div>
           </div>
 
           <div className="flex items-center justify-between pt-3 border-t border-slate-100">

@@ -241,3 +241,141 @@ export const hotelInquiries = pgTable("hotel_inquiries", {
 
 export type HotelInquiryRow = typeof hotelInquiries.$inferSelect;
 export type NewHotelInquiry = typeof hotelInquiries.$inferInsert;
+
+// 11. Page Contents (Home, About, Contact, Gallery, Hotel, Tours)
+export interface PageSectionItem {
+  id: string;
+  title: string;
+  subtitle?: string;
+  content: string;
+  styleType: "standard" | "alert-red" | "highlight-gold" | "feature-box";
+  badgeText?: string;
+  ctaText?: string;
+  ctaUrl?: string;
+  order: number;
+  isActive: boolean;
+}
+
+export const pageContents = pgTable("page_contents", {
+  pageKey: varchar("page_key", { length: 50 }).primaryKey(),
+  pageName: varchar("page_name", { length: 100 }).notNull(),
+  pageRoute: varchar("page_route", { length: 100 }).notNull(),
+  heroTitle: text("hero_title").notNull(),
+  heroSubtitle: text("hero_subtitle"),
+  heroBadge: varchar("hero_badge", { length: 100 }),
+  heroBackgroundImage: text("hero_background_image"),
+  metaDescription: text("meta_description"),
+  sections: jsonb("sections").$type<PageSectionItem[]>().default([]).notNull(),
+  customData: jsonb("custom_data").$type<Record<string, any>>().default({}),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type PageContentRow = typeof pageContents.$inferSelect;
+export type NewPageContent = typeof pageContents.$inferInsert;
+
+// 12. Testimonials (Manual and Verified Google Reviews)
+export const testimonials = pgTable("testimonials", {
+  id: varchar("id", { length: 100 }).primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  role: varchar("role", { length: 255 }).default("Guest").notNull(),
+  avatar: text("avatar"),
+  rating: integer("rating").default(5).notNull(),
+  text: text("text").notNull(),
+  tourPackage: varchar("tour_package", { length: 255 }),
+  date: varchar("date", { length: 100 }),
+  featured: boolean("featured").default(false).notNull(),
+  status: varchar("status", { length: 50 }).default("Active").notNull(), // Active, Inactive
+  source: varchar("source", { length: 50 }).default("manual").notNull(), // manual, google
+  order: integer("order").default(0).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type TestimonialRow = typeof testimonials.$inferSelect;
+export type NewTestimonial = typeof testimonials.$inferInsert;
+
+// 13. Testimonial Settings (Switch between manual & live Google reviews)
+export const testimonialSettings = pgTable("testimonial_settings", {
+  id: varchar("id", { length: 50 }).primaryKey().default("default"),
+  displayMode: varchar("display_mode", { length: 50 }).default("manual").notNull(), // manual | google
+  googlePlaceId: varchar("google_place_id", { length: 255 }).default("ChIJ74-8t225-TkRk9b3Psm9Fz8"),
+  googlePlaceUrl: text("google_place_url").default("https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb"),
+  featurableId: varchar("featurable_id", { length: 255 }),
+  googleApiKey: varchar("google_api_key", { length: 255 }),
+  googleRating: real("google_rating").default(4.9).notNull(),
+  googleReviewsCount: integer("google_reviews_count").default(284).notNull(),
+  googleBadgeText: varchar("google_badge_text", { length: 255 }).default("Verified Google Business Rating"),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type TestimonialSettingsRow = typeof testimonialSettings.$inferSelect;
+export type NewTestimonialSettings = typeof testimonialSettings.$inferInsert;
+
+// 14. Photo Gallery Items
+export const galleryItems = pgTable("gallery_items", {
+  id: varchar("id", { length: 100 }).primaryKey(),
+  src: text("src").notNull(),
+  alt: varchar("alt", { length: 255 }).notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  location: varchar("location", { length: 255 }).notNull(),
+  column: varchar("column", { length: 50 }).default("col1").notNull(), // col1, col2, col3, col4, col5
+  category: varchar("category", { length: 100 }).default("Cruises"),
+  order: integer("order").default(0).notNull(),
+  status: varchar("status", { length: 50 }).default("Active").notNull(), // Active, Inactive
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type GalleryItemRow = typeof galleryItems.$inferSelect;
+export type NewGalleryItem = typeof galleryItems.$inferInsert;
+
+// 15. Menu Items (Traditional Sundarban Bengali Cuisine)
+export const menuItems = pgTable("menu_items", {
+  id: varchar("id", { length: 100 }).primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  category: varchar("category", { length: 100 }).notNull(), // Bengali Non-Veg, Bengali Fish & Seafood, Bengali Veg, Dessert & Beverage
+  priceTag: varchar("price_tag", { length: 100 }),
+  tag: varchar("tag", { length: 100 }),
+  image: text("image").notNull(),
+  description: text("description"),
+  isChefSpecial: boolean("is_chef_special").default(false).notNull(),
+  status: varchar("status", { length: 50 }).default("Active").notNull(), // Active, Unavailable
+  order: integer("order").default(0).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type MenuItemRow = typeof menuItems.$inferSelect;
+export type NewMenuItem = typeof menuItems.$inferInsert;
+
+// 16. FAQs (Frequently Asked Questions)
+export const faqs = pgTable("faqs", {
+  id: varchar("id", { length: 100 }).primaryKey(),
+  questionNumber: varchar("question_number", { length: 50 }).notNull(),
+  question: text("question").notNull(),
+  answer: text("answer").notNull(),
+  category: varchar("category", { length: 100 }).default("General"),
+  order: integer("order").default(0).notNull(),
+  status: varchar("status", { length: 50 }).default("Active").notNull(), // Active, Inactive
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type FaqRow = typeof faqs.$inferSelect;
+export type NewFaq = typeof faqs.$inferInsert;
+
+// 17. Global Top Alert Banner
+export const globalAlertBanner = pgTable("global_alert_banner", {
+  id: varchar("id", { length: 50 }).primaryKey().default("default"),
+  isEnabled: boolean("is_enabled").default(true).notNull(),
+  text: text("text").notNull(),
+  badge: varchar("badge", { length: 100 }).default("Urgent Update").notNull(),
+  type: varchar("type", { length: 50 }).default("alert-red").notNull(), // alert-red, promo-gold, info-blue
+  actionText: varchar("action_text", { length: 100 }),
+  actionUrl: varchar("action_url", { length: 255 }),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type GlobalAlertBannerRow = typeof globalAlertBanner.$inferSelect;
+export type NewGlobalAlertBanner = typeof globalAlertBanner.$inferInsert;
+

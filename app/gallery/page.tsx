@@ -23,6 +23,18 @@ export default function GalleryPage() {
   const { galleryItems, contactGeneralInfo, pageContents } = useAdmin();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [activeImageId, setActiveImageId] = useState<string | null>(null);
+  const [liveItems, setLiveItems] = useState<AdminGalleryItem[]>([]);
+
+  useEffect(() => {
+    fetch("/api/gallery")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success && Array.isArray(data.galleryItems) && data.galleryItems.length > 0) {
+          setLiveItems(data.galleryItems);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const galleryPage = pageContents.find((p) => p.pageKey === "gallery");
   const heroTitle = galleryPage?.heroTitle || "Photo & Safari Gallery";
@@ -34,10 +46,11 @@ export default function GalleryPage() {
     "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=2000&q=80";
 
   // Filter only active items or fallback to all items
+  const itemsToUse = galleryItems.length > 0 ? galleryItems : liveItems;
   const activeItems = useMemo(() => {
-    const list = galleryItems.filter((g) => g.status === "Active");
-    return list.length > 0 ? list : galleryItems;
-  }, [galleryItems]);
+    const list = itemsToUse.filter((g) => g.status === "Active");
+    return list.length > 0 ? list : itemsToUse;
+  }, [itemsToUse]);
 
   // Extract unique categories
   const categories = useMemo(() => {

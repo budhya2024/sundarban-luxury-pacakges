@@ -15,6 +15,7 @@ import {
   AdminGlobalAlertBanner,
   AdminFaqItem,
   AdminTestimonialItem,
+  AdminTestimonialSettings,
   AdminGalleryItem,
   initialAdminPackages,
   initialAdminBookings,
@@ -27,6 +28,7 @@ import {
   initialAdminAlertBanner,
   initialAdminFaqs,
   initialAdminTestimonials,
+  initialAdminTestimonialSettings,
   initialAdminGallery,
 } from "@/lib/admin-data";
 import { BlogPost, blogPosts as defaultBlogPosts } from "@/lib/blog-data";
@@ -44,6 +46,7 @@ interface AdminContextType {
   globalAlertBanner: AdminGlobalAlertBanner;
   faqs: AdminFaqItem[];
   testimonials: AdminTestimonialItem[];
+  testimonialSettings: AdminTestimonialSettings;
   galleryItems: AdminGalleryItem[];
 
   // Package Actions
@@ -100,6 +103,8 @@ interface AdminContextType {
   addTestimonial: (item: Omit<AdminTestimonialItem, "id">) => void;
   updateTestimonial: (id: string, item: Partial<AdminTestimonialItem>) => void;
   deleteTestimonial: (id: string) => void;
+  updateTestimonialSettings: (settings: Partial<AdminTestimonialSettings>) => Promise<void>;
+  refreshTestimonials: () => Promise<void>;
 
   // Gallery Actions
   addGalleryItem: (item: Omit<AdminGalleryItem, "id">) => void;
@@ -126,6 +131,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   const [globalAlertBanner, setGlobalAlertBanner] = useState<AdminGlobalAlertBanner>(initialAdminAlertBanner);
   const [faqs, setFaqs] = useState<AdminFaqItem[]>(initialAdminFaqs);
   const [testimonials, setTestimonials] = useState<AdminTestimonialItem[]>(initialAdminTestimonials);
+  const [testimonialSettings, setTestimonialSettings] = useState<AdminTestimonialSettings>(initialAdminTestimonialSettings);
   const [galleryItems, setGalleryItems] = useState<AdminGalleryItem[]>(initialAdminGallery);
 
   // Restore client-side cached data safely after initial hydration
@@ -155,6 +161,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
       if (savedFaqs) setFaqs(JSON.parse(savedFaqs));
       const savedTestimonials = localStorage.getItem("sb_admin_testimonials");
       if (savedTestimonials) setTestimonials(JSON.parse(savedTestimonials));
+      const savedTestimonialSettings = localStorage.getItem("sb_admin_testimonial_settings");
+      if (savedTestimonialSettings) setTestimonialSettings(JSON.parse(savedTestimonialSettings));
       const savedGallery = localStorage.getItem("sb_admin_gallery");
       if (savedGallery) setGalleryItems(JSON.parse(savedGallery));
     } catch {
@@ -283,6 +291,75 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
       .then((data) => {
         if (data?.success && Array.isArray(data.packages) && data.packages.length > 0) {
           setPackages(data.packages);
+        }
+      })
+      .catch(() => {});
+
+    // 5. Live Page Contents
+    fetch("/api/admin/pages")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success && Array.isArray(data.pages) && data.pages.length > 0) {
+          setPageContents(data.pages);
+        }
+      })
+      .catch(() => {});
+
+    // 6. Live Testimonials & Settings
+    fetch("/api/admin/testimonials")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success && Array.isArray(data.testimonials) && data.testimonials.length > 0) {
+          setTestimonials(data.testimonials);
+        }
+      })
+      .catch(() => {});
+
+    fetch("/api/admin/testimonials/settings")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success && data.settings) {
+          setTestimonialSettings(data.settings);
+        }
+      })
+      .catch(() => {});
+
+    // 7. Live Gallery Items
+    fetch("/api/admin/gallery")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success && Array.isArray(data.galleryItems) && data.galleryItems.length > 0) {
+          setGalleryItems(data.galleryItems);
+        }
+      })
+      .catch(() => {});
+
+    // 8. Live Menu Items
+    fetch("/api/admin/menu")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success && Array.isArray(data.menuItems) && data.menuItems.length > 0) {
+          setMenuItems(data.menuItems);
+        }
+      })
+      .catch(() => {});
+
+    // 9. Live FAQs
+    fetch("/api/admin/faqs")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success && Array.isArray(data.faqs) && data.faqs.length > 0) {
+          setFaqs(data.faqs);
+        }
+      })
+      .catch(() => {});
+
+    // 10. Live Alert Banner
+    fetch("/api/admin/alert-banner")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success && data.banner) {
+          setGlobalAlertBanner(data.banner);
         }
       })
       .catch(() => {});
@@ -642,25 +719,60 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   };
 
   // Menu Actions
-  const addMenuItem = (item: Omit<AdminMenuItem, "id">) => {
+  const addMenuItem = async (item: Omit<AdminMenuItem, "id">) => {
+    const tempId = `menu-${Date.now()}`;
     const newItem: AdminMenuItem = {
       ...item,
-      id: `menu-${Date.now()}`,
+      id: tempId,
     };
     setMenuItems((prev) => [...prev, newItem]);
     showToast(`Dish "${newItem.name}" added to special menu.`);
+
+    try {
+      const res = await fetch("/api/admin/menu", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newItem),
+      });
+      const data = await res.json();
+      if (res.ok && data?.menuItem) {
+        setMenuItems((prev) =>
+          prev.map((m) => (m.id === tempId ? data.menuItem : m))
+        );
+      }
+    } catch (err) {
+      console.error("Failed to save menu item:", err);
+    }
   };
 
-  const updateMenuItem = (id: string, item: Partial<AdminMenuItem>) => {
+  const updateMenuItem = async (id: string, item: Partial<AdminMenuItem>) => {
     setMenuItems((prev) =>
       prev.map((m) => (m.id === id ? { ...m, ...item } : m))
     );
     showToast("Dish details updated.");
+
+    try {
+      await fetch(`/api/admin/menu/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(item),
+      });
+    } catch (err) {
+      console.error("Failed to update menu item:", err);
+    }
   };
 
-  const deleteMenuItem = (id: string) => {
+  const deleteMenuItem = async (id: string) => {
     setMenuItems((prev) => prev.filter((m) => m.id !== id));
     showToast("Dish removed from menu.");
+
+    try {
+      await fetch(`/api/admin/menu/${id}`, {
+        method: "DELETE",
+      });
+    } catch (err) {
+      console.error("Failed to delete menu item:", err);
+    }
   };
 
   // Inquiry Actions
@@ -906,7 +1018,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   };
 
   // Page-wise Content & Section Actions
-  const updatePageHero = (
+  const updatePageHero = async (
     pageKey: string,
     heroData: { heroTitle?: string; heroSubtitle?: string; heroBadge?: string; heroBackgroundImage?: string; metaDescription?: string }
   ) => {
@@ -918,123 +1030,322 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
       return updated;
     });
     showToast("Page header & background photo updated successfully.");
+
+    try {
+      await fetch("/api/admin/pages", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pageKey, ...heroData }),
+      });
+    } catch (err) {
+      console.error("Failed to update page hero on server:", err);
+    }
   };
 
-  const addPageSection = (pageKey: string, section: Omit<AdminPageSection, "id">) => {
+  const addPageSection = async (pageKey: string, section: Omit<AdminPageSection, "id">) => {
     const newSection: AdminPageSection = {
       ...section,
       id: `sec-${Date.now()}`,
     };
+    let updatedSections: AdminPageSection[] = [];
     setPageContents((prev) =>
-      prev.map((p) =>
-        p.pageKey === pageKey
-          ? { ...p, sections: [...p.sections, newSection] }
-          : p
-      )
+      prev.map((p) => {
+        if (p.pageKey === pageKey) {
+          updatedSections = [...p.sections, newSection];
+          return { ...p, sections: updatedSections };
+        }
+        return p;
+      })
     );
     showToast(`New content section "${newSection.title}" created.`);
+
+    try {
+      await fetch("/api/admin/pages", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pageKey, sections: updatedSections }),
+      });
+    } catch (err) {
+      console.error("Failed to save page section:", err);
+    }
   };
 
-  const updatePageSection = (
+  const updatePageSection = async (
     pageKey: string,
     sectionId: string,
     section: Partial<AdminPageSection>
   ) => {
+    let updatedSections: AdminPageSection[] = [];
     setPageContents((prev) =>
-      prev.map((p) =>
-        p.pageKey === pageKey
-          ? {
-            ...p,
-            sections: p.sections.map((s) =>
-              s.id === sectionId ? { ...s, ...section } : s
-            ),
-          }
-          : p
-      )
+      prev.map((p) => {
+        if (p.pageKey === pageKey) {
+          updatedSections = p.sections.map((s) =>
+            s.id === sectionId ? { ...s, ...section } : s
+          );
+          return { ...p, sections: updatedSections };
+        }
+        return p;
+      })
     );
     showToast("Section content updated.");
+
+    try {
+      await fetch("/api/admin/pages", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pageKey, sections: updatedSections }),
+      });
+    } catch (err) {
+      console.error("Failed to update page section:", err);
+    }
   };
 
-  const deletePageSection = (pageKey: string, sectionId: string) => {
+  const deletePageSection = async (pageKey: string, sectionId: string) => {
+    let updatedSections: AdminPageSection[] = [];
     setPageContents((prev) =>
-      prev.map((p) =>
-        p.pageKey === pageKey
-          ? { ...p, sections: p.sections.filter((s) => s.id !== sectionId) }
-          : p
-      )
+      prev.map((p) => {
+        if (p.pageKey === pageKey) {
+          updatedSections = p.sections.filter((s) => s.id !== sectionId);
+          return { ...p, sections: updatedSections };
+        }
+        return p;
+      })
     );
     showToast("Section removed.");
+
+    try {
+      await fetch("/api/admin/pages", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pageKey, sections: updatedSections }),
+      });
+    } catch (err) {
+      console.error("Failed to delete page section:", err);
+    }
   };
 
-  const updateGlobalAlertBanner = (banner: Partial<AdminGlobalAlertBanner>) => {
+  const updateGlobalAlertBanner = async (banner: Partial<AdminGlobalAlertBanner>) => {
     setGlobalAlertBanner((prev) => ({ ...prev, ...banner }));
     showToast("Global Alert & Red Notification Banner updated.");
+
+    try {
+      await fetch("/api/admin/alert-banner", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(banner),
+      });
+    } catch (err) {
+      console.error("Failed to update alert banner on server:", err);
+    }
   };
 
   // FAQ CRUD
-  const addFaq = (faq: Omit<AdminFaqItem, "id">) => {
+  const addFaq = async (faq: Omit<AdminFaqItem, "id">) => {
+    const tempId = `faq-${Date.now()}`;
     const newFaq: AdminFaqItem = {
       ...faq,
-      id: `faq-${Date.now()}`,
+      id: tempId,
     };
     setFaqs((prev) => [...prev, newFaq]);
     showToast("FAQ question created successfully.");
+
+    try {
+      const res = await fetch("/api/admin/faqs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newFaq),
+      });
+      const data = await res.json();
+      if (res.ok && data?.faq) {
+        setFaqs((prev) => prev.map((f) => (f.id === tempId ? data.faq : f)));
+      }
+    } catch (err) {
+      console.error("Failed to create FAQ on server:", err);
+    }
   };
 
-  const updateFaq = (id: string, faq: Partial<AdminFaqItem>) => {
+  const updateFaq = async (id: string, faq: Partial<AdminFaqItem>) => {
     setFaqs((prev) =>
       prev.map((f) => (f.id === id ? { ...f, ...faq } : f))
     );
     showToast("FAQ updated.");
+
+    try {
+      await fetch(`/api/admin/faqs/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(faq),
+      });
+    } catch (err) {
+      console.error("Failed to update FAQ on server:", err);
+    }
   };
 
-  const deleteFaq = (id: string) => {
+  const deleteFaq = async (id: string) => {
     setFaqs((prev) => prev.filter((f) => f.id !== id));
     showToast("FAQ removed.");
+
+    try {
+      await fetch(`/api/admin/faqs/${id}`, {
+        method: "DELETE",
+      });
+    } catch (err) {
+      console.error("Failed to delete FAQ on server:", err);
+    }
   };
 
   // Testimonial CRUD
-  const addTestimonial = (item: Omit<AdminTestimonialItem, "id">) => {
+  const addTestimonial = async (item: Omit<AdminTestimonialItem, "id">) => {
+    const tempId = `test-${Date.now()}`;
     const newTestimonial: AdminTestimonialItem = {
       ...item,
-      id: `test-${Date.now()}`,
+      id: tempId,
     };
     setTestimonials((prev) => [newTestimonial, ...prev]);
-    showToast(`Testimonial by "${newTestimonial.name}" created.`);
+    showToast(`Review by "${newTestimonial.name}" created.`);
+
+    try {
+      const res = await fetch("/api/admin/testimonials", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newTestimonial),
+      });
+      const data = await res.json();
+      if (res.ok && data?.testimonial) {
+        setTestimonials((prev) =>
+          prev.map((t) => (t.id === tempId ? data.testimonial : t))
+        );
+      }
+    } catch (err) {
+      console.error("Failed to create review on server:", err);
+    }
   };
 
-  const updateTestimonial = (id: string, item: Partial<AdminTestimonialItem>) => {
+  const updateTestimonial = async (id: string, item: Partial<AdminTestimonialItem>) => {
     setTestimonials((prev) =>
       prev.map((t) => (t.id === id ? { ...t, ...item } : t))
     );
-    showToast("Testimonial updated.");
+    showToast("Review updated.");
+
+    try {
+      await fetch(`/api/admin/testimonials/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(item),
+      });
+    } catch (err) {
+      console.error("Failed to update review on server:", err);
+    }
   };
 
-  const deleteTestimonial = (id: string) => {
+  const deleteTestimonial = async (id: string) => {
     setTestimonials((prev) => prev.filter((t) => t.id !== id));
-    showToast("Testimonial deleted.");
+    showToast("Review deleted.");
+
+    try {
+      await fetch(`/api/admin/testimonials/${id}`, {
+        method: "DELETE",
+      });
+    } catch (err) {
+      console.error("Failed to delete review on server:", err);
+    }
+  };
+
+  const updateTestimonialSettings = async (settings: Partial<AdminTestimonialSettings>) => {
+    setTestimonialSettings((prev) => {
+      const updated = { ...prev, ...settings };
+      try {
+        localStorage.setItem("sb_admin_testimonial_settings", JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
+
+    try {
+      const res = await fetch("/api/admin/testimonials/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(settings),
+      });
+      const data = await res.json();
+      if (res.ok && data?.settings) {
+        setTestimonialSettings(data.settings);
+        showToast(data.message || "Testimonial settings updated.");
+      }
+    } catch (err) {
+      console.error("Failed to update testimonial settings:", err);
+    }
+  };
+
+  const refreshTestimonials = async () => {
+    try {
+      const res = await fetch("/api/admin/testimonials");
+      const data = await res.json();
+      if (data?.success && Array.isArray(data.testimonials)) {
+        setTestimonials(data.testimonials);
+      }
+      const settingsRes = await fetch("/api/admin/testimonials/settings");
+      const settingsData = await settingsRes.json();
+      if (settingsData?.success && settingsData.settings) {
+        setTestimonialSettings(settingsData.settings);
+      }
+    } catch {}
   };
 
   // Gallery CRUD
-  const addGalleryItem = (item: Omit<AdminGalleryItem, "id">) => {
+  const addGalleryItem = async (item: Omit<AdminGalleryItem, "id">) => {
+    const tempId = `gal-${Date.now()}`;
     const newItem: AdminGalleryItem = {
       ...item,
-      id: `gal-${Date.now()}`,
+      id: tempId,
     };
     setGalleryItems((prev) => [...prev, newItem]);
     showToast(`Gallery photo "${newItem.title}" added.`);
+
+    try {
+      const res = await fetch("/api/admin/gallery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newItem),
+      });
+      const data = await res.json();
+      if (res.ok && data?.galleryItem) {
+        setGalleryItems((prev) =>
+          prev.map((g) => (g.id === tempId ? data.galleryItem : g))
+        );
+      }
+    } catch (err) {
+      console.error("Failed to create gallery item on server:", err);
+    }
   };
 
-  const updateGalleryItem = (id: string, item: Partial<AdminGalleryItem>) => {
+  const updateGalleryItem = async (id: string, item: Partial<AdminGalleryItem>) => {
     setGalleryItems((prev) =>
       prev.map((g) => (g.id === id ? { ...g, ...item } : g))
     );
     showToast("Gallery item updated.");
+
+    try {
+      await fetch(`/api/admin/gallery/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(item),
+      });
+    } catch (err) {
+      console.error("Failed to update gallery item on server:", err);
+    }
   };
 
-  const deleteGalleryItem = (id: string) => {
+  const deleteGalleryItem = async (id: string) => {
     setGalleryItems((prev) => prev.filter((g) => g.id !== id));
     showToast("Photo removed from gallery.");
+
+    try {
+      await fetch(`/api/admin/gallery/${id}`, {
+        method: "DELETE",
+      });
+    } catch (err) {
+      console.error("Failed to delete gallery item on server:", err);
+    }
   };
 
   return (
@@ -1052,6 +1363,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         globalAlertBanner,
         faqs,
         testimonials,
+        testimonialSettings,
         galleryItems,
         addPackage,
         updatePackage,
@@ -1088,6 +1400,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         addTestimonial,
         updateTestimonial,
         deleteTestimonial,
+        updateTestimonialSettings,
+        refreshTestimonials,
         addGalleryItem,
         updateGalleryItem,
         deleteGalleryItem,

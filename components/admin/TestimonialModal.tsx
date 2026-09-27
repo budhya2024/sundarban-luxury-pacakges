@@ -26,6 +26,7 @@ export function TestimonialModal({
   const [date, setDate] = useState("2026-09-10");
   const [featured, setFeatured] = useState(true);
   const [status, setStatus] = useState<AdminTestimonialItem["status"]>("Active");
+  const [source, setSource] = useState<"manual" | "google">("manual");
 
   useEffect(() => {
     if (initialTestimonial) {
@@ -38,6 +39,7 @@ export function TestimonialModal({
       setDate(initialTestimonial.date || "2026-09-10");
       setFeatured(!!initialTestimonial.featured);
       setStatus(initialTestimonial.status || "Active");
+      setSource(initialTestimonial.source || "manual");
     } else {
       setName("");
       setRole("Wildlife Enthusiast, Kolkata");
@@ -48,6 +50,7 @@ export function TestimonialModal({
       setDate(new Date().toISOString().split("T")[0]);
       setFeatured(true);
       setStatus("Active");
+      setSource("manual");
     }
   }, [initialTestimonial, isOpen]);
 
@@ -65,6 +68,7 @@ export function TestimonialModal({
       date: date || new Date().toISOString().split("T")[0],
       featured,
       status,
+      source,
     });
     onClose();
   };
@@ -126,21 +130,37 @@ export function TestimonialModal({
             </div>
           </div>
 
-          <div>
-            <label className="block font-bold text-slate-800 mb-1">
-              Rating (1 to 5 Stars)
-            </label>
-            <select
-              value={rating}
-              onChange={(e) => setRating(Number(e.target.value))}
-              className="w-full h-8 px-2.5 rounded border border-slate-300 bg-white text-slate-900 font-bold focus:outline-none focus:border-blue-600 text-xs"
-            >
-              <option value={5}>⭐⭐⭐⭐⭐ (5 Stars)</option>
-              <option value={4}>⭐⭐⭐⭐ (4 Stars)</option>
-              <option value={3}>⭐⭐⭐ (3 Stars)</option>
-              <option value={2}>⭐⭐ (2 Stars)</option>
-              <option value={1}>⭐ (1 Star)</option>
-            </select>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block font-bold text-slate-800 mb-1">
+                Rating (1 to 5 Stars)
+              </label>
+              <select
+                value={rating}
+                onChange={(e) => setRating(Number(e.target.value))}
+                className="w-full h-8 px-2.5 rounded border border-slate-300 bg-white text-slate-900 font-bold focus:outline-none focus:border-blue-600 text-xs"
+              >
+                <option value={5}>⭐⭐⭐⭐⭐ (5 Stars)</option>
+                <option value={4}>⭐⭐⭐⭐ (4 Stars)</option>
+                <option value={3}>⭐⭐⭐ (3 Stars)</option>
+                <option value={2}>⭐⭐ (2 Stars)</option>
+                <option value={1}>⭐ (1 Star)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block font-bold text-slate-800 mb-1">
+                Review Source / Platform
+              </label>
+              <select
+                value={source}
+                onChange={(e) => setSource(e.target.value as "manual" | "google")}
+                className="w-full h-8 px-2.5 rounded border border-slate-300 bg-white text-slate-900 font-bold focus:outline-none focus:border-blue-600 text-xs"
+              >
+                <option value="manual">📝 Manual Guest Review</option>
+                <option value="google">🌐 Verified Google Review</option>
+              </select>
+            </div>
           </div>
 
           <div>

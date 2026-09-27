@@ -1,15 +1,37 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { contactInquiries } from "@/db/schema";
+import { validateContactInquiry } from "@/lib/validation";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, email, phone, subject, message, source } = body;
+    const { name, email, phone, subject, message, source, honeypot } = body;
 
-    if (!name || !email || !phone || !message) {
+    // Bot honeypot detection
+    if (honeypot) {
       return NextResponse.json(
-        { error: "Name, email, phone, and message are required fields" },
+        { error: "Spam submission detected." },
+        { status: 400 }
+      );
+    }
+
+    // Comprehensive server-side validation
+    const validation = validateContactInquiry({
+      name,
+      email,
+      phone,
+      subject,
+      message,
+    });
+
+    if (!validation.isValid) {
+      const firstError = Object.values(validation.errors)[0] || "Please check the form inputs.";
+      return NextResponse.json(
+        {
+          error: firstError,
+          errors: validation.errors,
+        },
         { status: 400 }
       );
     }
@@ -18,9 +40,9 @@ export async function POST(req: NextRequest) {
       .insert(contactInquiries)
       .values({
         name: name.trim(),
-        email: email.trim(),
+        email: email.trim().toLowerCase(),
         phone: phone.trim(),
-        subject: subject ? subject.trim() : "General Inquiry",
+        subject: subject && subject.trim() ? subject.trim() : "Sundarban Luxury Inquiry",
         message: message.trim(),
         status: "New",
         source: source || "Contact Form",

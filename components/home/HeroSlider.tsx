@@ -5,8 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { HeroBookingBar } from "./HeroBookingBar";
 
+import { useAdmin } from "@/context/AdminContext";
+
 export function HeroSlider() {
+  const { pageContents } = useAdmin();
   const [smoothScroll, setSmoothScroll] = useState(0);
+
+  const homePage = pageContents.find((p) => p.pageKey === "home");
+  const heroBg =
+    homePage?.heroBackgroundImage || "/assets/images/tiger-photo.jpg";
 
   useEffect(() => {
     let targetScroll = window.scrollY;
@@ -63,7 +70,7 @@ export function HeroSlider() {
         }}
       >
         <Image
-          src="/assets/images/tiger-photo.jpg"
+          src={heroBg}
           alt="Sundarban Luxury Package"
           fill
           priority
