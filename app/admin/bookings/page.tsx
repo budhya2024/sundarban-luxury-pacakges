@@ -9,11 +9,13 @@ import {
 } from "lucide-react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { useAdmin } from "@/context/AdminContext";
+import { useConfirm } from "@/context/ConfirmContext";
 import { AdminBooking } from "@/lib/admin-data";
 import { BookingDetailModal } from "@/components/admin/BookingDetailModal";
 
 export default function AdminBookingsPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { confirmDelete } = useConfirm();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [selectedBooking, setSelectedBooking] = useState<AdminBooking | null>(null);
@@ -61,8 +63,8 @@ export default function AdminBookingsPage() {
     return pages;
   }, [safePage, totalPages]);
 
-  const handleDelete = (id: string, code: string) => {
-    if (confirm(`Are you sure you want to cancel & delete booking #${code}?`)) {
+  const handleDelete = async (id: string, code: string) => {
+    if (await confirmDelete(`Booking #${code}`, `Are you sure you want to cancel & delete booking #${code}?`)) {
       deleteBooking(id);
     }
   };

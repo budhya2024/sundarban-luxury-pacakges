@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useAdmin } from "@/context/AdminContext";
+import { useConfirm } from "@/context/ConfirmContext";
 import { AdminContactGeneralInfo } from "@/lib/admin-data";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import {
@@ -24,15 +25,6 @@ import {
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa6";
 
-const PRESET_HERO_BG_IMAGES = [
-  { name: "Mangrove Safari River", url: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80&w=2000" },
-  { name: "Royal Bengal Tiger", url: "/assets/images/royal-bengal-tiger.jpg" },
-  { name: "Boat Safari Delta", url: "/assets/images/boat-safari.jpg" },
-  { name: "Hotel Sonar Bangla", url: "/assets/images/sonarbanglahotel.jpg" },
-  { name: "Estuary Sunset", url: "/assets/images/estuary-sunset.jpg" },
-  { name: "Luxury Cruise", url: "/assets/images/cruises.jpg" },
-];
-
 interface InfoCardData {
   key: "call" | "email" | "visit" | "hours";
   title: string;
@@ -52,6 +44,7 @@ export default function AdminContactManagerPage() {
     pageContents,
     updatePageHero,
   } = useAdmin();
+  const { confirmDelete } = useConfirm();
 
   const contactPage = pageContents.find((p) => p.pageKey === "contact");
 
@@ -348,32 +341,6 @@ export default function AdminContactManagerPage() {
                         </span>
                       </div>
                     </div>
-
-                    <div>
-                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1.5">
-                        Or choose from preset backgrounds:
-                      </span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {PRESET_HERO_BG_IMAGES.map((preset) => (
-                          <button
-                            key={preset.url}
-                            type="button"
-                            onClick={() =>
-                              setHeroForm((prev) => ({
-                                ...prev,
-                                heroBackgroundImage: preset.url,
-                              }))
-                            }
-                            className={`px-2 py-1 rounded-[3px] text-[10px] font-bold border transition-colors ${heroForm.heroBackgroundImage === preset.url
-                                ? "bg-blue-600 text-white border-blue-600"
-                                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100"
-                              }`}
-                          >
-                            {preset.name}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -451,30 +418,32 @@ export default function AdminContactManagerPage() {
                 return (
                   <div
                     key={card.key}
-                    className={`rounded-xl p-5 border transition-all duration-200 flex flex-col justify-between ${isActive
-                        ? "bg-[#f9fbf9] border-[#e1e9e1] shadow-2xs"
+                    className={`rounded-[6px] p-4 border transition-all duration-200 flex flex-col justify-between ${
+                      isActive
+                        ? "bg-white border-slate-200 shadow-2xs hover:border-slate-300"
                         : "bg-slate-50/80 border-slate-200 opacity-60"
-                      }`}
+                    }`}
                   >
                     <div>
                       {/* Icon & Status Toggle Button */}
-                      <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center justify-between mb-3">
                         <div
-                          className={`w-11 h-11 rounded-xl flex items-center justify-center shadow-xs ${getCardIconBg(
+                          className={`w-9 h-9 rounded-[6px] flex items-center justify-center shadow-2xs ${getCardIconBg(
                             card.key
                           )}`}
                         >
                           {getCardIcon(card.key)}
                         </div>
 
-                        {/* Active / Inactive Button */}
+                        {/* Active / Inactive Badge Button */}
                         <button
                           type="button"
                           onClick={() => handleToggleCardStatus(card.key)}
-                          className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold tracking-wide uppercase transition-colors cursor-pointer border ${isActive
-                              ? "bg-emerald-100 text-emerald-800 border-emerald-300 hover:bg-emerald-200"
-                              : "bg-slate-200 text-slate-600 border-slate-300 hover:bg-slate-300"
-                            }`}
+                          className={`px-2 py-0.5 rounded-[4px] text-[10px] font-extrabold tracking-wider uppercase transition-colors cursor-pointer border ${
+                            isActive
+                              ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
+                              : "bg-slate-100 text-slate-500 border-slate-200 hover:bg-slate-200"
+                          }`}
                           title="Click to toggle Active / Inactive"
                         >
                           {card.status}
@@ -482,25 +451,25 @@ export default function AdminContactManagerPage() {
                       </div>
 
                       {/* Title & Subtitle */}
-                      <h4 className="text-sm font-extrabold text-slate-900 mb-1">
+                      <h4 className="text-sm font-bold text-slate-900 mb-0.5">
                         {card.title}
                       </h4>
                       <p className="text-xs text-slate-500 mb-3 line-clamp-2">
                         {card.subtitle}
                       </p>
 
-                      {/* Detail Text */}
-                      <div className="text-xs font-bold text-slate-800 break-words leading-relaxed font-mono bg-white p-2 rounded border border-slate-200/80 mb-4">
+                      {/* Detail Text Box */}
+                      <div className="text-[11px] font-semibold text-slate-800 break-all leading-snug bg-slate-50 p-2.5 rounded-[4px] border border-slate-200/80 mb-3">
                         {card.detail}
                       </div>
                     </div>
 
                     {/* Edit Card Button */}
-                    <div className="pt-2 border-t border-slate-200/80 flex items-center justify-end">
+                    <div className="pt-2.5 border-t border-slate-100 flex items-center justify-end">
                       <button
                         type="button"
                         onClick={() => setEditingCard({ ...card })}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[3px] text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-600 hover:text-white border border-blue-200 transition-colors shadow-2xs"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] text-xs font-bold text-slate-700 bg-white hover:bg-emerald-700 hover:text-white border border-slate-300 hover:border-emerald-700 transition-all duration-150 shadow-2xs"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                         <span>Edit Card</span>
@@ -517,30 +486,35 @@ export default function AdminContactManagerPage() {
         {/* 3. CLEAN CUSTOMER CONTACT ENQUIRIES & MESSAGES TABLE                      */}
         {/* ========================================================================= */}
         <div className="bg-white border border-slate-200 rounded-[4px] shadow-xs overflow-hidden">
-          <div className="px-5 py-4 bg-slate-50 border-b border-slate-200">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-blue-100 text-blue-800 rounded">
-                <Inbox className="w-4 h-4" />
+          <div className="px-5 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 bg-emerald-100 text-emerald-800 rounded-[4px]">
+                  <Inbox className="w-4 h-4" />
+                </div>
+                <h2 className="text-sm font-extrabold text-slate-900">
+                  Customer Contact Enquiries &amp; Messages
+                </h2>
               </div>
-              <h2 className="text-sm font-extrabold text-slate-900">
-                Customer Contact Enquiries &amp; Messages
-              </h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Direct messages submitted through the website contact form
+              </p>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Messages received directly through the website contact form
-            </p>
+            <span className="px-2.5 py-1 rounded-[4px] bg-slate-200/80 text-slate-700 text-xs font-bold">
+              Total: {inquiries.length}
+            </span>
           </div>
 
-          {/* Simple Clean Table */}
+          {/* Simple Clean Professional Table */}
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-slate-100/80 text-slate-700 font-bold border-b border-slate-200">
-                  <th className="py-3 px-3 w-16 whitespace-nowrap">Sl. No.</th>
+                <tr className="bg-slate-100/90 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider text-[11px]">
+                  <th className="py-3 px-3.5 w-16 whitespace-nowrap">Sl. No.</th>
                   <th className="py-3 px-3.5 whitespace-nowrap">Date</th>
                   <th className="py-3 px-4">Guest Name</th>
-                  <th className="py-3 px-4">Phone / WhatsApp</th>
-                  <th className="py-3 px-4">Email</th>
+                  <th className="py-3 px-4">Phone Number</th>
+                  <th className="py-3 px-4">Email Address</th>
                   <th className="py-3 px-4">Subject &amp; Message</th>
                   <th className="py-3 px-4 text-right w-24">Action</th>
                 </tr>
@@ -548,92 +522,71 @@ export default function AdminContactManagerPage() {
               <tbody className="divide-y divide-slate-100">
                 {inquiries.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="py-8 text-center text-slate-400">
+                    <td colSpan={7} className="py-10 text-center text-slate-400 font-medium">
                       No customer contact enquiries received yet.
                     </td>
                   </tr>
                 ) : (
                   inquiries.map((inq, index) => {
-                    const cleanPhone = inq.phone.replace(/[^0-9]/g, "");
-                    const waNum = cleanPhone.startsWith("91") ? cleanPhone : `91${cleanPhone}`;
                     return (
                       <tr key={inq.id} className="hover:bg-slate-50/80 transition-colors">
                         {/* Sl. No. */}
-                        <td className="py-3 px-3 whitespace-nowrap font-mono font-bold text-slate-800">
+                        <td className="py-3.5 px-3.5 whitespace-nowrap font-mono font-bold text-slate-500">
                           #{index + 1}
                         </td>
 
                         {/* Date */}
-                        <td className="py-3 px-3.5 whitespace-nowrap text-slate-600 font-mono text-[11px] font-semibold">
+                        <td className="py-3.5 px-3.5 whitespace-nowrap text-slate-600 font-mono text-[11px] font-semibold">
                           {inq.date || "Recent"}
                         </td>
 
                         {/* Guest Name */}
-                        <td className="py-3 px-4 font-extrabold text-slate-900 whitespace-nowrap">
+                        <td className="py-3.5 px-4 font-bold text-slate-900 whitespace-nowrap">
                           {inq.name}
                         </td>
 
-                        {/* Phone / WhatsApp */}
-                        <td className="py-3 px-4 whitespace-nowrap">
-                          <div className="font-mono text-slate-800 font-bold">
+                        {/* Phone Number (No Call / WhatsApp CTA) */}
+                        <td className="py-3.5 px-4 whitespace-nowrap">
+                          <span className="font-mono text-slate-800 font-semibold text-xs">
                             {inq.phone}
-                          </div>
-                          <div className="flex items-center gap-2 mt-1">
-                            <a
-                              href={`tel:${inq.phone}`}
-                              className="inline-flex items-center gap-1 text-[10px] font-bold text-blue-600 hover:underline"
-                            >
-                              <Phone className="w-2.5 h-2.5" /> Call
-                            </a>
-                            <span className="text-slate-300">•</span>
-                            <a
-                              href={`https://wa.me/${waNum}?text=${encodeURIComponent(
-                                `Hello ${inq.name}, regarding your Sundarban Luxury tour enquiry.`
-                              )}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 hover:underline"
-                            >
-                              <FaWhatsapp className="w-2.5 h-2.5" /> WhatsApp
-                            </a>
-                          </div>
+                          </span>
                         </td>
 
                         {/* Email */}
-                        <td className="py-3 px-4">
+                        <td className="py-3.5 px-4">
                           <a
                             href={`mailto:${inq.email}?subject=${encodeURIComponent(
                               `Re: ${inq.subject || "Sundarban Luxury Enquiry"}`
                             )}`}
-                            className="font-medium text-slate-700 hover:text-blue-600 hover:underline"
+                            className="font-medium text-slate-700 hover:text-emerald-700 hover:underline"
                           >
                             {inq.email}
                           </a>
                         </td>
 
                         {/* Subject & Message */}
-                        <td className="py-3 px-4">
+                        <td className="py-3.5 px-4">
                           <div className="font-bold text-slate-800 mb-0.5">
                             {inq.subject || "Sundarban Tour Query"}
                           </div>
-                          <p className="text-slate-600 text-[11px] leading-relaxed whitespace-pre-wrap">
+                          <p className="text-slate-600 text-[11px] leading-relaxed whitespace-pre-wrap max-w-md">
                             {inq.message}
                           </p>
                         </td>
 
                         {/* Action: Delete Button */}
-                        <td className="py-3 px-4 text-right whitespace-nowrap">
+                        <td className="py-3.5 px-4 text-right whitespace-nowrap">
                           <button
                             type="button"
-                            onClick={() => {
-                              if (confirm(`Are you sure you want to delete message from "${inq.name}"?`)) {
+                            onClick={async () => {
+                              if (await confirmDelete(`Message from "${inq.name}"`, `Are you sure you want to delete message from "${inq.name}"?`)) {
                                 deleteInquiry(inq.id);
                               }
                             }}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[3px] text-[11px] font-bold text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-600 border border-rose-200 transition-colors shadow-2xs"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[4px] text-[11px] font-bold text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-600 border border-rose-200 transition-colors shadow-2xs cursor-pointer"
                             title="Delete Message"
                           >
-                            <Trash2 className="w-3 h-3" />
+                            <Trash2 className="w-3.5 h-3.5" />
                             <span>Delete</span>
                           </button>
                         </td>

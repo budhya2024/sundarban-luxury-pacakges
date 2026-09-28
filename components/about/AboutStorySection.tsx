@@ -1,6 +1,4 @@
 "use client";
-
-import React from "react";
 import Image from "next/image";
 import { CheckCircle2, ShieldCheck, HeartHandshake } from "lucide-react";
 
@@ -13,18 +11,15 @@ export function AboutStorySection() {
           <div className="lg:col-span-6 relative">
             <div className="relative mx-auto max-w-lg lg:max-w-none">
               {/* Main Large Image */}
-              <div className="relative h-[340px] sm:h-[420px] rounded-sm overflow-hidden shadow-xl border-4 border-white">
+              <div className="relative h-auto">
                 <Image
-                  src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80&w=1000"
+                  src="/assets/images/about-hotel.png"
                   alt="Sundarban Luxury Boat Safari Vessel"
-                  fill
+                  width={600}
+                  height={600}
                   className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </div>
-
-
-
             </div>
           </div>
 
@@ -65,17 +60,6 @@ export function AboutStorySection() {
               ))}
             </div>
 
-            {/* Trust Badges */}
-            <div className="flex items-center gap-6 pt-4 border-t border-slate-100">
-              <div className="flex items-center gap-2 text-[#0f172a] font-bold text-sm">
-                <ShieldCheck className="w-5 h-5 text-[#064e3b]" />
-                <span>100% Certified Eco-Tour Operator</span>
-              </div>
-              <div className="flex items-center gap-2 text-[#0f172a] font-bold text-sm">
-                <HeartHandshake className="w-5 h-5 text-[#064e3b]" />
-                <span>Local Community Partner</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>

@@ -117,15 +117,14 @@ export default function GalleryPage() {
       <section className="relative bg-black text-white py-20 lg:py-28 overflow-hidden">
         {/* Background Image with Dark Black Overlay */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50 transition-all duration-700"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-700"
           style={{
             backgroundImage: `url('${heroBgImage}')`,
           }}
         />
 
-        {/* Deep Black Gradient Overlay Layer */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/50" />
-        <div className="absolute inset-0 bg-black/40" />
+        {/* Black 50% Overlay Layer */}
+        <div className="absolute inset-0 bg-black/50" />
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl">
           {/* Title */}

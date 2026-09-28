@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAdmin } from "@/context/AdminContext";
+import { useConfirm } from "@/context/ConfirmContext";
 import { BlogPost } from "@/lib/blog-data";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import {
@@ -22,6 +23,7 @@ import {
 export default function AdminBlogManagerPage() {
   const router = useRouter();
   const { blogPostsList, addBlogPost, updateBlogPost, deleteBlogPost, showToast } = useAdmin();
+  const { confirmDelete } = useConfirm();
 
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -337,8 +339,8 @@ export default function AdminBlogManagerPage() {
                           </Link>
 
                           <button
-                            onClick={() => {
-                              if (confirm(`Are you sure you want to delete "${post.title}"?`)) {
+                            onClick={async () => {
+                              if (await confirmDelete(post.title, `Are you sure you want to delete "${post.title}"?`)) {
                                 deleteBlogPost(post.slug);
                                 showToast(`Deleted "${post.title}"`);
                               }

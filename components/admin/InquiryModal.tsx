@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { AdminInquiry } from "@/lib/admin-data";
+import { useConfirm } from "@/context/ConfirmContext";
 import { X, Mail, Phone, Calendar, MessageSquare, Send, CheckCircle } from "lucide-react";
 
 interface InquiryModalProps {
@@ -19,6 +20,7 @@ export default function InquiryModal({
   onUpdateStatus,
   onConvertToBooking,
 }: InquiryModalProps) {
+  const { confirm } = useConfirm();
   const [activeTab, setActiveTab] = useState<"details" | "whatsapp">("details");
   const [customWhatsAppMsg, setCustomWhatsAppMsg] = useState("");
 
@@ -33,8 +35,17 @@ export default function InquiryModal({
     window.open(`https://wa.me/${formattedPhone}?text=${encodeURIComponent(textToSend)}`, "_blank");
   };
 
-  const handleConvert = () => {
-    if (confirm(`Convert inquiry from ${inquiry.name} into a confirmed booking record?`)) {
+  const handleConvert = async () => {
+    if (
+      await confirm({
+        title: "Convert to Booking",
+        itemName: `Inquiry from ${inquiry.name}`,
+        message: `Convert inquiry from ${inquiry.name} into a confirmed booking record?`,
+        confirmText: "Convert Now",
+        cancelText: "Cancel",
+        variant: "success",
+      })
+    ) {
       onConvertToBooking(inquiry.id);
       onClose();
     }

@@ -14,11 +14,13 @@ import {
 } from "lucide-react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { useAdmin } from "@/context/AdminContext";
+import { useConfirm } from "@/context/ConfirmContext";
 import { AdminMenuItem } from "@/lib/admin-data";
 import { DishModal } from "@/components/admin/DishModal";
 
 export default function AdminMenuPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { confirmDelete } = useConfirm();
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [modalOpen, setModalOpen] = useState(false);
@@ -61,8 +63,8 @@ export default function AdminMenuPage() {
     }
   };
 
-  const handleDelete = (id: string, name: string) => {
-    if (confirm(`Are you sure you want to remove "${name}" from the menu?`)) {
+  const handleDelete = async (id: string, name: string) => {
+    if (await confirmDelete(name, `Are you sure you want to remove "${name}" from the menu?`)) {
       deleteMenuItem(id);
     }
   };
@@ -167,18 +169,22 @@ export default function AdminMenuPage() {
 
                 <div className="flex items-center gap-1.5">
                   <button
+                    type="button"
                     onClick={() => handleOpenEdit(item)}
-                    className="p-1.5 rounded-[3px] text-slate-600 hover:text-blue-700 hover:bg-white transition-colors"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[3px] text-[11px] font-bold text-blue-600 hover:text-white bg-blue-50 hover:bg-blue-600 border border-blue-200 transition-colors shadow-2xs cursor-pointer"
                     title="Edit Dish"
                   >
-                    <Edit2 className="w-3.5 h-3.5" />
+                    <Edit2 className="w-3 h-3" />
+                    <span>Edit</span>
                   </button>
                   <button
+                    type="button"
                     onClick={() => handleDelete(item.id, item.name)}
-                    className="p-1.5 rounded-[3px] text-slate-400 hover:text-rose-600 hover:bg-white transition-colors"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[3px] text-[11px] font-bold text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-600 border border-rose-200 transition-colors shadow-2xs cursor-pointer"
                     title="Delete Dish"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Trash2 className="w-3 h-3" />
+                    <span>Delete</span>
                   </button>
                 </div>
               </div>

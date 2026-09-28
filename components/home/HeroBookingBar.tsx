@@ -179,7 +179,7 @@ export function HeroBookingBar() {
       };
       try {
         addBooking(localBooking);
-      } catch {}
+      } catch { }
 
       setConfirmedBooking({
         bookingCode: fallbackCode,
@@ -218,7 +218,7 @@ Hello, I have submitted a booking request on your website with reference *${conf
       <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 z-20 pointer-events-auto">
         <form
           onSubmit={handleSubmit}
-          className="bg-black/55 backdrop-blur-md p-2.5 sm:p-3.5 lg:p-4 rounded-xl border border-white/20 shadow-2xl"
+          className="p-1 sm:p-2 rounded-xl"
         >
           {errorMessage && (
             <div className="mb-2.5 p-2 rounded bg-rose-500/90 text-white text-xs font-semibold text-center">
@@ -226,9 +226,32 @@ Hello, I have submitted a booking request on your website with reference *${conf
             </div>
           )}
 
-          <div className="grid grid-cols-2 md:grid-cols-7 gap-1.5 sm:gap-2 lg:gap-2.5 items-center">
-            {/* 1. Select Tour Package */}
-            <div className="relative bg-white rounded-md overflow-hidden shadow-xs col-span-2 md:col-span-1">
+          <div className="grid grid-cols-2 lg:grid-cols-7 gap-1.5 sm:gap-2">
+            {/* Name */}
+            <div className="relative bg-white rounded-md overflow-hidden shadow-xs">
+              <input
+                type="text"
+                required
+                placeholder="Your Name *"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full h-11 sm:h-12 px-2 sm:px-2.5 text-slate-800 placeholder:text-slate-500 text-xs sm:text-[13px] font-medium bg-transparent outline-none focus:ring-2 focus:ring-[#f59e0b] transition-all"
+              />
+            </div>
+
+            {/* Email */}
+            <div className="relative bg-white rounded-md overflow-hidden shadow-xs">
+              <input
+                type="email"
+                placeholder="Email ID"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full h-11 sm:h-12 px-2 sm:px-2.5 text-slate-800 placeholder:text-slate-500 text-xs sm:text-[13px] font-medium bg-transparent outline-none focus:ring-2 focus:ring-[#f59e0b] transition-all"
+              />
+            </div>
+
+            {/* Select Tour Package */}
+            <div className="relative bg-white rounded-md overflow-hidden shadow-xs">
               <select
                 value={selectedPackage}
                 onChange={(e) => setSelectedPackage(e.target.value)}
@@ -250,31 +273,8 @@ Hello, I have submitted a booking request on your website with reference *${conf
               </div>
             </div>
 
-            {/* 2. Name */}
-            <div className="relative bg-white rounded-md overflow-hidden shadow-xs col-span-1">
-              <input
-                type="text"
-                required
-                placeholder="Your Name *"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full h-11 sm:h-12 px-2 sm:px-2.5 text-slate-800 placeholder:text-slate-500 text-xs sm:text-[13px] font-medium bg-transparent outline-none focus:ring-2 focus:ring-[#f59e0b] transition-all"
-              />
-            </div>
-
-            {/* 3. Email Address */}
-            <div className="relative bg-white rounded-md overflow-hidden shadow-xs col-span-1">
-              <input
-                type="email"
-                placeholder="Email ID"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full h-11 sm:h-12 px-2 sm:px-2.5 text-slate-800 placeholder:text-slate-500 text-xs sm:text-[13px] font-medium bg-transparent outline-none focus:ring-2 focus:ring-[#f59e0b] transition-all"
-              />
-            </div>
-
-            {/* 4. Phone Number */}
-            <div className="relative bg-white rounded-md overflow-hidden shadow-xs col-span-1">
+            {/* Phone Number */}
+            <div className="relative bg-white rounded-md overflow-hidden shadow-xs">
               <input
                 type="tel"
                 required
@@ -285,8 +285,8 @@ Hello, I have submitted a booking request on your website with reference *${conf
               />
             </div>
 
-            {/* 5. Number of Guests */}
-            <div className="relative bg-white rounded-md overflow-hidden shadow-xs col-span-1">
+            {/* Number of Guests */}
+            <div className="relative bg-white rounded-md overflow-hidden shadow-xs">
               <select
                 value={guests}
                 onChange={(e) => setGuests(e.target.value)}
@@ -307,10 +307,10 @@ Hello, I have submitted a booking request on your website with reference *${conf
               </div>
             </div>
 
-            {/* 6. Date */}
+            {/* Date */}
             <div
               onClick={handleDateClick}
-              className="relative bg-white rounded-md overflow-hidden shadow-xs flex items-center h-11 sm:h-12 px-2 sm:px-2.5 cursor-pointer group outline-none focus:outline-none col-span-1"
+              className="relative bg-white rounded-md overflow-hidden shadow-xs flex items-center h-11 sm:h-12 px-2 sm:px-2.5 cursor-pointer group"
             >
               <span
                 className={`text-xs sm:text-[13px] font-medium flex-1 truncate select-none ${
@@ -326,16 +326,16 @@ Hello, I have submitted a booking request on your website with reference *${conf
                 min={todayStr}
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 outline-none focus:outline-none"
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 outline-none"
                 aria-label="Select Date"
               />
             </div>
 
-            {/* 7. BOOK TRIP Button */}
+            {/* BOOK TRIP Button */}
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full h-11 sm:h-12 bg-[#f59e0b] hover:bg-[#d97706] disabled:bg-amber-300 text-slate-950 font-black text-xs sm:text-[13px] tracking-wider uppercase rounded-md shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer col-span-2 md:col-span-1"
+              className="col-span-2 lg:col-span-1 w-full h-11 sm:h-12 bg-[#f59e0b] hover:bg-[#d97706] disabled:bg-amber-300 text-slate-950 font-black text-xs sm:text-[13px] tracking-wider uppercase rounded-md shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap"
             >
               {isSubmitting ? (
                 <>

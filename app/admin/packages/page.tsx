@@ -28,11 +28,13 @@ import {
 import { useRouter } from "next/navigation";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { useAdmin } from "@/context/AdminContext";
+import { useConfirm } from "@/context/ConfirmContext";
 import { AdminTourPackage } from "@/lib/admin-data";
 import { PackageModal } from "@/components/admin/PackageModal";
 
 export default function AdminPackagesPage() {
   const router = useRouter();
+  const { confirmDelete } = useConfirm();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -97,8 +99,8 @@ export default function AdminPackagesPage() {
     }
   };
 
-  const handleDelete = (id: string, name: string) => {
-    if (confirm(`Are you sure you want to delete "${name}"? This action cannot be undone.`)) {
+  const handleDelete = async (id: string, name: string) => {
+    if (await confirmDelete(name, `Are you sure you want to delete "${name}"? This action cannot be undone.`)) {
       deletePackage(id);
     }
   };

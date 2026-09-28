@@ -17,11 +17,13 @@ import {
 } from "lucide-react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { useAdmin } from "@/context/AdminContext";
+import { useConfirm } from "@/context/ConfirmContext";
 import { AdminTestimonialItem } from "@/lib/admin-data";
 import { TestimonialModal } from "@/components/admin/TestimonialModal";
 
 export default function AdminTestimonialsPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { confirmDelete } = useConfirm();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [ratingFilter, setRatingFilter] = useState("All");
@@ -61,8 +63,8 @@ export default function AdminTestimonialsPage() {
     updateTestimonial(item.id, { featured: !item.featured });
   };
 
-  const handleDelete = (id: string, name: string) => {
-    if (confirm(`Are you sure you want to delete testimonial by "${name}"?`)) {
+  const handleDelete = async (id: string, name: string) => {
+    if (await confirmDelete(`Testimonial by "${name}"`, `Are you sure you want to delete testimonial by "${name}"?`)) {
       deleteTestimonial(id);
     }
   };

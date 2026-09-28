@@ -84,17 +84,17 @@ export function HotelHero() {
         controls={false}
         disablePictureInPicture
         disableRemotePlayback
-        poster="/assets/images/sonarbanglahotel.jpg"
+        poster="/assets/images/sonar-bangla-hotel-cottage.webp"
         onLoadedData={() => {
           if (videoRef.current) {
             videoRef.current.muted = true;
-            videoRef.current.play().catch(() => {});
+            videoRef.current.play().catch(() => { });
           }
         }}
         onCanPlay={() => {
           if (videoRef.current) {
             videoRef.current.muted = true;
-            videoRef.current.play().catch(() => {});
+            videoRef.current.play().catch(() => { });
           }
         }}
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"

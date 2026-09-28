@@ -624,3 +624,32 @@ video::-webkit-media-controls-mute-button {
 .animate-infinite-scroll:hover {
   animation-play-state: paused;
 }
+
+/* Floating Phone Ring Wiggle Animation */
+@keyframes phone-ring {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  10% {
+    transform: rotate(14deg) scale(1.1);
+  }
+  20% {
+    transform: rotate(-14deg) scale(1.1);
+  }
+  30% {
+    transform: rotate(14deg) scale(1.1);
+  }
+  40% {
+    transform: rotate(-14deg) scale(1.1);
+  }
+  50% {
+    transform: rotate(0deg) scale(1);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+.animate-phone-ring {
+  animation: phone-ring 2.5s ease-in-out infinite;
+}

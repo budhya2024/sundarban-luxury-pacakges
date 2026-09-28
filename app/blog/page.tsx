@@ -64,15 +64,14 @@ export default function BlogListPage() {
       <section className="relative bg-black text-white py-20 lg:py-28 overflow-hidden">
         {/* Background Image with Overlay */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: `url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=2000&q=80')`,
           }}
         />
 
-        {/* Deep Black Gradient Overlay Layer */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/50" />
-        <div className="absolute inset-0 bg-black/40" />
+        {/* Black 50% Overlay Layer */}
+        <div className="absolute inset-0 bg-black/50" />
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Hero Title */}

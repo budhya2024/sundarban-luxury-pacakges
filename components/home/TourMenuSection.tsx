@@ -5,11 +5,11 @@ import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { useAdmin } from "@/context/AdminContext";
-import { BookingModal } from "@/components/tour/BookingModal";
 
 // Import Swiper styles
 import "swiper/css";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 interface SpecialDish {
   id: string;
@@ -156,7 +156,7 @@ export function TourMenuSection() {
                 <div className="group relative flex flex-col justify-between h-full bg-white border border-border hover:border-secondary transition-all duration-300  overflow-hidden rounded-lg">
                   <div>
                     {/* Dish Image */}
-                    <div className="relative h-48 md:h-60 w-full overflow-hidden bg-slate-200">
+                    <div className="relative h-52 md:h-60 w-full overflow-hidden bg-slate-200">
                       <Image
                         src={dish.image}
                         alt={dish.name}
@@ -187,19 +187,7 @@ export function TourMenuSection() {
                       className="btn btn-secondary w-full !text-xs !py-2 font-bold  shadow-xs flex items-center justify-center gap-1.5"
                     >
                       <span>View all package</span>
-                      <svg
-                        className="w-3.5 h-3.5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M14 5l7 7m0 0l-7 7m7-7H3"
-                        />
-                      </svg>
+                      <ArrowRight size={16} />
                     </Link>
                   </div>
                 </div>

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useAdmin } from "@/context/AdminContext";
+import { useConfirm } from "@/context/ConfirmContext";
 import { AdminInquiry } from "@/lib/admin-data";
 import InquiryModal from "@/components/admin/InquiryModal";
 import { AdminHeader } from "@/components/admin/AdminHeader";
@@ -21,6 +22,7 @@ import {
 
 export default function AdminInquiriesPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { confirm, confirmDelete } = useConfirm();
   const { inquiries, addInquiry, updateInquiryStatus, deleteInquiry, convertInquiryToBooking, showToast } =
     useAdmin();
 
@@ -401,8 +403,17 @@ export default function AdminInquiriesPage() {
                         </button>
                         {inq.status !== "Converted" && (
                           <button
-                            onClick={() => {
-                              if (confirm(`Convert inquiry from ${inq.name} into a confirmed booking?`)) {
+                            onClick={async () => {
+                              if (
+                                await confirm({
+                                  title: "Convert to Booking",
+                                  itemName: `Inquiry from ${inq.name}`,
+                                  message: `Convert inquiry from ${inq.name} into a confirmed booking record?`,
+                                  confirmText: "Convert Now",
+                                  cancelText: "Cancel",
+                                  variant: "success",
+                                })
+                              ) {
                                 convertInquiryToBooking(inq.id);
                               }
                             }}
@@ -413,8 +424,8 @@ export default function AdminInquiriesPage() {
                           </button>
                         )}
                         <button
-                          onClick={() => {
-                            if (confirm(`Delete inquiry from ${inq.name}?`)) {
+                          onClick={async () => {
+                            if (await confirmDelete(`Inquiry from ${inq.name}`, `Are you sure you want to delete the inquiry from ${inq.name}?`)) {
                               deleteInquiry(inq.id);
                             }
                           }}

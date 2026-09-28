@@ -19,6 +19,7 @@ import {
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { ImageUploadDropzone } from "@/components/admin/ImageUploadDropzone";
 import { useAdmin } from "@/context/AdminContext";
+import { useConfirm } from "@/context/ConfirmContext";
 
 interface ResortPhoto {
   id: string;
@@ -217,6 +218,7 @@ export default function AdminHotelPage() {
 
 
   const { showToast, updateBookingStatus, deleteBooking, refreshBookings } = useAdmin();
+  const { confirmDelete } = useConfirm();
 
   // Synchronize live data from Neon backend
   useEffect(() => {
@@ -286,7 +288,7 @@ export default function AdminHotelPage() {
   };
 
   const handleDeletePhoto = async (id: string) => {
-    if (confirm("Are you sure you want to remove this photo?")) {
+    if (await confirmDelete("Resort Photo", "Are you sure you want to remove this photo?")) {
       setResortPhotos((prev) => prev.filter((p) => p.id !== id));
       try {
         const res = await fetch(`/api/admin/hotel/photos/${encodeURIComponent(id)}`, {
@@ -336,7 +338,7 @@ export default function AdminHotelPage() {
   };
 
   const handleDeleteInquiry = async (id: string, refId: string) => {
-    if (confirm(`Delete inquiry #${refId}?`)) {
+    if (await confirmDelete(`Inquiry #${refId}`, `Delete inquiry #${refId}?`)) {
       setHotelInquiries((prev) => prev.filter((inq) => inq.id !== id));
       // Immediately delete from unified bookings in context
       deleteBooking(`b-${id}`);

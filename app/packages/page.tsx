@@ -61,13 +61,12 @@ export default function PackagesPage() {
       {/* 1. Hero Banner with Dark Overlay & Breadcrumbs */}
       <div className="relative bg-black text-white py-16 sm:py-24 overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-45"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: `url('/assets/images/luxury-cruise.jpg')`,
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/50" />
-        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 bg-black/50" />
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
 

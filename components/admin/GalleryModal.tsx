@@ -138,41 +138,22 @@ export function GalleryModal({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="block font-bold text-slate-800 mb-1">
-                Category
-              </label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full h-9 px-2.5 rounded border border-slate-300 bg-white text-slate-900 font-bold focus:outline-none focus:border-blue-600"
-              >
-                <option value="Wildlife">Wildlife</option>
-                <option value="Boat Safari">Boat Safari</option>
-                <option value="Resort Stay">Resort Stay</option>
-                <option value="Watchtower">Watchtower</option>
-                <option value="Landscape">Landscape</option>
-                <option value="Cruises">Cruises</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block font-bold text-slate-800 mb-1">
-                5-Column Grid Position
-              </label>
-              <select
-                value={column}
-                onChange={(e) => setColumn(e.target.value as AdminGalleryItem["column"])}
-                className="w-full h-9 px-2.5 rounded border border-slate-300 bg-white text-slate-900 font-bold focus:outline-none focus:border-blue-600"
-              >
-                <option value="col1">Column 1 (Left Square)</option>
-                <option value="col2">Column 2 (Stacked Top/Bottom)</option>
-                <option value="col3">Column 3 (Center Featured Tall)</option>
-                <option value="col4">Column 4 (Stacked Top/Bottom)</option>
-                <option value="col5">Column 5 (Right Square)</option>
-              </select>
-            </div>
+          <div>
+            <label className="block font-bold text-slate-800 mb-1">
+              Category
+            </label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full h-9 px-2.5 rounded border border-slate-300 bg-white text-slate-900 font-bold focus:outline-none focus:border-blue-600"
+            >
+              <option value="Wildlife">Wildlife</option>
+              <option value="Boat Safari">Boat Safari</option>
+              <option value="Resort Stay">Resort Stay</option>
+              <option value="Watchtower">Watchtower</option>
+              <option value="Landscape">Landscape</option>
+              <option value="Cruises">Cruises</option>
+            </select>
           </div>
 
           <div className="flex items-center justify-between pt-3 border-t border-slate-100">

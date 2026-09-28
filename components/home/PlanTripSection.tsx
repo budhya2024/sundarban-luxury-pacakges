@@ -81,7 +81,7 @@ export function PlanTripSection() {
     <section className="py-8 md:py-16 relative overflow-hidden " >
       <div className="container">
         {/* Top Split Section: Organic Image Collage + Story */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-6 md:mb-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-10 lg:gap-14 items-center mb-6 md:mb-10">
           {/* Left Column: Clean Single Image Box */}
           <div className="lg:col-span-6 flex items-center justify-center lg:justify-start">
             <div className="relative">

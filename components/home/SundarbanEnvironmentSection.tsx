@@ -58,9 +58,9 @@ const seasons: SeasonData[] = [
       "Winter is the ideal time to explore the Sundarbans. Crisp morning mists clear into bright sunny days, and wildlife frequently sunbathes along riverbanks during low tide.",
     image: "/assets/images/winter.jpg",
     gallery: [
-      { src: "/assets/images/royal-bengal-tiger.jpg", title: "Bengal Tiger" },
+      { src: "/assets/images/royel-bengal-tiger.webp", title: "Bengal Tiger" },
       { src: "/assets/images/spotted-deer.jpg", title: "Spotted Deer" },
-      { src: "/assets/images/boat-safari.jpg", title: "Winter Safari" },
+      { src: "/assets/images/sundarbantourphoto.jpeg", title: "Winter Safari" },
     ],
     keyFauna: [
       "Royal Bengal Tiger Basking",
@@ -88,9 +88,9 @@ const seasons: SeasonData[] = [
       "During summer, wildlife gathers around fresh-water ponds inside watchtowers like Sudhanyakhali and Dobanki, making it a rewarding season for dedicated wildlife enthusiasts.",
     image: "/assets/images/summer.jpg",
     gallery: [
-      { src: "/assets/images/watchtower-view.jpg", title: "Watchtower View" },
+      { src: "/assets/images/Sudhanyakhali-Watch-Tower.jpeg", title: "Watchtower View" },
       { src: "/assets/images/tiger-photo.jpg", title: "Tiger at Waterhole" },
-      { src: "/assets/images/cruises.jpg", title: "River Channel" },
+      { src: "/assets/images/mangrove.jpeg", title: "River Channel" },
     ],
     keyFauna: [
       "Tigers at Sweet-Water Ponds",
@@ -119,8 +119,8 @@ const seasons: SeasonData[] = [
     image: "/assets/images/monsoon-sundarban.jpeg",
     gallery: [
       { src: "/assets/images/estuary-sunset.jpg", title: "Estuary Sunset" },
-      { src: "/assets/images/boat-safari.jpg", title: "Misty Waterways" },
-      { src: "/assets/images/resort-deck.jpg", title: "Emerald Mangroves" },
+      { src: "/assets/images/sundarban-tiger.jpeg", title: "Misty Waterways" },
+      { src: "/assets/images/sundarban-mangrove-forest.jpg", title: "Emerald Mangroves" },
     ],
     keyFauna: [
       "Breeding Water Birds",

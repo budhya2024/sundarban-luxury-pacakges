@@ -11,11 +11,13 @@ import {
 } from "lucide-react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { useAdmin } from "@/context/AdminContext";
+import { useConfirm } from "@/context/ConfirmContext";
 import { AdminFaqItem } from "@/lib/admin-data";
 import { FaqModal } from "@/components/admin/FaqModal";
 
 export default function AdminFaqPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { confirmDelete } = useConfirm();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [modalOpen, setModalOpen] = useState(false);
@@ -48,8 +50,8 @@ export default function AdminFaqPage() {
     updateFaq(faq.id, { status: next });
   };
 
-  const handleDelete = (id: string, question: string) => {
-    if (confirm(`Are you sure you want to delete this FAQ: "${question}"?`)) {
+  const handleDelete = async (id: string, question: string) => {
+    if (await confirmDelete(`FAQ Question`, `Are you sure you want to delete this FAQ: "${question}"?`)) {
       deleteFaq(id);
     }
   };

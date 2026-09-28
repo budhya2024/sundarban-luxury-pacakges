@@ -17,11 +17,13 @@ import {
 } from "lucide-react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { useAdmin } from "@/context/AdminContext";
+import { useConfirm } from "@/context/ConfirmContext";
 import { AdminGalleryItem } from "@/lib/admin-data";
 import { GalleryModal } from "@/components/admin/GalleryModal";
 
 export default function AdminGalleryPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { confirmDelete } = useConfirm();
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [columnFilter, setColumnFilter] = useState("All");
@@ -57,11 +59,9 @@ export default function AdminGalleryPage() {
       item.alt.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory =
       categoryFilter === "All" || item.category === categoryFilter;
-    const matchesColumn =
-      columnFilter === "All" || item.column === columnFilter;
     const matchesStatus =
       statusFilter === "All" || item.status === statusFilter;
-    return matchesSearch && matchesCategory && matchesColumn && matchesStatus;
+    return matchesSearch && matchesCategory && matchesStatus;
   });
 
   const handleOpenCreate = () => {
@@ -79,8 +79,8 @@ export default function AdminGalleryPage() {
     updateGalleryItem(item.id, { status: next });
   };
 
-  const handleDelete = (id: string, title: string) => {
-    if (confirm(`Are you sure you want to remove photo "${title}" from the gallery?`)) {
+  const handleDelete = async (id: string, title: string) => {
+    if (await confirmDelete(`Photo "${title}"`, `Are you sure you want to remove photo "${title}" from the gallery?`)) {
       deleteGalleryItem(id);
     }
   };
@@ -101,12 +101,12 @@ export default function AdminGalleryPage() {
       <AdminHeader
         onOpenMobile={() => setIsMobileOpen(true)}
         title="Photo Gallery Manager"
-        subtitle="Manage gallery images, titles, locations, and 5-column layout positions on the homepage"
+        subtitle="Manage gallery images, titles, locations, and categories for the website gallery"
       />
 
       <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6">
         {/* Top Metric Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4 max-w-xl">
           <div className="bg-white border border-slate-200 rounded p-4 shadow-2xs flex items-center justify-between">
             <div>
               <span className="text-[11px] font-bold uppercase text-slate-500 block">
@@ -132,20 +132,6 @@ export default function AdminGalleryPage() {
             </div>
             <div className="w-10 h-10 rounded bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
               <CheckCircle className="w-5 h-5" />
-            </div>
-          </div>
-
-          <div className="bg-white border border-slate-200 rounded p-4 shadow-2xs flex items-center justify-between col-span-2 sm:col-span-1">
-            <div>
-              <span className="text-[11px] font-bold uppercase text-slate-500 block">
-                Grid Columns
-              </span>
-              <span className="text-2xl font-black text-blue-600 mt-1 block">
-                5 Columns
-              </span>
-            </div>
-            <div className="w-10 h-10 rounded bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
-              <Layers className="w-5 h-5" />
             </div>
           </div>
         </div>
@@ -175,21 +161,6 @@ export default function AdminGalleryPage() {
                 {categories.map((c) => (
                   <option key={c} value={c}>
                     {c}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex items-center gap-1 bg-slate-50 px-2 py-1 rounded border border-slate-200 text-xs font-bold text-slate-600">
-              <span>Column:</span>
-              <select
-                value={columnFilter}
-                onChange={(e) => setColumnFilter(e.target.value)}
-                className="bg-transparent border-0 text-slate-900 font-bold focus:outline-none cursor-pointer text-xs"
-              >
-                {columns.map((col) => (
-                  <option key={col.value} value={col.value}>
-                    {col.label}
                   </option>
                 ))}
               </select>
@@ -249,9 +220,6 @@ export default function AdminGalleryPage() {
 
                     {/* Badge */}
                     <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-                      <span className="px-2 py-0.5 rounded bg-slate-900/90 text-white font-bold text-[10px] uppercase">
-                        {item.column.toUpperCase()}
-                      </span>
                       {item.category && (
                         <span className="px-2 py-0.5 rounded bg-amber-600 text-white font-bold text-[10px] uppercase">
                           {item.category}
