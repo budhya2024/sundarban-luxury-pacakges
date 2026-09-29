@@ -84,7 +84,7 @@ export function ContactFormSection() {
           });
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   // Real-time Field Validation Handlers
@@ -187,7 +187,7 @@ export function ContactFormSection() {
       } else {
         setErrorMessage(
           result?.error ||
-            "Unable to submit inquiry. Please check your inputs or reach our helpline."
+          "Unable to submit inquiry. Please check your inputs or reach our helpline."
         );
       }
     } catch (err) {
@@ -265,12 +265,9 @@ export function ContactFormSection() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   {/* Full Name */}
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-[#0f172a] mb-1.5 flex items-center justify-between">
-                      <span className="flex items-center gap-1.5">
-                        <User className="w-3.5 h-3.5 text-slate-500" />
-                        <span>Full Name</span>
-                        <span className="text-[#d97706]">*</span>
-                      </span>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#0f172a] mb-1.5">
+                      <span>Full Name</span>
+                      <span className="text-[#d97706] ml-1">*</span>
                     </label>
                     <div className="relative">
                       <input
@@ -279,13 +276,12 @@ export function ContactFormSection() {
                         value={formData.fullName}
                         onChange={(e) => handleChange("fullName", e.target.value)}
                         onBlur={() => handleBlur("fullName")}
-                        className={`w-full rounded-sm border px-4 py-3 text-sm text-slate-800 placeholder-slate-400 outline-none transition-all ${
-                          touched.fullName && errors.fullName
-                            ? "border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-2 focus:ring-rose-200"
-                            : touched.fullName && !errors.fullName && formData.fullName.trim()
+                        className={`w-full rounded-sm border px-4 py-3 text-sm text-slate-800 placeholder-slate-400 outline-none transition-all ${touched.fullName && errors.fullName
+                          ? "border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-2 focus:ring-rose-200"
+                          : touched.fullName && !errors.fullName && formData.fullName.trim()
                             ? "border-emerald-400 bg-emerald-50/10 focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/20"
                             : "border-slate-200 bg-white focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/20"
-                        }`}
+                          }`}
                       />
                       {touched.fullName && !errors.fullName && formData.fullName.trim().length >= 2 && (
                         <div className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-600">
@@ -303,12 +299,9 @@ export function ContactFormSection() {
 
                   {/* Email Address */}
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-[#0f172a] mb-1.5 flex items-center justify-between">
-                      <span className="flex items-center gap-1.5">
-                        <Mail className="w-3.5 h-3.5 text-slate-500" />
-                        <span>Email Address</span>
-                        <span className="text-[#d97706]">*</span>
-                      </span>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#0f172a] mb-1.5">
+                      <span>Email Address</span>
+                      <span className="text-[#d97706] ml-1">*</span>
                     </label>
                     <div className="relative">
                       <input
@@ -317,13 +310,12 @@ export function ContactFormSection() {
                         value={formData.email}
                         onChange={(e) => handleChange("email", e.target.value)}
                         onBlur={() => handleBlur("email")}
-                        className={`w-full rounded-sm border px-4 py-3 text-sm text-slate-800 placeholder-slate-400 outline-none transition-all ${
-                          touched.email && errors.email
-                            ? "border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-2 focus:ring-rose-200"
-                            : touched.email && !errors.email && formData.email.trim()
+                        className={`w-full rounded-sm border px-4 py-3 text-sm text-slate-800 placeholder-slate-400 outline-none transition-all ${touched.email && errors.email
+                          ? "border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-2 focus:ring-rose-200"
+                          : touched.email && !errors.email && formData.email.trim()
                             ? "border-emerald-400 bg-emerald-50/10 focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/20"
                             : "border-slate-200 bg-white focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/20"
-                        }`}
+                          }`}
                       />
                       {touched.email && !errors.email && formData.email.includes("@") && (
                         <div className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-600">
@@ -343,12 +335,9 @@ export function ContactFormSection() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   {/* Phone / WhatsApp */}
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-[#0f172a] mb-1.5 flex items-center justify-between">
-                      <span className="flex items-center gap-1.5">
-                        <Phone className="w-3.5 h-3.5 text-slate-500" />
-                        <span>Phone / WhatsApp</span>
-                        <span className="text-[#d97706]">*</span>
-                      </span>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#0f172a] mb-1.5">
+                      <span>Phone / WhatsApp</span>
+                      <span className="text-[#d97706] ml-1">*</span>
                     </label>
                     <div className="relative">
                       <input
@@ -357,13 +346,12 @@ export function ContactFormSection() {
                         value={formData.phone}
                         onChange={(e) => handleChange("phone", e.target.value)}
                         onBlur={() => handleBlur("phone")}
-                        className={`w-full rounded-sm border px-4 py-3 text-sm text-slate-800 placeholder-slate-400 outline-none transition-all ${
-                          touched.phone && errors.phone
-                            ? "border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-2 focus:ring-rose-200"
-                            : touched.phone && !errors.phone && formData.phone.trim().length >= 10
+                        className={`w-full rounded-sm border px-4 py-3 text-sm text-slate-800 placeholder-slate-400 outline-none transition-all ${touched.phone && errors.phone
+                          ? "border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-2 focus:ring-rose-200"
+                          : touched.phone && !errors.phone && formData.phone.trim().length >= 10
                             ? "border-emerald-400 bg-emerald-50/10 focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/20"
                             : "border-slate-200 bg-white focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/20"
-                        }`}
+                          }`}
                       />
                       {touched.phone && !errors.phone && formData.phone.trim().length >= 10 && (
                         <div className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-600">
@@ -383,39 +371,24 @@ export function ContactFormSection() {
                     )}
                   </div>
 
-                  {/* Subject Dropdown / Preset */}
+                  {/* Subject Input Field (No Dropdown) */}
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-[#0f172a] mb-1.5 flex items-center justify-between">
-                      <span className="flex items-center gap-1.5">
-                        <HelpCircle className="w-3.5 h-3.5 text-slate-500" />
-                        <span>Inquiry Type / Subject</span>
-                      </span>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#0f172a] mb-1.5">
+                      <span>Subject / Topic</span>
                     </label>
-                    <select
+                    <input
+                      type="text"
+                      placeholder="e.g. 2N/3D Safari Booking Inquiry"
                       value={formData.subject}
                       onChange={(e) => handleChange("subject", e.target.value)}
                       onBlur={() => handleBlur("subject")}
-                      className="w-full rounded-sm border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-800 outline-none focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/20 transition-all cursor-pointer"
-                    >
-                      <option value="2N/3D Tiger Trail Safari Inquiry">
-                        2N/3D Tiger Trail Luxury Cruise
-                      </option>
-                      <option value="1N/2D Mangrove Explorer Cruise">
-                        1N/2D Mangrove Explorer Cruise
-                      </option>
-                      <option value="Hotel Sonar Bangla Resort Stay Booking">
-                        Hotel Sonar Bangla 5-Star Resort Stay
-                      </option>
-                      <option value="Private Houseboat Charter Request">
-                        Private Luxury Houseboat Charter
-                      </option>
-                      <option value="Corporate / Group Tour Package">
-                        Custom Corporate / Family Group Tour
-                      </option>
-                      <option value="General Travel Inquiry">
-                        General Travel Inquiry / Other
-                      </option>
-                    </select>
+                      className={`w-full rounded-sm border px-4 py-3 text-sm text-slate-800 placeholder-slate-400 outline-none transition-all ${touched.subject && errors.subject
+                        ? "border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-2 focus:ring-rose-200"
+                        : touched.subject && !errors.subject && formData.subject.trim()
+                          ? "border-emerald-400 bg-emerald-50/10 focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/20"
+                          : "border-slate-200 bg-white focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/20"
+                        }`}
+                    />
                     {touched.subject && errors.subject && (
                       <p className="mt-1.5 text-xs text-rose-600 font-medium flex items-center gap-1 animate-in fade-in slide-in-from-top-1">
                         <AlertCircle className="w-3.5 h-3.5 shrink-0" />
@@ -428,19 +401,17 @@ export function ContactFormSection() {
                 {/* Message Field with Character Counter */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-bold uppercase tracking-wider text-[#0f172a] flex items-center gap-1.5">
-                      <MessageSquare className="w-3.5 h-3.5 text-slate-500" />
+                    <label className="text-xs font-bold uppercase tracking-wider text-[#0f172a]">
                       <span>Your Message / Requirements</span>
-                      <span className="text-[#d97706]">*</span>
+                      <span className="text-[#d97706] ml-1">*</span>
                     </label>
                     <span
-                      className={`text-[11px] font-mono ${
-                        formData.message.trim().length > 2000
-                          ? "text-rose-600 font-bold"
-                          : formData.message.trim().length >= 10
+                      className={`text-[11px] font-mono ${formData.message.trim().length > 2000
+                        ? "text-rose-600 font-bold"
+                        : formData.message.trim().length >= 10
                           ? "text-slate-500"
                           : "text-slate-400"
-                      }`}
+                        }`}
                     >
                       {formData.message.trim().length} / 2000 chars (min. 10)
                     </span>
@@ -452,13 +423,12 @@ export function ContactFormSection() {
                       value={formData.message}
                       onChange={(e) => handleChange("message", e.target.value)}
                       onBlur={() => handleBlur("message")}
-                      className={`w-full rounded-sm border px-4 py-3 text-sm text-slate-800 placeholder-slate-400 outline-none transition-all resize-none ${
-                        touched.message && errors.message
-                          ? "border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-2 focus:ring-rose-200"
-                          : touched.message && !errors.message && formData.message.trim().length >= 10
+                      className={`w-full rounded-sm border px-4 py-3 text-sm text-slate-800 placeholder-slate-400 outline-none transition-all resize-none ${touched.message && errors.message
+                        ? "border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-2 focus:ring-rose-200"
+                        : touched.message && !errors.message && formData.message.trim().length >= 10
                           ? "border-emerald-400 bg-emerald-50/10 focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/20"
                           : "border-slate-200 bg-white focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/20"
-                      }`}
+                        }`}
                     />
                   </div>
                   {touched.message && errors.message && (

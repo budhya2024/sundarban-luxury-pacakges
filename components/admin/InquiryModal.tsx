@@ -149,10 +149,22 @@ export default function InquiryModal({
                 </div>
                 <div>
                   <span className="text-slate-500 font-semibold block uppercase tracking-wider text-[10px]">
-                    Lead Date & Channel
+                    Lead Date, Time &amp; Channel
                   </span>
-                  <span className="font-bold text-slate-900 block mt-0.5">
-                    {inquiry.date} • {inquiry.source}
+                  <span className="font-bold text-slate-900 block mt-0.5 font-mono text-[11px]">
+                    {(() => {
+                      const target = (inquiry as any).createdAt || inquiry.date;
+                      if (!target) return "Recent • " + (inquiry.source || "Contact Form");
+                      try {
+                        const d = new Date(target);
+                        if (!isNaN(d.getTime())) {
+                          const datePart = d.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+                          const timePart = d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+                          return `${datePart}, ${timePart} • ${inquiry.source || "Contact Form"}`;
+                        }
+                      } catch {}
+                      return `${inquiry.date} • ${inquiry.source || "Contact Form"}`;
+                    })()}
                   </span>
                 </div>
               </div>

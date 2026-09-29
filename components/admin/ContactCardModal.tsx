@@ -170,7 +170,7 @@ export default function ContactCardModal({
             </label>
             <input
               type="text"
-              placeholder="e.g. +919830012345 or info@sundarbanluxury.com"
+              placeholder="e.g. +919830012345 or sundarbanluxurypackage@gmail.com"
               value={formData.actionValue}
               onChange={(e) => setFormData({ ...formData, actionValue: e.target.value })}
               className="w-full px-3 py-2 text-sm border border-slate-300 rounded-[3px] focus:outline-hidden focus:border-blue-600 font-mono text-xs"
@@ -184,7 +184,7 @@ export default function ContactCardModal({
             <textarea
               required
               rows={4}
-              placeholder={"Park Street, Kolkata - 700016\nPhone: +91 98300 12345\nEmail: kolkata@sundarbanluxury.com\nHours: 9 AM - 9 PM"}
+              placeholder={"Park Street, Kolkata - 700016\nPhone: +91 98300 12345\nEmail: sundarbanluxurypackage@gmail.com\nHours: 9 AM - 9 PM"}
               value={formData.details}
               onChange={(e) => setFormData({ ...formData, details: e.target.value })}
               className="w-full px-3 py-2 text-sm border border-slate-300 rounded-[3px] focus:outline-hidden focus:border-blue-600 font-mono text-xs leading-relaxed"

@@ -51,7 +51,7 @@ export function AdminSidebar({
       {/* Brand Header */}
       <div className="px-5 py-5 border-b border-slate-800/80 flex items-center justify-between">
         <Link href="/admin" className="flex items-center gap-3.5 group">
-          <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center font-black text-white text-sm shadow-md group-hover:bg-blue-500 transition-colors">
+          <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center font-black text-white text-sm shadow-md group-hover:bg-blue-500 transition-colors">
             SL
           </div>
           <div>

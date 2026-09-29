@@ -20,6 +20,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa6";
+import { BookingConfirmationCard } from "@/components/ui/BookingConfirmationCard";
 
 export interface TourPackageOption {
   id: string;
@@ -236,40 +237,24 @@ export function HotelBokingForm() {
           </div>
 
           {isSubmitted ? (
-            <div className="py-12 px-4 text-center">
-              <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-300 flex items-center justify-center text-primary mx-auto mb-4">
-                <CheckCircle2 className="w-10 h-10" />
-              </div>
-              <h4 className="text-2xl sm:text-3xl font-black text-foreground mb-2">
-                Reservation Request Submitted!
-              </h4>
-              {bookingRefId && (
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-mono font-bold mb-3">
-                  <span>Booking Reference:</span>
-                  <span className="text-primary font-black">#{bookingRefId}</span>
-                </div>
-              )}
-              <p className="text-slate-600 text-sm sm:text-base max-w-lg mx-auto mb-6 leading-relaxed">
-                Thank you, <strong className="text-foreground">{guestName}</strong>. Your reservation details have been received and a confirmation receipt has been emailed to <strong className="text-foreground">{guestEmail}</strong>. Our luxury safari manager will reach out at{" "}
-                <strong className="text-foreground">{guestPhone}</strong> within 15 minutes.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <a
-                  href={generateWhatsAppUrl()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 md:py-2.5 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-base md:text-sm shadow transition-all cursor-pointer"
-                >
-                  <FaWhatsapp className="w-4 h-4" />
-                  <span>Connect On WhatsApp Instantly</span>
-                </a>
-                <button
-                  onClick={() => setIsSubmitted(false)}
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 md:py-2.5 rounded-lg border border-slate-300 text-slate-700 font-semibold text-base md:text-sm hover:bg-slate-50 transition-colors cursor-pointer"
-                >
-                  Edit Booking Details
-                </button>
-              </div>
+            <div className="py-8 px-4 flex justify-center">
+              <BookingConfirmationCard
+                details={{
+                  hotelOrPackageName: `Hotel Sonar Bangla (${selectedPackage.name})`,
+                  checkInDate: travelDate,
+                  guests: `${adults} Adults${children > 0 ? `, ${children} Children` : ""}`,
+                  bookingId: bookingRefId || undefined,
+                  roomNo: selectedRoomId ? selectedRoomId.toUpperCase() : "B215",
+                  guestEmail: guestEmail,
+                  guestName: guestName,
+                  guestPhone: guestPhone,
+                  whatsAppUrl: generateWhatsAppUrl(),
+                }}
+                onViewBooking={() => setIsSubmitted(false)}
+                onBackToHome={() => setIsSubmitted(false)}
+                primaryActionText="View Booking"
+                secondaryActionText="Back to Form"
+              />
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-8">

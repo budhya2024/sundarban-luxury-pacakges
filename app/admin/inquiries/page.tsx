@@ -16,9 +16,49 @@ import {
   Mail,
   Calendar,
   CheckCircle,
-  Send,
   Trash2,
 } from "lucide-react";
+
+function formatExactDateTime(dateStr?: string, createdAtStr?: string): string {
+  const target = createdAtStr || dateStr;
+  if (!target) {
+    const now = new Date();
+    return (
+      now.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }) +
+      ", " +
+      now.toLocaleTimeString("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      })
+    );
+  }
+
+  try {
+    const d = new Date(target);
+    if (!isNaN(d.getTime())) {
+      const datePart = d.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+      const timePart = d.toLocaleTimeString("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+      return `${datePart}, ${timePart}`;
+    }
+  } catch {
+    // fallback
+  }
+
+  return target;
+}
 
 export default function AdminInquiriesPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -331,7 +371,7 @@ export default function AdminInquiriesPage() {
               <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-600 uppercase tracking-wider">
                 <th className="py-3 px-4">Customer Details</th>
                 <th className="py-3 px-4">Inquiry Subject</th>
-                <th className="py-3 px-4">Date</th>
+                <th className="py-3 px-4 whitespace-nowrap">Exact Date &amp; Time</th>
                 <th className="py-3 px-4">Channel</th>
                 <th className="py-3 px-4">Status</th>
                 <th className="py-3 px-4 text-right">Actions</th>
@@ -370,8 +410,10 @@ export default function AdminInquiriesPage() {
                         </div>
                       )}
                     </td>
-                    <td className="py-3 px-4">
-                      <div className="text-slate-800 font-medium">{inq.date}</div>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <div className="text-slate-800 font-mono font-bold text-[11px]">
+                        {formatExactDateTime(inq.date, (inq as any).createdAt)}
+                      </div>
                     </td>
                     <td className="py-3 px-4">
                       <span className="text-[11px] font-mono px-2 py-0.5 bg-slate-100 text-slate-700 rounded-[2px] border border-slate-200">

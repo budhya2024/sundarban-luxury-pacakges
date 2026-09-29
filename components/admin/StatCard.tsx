@@ -31,19 +31,15 @@ export function StatCard({
           <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
             {title}
           </span>
-          <h3 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1 tracking-tight">
+          <h3 className="text-xl md:text-2xl font-black text-slate-900 mt-1 tracking-tight">
             {value}
           </h3>
         </div>
 
-        <div
-          className={`w-10 h-10 rounded-[4px] ${iconBg} ${iconColor} flex items-center justify-center flex-shrink-0 border border-slate-100`}
-        >
-          <Icon className="w-5 h-5" />
-        </div>
+
       </div>
 
-      <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+      <div className="mt-3.5 pt-3 border-t border-slate-100 flex  flex-wrap items-center justify-between text-xs">
         {change && (
           <div
             className={`flex items-center gap-1 font-bold ${isPositive ? "text-blue-600" : "text-rose-600"

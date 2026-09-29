@@ -168,6 +168,7 @@ export default function AdminBookingsPage() {
               <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase text-[10px] tracking-wider">
                 <tr>
                   <th className="py-3 px-4 whitespace-nowrap">Sl. No.</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Booking ID</th>
                   <th className="py-3 px-4">Guest Details</th>
                   <th className="py-3 px-4">Selected Package</th>
                   <th className="py-3 px-4">Travel Date</th>
@@ -181,7 +182,7 @@ export default function AdminBookingsPage() {
                 {paginatedBookings.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={8}
+                      colSpan={9}
                       className="py-8 text-center text-slate-400 text-xs"
                     >
                       No reservations found matching current filter criteria.
@@ -193,8 +194,14 @@ export default function AdminBookingsPage() {
                       key={b.id}
                       className="hover:bg-slate-50/80 transition-colors"
                     >
-                      <td className="py-3.5 px-4 whitespace-nowrap font-mono font-bold text-slate-900">
+                      <td className="py-3.5 px-4 whitespace-nowrap font-mono text-slate-500">
                         #{(safePage - 1) * pageSize + index + 1}
+                      </td>
+
+                      <td className="py-3.5 px-4 whitespace-nowrap font-mono font-bold text-blue-900">
+                        <span className="bg-blue-50/90 text-blue-900 border border-blue-200/80 px-2.5 py-1 rounded text-xs tracking-wide">
+                          {b.bookingCode}
+                        </span>
                       </td>
 
                       <td className="py-3.5 px-4">

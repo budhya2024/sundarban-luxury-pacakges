@@ -548,6 +548,7 @@ export default function AdminHotelPage() {
                   <thead>
                     <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-600">
                       <th className="py-3 px-4 whitespace-nowrap">Sl. No.</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Booking ID</th>
                       <th className="py-3 px-4">Guest Details</th>
                       <th className="py-3 px-4">Room Category</th>
                       <th className="py-3 px-4">Check-In / Out</th>
@@ -560,7 +561,7 @@ export default function AdminHotelPage() {
                   <tbody className="divide-y divide-slate-100">
                     {filteredInquiries.length === 0 ? (
                       <tr>
-                        <td colSpan={8} className="py-12 text-center text-slate-400">
+                        <td colSpan={9} className="py-12 text-center text-slate-400">
                           <Calendar className="w-8 h-8 mx-auto mb-2 text-slate-300" />
                           <p className="font-semibold">No hotel booking inquiries found matching filters.</p>
                         </td>
@@ -570,6 +571,12 @@ export default function AdminHotelPage() {
                         <tr key={inq.id} className="hover:bg-slate-50/80 transition-colors">
                           <td className="py-3.5 px-4 whitespace-nowrap font-mono font-bold text-slate-900 text-xs">
                             #{index + 1}
+                          </td>
+
+                          <td className="py-3.5 px-4 whitespace-nowrap font-mono font-bold text-blue-900">
+                            <span className="bg-blue-50/90 text-blue-900 border border-blue-200/80 px-2.5 py-1 rounded text-xs tracking-wide">
+                              {inq.refId}
+                            </span>
                           </td>
 
                           <td className="py-3.5 px-4">

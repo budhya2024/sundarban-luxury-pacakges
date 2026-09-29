@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 
 import { useAdmin } from "@/context/AdminContext";
+import { BookingConfirmationCard } from "@/components/ui/BookingConfirmationCard";
 
 export interface BookingModalProps {
   isOpen: boolean;
@@ -300,7 +301,7 @@ export function BookingModal({
               </div>
 
               {/* Travel Date & Guests Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div className="grid  grid-cols-2 gap-3.5">
                 <div>
                   <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">
                     Travel Date <span className="text-rose-500">*</span>
@@ -399,42 +400,26 @@ export function BookingModal({
           </div>
         ) : (
           /* Confirmation Success State */
-          <div className="text-center py-6 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-emerald-50 text-primary flex items-center justify-center mx-auto shadow-xs">
-              <Check className="w-8 h-8 stroke-[3]" />
-            </div>
-
-            <h3 className="text-xl font-black text-foreground">
-              Booking Request Received!
-            </h3>
-
-            {confirmedCode && (
-              <div className="inline-block px-4 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-xs font-mono font-bold">
-                Booking ID: {confirmedCode}
-              </div>
-            )}
-
-            <p className="text-slate-600 text-sm max-w-sm mx-auto leading-relaxed">
-              Thank you,{" "}
-              <strong className="text-foreground">{formData.fullName}</strong>.
-              Your reservation request for{" "}
-              <strong className="text-primary">{packageName}</strong> has been
-              received. Our Sundarban tour coordinator will contact you at{" "}
-              <span className="font-semibold text-foreground">
-                {formData.phoneNumber}
-              </span>{" "}
-              within 24 hours.
-            </p>
-
-            <div className="pt-2">
-              <button
-                onClick={handleReset}
-                className="px-7 py-2.5 rounded-lg bg-primary hover:bg-secondary text-white font-bold text-sm transition-all duration-300 cursor-pointer shadow-sm"
-              >
-                Close Window
-              </button>
-            </div>
-          </div>
+          <BookingConfirmationCard
+            details={{
+              hotelOrPackageName: packageName,
+              checkInDate: formData.travelDate,
+              guests: parseInt(formData.guests, 10) || 2,
+              bookingId: confirmedCode || undefined,
+              guestEmail: formData.email,
+              guestName: formData.fullName,
+              guestPhone: formData.phoneNumber,
+              whatsAppUrl: confirmedCode
+                ? `https://api.whatsapp.com/send?phone=919876543210&text=${encodeURIComponent(
+                  `Hello, I confirmed booking ${confirmedCode} for ${packageName} on ${formData.travelDate}.`
+                )}`
+                : undefined,
+            }}
+            onViewBooking={handleReset}
+            onBackToHome={handleReset}
+            primaryActionText="View Booking"
+            secondaryActionText="Back to Home"
+          />
         )}
       </div>
     </div>

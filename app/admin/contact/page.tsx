@@ -34,6 +34,47 @@ interface InfoCardData {
   status: "Active" | "Inactive";
 }
 
+function formatExactDateTime(dateStr?: string, createdAtStr?: string): string {
+  const target = createdAtStr || dateStr;
+  if (!target) {
+    const now = new Date();
+    return (
+      now.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }) +
+      ", " +
+      now.toLocaleTimeString("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      })
+    );
+  }
+
+  try {
+    const d = new Date(target);
+    if (!isNaN(d.getTime())) {
+      const datePart = d.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+      const timePart = d.toLocaleTimeString("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+      return `${datePart}, ${timePart}`;
+    }
+  } catch {
+    // fallback
+  }
+
+  return target;
+}
+
 export default function AdminContactManagerPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const {
@@ -511,7 +552,7 @@ export default function AdminContactManagerPage() {
               <thead>
                 <tr className="bg-slate-100/90 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider text-[11px]">
                   <th className="py-3 px-3.5 w-16 whitespace-nowrap">Sl. No.</th>
-                  <th className="py-3 px-3.5 whitespace-nowrap">Date</th>
+                  <th className="py-3 px-3.5 whitespace-nowrap">Exact Date &amp; Time</th>
                   <th className="py-3 px-4">Guest Name</th>
                   <th className="py-3 px-4">Phone Number</th>
                   <th className="py-3 px-4">Email Address</th>
@@ -535,9 +576,9 @@ export default function AdminContactManagerPage() {
                           #{index + 1}
                         </td>
 
-                        {/* Date */}
-                        <td className="py-3.5 px-3.5 whitespace-nowrap text-slate-600 font-mono text-[11px] font-semibold">
-                          {inq.date || "Recent"}
+                        {/* Date & Time */}
+                        <td className="py-3.5 px-3.5 whitespace-nowrap text-slate-700 font-mono text-[11px] font-bold">
+                          {formatExactDateTime(inq.date, (inq as any).createdAt)}
                         </td>
 
                         {/* Guest Name */}

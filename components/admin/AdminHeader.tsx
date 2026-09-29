@@ -73,7 +73,7 @@ export function AdminHeader({
             {title}
           </h1>
           {subtitle && (
-            <p className="text-[11px] text-slate-500 truncate hidden sm:block">
+            <p className="text-xs text-forground truncate hidden sm:block font-semibold">
               {subtitle}
             </p>
           )}
@@ -185,28 +185,7 @@ export function AdminHeader({
           )}
         </div>
 
-        {/* Admin Profile Chip */}
-        <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
-          <div className="w-7 h-7 rounded-[3px] bg-slate-900 text-white font-black text-xs flex items-center justify-center">
-            AD
-          </div>
-          <div className="hidden sm:block text-left">
-            <span className="font-extrabold text-xs text-slate-900 block leading-none">
-              Super Admin
-            </span>
-            <span className="text-[10px] text-slate-400 font-medium">
-              Operations Lead
-            </span>
-          </div>
-          <button
-            onClick={handleLogout}
-            className="p-1.5 ml-1 rounded-[3px] text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
-            title="Sign Out"
-            aria-label="Sign Out"
-          >
-            <LogOut className="w-4 h-4" />
-          </button>
-        </div>
+
       </div>
     </header>
   );

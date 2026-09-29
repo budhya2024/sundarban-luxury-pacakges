@@ -43,7 +43,7 @@ export function AboutStorySection() {
             </p>
 
             {/* Feature Bullet Points */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <div className="grid grid-cols-2 gap-2 md:gap-4 pt-2">
               {[
                 { title: "Solar Hybrid Vessels", desc: "Zero noise & low emission navigation" },
                 { title: "Forest Department Guides", desc: "Expert tracking & watchtower permits" },
