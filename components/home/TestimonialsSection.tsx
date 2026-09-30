@@ -92,32 +92,28 @@ export function TestimonialsSection() {
           </h2>
 
           {/* Switchable Review Tabs (Manual vs Google) */}
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+          <div className="mt-4 flex flex-row items-center justify-center gap-2 sm:gap-2.5 px-2">
             <button
               onClick={() => setActiveTab("manual")}
               type="button"
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer shadow-2xs flex items-center gap-1.5 ${activeTab === "manual"
-                ? "bg-brand-green-dark text-white shadow-md "
-                : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+              className={`inline-flex items-center justify-center px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-bold transition-all cursor-pointer shadow-sm gap-1.5 ${activeTab === "manual"
+                ? "bg-[#064e3b] text-white border border-[#064e3b]"
+                : "bg-white text-slate-700 hover:bg-slate-50 border border-slate-200"
                 }`}
             >
               <span>Guest Experiences</span>
-
             </button>
 
             <button
               onClick={() => setActiveTab("google")}
               type="button"
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer shadow-2xs flex items-center gap-2 ${activeTab === "google"
-                ? "bg-brand-green-dark text-white shadow-md"
-                : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+              className={`inline-flex items-center justify-center px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-bold transition-all cursor-pointer shadow-sm gap-1.5 ${activeTab === "google"
+                ? "bg-[#064e3b] text-white border border-[#064e3b]"
+                : "bg-white text-slate-700 hover:bg-slate-50 border border-slate-200"
                 }`}
             >
-              <GoogleIcon className="w-3.5 h-3.5" isWhite={activeTab === "google"} />
+              <GoogleIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5" isWhite={activeTab === "google"} />
               <span>Google Reviews</span>
-              <span className="flex items-center gap-0.5 text-amber-500 font-extrabold text-xs">
-                ★ {googleRating}
-              </span>
             </button>
           </div>
         </div>
@@ -170,8 +166,8 @@ export function TestimonialsSection() {
               className="!pb-8 px-1"
             >
               {displayItems.map((item) => (
-                <SwiperSlide key={item.id} className="h-auto">
-                  <div className="relative flex flex-col rounded-2xl justify-between bg-white p-6 sm:p-7 md:p-8 transition-all duration-300 min-h-[300px] border border-slate-200/90 shadow-xs hover:shadow-md hover:border-slate-300">
+                <SwiperSlide key={item.id} className="!h-auto flex">
+                  <div className="w-full h-full relative flex flex-col rounded-2xl justify-between bg-white p-6 sm:p-7 md:p-8 transition-all duration-300 min-h-[300px] border border-slate-200/90 shadow-xs hover:shadow-md hover:border-slate-300">
                     <div>
                       {/* Card Header: Avatar, Name & Stars */}
                       <div className="flex items-center justify-between gap-3 mb-5">

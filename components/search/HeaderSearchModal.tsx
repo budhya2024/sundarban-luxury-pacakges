@@ -308,7 +308,15 @@ export function HeaderSearchModal({ isOpen, onClose }: HeaderSearchModalProps) {
             </button>
           )}
 
-
+          <div className="w-px h-5 bg-slate-200 mx-1"></div>
+          <button
+            onClick={onClose}
+            type="button"
+            className="p-1.5 ml-1.5 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
+            aria-label="Close modal"
+          >
+            <X className="w-4 h-4 md:w-5 md:h-5" />
+          </button>
         </div>
 
         {/* Compact Category Tabs (When Query Exists) */}
@@ -368,8 +376,8 @@ export function HeaderSearchModal({ isOpen, onClose }: HeaderSearchModalProps) {
             {/* Suggested Results Before Search (rounded-sm) */}
             <div className="pt-2 border-t border-slate-200/70">
               <div className="flex items-center justify-between mb-1.5 px-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                  <Sparkles className="w-3 h-3 text-emerald-600" />
+                <span className="text-xs md:text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                  <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-emerald-600" />
                   <span>Suggested Packages</span>
                 </span>
                 <Link
@@ -410,16 +418,16 @@ export function HeaderSearchModal({ isOpen, onClose }: HeaderSearchModalProps) {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-1.5 mb-0.5">
                             {item.badge && (
-                              <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-sm bg-emerald-50 text-emerald-800 border border-emerald-100 shrink-0">
+                              <span className="text-[9px] md:text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded-sm bg-emerald-50 text-emerald-800 border border-emerald-100 shrink-0">
                                 {item.badge}
                               </span>
                             )}
-                            <h4 className="text-xs font-bold text-slate-900 truncate">
+                            <h4 className="text-xs md:text-base font-bold text-slate-900 truncate">
                               {item.title}
                             </h4>
                           </div>
                           {item.subtitle && (
-                            <p className="text-[11px] text-slate-500 line-clamp-1">
+                            <p className="text-[11px] md:text-sm text-slate-500 line-clamp-1">
                               {item.subtitle}
                             </p>
                           )}
@@ -428,11 +436,11 @@ export function HeaderSearchModal({ isOpen, onClose }: HeaderSearchModalProps) {
 
                       <div className="flex items-center gap-2 flex-shrink-0">
                         {item.price && (
-                          <span className="text-xs font-extrabold text-emerald-800">
+                          <span className="text-xs md:text-sm font-extrabold text-emerald-800">
                             ₹{typeof item.price === "number" ? item.price.toLocaleString("en-IN") : item.price}
                           </span>
                         )}
-                        <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                        <ChevronRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-slate-400" />
                       </div>
                     </Link>
                   ))}
@@ -491,16 +499,16 @@ export function HeaderSearchModal({ isOpen, onClose }: HeaderSearchModalProps) {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-1.5 mb-0.5">
                             {item.badge && (
-                              <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-sm bg-slate-100 text-slate-700 shrink-0">
+                              <span className="text-[9px] md:text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded-sm bg-slate-100 text-slate-700 shrink-0">
                                 {item.badge}
                               </span>
                             )}
-                            <h4 className="text-xs font-bold text-slate-900 truncate">
+                            <h4 className="text-xs md:text-base font-bold text-slate-900 truncate">
                               {item.title}
                             </h4>
                           </div>
                           {item.subtitle && (
-                            <p className="text-[11px] text-slate-500 line-clamp-1">
+                            <p className="text-[11px] md:text-sm text-slate-500 line-clamp-1">
                               {item.subtitle}
                             </p>
                           )}
@@ -510,11 +518,11 @@ export function HeaderSearchModal({ isOpen, onClose }: HeaderSearchModalProps) {
                       {/* Right: Price / Arrow */}
                       <div className="flex items-center gap-2 flex-shrink-0">
                         {item.price && (
-                          <span className="text-xs font-extrabold text-emerald-800">
+                          <span className="text-xs md:text-sm font-extrabold text-emerald-800">
                             ₹{typeof item.price === "number" ? item.price.toLocaleString("en-IN") : item.price}
                           </span>
                         )}
-                        <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                        <ChevronRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-slate-400" />
                       </div>
                     </Link>
                   );

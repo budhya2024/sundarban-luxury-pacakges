@@ -405,16 +405,7 @@ export function ContactFormSection() {
                       <span>Your Message / Requirements</span>
                       <span className="text-[#d97706] ml-1">*</span>
                     </label>
-                    <span
-                      className={`text-[11px] font-mono ${formData.message.trim().length > 2000
-                        ? "text-rose-600 font-bold"
-                        : formData.message.trim().length >= 10
-                          ? "text-slate-500"
-                          : "text-slate-400"
-                        }`}
-                    >
-                      {formData.message.trim().length} / 2000 chars (min. 10)
-                    </span>
+
                   </div>
                   <div className="relative">
                     <textarea

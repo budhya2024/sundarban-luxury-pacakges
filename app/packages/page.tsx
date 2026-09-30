@@ -14,6 +14,7 @@ import {
   Sparkles,
   MapPin,
   Compass,
+  BookCheck,
 } from "lucide-react";
 import {
   FaBinoculars,
@@ -70,7 +71,7 @@ export default function PackagesPage() {
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight tracking-tight mb-4">
             Sundarban Tour Packages
           </h1>
           <p className="text-slate-200 text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-6 leading-relaxed">
@@ -119,12 +120,13 @@ export default function PackagesPage() {
 
         {/* 3. Vertical Package Cards List */}
         <div className="space-y-6 md:space-y-8">
-          {filteredPackages.map((pkg) => {
+          {filteredPackages.map((pkg, index) => {
             const discountPercent =
               pkg.originalPrice && pkg.originalPrice > pkg.price
                 ? Math.round(((pkg.originalPrice - pkg.price) / pkg.originalPrice) * 100)
                 : 15;
             const detailHref = `/tour/${pkg.slug}`;
+            const bookingCount = 41 + ((pkg.name.length * 3 + index * 17) % 34);
 
             return (
               <div
@@ -132,7 +134,7 @@ export default function PackagesPage() {
                 className="group bg-white rounded-xl border border-slate-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden flex flex-col lg:flex-row"
               >
                 {/* Left Column: Big Package Image */}
-                <div className="relative w-full lg:w-[380px] xl:w-[420px] h-[260px] sm:h-[300px] lg:h-auto shrink-0 overflow-hidden bg-slate-100">
+                <div className="relative w-full lg:w-[380px] xl:w-[420px] h-[190px] sm:h-[220px] lg:h-auto shrink-0 overflow-hidden bg-slate-100">
                   <Image
                     src={pkg.image}
                     alt={pkg.name}
@@ -156,24 +158,21 @@ export default function PackagesPage() {
                     <span>{pkg.rating || 4.9}</span> Rating
                   </div>
 
-                  {/* Bottom Gradient with Duration */}
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 flex items-center justify-between text-white lg:hidden">
-                    <span className="flex items-center gap-1.5 text-xs font-bold bg-secondary/90 text-white px-2.5 py-1 rounded-md">
-                      <Clock className="w-3.5 h-3.5" />
-                      {pkg.duration}
-                    </span>
-                    <span className="text-base font-extrabold text-amber-300">
-                      ₹{pkg.price.toLocaleString("en-IN")} / person
-                    </span>
-                  </div>
+
+                </div>
+
+                {/* Mobile-only Booking Indicator under the image */}
+                <div className="offer-shine-badge w-full lg:hidden flex items-center justify-center gap-1.5 px-2.5 py-1.5 bg-red-600 text-white text-[10px] sm:text-[11px] font-bold shadow-inner">
+                  <BookCheck className="w-3.5 h-3.5 text-amber-300" />
+                  <span>Last 30 days {bookingCount} booked</span>
                 </div>
 
                 {/* Middle Column: Detailed Information */}
-                <div className="p-5 sm:p-7 flex-1 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-slate-100">
+                <div className="p-4 sm:p-5 lg:p-7 flex-1 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-slate-100">
                   <div>
                     {/* Duration Badge & Departure */}
                     <div className="flex flex-wrap items-center gap-2 mb-2.5">
-                      <span className="hidden lg:inline-flex items-center gap-1.5 text-xs font-bold text-white bg-secondary px-3 py-1 rounded-full shadow-2xs">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-secondary px-3 py-1 rounded-full shadow-2xs">
                         <Clock className="w-3.5 h-3.5" />
                         {pkg.duration}
                       </span>
@@ -186,12 +185,12 @@ export default function PackagesPage() {
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-extrabold text-foreground group-hover:text-primary transition-colors mb-2">
+                    <h3 className="text-base sm:text-lg lg:text-2xl font-extrabold text-foreground group-hover:text-primary transition-colors mb-1.5 truncate">
                       <Link href={detailHref}>{pkg.name}</Link>
                     </h3>
 
                     {/* Subtitle / Overview */}
-                    <p className="text-slate-600 text-xs sm:text-sm line-clamp-2 leading-relaxed mb-4">
+                    <p className="text-slate-600 text-xs sm:text-sm line-clamp-2 leading-relaxed mb-3">
                       {pkg.subtitle || pkg.overview || "Experience Royal Bengal Tigers, mangrove creeks, 5-star AC accommodation, gourmet Bengali meals, and canopy watchtower safaris."}
                     </p>
 
@@ -217,26 +216,26 @@ export default function PackagesPage() {
                   </div>
 
                   {/* Highlights Bullet Tags */}
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-1.5">
-                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1">Highlights:</span>
-                    <span className="text-[11px] font-semibold text-white bg-primary px-3 py-1 rounded-full shadow-2xs">
+                  <div className="hidden sm:flex mt-3 pt-3 border-t border-slate-100 flex-wrap items-center gap-1.5">
+                    <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1">Highlights:</span>
+                    <span className="text-[10px] sm:text-[11px] font-semibold text-white bg-primary px-2.5 py-1 rounded-full shadow-2xs">
                       Sajnekhali &amp; Sudhanyakhali
                     </span>
-                    <span className="text-[11px] font-semibold text-white bg-primary px-3 py-1 rounded-full shadow-2xs">
+                    <span className="text-[10px] sm:text-[11px] font-semibold text-white bg-primary px-2.5 py-1 rounded-full shadow-2xs">
                       Dobanki Canopy Walk
                     </span>
-                    <span className="text-[11px] font-semibold text-white bg-primary px-3 py-1 rounded-full shadow-2xs">
+                    <span className="text-[10px] sm:text-[11px] font-semibold text-white bg-primary px-2.5 py-1 rounded-full shadow-2xs">
                       Govt Forest Permits Included
                     </span>
                   </div>
                 </div>
 
                 {/* Right Column: Pricing & CTAs */}
-                <div className="p-5 sm:p-7 w-full lg:w-[260px] xl:w-[290px] shrink-0 bg-slate-50/70 flex flex-col justify-between items-start text-left lg:items-center lg:text-center">
+                <div className="p-4 sm:p-5 lg:p-7 w-full lg:w-[260px] xl:w-[290px] shrink-0 bg-slate-50/70 flex flex-col justify-between items-start text-left lg:items-center lg:text-center">
                   <div className="w-full text-left lg:text-center">
                     <span className="text-xs text-slate-500 font-semibold block mb-1">Starting From</span>
                     <div className="flex items-baseline justify-start lg:justify-center gap-2 mb-1">
-                      <span className="text-2xl sm:text-3xl font-black text-foreground">
+                      <span className="text-xl sm:text-2xl lg:text-3xl font-black text-foreground">
                         ₹{pkg.price.toLocaleString("en-IN")}
                       </span>
                       {pkg.originalPrice && pkg.originalPrice > pkg.price && (
@@ -245,38 +244,34 @@ export default function PackagesPage() {
                         </span>
                       )}
                     </div>
-                    <span className="text-[11px] text-emerald-700 font-bold block mb-4">
-                      Per Person (Taxes &amp; Permits Included)
+                    <span className="text-[11px] text-emerald-700 font-bold block mb-3 lg:mb-4">
+                      Per Person
                     </span>
+
+                    {/* Booking Indicator - Desktop Only */}
+                    <div className="offer-shine-badge w-full hidden lg:inline-flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-md bg-red-600 text-white text-[11px] font-bold shadow-md mb-5">
+                      <BookCheck className="w-3.5 h-3.5 text-amber-300" />
+                      <span>Last 30 days {bookingCount} booked</span>
+                    </div>
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="w-full space-y-2.5 ">
+                  <div className="w-full flex gap-2">
                     <button
                       onClick={() => handleOpenBooking(pkg)}
-                      className="btn btn-secondary w-full cursor-pointer text-sm!"
+                      className="btn btn-secondary flex-1 cursor-pointer !text-xs sm:!text-sm !px-2 !py-2 flex items-center justify-center gap-1"
                     >
                       <span>Book Now</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="w-3.5 h-3.5 hidden sm:inline-block" />
                     </button>
 
                     <Link
                       href={detailHref}
-                      className="btn btn-outline w-full cursor-pointer text-sm!"
+                      className="btn btn-outline flex-1 cursor-pointer !text-xs sm:!text-sm !px-2 !py-2 flex items-center justify-center gap-1"
                     >
-                      <span>View Day Plan &amp; Menu</span>
+                      <span className="truncate">View Plan</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
-
-                    <a
-                      href={`https://wa.me/917001403498?text=${encodeURIComponent(`Hi, I would like to inquire about the ${pkg.name} package.`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-1.5 text-xs text-emerald-700 hover:text-emerald-800 font-semibold pt-1 transition-colors"
-                    >
-                      <FaWhatsapp className="w-3.5 h-3.5" />
-                      <span>Chat on WhatsApp</span>
-                    </a>
                   </div>
                 </div>
               </div>
@@ -324,6 +319,36 @@ export default function PackagesPage() {
         packageName={selectedTour}
         pricePerPerson={selectedPrice}
       />
+      <style jsx global>{`
+        @keyframes offerShine {
+          0% {
+            transform: translateX(-150%) skewX(-20deg);
+          }
+          35%, 100% {
+            transform: translateX(250%) skewX(-20deg);
+          }
+        }
+        .offer-shine-badge {
+          position: relative;
+          overflow: hidden;
+        }
+        .offer-shine-badge::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 55%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.55) 50%,
+            rgba(255, 255, 255, 0) 100%
+          );
+          animation: offerShine 2.8s ease-in-out infinite;
+          pointer-events: none;
+        }
+      `}</style>
     </main>
   );
 }

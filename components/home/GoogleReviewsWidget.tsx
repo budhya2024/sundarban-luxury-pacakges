@@ -302,46 +302,46 @@ export function GoogleReviewsWidget({
   return (
     <div className="w-full">
       {/* Top Banner: Google Rating Score + Direct Google Maps CTAs */}
-      <div className="max-w-4xl mx-auto mb-8 p-4 sm:p-5 rounded-md bg-white border border-slate-200/90 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-        <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-full  border border-slate-200 flex items-center justify-center shrink-0 shadow-2xs">
-            <GoogleIcon className="w-6 h-6" />
+      <div className="max-w-md sm:max-w-4xl mx-auto mb-8 p-6 sm:p-5 rounded-xl bg-white border border-slate-100 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-4 text-center sm:text-left">
+        <div className="w-full sm:w-auto flex flex-row items-center sm:items-start justify-start">
+          <div className="w-16 h-16 sm:w-12 sm:h-12 rounded-full border border-slate-100 flex items-center justify-center shrink-0 shadow-sm bg-white">
+            <GoogleIcon className="w-8 h-8 sm:w-6 sm:h-6" />
           </div>
-          <div>
+          <div className="flex-1 flex flex-col items-center sm:items-start pl-3 sm:pl-3.5">
             <div className="flex items-center justify-center sm:justify-start gap-1.5 text-amber-500">
-              <span className="text-xl font-black text-slate-900 mr-0.5">
+              <span className="text-2xl sm:text-xl font-black text-[#0f172a] mr-1">
                 {rating.toFixed(1)}
               </span>
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="h-4 w-4 fill-amber-500 text-amber-500" />
+                <Star key={i} className="h-5 w-5 sm:h-4 sm:w-4 fill-[#f59e0b] text-[#f59e0b]" />
               ))}
             </div>
-            <p className="text-xs text-slate-500 font-medium mt-0.5 flex items-center justify-center sm:justify-start gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-600 inline" />
+            <div className="text-[13px] sm:text-xs text-slate-500 font-medium mt-1.5 flex items-start sm:items-center justify-center sm:justify-start gap-1.5 text-center sm:text-left leading-snug max-w-[240px] sm:max-w-none mx-auto sm:mx-0">
+              <ShieldCheck className="w-4 h-4 sm:w-3.5 sm:h-3.5 text-[#2563eb] shrink-0 mt-0.5 sm:mt-0" />
               <span>
-                Verified Google Business Reviews &bull; {reviewsCount}+ Ratings
+                Verified Google Business Reviews &bull; {reviewsCount}+<br className="block sm:hidden" /> Ratings
               </span>
-            </p>
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-2 shrink-0">
+        <div className="flex flex-col sm:flex-row w-[90%] sm:w-auto items-stretch sm:items-center justify-center gap-3 shrink-0 mx-auto sm:mx-0">
           <a
             href={writeReviewUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-sm bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs hover:shadow transition-all cursor-pointer"
+            className="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-3 sm:py-2.5 rounded-md bg-[#1d4ed8] hover:bg-blue-800 text-white text-[14px] sm:text-[13px] font-bold shadow-sm transition-all cursor-pointer"
           >
             <span>Write a Google Review</span>
-            <ExternalLink className="w-3.5 h-3.5" />
+            <ExternalLink className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
           </a>
           <a
             href={googlePlaceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-sm bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors cursor-pointer"
+            className="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-3 sm:py-2.5 rounded-md bg-[#f1f5f9] hover:bg-slate-200 text-[#334155] text-[14px] sm:text-[13px] font-bold transition-colors cursor-pointer"
           >
-            <MapPin className="w-3.5 h-3.5 text-rose-500" />
+            <MapPin className="w-4 h-4 sm:w-3.5 sm:h-3.5 text-[#ef4444]" />
             <span>Open Google Maps</span>
           </a>
         </div>
@@ -383,8 +383,8 @@ export function GoogleReviewsWidget({
           className="!pb-8 px-1"
         >
           {displayReviews.map((item) => (
-            <SwiperSlide key={item.id} className="h-auto">
-              <div className="relative flex flex-col rounded-2xl justify-between bg-white p-6 sm:p-7 transition-all duration-300 min-h-[310px] border border-slate-200/90 shadow-xs hover:shadow-md hover:border-slate-300">
+            <SwiperSlide key={item.id} className="!h-auto flex">
+              <div className="w-full h-full relative flex flex-col rounded-2xl justify-between bg-white p-6 sm:p-7 transition-all duration-300 min-h-[310px] border border-slate-200/90 shadow-xs hover:shadow-md hover:border-slate-300">
                 <div>
                   {/* Header: Reviewer Info + Google Logo */}
                   <div className="flex items-start justify-between gap-3 mb-4">

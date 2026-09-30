@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { Plus, Minus } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
 
 export function FaqSection() {
@@ -41,18 +41,18 @@ export function FaqSection() {
             return (
               <div
                 key={item.id}
-                className={`border transition-all duration-300 overflow-hidden rounded-xl cursor-pointer ${isOpen
-                  ? "border-[#064e3b] bg-white shadow-md shadow-[#064e3b]/5"
-                  : "border-slate-200/90 bg-white hover:border-[#064e3b]/60 hover:bg-emerald-50/20"
+                className={`border transition-all duration-300 overflow-hidden cursor-pointer bg-white ${isOpen
+                  ? "border-[#064e3b] shadow-md shadow-[#064e3b]/5"
+                  : "border-slate-200/90 hover:border-[#064e3b]/60"
                   }`}
               >
                 {/* Accordion Question Trigger */}
                 <button
                   onClick={() => toggleAccordion(item.id)}
-                  className="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left cursor-pointer transition-colors"
+                  className={`w-full flex items-center justify-between gap-4 p-4 sm:p-6 text-left cursor-pointer transition-colors ${isOpen ? "bg-emerald-50" : "hover:bg-emerald-50/20"}`}
                   aria-expanded={isOpen}
                 >
-                  <span className="text-base sm:text-lg font-bold text-[#0f172a] leading-snug">
+                  <span className="text-sm sm:text-lg font-bold text-[#0f172a] leading-snug">
                     <span className="text-[#0f172a] mr-1.5">
                       {item.questionNumber || `Q${idx + 1}`}.
                     </span>{" "}
@@ -60,19 +60,25 @@ export function FaqSection() {
                   </span>
 
                   <div
-                    className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full group-hover:bg-amber-100 transition-transform duration-300 ${isOpen ? "rotate-180 text-[#064e3b]" : "text-slate-500"
+                    className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full group-hover:bg-amber-100 transition-colors duration-300 ${isOpen ? "text-[#064e3b]" : "text-slate-500"
                       }`}
                   >
-                    <ChevronDown className="h-5 w-5" />
+                    {isOpen ? <Minus className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
                   </div>
                 </button>
 
                 {/* Accordion Answer Content */}
-                {isOpen && (
-                  <div className="px-5 sm:px-6 pb-6 pt-1 text-slate-600 text-sm sm:text-[15px] leading-relaxed border-t border-slate-100/80 animate-in fade-in-50 duration-200">
-                    <p>{item.answer}</p>
+                <div 
+                  className={`grid transition-all duration-300 ease-in-out ${
+                    isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2 sm:pt-4 text-slate-600 text-xs sm:text-[15px] leading-relaxed border-t border-slate-100/80 bg-white">
+                      <p>{item.answer}</p>
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             );
           })}

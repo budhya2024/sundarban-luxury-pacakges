@@ -185,20 +185,20 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
   <title>New Booking Alert: ${booking.bookingCode}</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: Arial, Helvetica, sans-serif; color: #0f172a;">
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; padding: 25px 10px;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; padding: 15px 10px;">
     <tr>
       <td align="center">
         <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
           <!-- Top Dark Header Banner with White Text -->
           <tr>
-            <td style="background-color: #0b3b24; border-top: 4px solid #d4af37; padding: 26px 30px; text-align: center;">
-              <div style="font-size: 11px; font-weight: bold; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;">
+            <td style="background-color: #0b3b24; border-top: 4px solid #d4af37; padding: 15px 20px; text-align: center;">
+              <div style="font-size: 9px; font-weight: bold; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;">
                 ADMIN NOTIFICATION &bull; ${websiteName}
               </div>
-              <h1 style="margin: 0; font-size: 22px; font-weight: bold; color: #ffffff; letter-spacing: 1px;">
+              <h1 style="margin: 0; font-size: 15px; font-weight: bold; color: #ffffff; letter-spacing: 1px;">
                 NEW GUEST SAFARI BOOKING
               </h1>
-              <div style="font-size: 12px; color: #e2e8f0; margin-top: 6px;">
+              <div style="font-size: 9px; color: #e2e8f0; margin-top: 6px;">
                 Booking Code: ${booking.bookingCode}
               </div>
             </td>
@@ -206,21 +206,21 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
 
           <!-- Content Body -->
           <tr>
-            <td style="padding: 28px 30px;">
+            <td style="padding: 15px 20px;">
               <!-- Reference Box -->
-              <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 14px 18px; margin-bottom: 22px;">
+              <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 10px 15px; margin-bottom: 22px;">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
                     <td>
-                      <div style="font-size: 10px; font-weight: bold; color: #166534; text-transform: uppercase; letter-spacing: 1px;">
+                      <div style="font-size: 9px; font-weight: bold; color: #166534; text-transform: uppercase; letter-spacing: 1px;">
                         BOOKING REFERENCE NUMBER
                       </div>
-                      <div style="font-size: 22px; font-weight: bold; color: #14532d; font-family: monospace; margin-top: 2px;">
+                      <div style="font-size: 15px; font-weight: bold; color: #14532d; font-family: monospace; margin-top: 2px;">
                         ${booking.bookingCode}
                       </div>
                     </td>
                     <td align="right">
-                      <span style="display: inline-block; background-color: #14532d; color: #ffffff; font-size: 11px; font-weight: bold; padding: 6px 14px; border-radius: 4px;">
+                      <span style="display: inline-block; background-color: #14532d; color: #ffffff; font-size: 9px; font-weight: bold; padding: 6px 14px; border-radius: 4px;">
                         NEW REQUEST
                       </span>
                     </td>
@@ -229,25 +229,25 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
               </div>
 
               <!-- Reservation Overview Table -->
-              <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 18px; margin-bottom: 24px;">
-                <h3 style="margin: 0 0 12px 0; font-size: 13px; font-weight: bold; color: #0f172a; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
+              <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-bottom: 24px;">
+                <h3 style="margin: 0 0 12px 0; font-size: 9px; font-weight: bold; color: #0f172a; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
                   Reservation Details
                 </h3>
-                <table width="100%" border="0" cellspacing="0" cellpadding="6" style="font-size: 13px;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="4" style="font-size: 9px;">
                   <tr><td style="color: #64748b; width: 38%; font-weight: bold;">Tour Package:</td><td style="color: #0f172a; font-weight: bold;">${booking.packageOrRoom}</td></tr>
                   <tr><td style="color: #64748b; font-weight: bold;">Expedition Date:</td><td style="color: #0f172a; font-weight: bold;">${checkInFormatted}</td></tr>
                   <tr><td style="color: #64748b; font-weight: bold;">Guest Name:</td><td style="color: #0f172a; font-weight: bold;">${booking.guestName}</td></tr>
                   <tr><td style="color: #64748b; font-weight: bold;">Phone Number:</td><td style="color: #0f172a; font-weight: bold;">${booking.phone}</td></tr>
                   <tr><td style="color: #64748b; font-weight: bold;">Email Address:</td><td><a href="mailto:${booking.email}" style="color: #2563eb; text-decoration: none;">${booking.email}</a></td></tr>
                   <tr><td style="color: #64748b; font-weight: bold;">Number of Guests:</td><td style="color: #0f172a; font-weight: bold;">${booking.guestsCount} Traveler(s)</td></tr>
-                  <tr><td style="color: #64748b; font-weight: bold;">Total Package Fare:</td><td style="color: #14532d; font-weight: bold; font-size: 16px;">${formattedAmount}</td></tr>
+                  <tr><td style="color: #64748b; font-weight: bold;">Total Package Fare:</td><td style="color: #14532d; font-weight: bold; font-size: 9px;">${formattedAmount}</td></tr>
                   <tr><td style="color: #64748b; font-weight: bold;">Booking Date:</td><td style="color: #334155;">${bookingDateFormatted}</td></tr>
                 </table>
               </div>
 
               <!-- Admin Action CTA -->
               <div style="text-align: center;">
-                <a href="${websiteDomain}/admin/bookings" style="display: inline-block; background-color: #0b3b24; color: #ffffff; text-decoration: none; padding: 12px 26px; font-weight: bold; font-size: 13px; border-radius: 4px; text-transform: uppercase;">
+                <a href="${websiteDomain}/admin/bookings" style="display: inline-block; background-color: #0b3b24; color: #ffffff; text-decoration: none; padding: 12px 26px; font-weight: bold; font-size: 9px; border-radius: 4px; text-transform: uppercase;">
                   Open Admin Dashboard
                 </a>
               </div>
@@ -256,7 +256,7 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
 
           <!-- Dark Footer Banner with White Text -->
           <tr>
-            <td style="background-color: #0b3b24; padding: 20px 30px; text-align: center; color: #ffffff; font-size: 11px;">
+            <td style="background-color: #0b3b24; padding: 15px 20px; text-align: center; color: #ffffff; font-size: 9px;">
               <div style="font-weight: bold; color: #ffffff;">${websiteName}</div>
               <div style="margin-top: 4px; color: #cbd5e1;">System Generated Admin Notification &bull; ${websiteDomain}</div>
             </td>
@@ -294,21 +294,21 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
   <title>Booking Confirmation - ${websiteName}</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: Arial, Helvetica, sans-serif; color: #0f172a;">
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; padding: 25px 10px;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; padding: 15px 10px;">
     <tr>
       <td align="center">
         <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
           
           <!-- Dark Header Banner with White Text -->
           <tr>
-            <td style="background-color: #0b3b24;  padding: 28px 30px; text-align: center;">
-              <div style="font-size: 11px; font-weight: bold; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;">
+            <td style="background-color: #0b3b24;  padding: 15px 20px; text-align: center;">
+              <div style="font-size: 9px; font-weight: bold; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;">
                 ROYAL BENGAL TIGER RESERVE &bull; DELTA SAFARI
               </div>
-              <h1 style="margin: 0; font-size: 23px; font-weight: bold; color: #ffffff; letter-spacing: 1px;">
+              <h1 style="margin: 0; font-size: 15px; font-weight: bold; color: #ffffff; letter-spacing: 1px;">
                 SUNDARBAN LUXURY EXPEDITIONS
               </h1>
-              <div style="font-size: 12px; color: #e2e8f0; margin-top: 6px; line-height: 1.4;">
+              <div style="font-size: 9px; color: #e2e8f0; margin-top: 6px; line-height: 1.4;">
                 Five-Star Cruise Comfort, Forest Naturalist Guides &amp; Authentic Bengali Delta Cuisine
               </div>
             </td>
@@ -316,25 +316,25 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
 
           <!-- Main Body Container -->
           <tr>
-            <td style="padding: 28px 30px;">
+            <td style="padding: 15px 20px;">
 
               <!-- Greeting & Thank You -->
-              <h2 style="margin: 0 0 10px 0; font-size: 18px; font-weight: bold; color: #0f172a;">
+              <h2 style="margin: 0 0 10px 0; font-size: 15px; font-weight: bold; color: #0f172a;">
                 Hi, ${booking.guestName}!
               </h2>
-              <p style="margin: 0 0 20px 0; font-size: 13px; color: #475569; line-height: 1.6;">
+              <p style="margin: 0 0 20px 0; font-size: 9px; color: #475569; line-height: 1.6;">
                 Thank you for selecting <strong style="color: #0f172a;">Sundarban Luxury Expeditions</strong>. We have received your safari reservation request. Our dedicated expedition desk has logged your tour preferences, and is preparing your delta voyage itinerary.
               </p>
 
               <!-- Booking Reference Box (Light Mint Background) -->
-              <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 14px 20px; margin-bottom: 22px;">
+              <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 10px 15px; margin-bottom: 22px;">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
                     <td>
-                      <div style="font-size: 10px; font-weight: bold; color: #166534; text-transform: uppercase; letter-spacing: 1px;">
+                      <div style="font-size: 9px; font-weight: bold; color: #166534; text-transform: uppercase; letter-spacing: 1px;">
                         BOOKING REFERENCE NUMBER
                       </div>
-                      <div style="font-size: 22px; font-weight: bold; color: #14532d; font-family: monospace; margin-top: 2px;">
+                      <div style="font-size: 15px; font-weight: bold; color: #14532d; font-family: monospace; margin-top: 2px;">
                         ${booking.bookingCode}
                       </div>
                     </td>
@@ -346,8 +346,8 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
               </div>
 
               <!-- Main Details Box -->
-              <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 18px 20px; margin-bottom: 22px;">
-                <table width="100%" border="0" cellspacing="0" cellpadding="6" style="font-size: 13px;">
+              <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px 15px; margin-bottom: 22px;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="4" style="font-size: 9px;">
                   <tr>
                     <td style="color: #64748b; width: 38%; font-weight: bold;">Tour Package:</td>
                     <td style="color: #0f172a; font-weight: bold;">${booking.packageOrRoom}</td>
@@ -362,7 +362,7 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
                   </tr>
                   <tr>
                     <td style="color: #64748b; font-weight: bold;">Total Package Fare:</td>
-                    <td style="color: #14532d; font-weight: bold; font-size: 16px;">${formattedAmount}</td>
+                    <td style="color: #14532d; font-weight: bold; font-size: 9px;">${formattedAmount}</td>
                   </tr>
                   <tr>
                     <td style="color: #64748b; font-weight: bold;">Payment Terms:</td>
@@ -378,11 +378,11 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
               </div>
 
               <!-- Included In Package Box (No Icons, Plain Text Bullets) -->
-              <div style="background-color: #faf5ff; border: 1px solid #e9d5ff; border-radius: 6px; padding: 18px 20px; margin-bottom: 22px;">
-                <div style="font-size: 11px; font-weight: bold; color: #6b21a8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">
+              <div style="background-color: #faf5ff; border: 1px solid #e9d5ff; border-radius: 6px; padding: 12px 15px; margin-bottom: 22px;">
+                <div style="font-size: 9px; font-weight: bold; color: #6b21a8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">
                   WHAT IS INCLUDED IN YOUR PACKAGE:
                 </div>
-                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-size: 12px; color: #581c87; line-height: 1.8;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-size: 9px; color: #581c87; line-height: 1.8;">
                   <tr>
                     <td width="50%" valign="top">
                       - Deluxe AC Boat Cruise with Upper Viewing Deck<br>
@@ -399,29 +399,29 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
               </div>
 
               <!-- What Happens Next Box (Yellow/Amber Theme, No Icons) -->
-              <div style="background-color: #fffbeb; border: 1px solid #fef3c7; border-left: 4px solid #f59e0b; border-radius: 4px; padding: 14px 18px; margin-bottom: 24px;">
-                <div style="font-size: 13px; font-weight: bold; color: #92400e; margin-bottom: 4px;">
+              <div style="background-color: #fffbeb; border: 1px solid #fef3c7; border-left: 4px solid #f59e0b; border-radius: 4px; padding: 10px 15px; margin-bottom: 24px;">
+                <div style="font-size: 9px; font-weight: bold; color: #92400e; margin-bottom: 4px;">
                   What Happens Next?
                 </div>
-                <div style="font-size: 12px; color: #78350f; line-height: 1.5;">
+                <div style="font-size: 9px; color: #78350f; line-height: 1.5;">
                   Our chief safari coordinator will call or WhatsApp you at <strong style="color: #92400e;">${booking.phone}</strong> within 24 hours to confirm your pickup spot (Science City Kolkata or Godkhali), guide allocation, and dietary preferences.
                 </div>
               </div>
 
               <!-- Action Buttons (No Icons) -->
               <div style="text-align: center; margin-bottom: 10px;">
-                <div style="font-size: 12px; color: #475569; margin-bottom: 14px;">
+                <div style="font-size: 9px; color: #475569; margin-bottom: 14px;">
                   Have questions or want to customize your dates right now?
                 </div>
                 <table border="0" cellspacing="0" cellpadding="0" align="center">
                   <tr>
                     <td style="padding-right: 8px;">
-                      <a href="https://wa.me/917001403498" style="display: inline-block; background-color: #16a34a; color: #ffffff; text-decoration: none; padding: 11px 20px; font-weight: bold; font-size: 12px; border-radius: 4px;">
+                      <a href="https://wa.me/917001403498" style="display: inline-block; background-color: #16a34a; color: #ffffff; text-decoration: none; padding: 11px 20px; font-weight: bold; font-size: 9px; border-radius: 4px;">
                         Chat on WhatsApp
                       </a>
                     </td>
                     <td style="padding-left: 8px;">
-                      <a href="tel:+917001403498" style="display: inline-block; background-color: #0b3b24; color: #ffffff; text-decoration: none; padding: 11px 20px; font-weight: bold; font-size: 12px; border-radius: 4px;">
+                      <a href="tel:+917001403498" style="display: inline-block; background-color: #0b3b24; color: #ffffff; text-decoration: none; padding: 11px 20px; font-weight: bold; font-size: 9px; border-radius: 4px;">
                         Call Helpline: +91 70014 03498
                       </a>
                     </td>
@@ -434,14 +434,14 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
 
           <!-- Dark Footer Banner with White Text -->
           <tr>
-            <td style="background-color: #0b3b24; padding: 24px 30px; text-align: center; color: #ffffff;">
-              <div style="font-size: 14px; font-weight: bold; letter-spacing: 1px; color: #ffffff;">
+            <td style="background-color: #0b3b24; padding: 15px 20px; text-align: center; color: #ffffff;">
+              <div style="font-size: 9px; font-weight: bold; letter-spacing: 1px; color: #ffffff;">
                 SUNDARBAN LUXURY EXPEDITIONS
               </div>
-              <div style="font-size: 11px; color: #e2e8f0; margin-top: 4px; letter-spacing: 0.5px;">
+              <div style="font-size: 9px; color: #e2e8f0; margin-top: 4px; letter-spacing: 0.5px;">
                 WILD BENGAL HOSPITALITY &bull; PAKHIRALAY, GOSABA, SUNDARBAN, WB 743370
               </div>
-              <div style="font-size: 11px; color: #cbd5e1; margin-top: 12px; border-top: 1px solid #14532d; padding-top: 12px;">
+              <div style="font-size: 9px; color: #cbd5e1; margin-top: 12px; border-top: 1px solid #14532d; padding-top: 12px;">
                 Direct Safari Helpline: <a href="tel:+917001403498" style="color: #ffffff; text-decoration: none; font-weight: bold;">+91 70014 03498</a> | <a href="mailto:sundarbanluxurypackage@gmail.com" style="color: #ffffff; text-decoration: none; font-weight: bold;">sundarbanluxurypackage@gmail.com</a>
               </div>
             </td>
@@ -542,20 +542,20 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
   <title>Hotel Booking Alert: ${inquiry.refId}</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: Arial, Helvetica, sans-serif; color: #0f172a;">
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; padding: 25px 10px;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; padding: 15px 10px;">
     <tr>
       <td align="center">
         <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
           <!-- Top Dark Header Banner with White Text -->
           <tr>
-            <td style="background-color: #0b3b24; border-top: 4px solid #d4af37; padding: 26px 30px; text-align: center;">
-              <div style="font-size: 11px; font-weight: bold; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;">
+            <td style="background-color: #0b3b24; border-top: 4px solid #d4af37; padding: 15px 20px; text-align: center;">
+              <div style="font-size: 9px; font-weight: bold; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;">
                 ADMIN ALERT &bull; HOTEL SONAR BANGLA
               </div>
-              <h1 style="margin: 0; font-size: 22px; font-weight: bold; color: #ffffff; letter-spacing: 1px;">
+              <h1 style="margin: 0; font-size: 15px; font-weight: bold; color: #ffffff; letter-spacing: 1px;">
                 NEW RESORT RESERVATION
               </h1>
-              <div style="font-size: 12px; color: #e2e8f0; margin-top: 6px;">
+              <div style="font-size: 9px; color: #e2e8f0; margin-top: 6px;">
                 Ref ID: ${inquiry.refId}
               </div>
             </td>
@@ -563,23 +563,23 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
 
           <!-- Content Body -->
           <tr>
-            <td style="padding: 28px 30px;">
+            <td style="padding: 15px 20px;">
               <!-- Reference Box -->
-              <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 14px 18px; margin-bottom: 22px;">
-                <div style="font-size: 10px; font-weight: bold; color: #166534; text-transform: uppercase;">BOOKING REFERENCE</div>
-                <div style="font-size: 22px; font-weight: bold; color: #14532d; font-family: monospace; margin-top: 2px;">${inquiry.refId}</div>
+              <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 10px 15px; margin-bottom: 22px;">
+                <div style="font-size: 9px; font-weight: bold; color: #166534; text-transform: uppercase;">BOOKING REFERENCE</div>
+                <div style="font-size: 15px; font-weight: bold; color: #14532d; font-family: monospace; margin-top: 2px;">${inquiry.refId}</div>
               </div>
 
               <!-- Reservation Details Table -->
-              <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 18px; margin-bottom: 24px;">
-                <table width="100%" border="0" cellspacing="0" cellpadding="6" style="font-size: 13px;">
+              <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-bottom: 24px;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="4" style="font-size: 9px;">
                   <tr><td style="color: #64748b; width: 38%; font-weight: bold;">Guest Name:</td><td style="color: #0f172a; font-weight: bold;">${inquiry.guestName}</td></tr>
                   <tr><td style="color: #64748b; font-weight: bold;">Phone Number:</td><td style="color: #0f172a; font-weight: bold;">${inquiry.phone}</td></tr>
                   <tr><td style="color: #64748b; font-weight: bold;">Email:</td><td>${inquiry.email}</td></tr>
                   <tr><td style="color: #64748b; font-weight: bold;">Room / Suite:</td><td style="color: #0f172a; font-weight: bold;">${inquiry.roomName}</td></tr>
                   <tr><td style="color: #64748b; font-weight: bold;">Check-In &amp; Out:</td><td style="color: #0f172a; font-weight: bold;">${checkInFormatted} to ${checkOutFormatted} (${inquiry.nights} Nights)</td></tr>
                   <tr><td style="color: #64748b; font-weight: bold;">Guests &amp; Rooms:</td><td>${inquiry.guestsCount} (${inquiry.roomsCount} Room)</td></tr>
-                  <tr><td style="color: #64748b; font-weight: bold;">Total Tariff:</td><td style="color: #14532d; font-weight: bold; font-size: 16px;">${formattedAmount}</td></tr>
+                  <tr><td style="color: #64748b; font-weight: bold;">Total Tariff:</td><td style="color: #14532d; font-weight: bold; font-size: 9px;">${formattedAmount}</td></tr>
                 </table>
               </div>
             </td>
@@ -587,7 +587,7 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
 
           <!-- Dark Footer Banner with White Text -->
           <tr>
-            <td style="background-color: #0b3b24; padding: 20px 30px; text-align: center; color: #ffffff; font-size: 11px;">
+            <td style="background-color: #0b3b24; padding: 15px 20px; text-align: center; color: #ffffff; font-size: 9px;">
               <div style="font-weight: bold; color: #ffffff;">Hotel Sonar Bangla &bull; Sundarban</div>
               <div style="margin-top: 4px; color: #cbd5e1;">${websiteDomain}</div>
             </td>
@@ -624,21 +624,21 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
   <title>Hotel Reservation Confirmation - ${websiteName}</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: Arial, Helvetica, sans-serif; color: #0f172a;">
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; padding: 25px 10px;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; padding: 15px 10px;">
     <tr>
       <td align="center">
         <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
           
           <!-- Dark Header Banner with White Text -->
           <tr>
-            <td style="background-color: #0b3b24; border-top: 4px solid #d4af37; padding: 28px 30px; text-align: center;">
-              <div style="font-size: 11px; font-weight: bold; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;">
+            <td style="background-color: #0b3b24; border-top: 4px solid #d4af37; padding: 15px 20px; text-align: center;">
+              <div style="font-size: 9px; font-weight: bold; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;">
                 LUXURY RESORT &bull; SUNDARBAN DELTA
               </div>
-              <h1 style="margin: 0; font-size: 23px; font-weight: bold; color: #ffffff; letter-spacing: 1px;">
+              <h1 style="margin: 0; font-size: 15px; font-weight: bold; color: #ffffff; letter-spacing: 1px;">
                 HOTEL SONAR BANGLA &amp; RESORT
               </h1>
-              <div style="font-size: 12px; color: #e2e8f0; margin-top: 6px; line-height: 1.4;">
+              <div style="font-size: 9px; color: #e2e8f0; margin-top: 6px; line-height: 1.4;">
                 River-front Luxury Rooms, Swimming Pool &amp; World-class Bengali Hospitality
               </div>
             </td>
@@ -646,30 +646,30 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
 
           <!-- Main Body Container -->
           <tr>
-            <td style="padding: 28px 30px;">
+            <td style="padding: 15px 20px;">
 
               <!-- Greeting & Thank You -->
-              <h2 style="margin: 0 0 10px 0; font-size: 18px; font-weight: bold; color: #0f172a;">
+              <h2 style="margin: 0 0 10px 0; font-size: 15px; font-weight: bold; color: #0f172a;">
                 Namaste, ${inquiry.guestName}!
               </h2>
-              <p style="margin: 0 0 20px 0; font-size: 13px; color: #475569; line-height: 1.6;">
+              <p style="margin: 0 0 20px 0; font-size: 9px; color: #475569; line-height: 1.6;">
                 Thank you for choosing <strong style="color: #0f172a;">Hotel Sonar Bangla &amp; Resort</strong>. We have received your resort room reservation request. Our front desk team is reviewing your travel dates and preparing your stay details.
               </p>
 
               <!-- Booking Reference Box -->
-              <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 14px 20px; margin-bottom: 22px;">
+              <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 10px 15px; margin-bottom: 22px;">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
                     <td>
-                      <div style="font-size: 10px; font-weight: bold; color: #166534; text-transform: uppercase; letter-spacing: 1px;">
+                      <div style="font-size: 9px; font-weight: bold; color: #166534; text-transform: uppercase; letter-spacing: 1px;">
                         RESERVATION REFERENCE
                       </div>
-                      <div style="font-size: 22px; font-weight: bold; color: #14532d; font-family: monospace; margin-top: 2px;">
+                      <div style="font-size: 15px; font-weight: bold; color: #14532d; font-family: monospace; margin-top: 2px;">
                         ${inquiry.refId}
                       </div>
                     </td>
                     <td align="right" valign="middle">
-                      <span style="display: inline-block; background-color: #0b3b24; color: #ffffff; font-size: 11px; font-weight: bold; padding: 7px 14px; border-radius: 4px; letter-spacing: 0.5px;">
+                      <span style="display: inline-block; background-color: #0b3b24; color: #ffffff; font-size: 9px; font-weight: bold; padding: 7px 14px; border-radius: 4px; letter-spacing: 0.5px;">
                         REQUEST REGISTERED
                       </span>
                     </td>
@@ -678,8 +678,8 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
               </div>
 
               <!-- Main Details Box -->
-              <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 18px 20px; margin-bottom: 22px;">
-                <table width="100%" border="0" cellspacing="0" cellpadding="6" style="font-size: 13px;">
+              <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px 15px; margin-bottom: 22px;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="4" style="font-size: 9px;">
                   <tr>
                     <td style="color: #64748b; width: 38%; font-weight: bold;">Room / Suite Type:</td>
                     <td style="color: #0f172a; font-weight: bold;">${inquiry.roomName}</td>
@@ -698,7 +698,7 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
                   </tr>
                   <tr>
                     <td style="color: #64748b; font-weight: bold;">Estimated Tariff:</td>
-                    <td style="color: #14532d; font-weight: bold; font-size: 16px;">${formattedAmount}</td>
+                    <td style="color: #14532d; font-weight: bold; font-size: 9px;">${formattedAmount}</td>
                   </tr>
                   <tr>
                     <td style="color: #64748b; font-weight: bold;">Payment Terms:</td>
@@ -708,11 +708,11 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
               </div>
 
               <!-- Resort Inclusions Box (No Icons) -->
-              <div style="background-color: #faf5ff; border: 1px solid #e9d5ff; border-radius: 6px; padding: 18px 20px; margin-bottom: 22px;">
-                <div style="font-size: 11px; font-weight: bold; color: #6b21a8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">
+              <div style="background-color: #faf5ff; border: 1px solid #e9d5ff; border-radius: 6px; padding: 12px 15px; margin-bottom: 22px;">
+                <div style="font-size: 9px; font-weight: bold; color: #6b21a8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">
                   RESORT AMENITIES &amp; INCLUSIONS:
                 </div>
-                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-size: 12px; color: #581c87; line-height: 1.8;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-size: 9px; color: #581c87; line-height: 1.8;">
                   <tr>
                     <td width="50%" valign="top">
                       - River-view / Garden-view Luxury Accommodation<br>
@@ -729,29 +729,29 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
               </div>
 
               <!-- What Happens Next Box (No Icons) -->
-              <div style="background-color: #fffbeb; border: 1px solid #fef3c7; border-left: 4px solid #f59e0b; border-radius: 4px; padding: 14px 18px; margin-bottom: 24px;">
-                <div style="font-size: 13px; font-weight: bold; color: #92400e; margin-bottom: 4px;">
+              <div style="background-color: #fffbeb; border: 1px solid #fef3c7; border-left: 4px solid #f59e0b; border-radius: 4px; padding: 10px 15px; margin-bottom: 24px;">
+                <div style="font-size: 9px; font-weight: bold; color: #92400e; margin-bottom: 4px;">
                   What Happens Next?
                 </div>
-                <div style="font-size: 12px; color: #78350f; line-height: 1.5;">
+                <div style="font-size: 9px; color: #78350f; line-height: 1.5;">
                   Our resort reservation desk will contact you at <strong style="color: #92400e;">${inquiry.phone}</strong> within 24 hours to confirm room availability, early check-in requests, and boat transfer arrangements.
                 </div>
               </div>
 
               <!-- Action Buttons (No Icons) -->
               <div style="text-align: center; margin-bottom: 10px;">
-                <div style="font-size: 12px; color: #475569; margin-bottom: 14px;">
+                <div style="font-size: 9px; color: #475569; margin-bottom: 14px;">
                   Have questions or want to customize your dates right now?
                 </div>
                 <table border="0" cellspacing="0" cellpadding="0" align="center">
                   <tr>
                     <td style="padding-right: 8px;">
-                      <a href="https://wa.me/917001403498" style="display: inline-block; background-color: #16a34a; color: #ffffff; text-decoration: none; padding: 11px 20px; font-weight: bold; font-size: 12px; border-radius: 4px;">
+                      <a href="https://wa.me/917001403498" style="display: inline-block; background-color: #16a34a; color: #ffffff; text-decoration: none; padding: 11px 20px; font-weight: bold; font-size: 9px; border-radius: 4px;">
                         Chat on WhatsApp
                       </a>
                     </td>
                     <td style="padding-left: 8px;">
-                      <a href="tel:+917001403498" style="display: inline-block; background-color: #0b3b24; color: #ffffff; text-decoration: none; padding: 11px 20px; font-weight: bold; font-size: 12px; border-radius: 4px;">
+                      <a href="tel:+917001403498" style="display: inline-block; background-color: #0b3b24; color: #ffffff; text-decoration: none; padding: 11px 20px; font-weight: bold; font-size: 9px; border-radius: 4px;">
                         Call Helpline: +91 70014 03498
                       </a>
                     </td>
@@ -764,14 +764,14 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
 
           <!-- Dark Footer Banner with White Text -->
           <tr>
-            <td style="background-color: #0b3b24; padding: 24px 30px; text-align: center; color: #ffffff;">
-              <div style="font-size: 14px; font-weight: bold; letter-spacing: 1px; color: #ffffff;">
+            <td style="background-color: #0b3b24; padding: 15px 20px; text-align: center; color: #ffffff;">
+              <div style="font-size: 9px; font-weight: bold; letter-spacing: 1px; color: #ffffff;">
                 HOTEL SONAR BANGLA &amp; RESORT
               </div>
-              <div style="font-size: 11px; color: #e2e8f0; margin-top: 4px; letter-spacing: 0.5px;">
+              <div style="font-size: 9px; color: #e2e8f0; margin-top: 4px; letter-spacing: 0.5px;">
                 WILD BENGAL HOSPITALITY &bull; PAKHIRALAY, GOSABA, SUNDARBAN, WB 743370
               </div>
-              <div style="font-size: 11px; color: #cbd5e1; margin-top: 12px; border-top: 1px solid #14532d; padding-top: 12px;">
+              <div style="font-size: 9px; color: #cbd5e1; margin-top: 12px; border-top: 1px solid #14532d; padding-top: 12px;">
                 Direct Resort Helpline: <a href="tel:+917001403498" style="color: #ffffff; text-decoration: none; font-weight: bold;">+91 70014 03498</a> | <a href="mailto:sundarbanluxurypackage@gmail.com" style="color: #ffffff; text-decoration: none; font-weight: bold;">sundarbanluxurypackage@gmail.com</a>
               </div>
             </td>
