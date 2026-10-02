@@ -16,7 +16,7 @@ export async function GET() {
 
     const settings = settingsList[0] || {
       id: "default",
-      displayMode: "manual",
+      displayMode: "google",
       googlePlaceId: "ChIJ74-8t225-TkRk9b3Psm9Fz8",
       googlePlaceUrl: "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
       featurableId: "",
@@ -47,10 +47,10 @@ export async function GET() {
     console.error("Error fetching testimonials:", error);
     return NextResponse.json({
       success: true,
-      displayMode: "manual",
+      displayMode: "google",
       settings: {
         id: "default",
-        displayMode: "manual",
+        displayMode: "google",
         googlePlaceId: "ChIJ74-8t225-TkRk9b3Psm9Fz8",
         googlePlaceUrl: "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
         googleRating: 4.9,

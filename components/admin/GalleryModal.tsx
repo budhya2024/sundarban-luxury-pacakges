@@ -28,8 +28,10 @@ export function GalleryModal({
   const [category, setCategory] = useState("Wildlife");
   const [order, setOrder] = useState(1);
   const [status, setStatus] = useState<AdminGalleryItem["status"]>("Active");
+  const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
+    setFormError(null);
     if (initialGalleryItem) {
       setSrc(initialGalleryItem.src || "");
       setAlt(initialGalleryItem.alt || "");
@@ -55,8 +57,13 @@ export function GalleryModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError(null);
     if (!src.trim()) {
-      alert("Please upload or enter an image URL for this photo.");
+      setFormError("Please upload a photo or select an image for this gallery item.");
+      return;
+    }
+    if (!title.trim()) {
+      setFormError("Please provide a title for this photo.");
       return;
     }
     onSave({
@@ -100,12 +107,29 @@ export function GalleryModal({
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs">
+          {formError && (
+            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded font-medium flex items-center justify-between">
+              <span>{formError}</span>
+              <button
+                type="button"
+                onClick={() => setFormError(null)}
+                className="text-rose-500 hover:text-rose-700 font-bold ml-2"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
           <div>
             <ImageUploadDropzone
               value={src}
-              onChange={(newVal) => setSrc(newVal)}
+              onChange={(newVal) => {
+                setSrc(newVal);
+                if (formError) setFormError(null);
+              }}
               label="Photo Image File / Upload *"
               helperText="Upload your JPG, PNG, or WebP photo, or select from presets"
+              folder="gallery"
             />
           </div>
 

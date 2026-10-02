@@ -409,11 +409,9 @@ export function BookingModal({
               guestEmail: formData.email,
               guestName: formData.fullName,
               guestPhone: formData.phoneNumber,
-              whatsAppUrl: confirmedCode
-                ? `https://api.whatsapp.com/send?phone=919876543210&text=${encodeURIComponent(
-                  `Hello, I confirmed booking ${confirmedCode} for ${packageName} on ${formData.travelDate}.`
-                )}`
-                : undefined,
+              whatsAppUrl: `https://api.whatsapp.com/send?phone=919876543210&text=${encodeURIComponent(
+                `Hello, I submitted a booking request for ${packageName} on ${formData.travelDate}.`
+              )}`,
             }}
             onViewBooking={handleReset}
             onBackToHome={handleReset}

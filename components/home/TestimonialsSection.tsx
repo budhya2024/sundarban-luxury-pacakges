@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import { useAdmin } from "@/context/AdminContext";
 import { GoogleReviewsWidget } from "./GoogleReviewsWidget";
+import { ReviewAvatar } from "@/components/ui/ReviewAvatar";
 
 // Import Swiper styles
 import "swiper/css";
@@ -172,15 +173,12 @@ export function TestimonialsSection() {
                       {/* Card Header: Avatar, Name & Stars */}
                       <div className="flex items-center justify-between gap-3 mb-5">
                         <div className="flex items-center gap-3 min-w-0">
-                          <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-full ring-2 ring-[#d97706]/40 shadow-sm bg-slate-100">
-                            <Image
-                              src={item.avatar || "/assets/images/avatars/andrew.jpg"}
-                              alt={item.name}
-                              fill
-                              className="object-cover"
-                              sizes="48px"
-                            />
-                          </div>
+                          <ReviewAvatar
+                            src={item.avatar}
+                            name={item.name}
+                            size={48}
+                            ringClass="ring-2 ring-[#d97706]/40"
+                          />
                           <div className="min-w-0">
                             <h4 className="text-base font-bold text-[#0f172a] leading-tight truncate">
                               {item.name}
