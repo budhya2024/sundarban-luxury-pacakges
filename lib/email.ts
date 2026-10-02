@@ -169,7 +169,7 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
     const cleanPhoneDigits = booking.phone.replace(/[^0-9]/g, "");
     const guestWhatsappUrl = `https://wa.me/${cleanPhoneDigits.length === 10 ? "91" + cleanPhoneDigits : cleanPhoneDigits
       }?text=${encodeURIComponent(
-        `Hello ${booking.guestName}, regarding your booking ${booking.bookingCode} with ${websiteName}.`
+        `Hello ${booking.guestName}, regarding your safari booking with ${websiteName}.`
       )}`;
 
     // -------------------------------------------------------------
@@ -326,24 +326,6 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
                 Thank you for selecting <strong style="color: #0f172a;">Sundarban Luxury Expeditions</strong>. We have received your safari reservation request. Our dedicated expedition desk has logged your tour preferences, and is preparing your delta voyage itinerary.
               </p>
 
-              <!-- Booking Reference Box (Light Mint Background) -->
-              <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 10px 15px; margin-bottom: 22px;">
-                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td>
-                      <div style="font-size: 9px; font-weight: bold; color: #166534; text-transform: uppercase; letter-spacing: 1px;">
-                        BOOKING REFERENCE NUMBER
-                      </div>
-                      <div style="font-size: 15px; font-weight: bold; color: #14532d; font-family: monospace; margin-top: 2px;">
-                        ${booking.bookingCode}
-                      </div>
-                    </td>
-                    <td align="right" valign="middle">
-                    
-                    </td>
-                  </tr>
-                </table>
-              </div>
 
               <!-- Main Details Box -->
               <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px 15px; margin-bottom: 22px;">
@@ -458,8 +440,8 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
       await transporter.sendMail({
         from: fromAddress,
         to: booking.email,
-        subject: `Booking Confirmed: ${booking.bookingCode} - ${websiteName}`,
-        text: `Namaste ${booking.guestName}, your booking ${booking.bookingCode} for ${booking.packageOrRoom} is confirmed!`,
+        subject: `Booking Confirmed - ${websiteName}`,
+        text: `Namaste ${booking.guestName}, your booking for ${booking.packageOrRoom} is confirmed!`,
         html: guestHtml,
       });
       guestSent = true;
@@ -656,27 +638,6 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
                 Thank you for choosing <strong style="color: #0f172a;">Hotel Sonar Bangla &amp; Resort</strong>. We have received your resort room reservation request. Our front desk team is reviewing your travel dates and preparing your stay details.
               </p>
 
-              <!-- Booking Reference Box -->
-              <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 10px 15px; margin-bottom: 22px;">
-                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td>
-                      <div style="font-size: 9px; font-weight: bold; color: #166534; text-transform: uppercase; letter-spacing: 1px;">
-                        RESERVATION REFERENCE
-                      </div>
-                      <div style="font-size: 15px; font-weight: bold; color: #14532d; font-family: monospace; margin-top: 2px;">
-                        ${inquiry.refId}
-                      </div>
-                    </td>
-                    <td align="right" valign="middle">
-                      <span style="display: inline-block; background-color: #0b3b24; color: #ffffff; font-size: 9px; font-weight: bold; padding: 7px 14px; border-radius: 4px; letter-spacing: 0.5px;">
-                        REQUEST REGISTERED
-                      </span>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-
               <!-- Main Details Box -->
               <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px 15px; margin-bottom: 22px;">
                 <table width="100%" border="0" cellspacing="0" cellpadding="4" style="font-size: 9px;">
@@ -788,8 +749,8 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
       await transporter.sendMail({
         from: fromAddress,
         to: inquiry.email,
-        subject: `Reservation Confirmed: ${inquiry.refId} - Hotel Sonar Bangla`,
-        text: `Namaste ${inquiry.guestName}, your reservation ${inquiry.refId} for ${inquiry.roomName} is confirmed!`,
+        subject: `Reservation Confirmed - Hotel Sonar Bangla`,
+        text: `Namaste ${inquiry.guestName}, your reservation request for ${inquiry.roomName} has been received!`,
         html: guestHtml,
       });
       guestSent = true;
@@ -812,3 +773,147 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
     };
   }
 }
+
+export interface AdminAuthEmailParams {
+  to: string;
+  adminName: string;
+  magicLinkUrl: string;
+  resetUrl: string;
+  expiresInMinutes?: number;
+}
+
+/**
+ * Dispatches an administrative email containing both a 1-click magic login link
+ * and a direct password reset link.
+ */
+export async function sendAdminAuthEmail(params: AdminAuthEmailParams) {
+  const { to, adminName, magicLinkUrl, resetUrl, expiresInMinutes = 30 } = params;
+
+  try {
+    const transporter = getEmailTransporter();
+    if (!transporter) {
+      console.warn("[Nodemailer] Transporter not configured. Simulating auth email dispatch.");
+      return {
+        success: true,
+        sent: false,
+        warning: "SMTP not configured. Token link generated.",
+      };
+    }
+
+    const fromAddress = `"Sundarban Luxury Security" <${process.env.SMTP_USER || "sundarbanluxurypackage@gmail.com"}>`;
+
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Reset Admin Password & Access</title>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; margin: 0; padding: 24px; color: #1e293b;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 580px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 16px rgba(0,0,0,0.05);">
+    <!-- Header -->
+    <tr>
+      <td style="background-color: #0b3b24; padding: 28px 24px; text-align: center; border-top: 4px solid #d4af37;">
+        <h1 style="color: #ffffff; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: 0.5px;">
+          SUNDARBAN LUXURY PACKAGES
+        </h1>
+        <div style="color: #d4af37; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 6px;">
+          Admin Password Reset &amp; Access Recovery
+        </div>
+      </td>
+    </tr>
+
+    <!-- Body -->
+    <tr>
+      <td style="padding: 32px 28px;">
+        <h2 style="font-size: 17px; font-weight: 700; color: #0f172a; margin-top: 0; margin-bottom: 12px;">
+          Hello ${adminName || "Administrator"},
+        </h2>
+        <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 24px;">
+          We received a request to recover or reset your Sundarban Luxury Packages admin account. Choose the option that best suits your needs:
+        </p>
+
+        <!-- Option 1: Reset Password Button (Primary) -->
+        <div style="background-color: #f0fdf4; border: 1.5px solid #86efac; border-radius: 8px; padding: 22px; text-align: center; margin-bottom: 22px;">
+          <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #166534; margin-bottom: 6px;">
+            Option 1 (Recommended): Set a New Password
+          </div>
+          <p style="font-size: 13px; color: #15803d; margin: 0 0 16px; line-height: 1.5;">
+            <strong>No old password required.</strong> Click below to choose a brand new password for your admin account:
+          </p>
+          <a href="${resetUrl}" style="display: inline-block; background-color: #057a28; color: #ffffff; font-weight: 700; font-size: 14px; padding: 13px 30px; text-decoration: none; border-radius: 6px; box-shadow: 0 3px 8px rgba(5,122,40,0.3);">
+            Set New Password &rarr;
+          </a>
+        </div>
+
+        <!-- Option 2: 1-Click Magic Link Button -->
+        <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 24px;">
+          <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #475569; margin-bottom: 6px;">
+            Option 2: 1-Click Instant Login (No Password Change)
+          </div>
+          <p style="font-size: 13px; color: #64748b; margin: 0 0 16px; line-height: 1.5;">
+            If you just want to log into the dashboard right now without changing your password:
+          </p>
+          <a href="${magicLinkUrl}" style="display: inline-block; background-color: #1e293b; color: #ffffff; font-weight: 700; font-size: 13px; padding: 11px 24px; text-decoration: none; border-radius: 6px;">
+            Sign In Instantly with Magic Link
+          </a>
+        </div>
+
+        <!-- Expiry & Security Notice -->
+        <div style="border-top: 1px solid #e2e8f0; padding-top: 20px; font-size: 12px; color: #64748b; line-height: 1.6;">
+          <p style="margin: 0 0 8px;">
+            <strong>Security Notice:</strong> Both links are single-use and will automatically expire in <strong>${expiresInMinutes} minutes</strong>.
+          </p>
+          <p style="margin: 0;">
+            If you did not initiate this request, no action is needed. Your existing credentials remain completely safe and unchanged.
+          </p>
+        </div>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="background-color: #f1f5f9; padding: 18px 24px; text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0;">
+        &copy; ${new Date().getFullYear()} Sundarban Luxury Packages &bull; Wild Bengal Hospitality &bull; Automated Security Dispatch
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+    `;
+
+    const textContent = `
+Sundarban Luxury Packages - Admin Password Reset & Access
+
+Hello ${adminName || "Administrator"},
+
+We received a request to recover or reset your admin account.
+
+Option 1: Set a New Password (No Old Password Needed)
+${resetUrl}
+
+Option 2: 1-Click Instant Login (Sign In Directly)
+${magicLinkUrl}
+
+Both links are single-use and expire in ${expiresInMinutes} minutes. If you did not request this, you can safely ignore this email.
+    `;
+
+    await transporter.sendMail({
+      from: fromAddress,
+      to,
+      subject: `Reset Admin Password & Access - Sundarban Luxury Packages`,
+      text: textContent,
+      html: htmlContent,
+    });
+
+    return { success: true, sent: true };
+  } catch (err: any) {
+    console.error("[Nodemailer] Error sending admin auth email:", err);
+    return {
+      success: false,
+      sent: false,
+      warning: err?.message || "Failed to dispatch email",
+    };
+  }
+}
+

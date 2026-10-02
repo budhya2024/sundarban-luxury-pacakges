@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { uploadToStorage, deleteFromStorage } from "@/lib/s3";
 
-const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB industry norm for blog web images
+const MAX_FILE_SIZE_BYTES = 30 * 1024 * 1024; // 30 MB max upload limit (with automatic client-side compression)
 const ALLOWED_MIME_TYPES = [
   "image/jpeg",
   "image/jpg",
@@ -21,12 +21,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // 1. Enforce Industry Norm File Size Limit (5 MB)
+    // 1. Enforce Server File Size Limit (30 MB)
     if (file.size > MAX_FILE_SIZE_BYTES) {
       const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
       return NextResponse.json(
         {
-          error: `File size (${fileSizeMB} MB) exceeds the 5 MB limit. Please compress or resize the image before uploading.`,
+          error: `File size (${fileSizeMB} MB) exceeds the 30 MB limit. Please select a smaller photo or compress it before uploading.`,
         },
         { status: 413 }
       );

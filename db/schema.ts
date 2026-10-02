@@ -12,6 +12,22 @@ export const adminUsers = pgTable("admin_users", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+// 1b. Admin Password Resets & Magic Login Tokens
+export const adminPasswordResets = pgTable("admin_password_resets", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  adminId: uuid("admin_id")
+    .references(() => adminUsers.id, { onDelete: "cascade" })
+    .notNull(),
+  token: varchar("token", { length: 255 }).notNull().unique(),
+  type: varchar("type", { length: 50 }).default("reset_password").notNull(), // reset_password | magic_link
+  expiresAt: timestamp("expires_at").notNull(),
+  usedAt: timestamp("used_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type AdminPasswordResetRow = typeof adminPasswordResets.$inferSelect;
+export type NewAdminPasswordReset = typeof adminPasswordResets.$inferInsert;
+
 // 2. Blog Posts
 export const blogPosts = pgTable("blog_posts", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -297,7 +313,7 @@ export type NewTestimonial = typeof testimonials.$inferInsert;
 // 13. Testimonial Settings (Switch between manual & live Google reviews)
 export const testimonialSettings = pgTable("testimonial_settings", {
   id: varchar("id", { length: 50 }).primaryKey().default("default"),
-  displayMode: varchar("display_mode", { length: 50 }).default("manual").notNull(), // manual | google
+  displayMode: varchar("display_mode", { length: 50 }).default("google").notNull(), // manual | google
   googlePlaceId: varchar("google_place_id", { length: 255 }).default("ChIJ74-8t225-TkRk9b3Psm9Fz8"),
   googlePlaceUrl: text("google_place_url").default("https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb"),
   featurableId: varchar("featurable_id", { length: 255 }),

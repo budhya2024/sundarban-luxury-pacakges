@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { desc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { blogPosts } from "@/db/schema";
@@ -117,6 +118,13 @@ export async function POST(req: NextRequest) {
         views: 0,
       })
       .returning();
+
+    try {
+      revalidatePath("/blog");
+      revalidatePath(`/blog/${finalSlug}`);
+      revalidatePath("/");
+      revalidatePath("/admin/blog");
+    } catch {}
 
     return NextResponse.json({ success: true, post: newPost });
   } catch (error: any) {

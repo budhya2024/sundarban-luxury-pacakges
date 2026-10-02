@@ -20,6 +20,7 @@ import { useAdmin } from "@/context/AdminContext";
 import { useConfirm } from "@/context/ConfirmContext";
 import { AdminTestimonialItem } from "@/lib/admin-data";
 import { TestimonialModal } from "@/components/admin/TestimonialModal";
+import { ReviewAvatar } from "@/components/ui/ReviewAvatar";
 
 export default function AdminTestimonialsPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -209,14 +210,12 @@ export default function AdminTestimonialsPage() {
                   {/* Top Bar: Reviewer Avatar, Name, Rating */}
                   <div className="flex items-center justify-between gap-3 mb-3">
                     <div className="flex items-center gap-3">
-                      <div className="relative w-11 h-11 rounded-full overflow-hidden bg-slate-100 ring-2 ring-amber-500/30 flex-shrink-0">
-                        <Image
-                          src={item.avatar || "/assets/images/avatars/andrew.jpg"}
-                          alt={item.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
+                      <ReviewAvatar
+                        src={item.avatar}
+                        name={item.name}
+                        size={44}
+                        ringClass="ring-2 ring-amber-500/30"
+                      />
                       <div>
                         <h4 className="text-sm font-extrabold text-slate-900 leading-tight">
                           {item.name}

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Home,
@@ -15,6 +15,7 @@ import {
   Settings,
   Image as ImageIcon,
   X,
+  LogOut,
 } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
 
@@ -25,11 +26,23 @@ export function AdminSidebar({
   isMobileOpen: boolean;
   onCloseMobile: () => void;
 }) {
+  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const pageParam = searchParams ? searchParams.get("page") : null;
   const { bookings } = useAdmin();
   const [mounted, setMounted] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/auth/logout", { method: "POST" });
+    } catch {
+      // ignore
+    }
+    if (onCloseMobile) onCloseMobile();
+    router.push("/admin/login");
+    router.refresh();
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -214,10 +227,10 @@ export function AdminSidebar({
         </div>
       </nav>
 
-      {/* Bottom Pinned Section: System & Broadcast (No Admin Active footer) */}
+      {/* Bottom Pinned Section: System & Account */}
       <div className="p-4 border-t border-slate-800/80 bg-[#0b1120] mt-auto space-y-1.5">
         <span className="px-3.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-2">
-          System &amp; Broadcast
+          System &amp; Account
         </span>
 
         <Link
@@ -231,6 +244,16 @@ export function AdminSidebar({
           <Settings className="w-4 h-4 text-slate-400" />
           <span>Settings &amp; Alerts</span>
         </Link>
+
+        {/* Sign Out Button */}
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold text-slate-400 hover:bg-rose-950/40 hover:text-rose-400 transition-all duration-200 cursor-pointer"
+        >
+          <LogOut className="w-4 h-4 text-rose-400/80" />
+          <span>Sign Out</span>
+        </button>
       </div>
     </div>
   );

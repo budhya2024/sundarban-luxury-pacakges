@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error("Admin create gallery item error:", error);
     return NextResponse.json(
-      { error: "Failed to add photo to gallery" },
+      { error: error?.message || "Failed to add photo to gallery" },
       { status: 500 }
     );
   }

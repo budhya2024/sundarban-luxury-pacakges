@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { Check, Copy, X } from "lucide-react";
+import React from "react";
+import { X } from "lucide-react";
 
 export interface BookingDetailsData {
   hotelOrPackageName?: string;
@@ -34,8 +34,6 @@ export function BookingConfirmationCard({
   primaryActionText = "View Booking",
   secondaryActionText = "Back to Home",
 }: BookingConfirmationCardProps) {
-  const [copied, setCopied] = useState(false);
-
   const handleClose = () => {
     if (onBackToHome) {
       onBackToHome();
@@ -79,16 +77,12 @@ export function BookingConfirmationCard({
     ? formatDateDisplay(details.bookingDate, 0)
     : formatDateDisplay(undefined, 0);
 
-  const bookingCode = details.bookingId || "BN" + Math.floor(100000000 + Math.random() * 900000000);
-  const guestsDisplay = typeof details.guests === "number" ? `${details.guests} ${details.guests === 1 ? "Adult" : "Adults"}` : details.guests || "2 Adults";
+  const guestsDisplay =
+    typeof details.guests === "number"
+      ? `${details.guests} ${details.guests === 1 ? "Adult" : "Adults"}`
+      : details.guests || "2 Adults";
   const hotelName = details.hotelOrPackageName || "Sundarban Luxury Expedition";
   const emailText = details.guestEmail || "your email";
-
-  const handleCopyCode = () => {
-    navigator.clipboard.writeText(bookingCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   return (
     <div className="relative w-full max-w-md mx-auto text-center font-sans animate-in fade-in zoom-in-95 duration-200">
@@ -140,34 +134,19 @@ export function BookingConfirmationCard({
           Booking Confirmed!
         </h2>
         <p className="text-slate-500 text-xs mt-1 leading-relaxed max-w-xs mx-auto">
-          Your trip is confirmed. All arrangements are set, and your confirmation details have been sent successfully.
-          {" "}
+          Your trip request is confirmed. All arrangements are set, and your confirmation details have been sent successfully to{" "}
           <span className="text-slate-800 font-semibold underline decoration-slate-300">
             {emailText}
-          </span>
+          </span>.
         </p>
       </div>
 
       {/* Compact Booking Details Box */}
       <div className="bg-slate-50/90 border border-slate-200/80 rounded-xl p-4 text-left shadow-2xs mb-4">
-        <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-slate-200/60">
+        <div className="pb-2 mb-2.5 border-b border-slate-200/60">
           <span className="text-xs font-bold text-slate-900 uppercase tracking-wider">
             Booking Details
           </span>
-          <button
-            onClick={handleCopyCode}
-            type="button"
-            className="text-[10px] font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1 bg-white px-2 py-0.5 rounded border border-slate-200 transition-colors cursor-pointer"
-          >
-            {copied ? (
-              <span className="text-emerald-600 font-bold">Copied</span>
-            ) : (
-              <>
-                <Copy className="w-2.5 h-2.5" />
-                <span>Copy ID</span>
-              </>
-            )}
-          </button>
         </div>
 
         {/* Key Values */}
@@ -193,13 +172,6 @@ export function BookingConfirmationCard({
             <span className="text-slate-500 font-medium">Guests</span>
             <span className="text-slate-900 font-bold">{guestsDisplay}</span>
           </div>
-
-          <div className="flex items-center justify-between gap-3 pt-2 border-t border-slate-200/50">
-            <span className="text-slate-500 font-medium">Booking ID</span>
-            <span className="text-slate-900 font-mono font-bold tracking-wide text-xs text-emerald-800">
-              {bookingCode}
-            </span>
-          </div>
         </div>
       </div>
 
@@ -223,5 +195,3 @@ export function BookingConfirmationCard({
     </div>
   );
 }
-
-export default BookingConfirmationCard;

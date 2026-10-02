@@ -185,7 +185,15 @@ export function AdminHeader({
           )}
         </div>
 
-
+        {/* Sign Out Button */}
+        <button
+          onClick={handleLogout}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[3px] bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-700 text-xs font-bold transition-all border border-slate-200 cursor-pointer"
+          title="Sign out of Admin Dashboard"
+        >
+          <LogOut className="w-3.5 h-3.5 text-slate-500" />
+          <span className="hidden sm:inline">Logout</span>
+        </button>
       </div>
     </header>
   );

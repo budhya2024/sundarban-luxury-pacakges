@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Star, ExternalLink, ShieldCheck, MapPin, CheckCircle } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
+import { ReviewAvatar } from "@/components/ui/ReviewAvatar";
 
 // Import Swiper styles
 import "swiper/css";
@@ -238,26 +239,7 @@ function GoogleIcon({ className = "w-5 h-5" }: { className?: string }) {
   );
 }
 
-function ReviewAvatar({ src, name }: { src?: string; name: string }) {
-  const [imgSrc, setImgSrc] = useState(src || "/assets/images/avatars/andrew.jpg");
 
-  useEffect(() => {
-    if (src) setImgSrc(src);
-  }, [src]);
-
-  return (
-    <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-full ring-2 ring-blue-500/30 shadow-2xs bg-slate-100 flex items-center justify-center">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={imgSrc}
-        alt={name}
-        className="w-full h-full object-cover"
-        loading="lazy"
-        onError={() => setImgSrc("/assets/images/avatars/andrew.jpg")}
-      />
-    </div>
-  );
-}
 
 export function GoogleReviewsWidget({
   featurableId = "3244b520-3369-414c-a09e-339ea6dbd9e9",

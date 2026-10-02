@@ -57,11 +57,24 @@ function AdminLoginForm() {
     setResetError(null);
     setResetLoading(true);
 
-    // Simulate recovery request
-    setTimeout(() => {
-      setResetLoading(false);
+    try {
+      const res = await fetch("/api/admin/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: resetEmail }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to dispatch recovery email");
+      }
+
       setResetSuccess(true);
-    }, 900);
+    } catch (err: any) {
+      setResetError(err?.message || "Failed to send recovery email. Please try again.");
+    } finally {
+      setResetLoading(false);
+    }
   };
 
   return (
@@ -74,11 +87,11 @@ function AdminLoginForm() {
         <div className="text-center mb-8">
 
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-            {isForgotPassword ? "Reset Password" : "Admin Login"}
+            {isForgotPassword ? "Magic Link & Reset" : "Admin Login"}
           </h1>
           <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
             {isForgotPassword
-              ? "Enter your email address to receive password reset instructions."
+              ? "Enter your email or username to receive a 1-click magic login link and password reset instructions."
               : "Enter your credentials to access your account."}
           </p>
         </div>
@@ -87,16 +100,22 @@ function AdminLoginForm() {
         {isForgotPassword ? (
           <div>
             {resetSuccess ? (
-              <div className="text-center py-4">
-                <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3">
+              <div className="text-center py-4 space-y-3">
+                <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
-                <h3 className="text-sm font-bold text-slate-800 mb-1">
-                  Reset Link Sent
-                </h3>
-                <p className="text-xs text-slate-500 mb-6">
-                  If an account exists for <span className="font-semibold text-slate-700">{resetEmail}</span>, instructions have been dispatched.
+                <div>
+                  <h3 className="text-sm font-bold text-slate-800 mb-1">
+                    Password Reset &amp; Magic Link Sent!
+                  </h3>
+                  <p className="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">
+                    We sent an email to <span className="font-semibold text-slate-800">{resetEmail}</span> with a <strong>Password Reset link</strong> (set a new password without needing your old one) and a <strong>1-click Magic Login link</strong>.
+                  </p>
+                </div>
+                <p className="text-[11px] text-slate-400 bg-slate-50 p-2.5 rounded border border-slate-100">
+                  Links are valid for 30 minutes. Check your spam/junk folder if you don't see it in a few moments.
                 </p>
+                <div className="pt-2">
                 <button
                   type="button"
                   onClick={() => {
@@ -109,6 +128,7 @@ function AdminLoginForm() {
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>Back to Sign In</span>
                 </button>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleResetPassword} className="space-y-4">

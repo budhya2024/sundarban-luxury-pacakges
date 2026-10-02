@@ -12,8 +12,12 @@ export default function AdminLayout({
   const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  // If on admin login page, do not render sidebar
-  if (pathname === "/admin/login") {
+  // If on admin auth pages, do not render sidebar
+  if (
+    pathname === "/admin/login" ||
+    pathname === "/admin/reset-password" ||
+    pathname === "/admin/magic-login"
+  ) {
     return <div className="min-h-screen bg-slate-900">{children}</div>;
   }
 
