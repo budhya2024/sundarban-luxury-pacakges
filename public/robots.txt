@@ -1,0 +1,40 @@
+# ==========================================
+# Robots.txt for https://sundarbanluxurypackage.com/
+# Optimized for SEO, AEO, and AI Bots
+# ==========================================
+
+# 1. General Search Engines (Google, Bing, Yahoo, etc.)
+User-agent: *
+Allow: /
+Allow: /packages/
+Allow: /tour/
+Allow: /blog/
+
+# 2. Block Admin, Private & System Folders
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /private/
+Disallow: /tmp/
+Disallow: ?*
+
+# 3. AI Search & Generative Engine Bots (For AEO / SGE Optimization)
+# Allowing AI crawlers so your content gets picked up by AI Overviews and Search Engines
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+# 4. Custom Sitemap Location (Using your sitemap.xml)
+Sitemap: https://sundarbanluxurypackage.com/sitemap.xml

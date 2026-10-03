@@ -21,8 +21,38 @@ const montez = Montez({
 });
 
 export const metadata: Metadata = {
-  title: "Sundarban Luxury Package | Luxury Eco Tours & River Safaris",
-  description: "Luxury tour packages for Sundarban eco tours, wildlife river safaris, and 5-star resort stays.",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "https://sundarbanluxurypackage.com/"
+  ),
+  title: "Sundarban Tour Package from Kolkata | Best Jungle Safari Booking",
+  description:
+    "Book affordable Sundarban tour packages from Kolkata. Experience thrilling boat safari, wildlife spotting, and cozy stays. Call now for best offers!",
+  keywords: [
+    "sundarban tour package",
+    "sundarban trip from kolkata",
+    "sundarban jungle safari booking",
+    "sundarban tour cost",
+    "2 days sundarban tour",
+  ],
+  robots: {
+    index: true,
+    follow: true,
+    "max-snippet": -1,
+    "max-image-preview": "large",
+    "max-video-preview": -1,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sundarban Tour Package from Kolkata",
+    description: "Experience the best Sundarban jungle safari with us.",
+    images: ["https://sundarbanluxurypackage.com/images/sundarban-banner.jpg"],
+  },
+  verification: {
+    google: "ZB58AbxPxUoxGQkSUgmlus0ml84nt0MkAAeH680uc0s",
+  },
+  alternates: {
+    canonical: "https://sundarbanluxurypackage.com/sundarban-tour-package/",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -32,6 +62,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${manrope.variable} ${geistMono.variable} ${montez.variable} h-full antialiased`}
     >
       <head>
+        <meta
+          name="google-site-verification"
+          content="ZB58AbxPxUoxGQkSUgmlus0ml84nt0MkAAeH680uc0s"
+        />
         <Script
           id="gtm-script"
           strategy="afterInteractive"
