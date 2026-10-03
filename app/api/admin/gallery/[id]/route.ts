@@ -50,7 +50,7 @@ export async function PUT(
   } catch (error: any) {
     console.error("Admin update gallery item error:", error);
     return NextResponse.json(
-      { error: "Failed to update gallery photo" },
+      { error: error?.message || "Failed to update gallery photo" },
       { status: 500 }
     );
   }
@@ -77,7 +77,7 @@ export async function DELETE(
   } catch (error: any) {
     console.error("Admin delete gallery item error:", error);
     return NextResponse.json(
-      { error: "Failed to delete photo from gallery" },
+      { error: error?.message || "Failed to delete photo from gallery" },
       { status: 500 }
     );
   }

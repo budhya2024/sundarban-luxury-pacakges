@@ -27,10 +27,15 @@ export async function proxy(req: NextRequest) {
     }
   }
 
-  // If visiting login page:
-  if (pathname === "/admin/login") {
-    if (isAuthenticated) {
-      // If already logged in, redirect to /admin
+  // Public admin auth pages (login, magic-login, reset-password):
+  const isAuthPage =
+    pathname === "/admin/login" ||
+    pathname === "/admin/magic-login" ||
+    pathname === "/admin/reset-password";
+
+  if (isAuthPage) {
+    if (isAuthenticated && pathname === "/admin/login") {
+      // If already logged in and visiting login page, redirect to /admin
       return NextResponse.redirect(new URL("/admin", req.url));
     }
     return NextResponse.next();

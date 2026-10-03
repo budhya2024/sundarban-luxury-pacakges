@@ -12,6 +12,10 @@ import {
   CheckCircle,
   CreditCard,
   Lock,
+  KeyRound,
+  Sparkles,
+  AlertCircle,
+  CheckCircle2,
 } from "lucide-react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { useAdmin } from "@/context/AdminContext";
@@ -37,9 +41,78 @@ export default function AdminSettingsPage() {
     autoConfirmInstant: true,
   });
 
+  // Password change state
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordLoading, setPasswordLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [passwordSuccess, setPasswordSuccess] = useState<string | null>(null);
+  const [magicLinkLoading, setMagicLinkLoading] = useState(false);
+
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     showToast("Business settings saved successfully.");
+  };
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordError(null);
+    setPasswordSuccess(null);
+
+    if (newPassword.length < 6) {
+      setPasswordError("New password must be at least 6 characters.");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError("New password and confirm password do not match.");
+      return;
+    }
+
+    setPasswordLoading(true);
+
+    try {
+      const res = await fetch("/api/admin/auth/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to update password.");
+      }
+
+      setPasswordSuccess("Admin password updated successfully.");
+      showToast("Admin password updated successfully.");
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (err: any) {
+      setPasswordError(err?.message || "Failed to update password.");
+    } finally {
+      setPasswordLoading(false);
+    }
+  };
+
+  const handleSendMagicLink = async () => {
+    setMagicLinkLoading(true);
+    try {
+      const res = await fetch("/api/admin/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: settings.bookingEmail }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to dispatch magic link");
+      showToast("Magic login & reset instructions sent to " + settings.bookingEmail);
+    } catch (err: any) {
+      showToast(err?.message || "Failed to send magic link");
+    } finally {
+      setMagicLinkLoading(false);
+    }
   };
 
   return (
@@ -255,6 +328,104 @@ export default function AdminSettingsPage() {
             </button>
           </div>
         </form>
+
+        {/* Security & Administrator Password Section */}
+        <div className="bg-white border border-slate-200/90 rounded-[4px] p-5 sm:p-6 shadow-2xs space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+            <div className="flex items-center gap-2.5">
+              <Lock className="w-5 h-5 text-amber-600" />
+              <div>
+                <h3 className="text-sm font-extrabold text-slate-900">
+                  Admin Security &amp; Password
+                </h3>
+                <p className="text-[11px] text-slate-500">
+                  Update your super-admin password or dispatch a 1-click magic login link to your email.
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleSendMagicLink}
+              disabled={magicLinkLoading}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-[3px] transition-colors cursor-pointer disabled:opacity-50"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+              <span>{magicLinkLoading ? "Sending Link..." : "Email Magic Login Link"}</span>
+            </button>
+          </div>
+
+          <form onSubmit={handlePasswordChange} className="space-y-4">
+            {passwordError && (
+              <div className="p-3 rounded-[3px] bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                <span>{passwordError}</span>
+              </div>
+            )}
+
+            {passwordSuccess && (
+              <div className="p-3 rounded-[3px] bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>{passwordSuccess}</span>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">
+                  Current Password *
+                </label>
+                <input
+                  type="password"
+                  required
+                  placeholder="Enter current password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="w-full h-10 px-3 rounded-[3px] border border-slate-300 bg-white text-slate-900 focus:outline-none focus:border-blue-600"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">
+                  New Password *
+                </label>
+                <input
+                  type="password"
+                  required
+                  placeholder="Min 6 characters"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full h-10 px-3 rounded-[3px] border border-slate-300 bg-white text-slate-900 focus:outline-none focus:border-blue-600"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">
+                  Confirm New Password *
+                </label>
+                <input
+                  type="password"
+                  required
+                  placeholder="Re-enter new password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full h-10 px-3 rounded-[3px] border border-slate-300 bg-white text-slate-900 focus:outline-none focus:border-blue-600"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end pt-1">
+              <button
+                type="submit"
+                disabled={passwordLoading}
+                className="px-5 py-2 rounded-[3px] bg-slate-900 hover:bg-black text-white font-bold text-xs flex items-center gap-2 transition-colors disabled:opacity-50 cursor-pointer"
+              >
+                <KeyRound className="w-3.5 h-3.5 text-amber-400" />
+                <span>{passwordLoading ? "Updating..." : "Update Password"}</span>
+              </button>
+            </div>
+          </form>
+        </div>
       </main>
     </div>
   );

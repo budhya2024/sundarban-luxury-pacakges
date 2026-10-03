@@ -39,7 +39,7 @@ export function HeroBookingBar() {
     phone: string;
     email?: string;
   } | null>(null);
-  const [hasCopied, setHasCopied] = useState(false);
+
   const [errorMessage, setErrorMessage] = useState("");
   const dateInputRef = useRef<HTMLInputElement>(null);
 
@@ -97,12 +97,7 @@ export function HeroBookingBar() {
     }
   };
 
-  const handleCopyCode = () => {
-    if (!confirmedBooking) return;
-    navigator.clipboard.writeText(confirmedBooking.bookingCode);
-    setHasCopied(true);
-    setTimeout(() => setHasCopied(false), 2500);
-  };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -211,14 +206,13 @@ export function HeroBookingBar() {
     if (!confirmedBooking) return "#";
     const msg = `*Sundarban Luxury Package - Trip Booking Confirmation*
 ━━━━━━━━━━━━━━━━━━━━━
-Booking Code: ${confirmedBooking.bookingCode}
 Package: ${confirmedBooking.packageName}
 Name: ${confirmedBooking.guestName}
 Phone: ${confirmedBooking.phone}
 Guests: ${confirmedBooking.guests} ${confirmedBooking.guests === 1 ? "Person" : "Persons"}
 Travel Date: ${confirmedBooking.travelDate}
 ━━━━━━━━━━━━━━━━━━━━━
-Hello, I have submitted a booking request on your website with reference *${confirmedBooking.bookingCode}*. Please confirm itinerary and payment arrangements.`;
+Hello, I have submitted a booking request on your website. Please confirm itinerary and payment arrangements.`;
     return `https://wa.me/917001403498?text=${encodeURIComponent(msg)}`;
   };
 

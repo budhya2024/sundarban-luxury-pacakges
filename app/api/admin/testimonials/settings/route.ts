@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
 
     const settings = settingsList[0] || {
       id: "default",
-      displayMode: "manual",
+      displayMode: "google",
       googlePlaceId: "ChIJ74-8t225-TkRk9b3Psm9Fz8",
       googlePlaceUrl: "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
       featurableId: "",
@@ -81,7 +81,7 @@ export async function PUT(req: NextRequest) {
     if (existing.length === 0) {
       await db.insert(testimonialSettings).values({
         id: "default",
-        displayMode: displayMode || "manual",
+        displayMode: displayMode || "google",
         googlePlaceId: googlePlaceId || "ChIJ74-8t225-TkRk9b3Psm9Fz8",
         googlePlaceUrl: googlePlaceUrl || "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
         featurableId: featurableId || "",

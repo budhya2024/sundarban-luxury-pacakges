@@ -54,6 +54,9 @@ function formatInlineMarkdown(text: string): React.ReactNode {
   });
 }
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function generateStaticParams() {
   try {
     const dbPosts = await db
@@ -236,6 +239,11 @@ export default async function BlogDetailPage({
       if (block.startsWith("![")) {
         const match = block.match(/!\[(.*?)\]\((.*?)\)/);
         if (match) {
+          // If this markdown image is identical to the featured cover image, skip duplicate rendering
+          if (match[2] === post.image) {
+            return null;
+          }
+          const isCaptionUrl = match[1] && (match[1].startsWith("http://") || match[1].startsWith("https://") || match[1].startsWith("/"));
           return (
             <div
               key={i}
@@ -244,12 +252,12 @@ export default async function BlogDetailPage({
               <div className="relative h-64 sm:h-96 w-full">
                 <Image
                   src={match[2]}
-                  alt={match[1] || "Blog Illustration"}
+                  alt={isCaptionUrl ? "Blog Illustration" : match[1] || "Blog Illustration"}
                   fill
                   className="object-cover"
                 />
               </div>
-              {match[1] && (
+              {match[1] && !isCaptionUrl && (
                 <p className="text-center text-xs text-slate-500 py-2 bg-slate-50 italic">
                   {match[1]}
                 </p>
@@ -257,6 +265,20 @@ export default async function BlogDetailPage({
             </div>
           );
         }
+      }
+
+      // If block is a raw image URL on its own line, render as image or skip if duplicate of featured cover
+      const trimmedBlock = block.trim();
+      const isRawImageUrl = /^(https?:\/\/|\/)[^\s]+(\.jpg|\.jpeg|\.png|\.webp|\.avif|\.gif)(\?[^\s]*)?$/i.test(trimmedBlock);
+      if (isRawImageUrl) {
+        if (trimmedBlock === post.image) return null;
+        return (
+          <div key={i} className="my-6 rounded-lg overflow-hidden border border-slate-200">
+            <div className="relative h-64 sm:h-96 w-full">
+              <Image src={trimmedBlock} alt="Blog Illustration" fill className="object-cover" />
+            </div>
+          </div>
+        );
       }
 
       return (
@@ -273,11 +295,11 @@ export default async function BlogDetailPage({
     <main className="bg-slate-50/50 min-h-screen">
       {/* Hero Banner (Only Breadcrumbs) */}
       <section className="relative bg-black text-white py-12 sm:py-16 overflow-hidden">
-        {/* Background Image with Dark Overlay */}
+        {/* Background Image with Dark Overlay - uses consistent blog banner instead of post.image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('${post.image}')`,
+            backgroundImage: `url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=2000&q=80')`,
           }}
         />
 

@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { UploadCloud, X, RefreshCw, AlertCircle } from "lucide-react";
+import { compressImageClientSide } from "@/lib/image-compress";
 
 interface ImageUploadDropzoneProps {
   value: string;
@@ -11,9 +12,10 @@ interface ImageUploadDropzoneProps {
   helperText?: string;
   presets?: string[];
   aspectRatio?: "video" | "square" | "wide";
+  folder?: string;
 }
 
-const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB industry norm for blog web images
+const MAX_IMAGE_SIZE_BYTES = 30 * 1024 * 1024; // 30 MB max before compression
 const ALLOWED_IMAGE_TYPES = [
   "image/jpeg",
   "image/jpg",
@@ -38,9 +40,11 @@ export function ImageUploadDropzone({
   label = "Upload Photo",
   helperText = "Drag & drop your photo or choose a local file",
   aspectRatio = "video",
+  folder = "uploads",
 }: ImageUploadDropzoneProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<string>("Uploading...");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -65,11 +69,11 @@ export function ImageUploadDropzone({
       return;
     }
 
-    // 2. Validate 5 MB file size limit (industry norm)
+    // 2. Validate maximum initial file size (30 MB)
     if (file.size > MAX_IMAGE_SIZE_BYTES) {
       const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
       setErrorMessage(
-        `File size (${fileSizeMB} MB) exceeds the 5 MB limit. Please compress or choose a smaller photo.`
+        `File size (${fileSizeMB} MB) exceeds the 30 MB maximum limit. Please choose a smaller photo.`
       );
       if (fileInputRef.current) fileInputRef.current.value = "";
       return;
@@ -79,9 +83,22 @@ export function ImageUploadDropzone({
     setIsUploading(true);
 
     try {
+      // Auto-compress large photos client-side in background before upload
+      let fileToUpload = file;
+      if (file.size > 500 * 1024) {
+        setUploadStatus("Optimizing & compressing image...");
+        try {
+          fileToUpload = await compressImageClientSide(file);
+        } catch (compressionErr) {
+          console.warn("Client compression skipped:", compressionErr);
+          fileToUpload = file;
+        }
+      }
+
+      setUploadStatus("Uploading to cloud storage...");
       const formData = new FormData();
-      formData.append("file", file);
-      formData.append("folder", "uploads");
+      formData.append("file", fileToUpload);
+      formData.append("folder", folder);
 
       const res = await fetch("/api/upload", {
         method: "POST",
@@ -107,13 +124,18 @@ export function ImageUploadDropzone({
         }
         return;
       } else {
-        // Server rejected upload (e.g., 413 Payload Too Large or 415)
-        setErrorMessage(data?.error || "Failed to upload image. Please try again.");
+        // Server rejected upload with specific reason
+        const errorDetail =
+          data?.error ||
+          (res.status === 413
+            ? "File is too large for the server. Please try a smaller photo."
+            : `Upload failed (Status ${res.status}). Please try again.`);
+        setErrorMessage(errorDetail);
         setIsUploading(false);
         return;
       }
     } catch (err: any) {
-      setErrorMessage(err?.message || "Upload network error. Please try again.");
+      setErrorMessage(err?.message || "Upload network connection error. Please try again.");
       setIsUploading(false);
       return;
     }
@@ -203,7 +225,17 @@ export function ImageUploadDropzone({
 
           <div className="px-3 py-1.5 bg-white border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
             <span className="font-semibold truncate max-w-[280px]">
-              {value.startsWith("data:") ? "✓ Local image uploaded" : value}
+              {(() => {
+                if (value.startsWith("data:")) return "✓ Local image uploaded";
+                try {
+                  const parts = value.split("/");
+                  const last = parts[parts.length - 1]?.split("?")[0];
+                  if (last && /\.(jpe?g|png|webp|gif|avif)$/i.test(last)) {
+                    return `✓ ${decodeURIComponent(last.replace(/^\d+-/, ""))}`;
+                  }
+                } catch {}
+                return "✓ Image selected";
+              })()}
             </span>
             <button
               type="button"
@@ -228,7 +260,7 @@ export function ImageUploadDropzone({
           {isUploading ? (
             <div className="flex flex-col items-center justify-center space-y-2 py-4">
               <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin" />
-              <p className="text-xs font-bold text-blue-600">Uploading...</p>
+              <p className="text-xs font-bold text-blue-600 animate-pulse">{uploadStatus}</p>
             </div>
           ) : (
 
@@ -243,7 +275,7 @@ export function ImageUploadDropzone({
                 <p className="text-[11px] text-slate-500 mt-0.5">{helperText}</p>
               </div>
               <span className="inline-block px-2.5 py-0.5 bg-white border border-slate-200 text-slate-600 text-[10px] font-bold rounded">
-                Supports JPG, PNG, WEBP, AVIF, GIF • Max 5MB
+                ⚡ Auto-compressed • JPG, PNG, WebP up to 30MB
               </span>
             </div>
           )}
