@@ -74,14 +74,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-WFHZ8PRN');`,
+})(window,document,'script','dataLayer','GTM-59632GF7');`,
           }}
         />
       </head>
       <body className="min-h-full flex flex-col font-sans">
         <noscript>
           <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-WFHZ8PRN"
+            src="https://www.googletagmanager.com/ns.html?id=GTM-59632GF7"
             height="0"
             width="0"
             style={{ display: "none", visibility: "hidden" }}
