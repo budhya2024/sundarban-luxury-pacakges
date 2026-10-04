@@ -16,6 +16,8 @@ import {
   Image as ImageIcon,
   X,
   LogOut,
+  Globe,
+  ExternalLink,
 } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
 
@@ -78,7 +80,7 @@ export function AdminSidebar({
         </Link>
         <button
           onClick={onCloseMobile}
-          className="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
+          className="lg:hidden p-2 text-slate-400 hover:text-white rounded-sm hover:bg-slate-800 transition-colors"
           aria-label="Close admin menu"
         >
           <X className="w-5 h-5" />
@@ -92,7 +94,7 @@ export function AdminSidebar({
           <Link
             href="/admin"
             onClick={onCloseMobile}
-            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${pathname === "/admin"
+            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-sm text-xs font-bold transition-all duration-200 ${pathname === "/admin"
               ? "bg-blue-600 text-white shadow-sm font-black"
               : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
@@ -112,7 +114,7 @@ export function AdminSidebar({
           <Link
             href="/admin/pages?page=home"
             onClick={onCloseMobile}
-            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/pages?page=home")
+            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-sm text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/pages?page=home")
               ? "bg-blue-600 text-white shadow-sm font-black"
               : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
@@ -125,7 +127,7 @@ export function AdminSidebar({
           <Link
             href="/admin/pages?page=about"
             onClick={onCloseMobile}
-            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/pages?page=about")
+            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-sm text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/pages?page=about")
               ? "bg-blue-600 text-white shadow-sm font-black"
               : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
@@ -138,7 +140,7 @@ export function AdminSidebar({
           <Link
             href="/admin/contact"
             onClick={onCloseMobile}
-            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/contact")
+            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-sm text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/contact")
               ? "bg-blue-600 text-white shadow-sm font-black"
               : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
@@ -151,7 +153,7 @@ export function AdminSidebar({
           <Link
             href="/admin/pages?page=gallery"
             onClick={onCloseMobile}
-            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/pages?page=gallery")
+            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-sm text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/pages?page=gallery")
               ? "bg-blue-600 text-white shadow-sm font-black"
               : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
@@ -164,7 +166,7 @@ export function AdminSidebar({
           <Link
             href="/admin/packages"
             onClick={onCloseMobile}
-            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/packages")
+            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-sm text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/packages")
               ? "bg-blue-600 text-white shadow-sm font-black"
               : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
@@ -177,7 +179,7 @@ export function AdminSidebar({
           <Link
             href="/admin/hotel"
             onClick={onCloseMobile}
-            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/hotel")
+            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-sm text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/hotel")
               ? "bg-blue-600 text-white shadow-sm font-black"
               : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
@@ -190,7 +192,7 @@ export function AdminSidebar({
           <Link
             href="/admin/blog"
             onClick={onCloseMobile}
-            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/blog")
+            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-sm text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/blog")
               ? "bg-blue-600 text-white shadow-sm font-black"
               : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
@@ -209,7 +211,7 @@ export function AdminSidebar({
           <Link
             href="/admin/bookings"
             onClick={onCloseMobile}
-            className={`flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/bookings")
+            className={`flex items-center justify-between px-3.5 py-2.5 rounded-sm text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/bookings")
               ? "bg-blue-600 text-white shadow-sm font-black"
               : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
               }`}
@@ -236,7 +238,7 @@ export function AdminSidebar({
         <Link
           href="/admin/settings"
           onClick={onCloseMobile}
-          className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/settings")
+          className={`flex items-center gap-3 px-3.5 py-2.5 rounded-sm text-xs font-bold transition-all duration-200 ${isLinkActive("/admin/settings")
             ? "bg-blue-600 text-white shadow-sm font-black"
             : "text-slate-300 hover:bg-slate-800/90 hover:text-white"
             }`}
@@ -245,15 +247,7 @@ export function AdminSidebar({
           <span>Settings &amp; Alerts</span>
         </Link>
 
-        {/* Sign Out Button */}
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold text-slate-400 hover:bg-rose-950/40 hover:text-rose-400 transition-all duration-200 cursor-pointer"
-        >
-          <LogOut className="w-4 h-4 text-rose-400/80" />
-          <span>Sign Out</span>
-        </button>
+
       </div>
     </div>
   );

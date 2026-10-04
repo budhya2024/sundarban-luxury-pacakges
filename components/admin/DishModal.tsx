@@ -126,33 +126,35 @@ export function DishModal({
             </div>
           )}
 
-          {/* 1. Menu Name */}
-          <div>
-            <label className="block font-bold text-slate-700 mb-1 text-xs">
-              Dish Name <span className="text-rose-600">*</span>
-            </label>
-            <input
-              type="text"
-              required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Royal Bengali Mutton Kosha"
-              className="w-full h-9 px-3 rounded-[3px] border border-slate-300 bg-white text-slate-900 font-semibold focus:outline-none focus:border-blue-600 text-xs"
-            />
-          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* 1. Menu Name */}
+            <div>
+              <label className="block font-bold text-slate-700 mb-1 text-xs">
+                Dish Name <span className="text-rose-600">*</span>
+              </label>
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g. Royal Bengali Mutton Kosha"
+                className="w-full h-9 px-3 rounded-[4px] border border-slate-300 bg-white text-slate-900 font-semibold focus:outline-none focus:border-blue-600 text-xs"
+              />
+            </div>
 
-          {/* 2. Tagline */}
-          <div>
-            <label className="block font-bold text-slate-700 mb-1 text-xs">
-              Badge / Tag
-            </label>
-            <input
-              type="text"
-              value={tagline}
-              onChange={(e) => setTagline(e.target.value)}
-              placeholder="e.g. Signature Catch, Royal Delicacy"
-              className="w-full h-9 px-3 rounded-[3px] border border-slate-300 bg-white text-slate-900 font-semibold focus:outline-none focus:border-blue-600 text-xs"
-            />
+            {/* 2. Tagline / Badge */}
+            <div>
+              <label className="block font-bold text-slate-700 mb-1 text-xs">
+                Dish Tagline / Badge
+              </label>
+              <input
+                type="text"
+                value={tagline}
+                onChange={(e) => setTagline(e.target.value)}
+                placeholder="e.g. Signature Catch, Royal Delicacy"
+                className="w-full h-9 px-3 rounded-[4px] border border-slate-300 bg-white text-slate-900 font-semibold focus:outline-none focus:border-blue-600 text-xs"
+              />
+            </div>
           </div>
 
           {/* 3. Description */}
@@ -258,13 +260,13 @@ export function DishModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-[3px] border border-slate-300 text-slate-700 font-bold hover:bg-slate-100 transition-colors text-xs"
+              className="px-4 py-2 rounded-[4px] border border-slate-300 text-slate-700 font-bold hover:bg-slate-100 transition-colors text-xs"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-[3px] bg-blue-600 hover:bg-blue-700 text-white font-bold transition-colors shadow-xs text-xs flex items-center gap-1.5"
+              className="px-5 py-2 rounded-[4px] bg-blue-600 hover:bg-blue-700 text-white font-bold transition-colors shadow-xs text-xs flex items-center gap-1.5"
             >
               <UtensilsCrossed className="w-3.5 h-3.5" />
               <span>{initialItem ? "Update Dish" : "Add Dish"}</span>

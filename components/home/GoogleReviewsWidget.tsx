@@ -36,7 +36,7 @@ export const authenticGoogleReviews: GoogleReviewItem[] = [
     relativeTime: "Today",
     text: "The name has been maintained. Value for money package! Especially in the evening, the moment of enjoying the silence of the forest while having tea and hot pakoras on the boat is the best reward.\"thanks for souvik",
     isLocalGuide: false,
-    url: "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3a018b00753514b5:0x4a5ccb8cdf28b0ea!12e1?g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+    url: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
   },
   {
     id: "2b297f93-9c85-4357-976f-4cbd4c33ccc4",
@@ -48,7 +48,7 @@ export const authenticGoogleReviews: GoogleReviewItem[] = [
     relativeTime: "2 days ago",
     text: "Wow, this is an amazing trip service ,if you want tour anywhere so I can say use their services which is come with great experience,and all affordable cost",
     isLocalGuide: false,
-    url: "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3a018b00753514b5:0x4a5ccb8cdf28b0ea!12e1?g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+    url: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
   },
   {
     id: "3b85b6b4-4482-4c77-9b1d-ae1e626b0225",
@@ -60,7 +60,7 @@ export const authenticGoogleReviews: GoogleReviewItem[] = [
     relativeTime: "2 days ago",
     text: "This tour-trip service is very amazing experience with affordable cost ,so I hardly say this ,use and experience their services.",
     isLocalGuide: false,
-    url: "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3a018b00753514b5:0x4a5ccb8cdf28b0ea!12e1?g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+    url: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
   },
   {
     id: "f1dcaf7e-80ed-41ed-8433-8e9cfeecc074",
@@ -72,7 +72,7 @@ export const authenticGoogleReviews: GoogleReviewItem[] = [
     relativeTime: "5 days ago",
     text: "\"Our 2-night, 3-day tour with Sundarban Bengal Trip was amazing. The boat was very clean and the guide Dada showed us around each watch tower with great care. The quality of the food was simply amazing!\" thankyou for souvik 👍",
     isLocalGuide: false,
-    url: "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3a018b00753514b5:0x4a5ccb8cdf28b0ea!12e1?g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+    url: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
   },
   {
     id: "c1ff96db-bec8-490a-a99a-c0b8319ab5ee",
@@ -84,7 +84,7 @@ export const authenticGoogleReviews: GoogleReviewItem[] = [
     relativeTime: "5 days ago",
     text: "A seamless and memorable weekend getaway with Sundarban Bengal Tourism! The pickup from Kolkata was right on time, and the entire itinerary was executed flawlessly without any rush. Cruising along the serene mangrove creeks on a comfortable houseboat while sipping warm tea was pure therapy. The food served on board was freshly prepared, hygienic, and authentic Bengali style. Kudos to the polite staff and knowledgeable guide for making our jungle safari both thrilling and safe. Will definitely recommend them to all my friends and family!\"",
     isLocalGuide: false,
-    url: "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3a018b00753514b5:0x4a5ccb8cdf28b0ea!12e1?g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+    url: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
   },
   {
     id: "2f37a572-6274-414c-9db8-a87606f5b0ae",
@@ -96,7 +96,7 @@ export const authenticGoogleReviews: GoogleReviewItem[] = [
     relativeTime: "6 days ago",
     text: "​\"The experience of traveling to the Sundarbans with my family was, in a word, amazing! Especially the accommodation at Hotel Sonar Bangla, the cleanliness of the room and the hospitality touched my heart. The planning of the entire tour package was absolutely perfect - pick-up from Kolkata, comfortable boat safari, sightseeing with an experienced guide and delicious food arrangements, I enjoyed everything very much. I would definitely recommend this package to everyone for a trip to the Sundarbans in a combination of luxury and nature.\" thank you for souvik\"",
     isLocalGuide: false,
-    url: "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3a018b00753514b5:0x4a5ccb8cdf28b0ea!12e1?g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+    url: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
   },
   {
     id: "de342657-47cb-45af-816b-913e6627b708",
@@ -108,7 +108,7 @@ export const authenticGoogleReviews: GoogleReviewItem[] = [
     relativeTime: "1 week ago",
     text: "I recently booked my Sundarban tour with Sundarban Bengal Trip, and it was a wonderful experience from start to finish. Everything was well organized, from the pickup in Kolkata to the stay, food, boat safari, and overall trip arrangements. The entire journey was smooth and enjoyable, and the team was very helpful and cooperative throughout the trip. The Sundarban experience was truly memorable, especially the beautiful nature and boat safari. Thank you, Sundarban Bengal Trip, for making our trip so comfortable and enjoyable. I would definitely recommend them to anyone planning a Sundarban tour from Kolkata.",
     isLocalGuide: false,
-    url: "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3a018b00753514b5:0x4a5ccb8cdf28b0ea!12e1?g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+    url: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
   },
   {
     id: "a758778f-6cf2-4bc4-9d57-3f8205f98d44",
@@ -120,7 +120,7 @@ export const authenticGoogleReviews: GoogleReviewItem[] = [
     relativeTime: "2 weeks ago",
     text: "Khub sundor experience ar staff member rao khub valo, r setai amader khub valo legachilo. Thank you so much, Sundorban Bengal Trip group tomader jonnei ami eto sundor ekta vacation katate parlam...",
     isLocalGuide: false,
-    url: "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3a018b00753514b5:0x4a5ccb8cdf28b0ea!12e1?g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+    url: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
   },
   {
     id: "3e46ca79-d3fb-4638-aaee-da5830999aa7",
@@ -132,7 +132,7 @@ export const authenticGoogleReviews: GoogleReviewItem[] = [
     relativeTime: "2 weeks ago",
     text: "Khub sundor experience ar staff member rao khub valo, r setai amader khub valo legachilo. Thank you so much, Sundorban Bengal Trip group tomader jonnei ami eto sundor ekta vacation katate parlam...",
     isLocalGuide: false,
-    url: "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3a018b00753514b5:0x4a5ccb8cdf28b0ea!12e1?g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+    url: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
   },
   {
     id: "51a7f750-7eb5-4ceb-bd35-62d4e0de916e",
@@ -144,7 +144,7 @@ export const authenticGoogleReviews: GoogleReviewItem[] = [
     relativeTime: "2 weeks ago",
     text: "Khub sundor experience ar staff member rao khub valo, r setai amader khub valo legachilo. Thank you so much, Sundorban Bengal Trip group tomader jonnei ami eto sundor ekta vacation katate parlam...",
     isLocalGuide: false,
-    url: "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3a018b00753514b5:0x4a5ccb8cdf28b0ea!12e1?g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+    url: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
   },
   {
     id: "2cf7f49c-8979-4e6e-85a4-334fd1a53977",
@@ -156,7 +156,7 @@ export const authenticGoogleReviews: GoogleReviewItem[] = [
     relativeTime: "2 weeks ago",
     text: "Khub sundor experience ar staff member rao khub valo, r setai amader khub valo legachilo. Thank you so much, Sundorban Bengal Trip group tomader jonnei ami eto sundor ekta vacation katate parlam...",
     isLocalGuide: false,
-    url: "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3a018b00753514b5:0x4a5ccb8cdf28b0ea!12e1?g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+    url: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
   },
   {
     id: "58c52897-b81c-4f93-990c-6cb55f8642b6",
@@ -168,7 +168,7 @@ export const authenticGoogleReviews: GoogleReviewItem[] = [
     relativeTime: "2 weeks ago",
     text: "I had a really wonderful experience with Sundarban Bengal Trip. From the initial communication to the completion of the trip, everything was arranged quite well. The team was friendly, polite, and helpful, and they guided us properly throughout the journey. The boat ride through the beautiful waterways of the Sundarbans was one of the highlights of the trip. We really enjoyed the peaceful surroundings, natural beauty, and overall atmosphere. The coordination and arrangements made the journey comfortable and hassle-free. Overall, it was a memorable experience, and I would definitely recommend Sundarban Bengal Trip to anyone planning a Sundarbans trip.",
     isLocalGuide: false,
-    url: "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3a018b00753514b5:0x4a5ccb8cdf28b0ea!12e1?g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+    url: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
   },
   {
     id: "e2cb5ffa-a087-4ef2-8b82-a7f8c46f2f22",
@@ -180,7 +180,7 @@ export const authenticGoogleReviews: GoogleReviewItem[] = [
     relativeTime: "2 weeks ago",
     text: "We recently had a very pleasant experience with Sundarban Bengal Trip, and overall we were quite satisfied with the way everything was arranged. Right from the initial enquiry, the team was helpful and explained the trip details clearly. They were also easy to communicate with and responded properly whenever we had any doubts or needed information. The entire trip was organized in a systematic manner, and the arrangements were handled well. The team was polite, friendly, and cooperative, which made us feel comfortable throughout the journey. We especially enjoyed the boat journey and the opportunity to experience the natural beauty and peaceful surroundings of the Sundarbans. It was a refreshing break from our usual routine and a wonderful experience to spend time surrounded by nature. Another thing we appreciated was that the team was attentive and tried to make the journey convenient for everyone. The overall coordination was good, and we didn’t have to spend our time worrying about every small arrangement. There were some moments during the trip that were simply beautiful and memorable, especially while travelling through the waterways and exploring the surroundings. Overall, Sundarban Bengal Trip provided us with a memorable and enjoyable experience. The service, coordination, and behaviour of the team were all good, and we genuinely enjoyed our trip. I would definitely recommend Sundarban Bengal Trip to friends, family, and anyone planning a visit to the Sundarbans. Thank you to the entire team for organizing everything so nicely and making our trip a memorable one! 🌿🚤🌊✨",
     isLocalGuide: false,
-    url: "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3a018b00753514b5:0x4a5ccb8cdf28b0ea!12e1?g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+    url: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
   },
   {
     id: "e13eb281-a9e9-4ab9-9525-32f74a2aaf8e",
@@ -192,7 +192,7 @@ export const authenticGoogleReviews: GoogleReviewItem[] = [
     relativeTime: "2 weeks ago",
     text: "I had a really great experience with Sundarban Bengal Trip, and I’m very happy with the overall service. From the beginning, the communication was clear and the team was very helpful in explaining the trip details, timings, arrangements, and other necessary information. They were responsive whenever we had any questions, which made the planning process much easier. The trip itself was well organized and we didn’t have to worry much about the arrangements. The staff were friendly, polite, and cooperative throughout the journey. Everything was managed in a smooth and comfortable way, and the overall experience felt quite hassle-free. We also really enjoyed exploring the beautiful natural surroundings of the Sundarbans and getting to experience the local atmosphere. What I liked most was the way the team handled everything with patience and professionalism. They made sure that the trip went smoothly and that we were comfortable during the journey. The experience was enjoyable, relaxing, and definitely something we will remember for a long time. Overall, I’m really satisfied with Sundarban Bengal Trip and would happily recommend them to anyone who is planning to visit the Sundarbans. If you are looking for a well-organized trip with helpful people and good arrangements, I would definitely suggest giving them a try. Thank you to the entire team for making our Sundarbans trip such a memorable experience! 🌿🌊😊",
     isLocalGuide: false,
-    url: "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3a018b00753514b5:0x4a5ccb8cdf28b0ea!12e1?g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+    url: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
   },
   {
     id: "546d8f94-ae51-46c4-8132-38196adbda43",
@@ -204,7 +204,7 @@ export const authenticGoogleReviews: GoogleReviewItem[] = [
     relativeTime: "3 weeks ago",
     text: "First time Sundarban trip with family, and it was a great decision. Food was tasty, arrangements were good and everyone was cooperative. Thank you Sundarban Bengal Trip!",
     isLocalGuide: false,
-    url: "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3a018b00753514b5:0x4a5ccb8cdf28b0ea!12e1?g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+    url: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
   }
 ];
 
@@ -244,7 +244,7 @@ function GoogleIcon({ className = "w-5 h-5" }: { className?: string }) {
 export function GoogleReviewsWidget({
   featurableId = "3244b520-3369-414c-a09e-339ea6dbd9e9",
   googlePlaceId = "ChIJtRQ1dQCLAToR6rAo34zLXEo",
-  googlePlaceUrl = "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
+  googlePlaceUrl = "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D",
   googleRating = 4.9,
   googleReviewsCount = 32,
 }: GoogleReviewsWidgetProps) {
@@ -284,47 +284,51 @@ export function GoogleReviewsWidget({
   return (
     <div className="w-full">
       {/* Top Banner: Google Rating Score + Direct Google Maps CTAs */}
-      <div className="max-w-md sm:max-w-4xl mx-auto mb-8 p-6 sm:p-5 rounded-xl bg-white border border-slate-100 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-4 text-center sm:text-left">
-        <div className="w-full sm:w-auto flex flex-row items-center sm:items-start justify-start">
-          <div className="w-16 h-16 sm:w-12 sm:h-12 rounded-full border border-slate-100 flex items-center justify-center shrink-0 shadow-sm bg-white">
-            <GoogleIcon className="w-8 h-8 sm:w-6 sm:h-6" />
+      <div className="w-full max-w-4xl mx-auto mb-8 p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
+        {/* Left Side: Google Icon, Rating, Stars & Verified Badge */}
+        <div className="w-full md:w-auto flex items-center justify-center md:justify-start gap-3.5">
+          <div className="w-12 h-12 rounded-full border border-slate-100 flex items-center justify-center shrink-0 shadow-xs bg-slate-50/80">
+            <GoogleIcon className="w-6 h-6" />
           </div>
-          <div className="flex-1 flex flex-col items-center sm:items-start pl-3 sm:pl-3.5">
-            <div className="flex items-center justify-center sm:justify-start gap-1.5 text-amber-500">
-              <span className="text-2xl sm:text-xl font-black text-[#0f172a] mr-1">
+          <div className="flex flex-col items-start justify-center">
+            <div className="flex items-center gap-2">
+              <span className="text-xl sm:text-2xl font-black text-slate-900 leading-none">
                 {rating.toFixed(1)}
               </span>
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="h-5 w-5 sm:h-4 sm:w-4 fill-[#f59e0b] text-[#f59e0b]" />
-              ))}
+              <div className="flex items-center gap-0.5 text-amber-500">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
+                ))}
+              </div>
             </div>
-            <div className="text-[13px] sm:text-xs text-slate-500 font-medium mt-1.5 flex items-start sm:items-center justify-center sm:justify-start gap-1.5 text-center sm:text-left leading-snug max-w-[240px] sm:max-w-none mx-auto sm:mx-0">
-              <ShieldCheck className="w-4 h-4 sm:w-3.5 sm:h-3.5 text-[#2563eb] shrink-0 mt-0.5 sm:mt-0" />
-              <span>
-                Verified Google Business Reviews &bull; {reviewsCount}+<br className="block sm:hidden" /> Ratings
-              </span>
+            <div className="text-xs text-slate-500 font-semibold mt-1 flex items-center gap-1.5 leading-none">
+              <ShieldCheck className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+              <span>Verified Google Business &bull; {reviewsCount}+ Reviews</span>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row w-[90%] sm:w-auto items-stretch sm:items-center justify-center gap-3 shrink-0 mx-auto sm:mx-0">
+        {/* Right Side: CTAs (Write a Review & Open Google Maps) */}
+        <div className="w-full md:w-auto grid grid-cols-1 sm:grid-cols-2 gap-2.5 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100">
           <a
             href={writeReviewUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-3 sm:py-2.5 rounded-md bg-[#1d4ed8] hover:bg-blue-800 text-white text-[14px] sm:text-[13px] font-bold shadow-sm transition-all cursor-pointer"
+            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs sm:text-sm font-bold shadow-xs transition-all cursor-pointer"
           >
+            <GoogleIcon className="w-4 h-4 bg-white rounded-full p-0.5" />
             <span>Write a Google Review</span>
-            <ExternalLink className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
+            <ExternalLink className="w-3.5 h-3.5 opacity-80" />
           </a>
           <a
             href={googlePlaceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-3 sm:py-2.5 rounded-md bg-[#f1f5f9] hover:bg-slate-200 text-[#334155] text-[14px] sm:text-[13px] font-bold transition-colors cursor-pointer"
+            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-800 text-xs sm:text-sm font-bold transition-colors cursor-pointer border border-slate-200/60"
           >
-            <MapPin className="w-4 h-4 sm:w-3.5 sm:h-3.5 text-[#ef4444]" />
+            <MapPin className="w-4 h-4 text-rose-500" />
             <span>Open Google Maps</span>
+            <ExternalLink className="w-3.5 h-3.5 opacity-60" />
           </a>
         </div>
       </div>

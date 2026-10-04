@@ -2,9 +2,9 @@
 
 import React from "react";
 import { usePathname } from "next/navigation";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { FloatingActions } from "@/components/layout/FloatingActions";
+import { Header } from "@/components/shared/Header";
+import { Footer } from "@/components/shared/Footer";
+import { FloatingActions } from "@/components/shared/FloatingActions";
 import { AdminProvider } from "@/context/AdminContext";
 import { ConfirmProvider } from "@/context/ConfirmContext";
 

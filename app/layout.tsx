@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Geist_Mono, Montez } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-import { AppLayoutWrapper } from "@/components/layout/AppLayoutWrapper";
+import { AppLayoutWrapper } from "@/components/shared/AppLayoutWrapper";
 
 const manrope = Manrope({
   variable: "--font-sans",

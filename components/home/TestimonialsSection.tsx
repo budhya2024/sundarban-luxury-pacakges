@@ -69,7 +69,7 @@ export function TestimonialsSection() {
   const reviewsCount = testimonialSettings?.googleReviewsCount || 284;
   const googleUrl =
     testimonialSettings?.googlePlaceUrl ||
-    "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb";
+    "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D";
 
   return (
     <section
@@ -89,7 +89,7 @@ export function TestimonialsSection() {
             Testimonial &amp; Reviews
           </p>
           <h2 className="sec-title">
-            What Clients Say
+            What Our Clients Say About Their Experience
           </h2>
 
           {/* Switchable Review Tabs (Manual vs Google) */}

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Settings,
   Building,
@@ -16,13 +17,25 @@ import {
   Sparkles,
   AlertCircle,
   CheckCircle2,
+  LogOut,
 } from "lucide-react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { useAdmin } from "@/context/AdminContext";
 
 export default function AdminSettingsPage() {
+  const router = useRouter();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { showToast } = useAdmin();
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/auth/logout", { method: "POST" });
+    } catch {
+      // ignore
+    }
+    router.push("/admin/login");
+    router.refresh();
+  };
 
   const [settings, setSettings] = useState({
     businessName: "Sundarban Luxury Package (Techshift)",
@@ -425,6 +438,34 @@ export default function AdminSettingsPage() {
               </button>
             </div>
           </form>
+        </div>
+
+        {/* Account Session & Sign Out Card inside Settings Page */}
+        <div className="bg-white border border-rose-200/80 rounded-[4px] p-5 sm:p-6 shadow-2xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-rose-50 border border-rose-100 flex items-center justify-center shrink-0">
+                <LogOut className="w-5 h-5 text-rose-600" />
+              </div>
+              <div>
+                <h3 className="text-sm font-extrabold text-slate-900">
+                  Account Session &amp; Sign Out
+                </h3>
+                <p className="text-[11px] text-slate-500">
+                  Terminate your active administrator session and safely lock the control panel.
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="px-5 py-2.5 rounded-[3px] bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition-colors shadow-xs cursor-pointer"
+            >
+              <LogOut className="w-4 h-4 text-white" />
+              <span>Sign Out of Admin</span>
+            </button>
+          </div>
         </div>
       </main>
     </div>

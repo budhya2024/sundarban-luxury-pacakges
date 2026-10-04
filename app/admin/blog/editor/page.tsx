@@ -646,7 +646,7 @@ function WordPressBlogEditorContent() {
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <Link
             href="/admin/blog"
-            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700/80 border border-slate-700/60 rounded-lg transition-colors shrink-0"
+            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700/80 border border-slate-700/60 rounded-[4px] transition-colors shrink-0"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">All Articles</span>
@@ -655,7 +655,7 @@ function WordPressBlogEditorContent() {
           <div className="h-4 w-px bg-slate-800 hidden sm:block shrink-0" />
 
           <div className="flex items-center gap-2 min-w-0 truncate">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-blue-400 bg-blue-950/60 border border-blue-800/60 px-2 py-0.5 rounded shrink-0">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-blue-400 bg-blue-950/60 border border-blue-800/60 px-2 py-0.5 rounded-[4px] shrink-0">
               {editSlug ? "Edit" : "New"}
             </span>
             <span className="flex items-center gap-1.5 text-[11px] text-slate-400 font-medium shrink-0">
@@ -666,11 +666,11 @@ function WordPressBlogEditorContent() {
         </div>
 
         {/* Center: Write vs Live Preview Segmented Switcher */}
-        <div className="flex items-center bg-slate-800/90 p-0.5 rounded-lg border border-slate-700/70 shadow-inner">
+        <div className="flex items-center bg-slate-800/90 p-0.5 rounded-[4px] border border-slate-700/70 shadow-inner">
           <button
             type="button"
             onClick={() => setViewMode("edit")}
-            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-md transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-[4px] transition-all cursor-pointer ${
               viewMode === "edit"
                 ? "bg-blue-600 text-white shadow-xs"
                 : "text-slate-300 hover:text-white"
@@ -682,7 +682,7 @@ function WordPressBlogEditorContent() {
           <button
             type="button"
             onClick={() => setViewMode("preview")}
-            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-md transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-[4px] transition-all cursor-pointer ${
               viewMode === "preview"
                 ? "bg-blue-600 text-white shadow-xs"
                 : "text-slate-300 hover:text-white"
@@ -700,7 +700,7 @@ function WordPressBlogEditorContent() {
               href={`/blog/${slug || editSlug}`}
               target="_blank"
               rel="noreferrer"
-              className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+              className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 rounded-[4px] transition-colors"
               title="View live post on public site"
             >
               <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
@@ -712,7 +712,7 @@ function WordPressBlogEditorContent() {
             type="button"
             onClick={() => handleSaveOrPublish("Draft")}
             disabled={isSubmitting}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-[4px] transition-colors disabled:opacity-50 cursor-pointer"
           >
             <Save className="w-3.5 h-3.5 text-slate-400" />
             <span className="hidden sm:inline">Save Draft</span>
@@ -722,7 +722,7 @@ function WordPressBlogEditorContent() {
             type="button"
             onClick={() => handleSaveOrPublish("Published")}
             disabled={isSubmitting}
-            className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 text-xs font-black text-white bg-blue-600 hover:bg-blue-500 rounded-lg shadow-xs transition-colors disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 text-xs font-black text-white bg-blue-600 hover:bg-blue-500 rounded-[4px] shadow-xs transition-colors disabled:opacity-50 cursor-pointer"
           >
             {isSubmitting ? (
               <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
@@ -736,7 +736,7 @@ function WordPressBlogEditorContent() {
           <button
             type="button"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className={`p-1.5 sm:p-2 rounded-lg border transition-colors cursor-pointer ${
+            className={`p-1.5 sm:p-2 rounded-[4px] border transition-colors cursor-pointer ${
               isSidebarOpen
                 ? "bg-slate-800 text-blue-400 border-slate-700"
                 : "bg-slate-800/40 text-slate-400 border-slate-700/60 hover:text-white"
