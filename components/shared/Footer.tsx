@@ -46,6 +46,21 @@ function FooterSundarbanLogo() {
   );
 }
 
+const footerSeoLinks = [
+  {
+    label: "Sundarban Package Tour with Luxury Hotel Sonar Bangla",
+    href: "/sundarban-package-tour-with-luxury-hotel-sonar-bangla",
+  },
+  {
+    label: "Hotel Sonar Bangla Sundarban Weekend Tour Package from Kolkata",
+    href: "/hotel-sonar-bangla-sundarban-weekend-tour-package-from-kolkata",
+  },
+  {
+    label: "Best Sundarban Tour Package with Hotel Sonar Bangla Stay",
+    href: "/best-sundarban-tour-package-with-hotel-sonar-bangla-stay",
+  },
+];
+
 export function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
@@ -70,45 +85,6 @@ export function Footer() {
   return (
     <footer className="bg-brand-green-dark text-slate-200 pt-8 md:pt-16 relative z-20 border-t border-primary">
       <div className="container">
-        {/* 1. Top Newsletter Section */}
-        {/* <div className="flex flex-col lg:flex-row items-center justify-between gap-8 pb-8 md:pb-16">
-       
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight tracking-tight text-center lg:text-left">
-              Get Updated The Latest <br />
-              Newsletter
-            </h2>
-          </div>
-
-       
-          <form
-            onSubmit={handleSubmit}
-            className="w-full lg:w-auto flex flex-col sm:flex-row items-center gap-3 sm:gap-4 max-w-xl"
-          >
-            <div className="relative w-full sm:w-[320px] md:w-[360px]">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your Email"
-                required
-                className="w-full rounded-full border border-white/20 bg-white/10 px-6 py-3.5 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-brand-yellow-light focus:ring-1 focus:ring-brand-yellow-light transition-all"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-secondary hover:bg-secondary/90 text-white px-7 py-3.5 font-semibold text-sm shadow-md transition-all duration-200 cursor-pointer whitespace-nowrap"
-            >
-              <span>{subscribed ? "Subscribed!" : "Subscribe Now"}</span>
-              <Send className="h-4 w-4" />
-            </button>
-          </form>
-        </div> */}
-
-        {/* Separator Line */}
-        {/* <div className="border-t border-white/10" /> */}
-
         {/* 2. Main 4-Column Footer Content */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-8 md:pb-16">
           {/* Col 1: Brand Info & Socials (4 Cols) */}
@@ -274,13 +250,30 @@ export function Footer() {
           </div>
         </div>
 
-        {/* 3. Bottom Copyright & Payment Gateways */}
+        {/* 3. Horizontal SEO Footer Links Section */}
+        <div className="border-t border-white/10 py-6 text-xs sm:text-sm text-slate-300 leading-relaxed">
+          <div className="flex flex-wrap items-center justify-start gap-x-2.5 gap-y-2 text-left">
+            {footerSeoLinks.map((item, idx) => (
+              <React.Fragment key={idx}>
+                {idx > 0 && <span className="text-white/30 font-light">|</span>}
+                <Link
+                  href={item.href}
+                  className="hover:text-brand-yellow-light transition-colors"
+                >
+                  {item.label}
+                </Link>
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+
+        {/* 4. Bottom Copyright & Legal Links */}
         <div className="border-t border-white/10 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-200">
           <p className="text-center sm:text-left">
             Copyright &copy; {new Date().getFullYear()} Sundarban Luxury Package. All Rights Reserved.
           </p>
 
-          <div className="flex items-center gap-4 text-xs text-slate-200">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-3 sm:gap-4 text-xs text-slate-200">
             <Link href="/terms-and-conditions" className="hover:text-brand-yellow-light transition-colors">
               Terms &amp; Conditions
             </Link>
@@ -291,6 +284,10 @@ export function Footer() {
             <span className="text-white/30">|</span>
             <Link href="/privacy-policy" className="hover:text-brand-yellow-light transition-colors">
               Privacy Policy
+            </Link>
+            <span className="text-white/30">|</span>
+            <Link href="/hotel-sonar-bangla-sundarban-tour-package-price-cost" className="hover:text-brand-yellow-light transition-colors">
+              Hotel Sonar Bangla Package Price &amp; Cost
             </Link>
           </div>
         </div>

@@ -22,9 +22,7 @@ export function FaqSection() {
       <div className="w-full max-w-[1020px] mx-auto px-4 sm:px-6">
         {/* Section Header */}
         <div className="sec-header">
-          <p className="sec-tagline">
-            FAQ
-          </p>
+
           <h2 className="sec-title">
             Frequently Asked Questions
           </h2>
@@ -52,7 +50,7 @@ export function FaqSection() {
                   className={`w-full flex items-center justify-between gap-4 p-4 sm:p-6 text-left cursor-pointer transition-colors ${isOpen ? "bg-emerald-50" : "hover:bg-emerald-50/20"}`}
                   aria-expanded={isOpen}
                 >
-                  <span className="text-sm sm:text-lg font-bold text-[#0f172a] leading-snug">
+                  <span className="text-sm sm:text-base font-bold text-[#0f172a] leading-snug">
                     <span className="text-[#0f172a] mr-1.5">
                       {item.questionNumber || `Q${idx + 1}`}.
                     </span>{" "}
@@ -68,10 +66,9 @@ export function FaqSection() {
                 </button>
 
                 {/* Accordion Answer Content */}
-                <div 
-                  className={`grid transition-all duration-300 ease-in-out ${
-                    isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                  }`}
+                <div
+                  className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    }`}
                 >
                   <div className="overflow-hidden">
                     <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2 sm:pt-4 text-slate-600 text-xs sm:text-[15px] leading-relaxed border-t border-slate-100/80 bg-white">

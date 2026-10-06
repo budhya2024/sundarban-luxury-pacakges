@@ -63,7 +63,7 @@ export function BlogListClient({ initialPosts }: BlogListClientProps) {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=2000&q=80')`,
+            backgroundImage: `url('/assets/images/sundarbantourphoto.jpeg')`,
           }}
         />
 
@@ -72,17 +72,17 @@ export function BlogListClient({ initialPosts }: BlogListClientProps) {
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Hero Title */}
-          <h1 className="text-2xl sm:text-4xl font-black text-white leading-snug drop-shadow-md mb-4">
+          <h1 className="text-2xl sm:text-4xl font-black text-white leading-snug drop-shadow-md mb-2">
             News &amp; Articles
           </h1>
 
           {/* Subdescription */}
-          <p className="max-w-2xl mx-auto text-slate-200 text-sm sm:text-lg font-light leading-relaxed mb-6 drop-shadow-sm">
+          <p className="max-w-2xl mx-auto text-slate-200 text-sm sm:text-base font-light leading-relaxed mb-6 drop-shadow-sm">
             Wildlife stories, travel guides, culture &amp; ecology from the heart of Sundarban.
           </p>
 
           {/* Breadcrumbs */}
-          <div className="inline-flex items-center gap-2.5 text-base sm:text-lg font-bold text-white">
+          <div className="inline-flex items-center gap-2.5 text-base sm:text-base font-bold text-white">
             <Link href="/" className="text-white hover:text-[#fbbf24] transition-colors">
               Home
             </Link>

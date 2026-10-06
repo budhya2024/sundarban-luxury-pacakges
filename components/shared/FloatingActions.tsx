@@ -49,11 +49,7 @@ export function FloatingActions() {
       <div className="fixed right-3 sm:right-5 top-1/2 -translate-y-1/2 z-50 flex flex-col items-end gap-3.5 select-none">
         {/* Floating Call Button */}
         <div className="relative group flex items-center justify-end">
-          {/* Tooltip Tag expanding to the left */}
-          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/90 text-white border border-emerald-500/40 shadow-xl backdrop-blur-xs opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 whitespace-nowrap mr-2.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs font-bold tracking-wide">Call: {rawPhone}</span>
-          </div>
+
 
           <a
             href={telUrl}
@@ -73,11 +69,7 @@ export function FloatingActions() {
 
         {/* Floating WhatsApp Button */}
         <div className="relative group flex items-center justify-end">
-          {/* Tooltip Tag expanding to the left */}
-          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/90 text-white border border-emerald-500/40 shadow-xl backdrop-blur-xs opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 whitespace-nowrap mr-2.5">
-            <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse" />
-            <span className="text-xs font-bold tracking-wide">WhatsApp Us</span>
-          </div>
+
 
           <a
             href={whatsappUrl}
@@ -97,11 +89,10 @@ export function FloatingActions() {
           type="button"
           onClick={scrollToTop}
           aria-label="Scroll to top of page"
-          className={`flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-slate-900/90 hover:bg-slate-900 text-white shadow-lg border border-white/20 backdrop-blur-xs transition-all duration-300 cursor-pointer ${
-            showScrollTop
-              ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
-              : "opacity-0 translate-y-4 scale-75 pointer-events-none"
-          }`}
+          className={`flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-slate-900/90 hover:bg-slate-900 text-white shadow-lg border border-white/20 backdrop-blur-xs transition-all duration-300 cursor-pointer ${showScrollTop
+            ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
+            : "opacity-0 translate-y-4 scale-75 pointer-events-none"
+            }`}
         >
           <ChevronUp className="h-5 w-5 stroke-[2.5]" />
         </button>

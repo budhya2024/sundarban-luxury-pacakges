@@ -33,7 +33,7 @@ export default function GalleryPage() {
           setLiveItems(data.galleryItems);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const galleryPage = pageContents.find((p) => p.pageKey === "gallery");
@@ -128,7 +128,7 @@ export default function GalleryPage() {
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl">
           {/* Title */}
-          <h1 className="text-2xl sm:text-4xl font-black text-white leading-snug drop-shadow-md mb-4">
+          <h1 className="text-2xl sm:text-4xl font-black text-white leading-snug drop-shadow-md mb-2">
             {heroTitle}
           </h1>
 
@@ -140,7 +140,7 @@ export default function GalleryPage() {
           )}
 
           {/* Breadcrumbs */}
-          <div className="inline-flex items-center gap-2.5 text-base sm:text-lg font-bold text-white flex-wrap justify-center">
+          <div className="inline-flex items-center gap-2.5 text-base sm:text-base font-bold text-white flex-wrap justify-center">
             <Link href="/" className="text-white hover:text-[#fbbf24] transition-colors">
               Home
             </Link>

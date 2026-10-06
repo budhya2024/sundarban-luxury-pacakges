@@ -670,11 +670,10 @@ function WordPressBlogEditorContent() {
           <button
             type="button"
             onClick={() => setViewMode("edit")}
-            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-[4px] transition-all cursor-pointer ${
-              viewMode === "edit"
-                ? "bg-blue-600 text-white shadow-xs"
-                : "text-slate-300 hover:text-white"
-            }`}
+            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-[4px] transition-all cursor-pointer ${viewMode === "edit"
+              ? "bg-blue-600 text-white shadow-xs"
+              : "text-slate-300 hover:text-white"
+              }`}
           >
             <Edit3 className="w-3.5 h-3.5" />
             <span>Write</span>
@@ -682,11 +681,10 @@ function WordPressBlogEditorContent() {
           <button
             type="button"
             onClick={() => setViewMode("preview")}
-            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-[4px] transition-all cursor-pointer ${
-              viewMode === "preview"
-                ? "bg-blue-600 text-white shadow-xs"
-                : "text-slate-300 hover:text-white"
-            }`}
+            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-[4px] transition-all cursor-pointer ${viewMode === "preview"
+              ? "bg-blue-600 text-white shadow-xs"
+              : "text-slate-300 hover:text-white"
+              }`}
           >
             <Eye className="w-3.5 h-3.5" />
             <span>Preview</span>
@@ -736,11 +734,10 @@ function WordPressBlogEditorContent() {
           <button
             type="button"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className={`p-1.5 sm:p-2 rounded-[4px] border transition-colors cursor-pointer ${
-              isSidebarOpen
-                ? "bg-slate-800 text-blue-400 border-slate-700"
-                : "bg-slate-800/40 text-slate-400 border-slate-700/60 hover:text-white"
-            }`}
+            className={`p-1.5 sm:p-2 rounded-[4px] border transition-colors cursor-pointer ${isSidebarOpen
+              ? "bg-slate-800 text-blue-400 border-slate-700"
+              : "bg-slate-800/40 text-slate-400 border-slate-700/60 hover:text-white"
+              }`}
             title={isSidebarOpen ? "Hide Settings Sidebar" : "Show Settings Sidebar"}
           >
             {isSidebarOpen ? (
@@ -786,7 +783,7 @@ function WordPressBlogEditorContent() {
 
                 {/* Article Excerpt */}
                 {excerpt && (
-                  <p className="text-base sm:text-lg text-slate-600 italic border-l-4 border-blue-500 pl-4 py-1 leading-relaxed bg-blue-50/30 rounded-r">
+                  <p className="text-sm sm:text-base text-slate-600 italic border-l-4 border-blue-500 pl-4 py-1 leading-relaxed bg-blue-50/30 rounded-r">
                     {excerpt}
                   </p>
                 )}
@@ -1144,11 +1141,10 @@ function WordPressBlogEditorContent() {
                       setStatus(s);
                       setIsSaved(false);
                     }}
-                    className={`py-1.5 text-center font-bold rounded transition-all text-[11px] cursor-pointer ${
-                      status === s
-                        ? "bg-white text-blue-600 shadow-xs border border-slate-200"
-                        : "text-slate-500 hover:text-slate-900"
-                    }`}
+                    className={`py-1.5 text-center font-bold rounded transition-all text-[11px] cursor-pointer ${status === s
+                      ? "bg-white text-blue-600 shadow-xs border border-slate-200"
+                      : "text-slate-500 hover:text-slate-900"
+                      }`}
                   >
                     {s}
                   </button>

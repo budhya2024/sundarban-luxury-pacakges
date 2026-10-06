@@ -149,7 +149,7 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
       };
     }
 
-    const websiteName = "Sundarban Luxury Expeditions";
+    const websiteName = "Sundarban Luxury package";
     const websiteDomain = process.env.NEXT_PUBLIC_APP_URL || "https://sundarbanluxury.com";
     const fromAddress =
       process.env.SMTP_FROM || `"${websiteName}" <${process.env.SMTP_USER}>`;
@@ -302,13 +302,11 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
           <!-- Dark Header Banner with White Text -->
           <tr>
             <td style="background-color: #0b3b24;  padding: 15px 20px; text-align: center;">
-              <div style="font-size: 9px; font-weight: bold; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;">
-                ROYAL BENGAL TIGER RESERVE &bull; DELTA SAFARI
-              </div>
-              <h1 style="margin: 0; font-size: 15px; font-weight: bold; color: #ffffff; letter-spacing: 1px;">
-                SUNDARBAN LUXURY EXPEDITIONS
+              
+              <h1 style="margin: 0; font-size: 16px; font-weight: bold; color: #ffffff; letter-spacing: 1px;">
+                  SUNDARBAN LUXURY PACKAGE
               </h1>
-              <div style="font-size: 9px; color: #e2e8f0; margin-top: 6px; line-height: 1.4;">
+              <div style="font-size: 10px; color: #e2e8f0; margin-top: 6px; line-height: 1.4;">
                 Five-Star Cruise Comfort, Forest Naturalist Guides &amp; Authentic Bengali Delta Cuisine
               </div>
             </td>
@@ -323,7 +321,7 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
                 Hi, ${booking.guestName}!
               </h2>
               <p style="margin: 0 0 20px 0; font-size: 9px; color: #475569; line-height: 1.6;">
-                Thank you for selecting <strong style="color: #0f172a;">Sundarban Luxury Expeditions</strong>. We have received your safari reservation request. Our dedicated expedition desk has logged your tour preferences, and is preparing your delta voyage itinerary.
+                Thank you for selecting <strong style="color: #0f172a;">   SUNDARBAN LUXURY PACKAGE</strong>. We have received your safari reservation request. Our dedicated expedition desk has logged your tour preferences, and is preparing your delta voyage itinerary.
               </p>
 
 
@@ -346,10 +344,7 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
                     <td style="color: #64748b; font-weight: bold;">Total Package Fare:</td>
                     <td style="color: #14532d; font-weight: bold; font-size: 9px;">${formattedAmount}</td>
                   </tr>
-                  <tr>
-                    <td style="color: #64748b; font-weight: bold;">Payment Terms:</td>
-                    <td style="color: #15803d; font-weight: bold;">Zero Upfront : Pay during pickup or boarding</td>
-                  </tr>
+                 
                   <tr>
                     <td style="color: #64748b; font-weight: bold;">Your Notes:</td>
                     <td style="color: #334155; font-style: italic;">
@@ -390,27 +385,8 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
                 </div>
               </div>
 
-              <!-- Action Buttons (No Icons) -->
-              <div style="text-align: center; margin-bottom: 10px;">
-                <div style="font-size: 9px; color: #475569; margin-bottom: 14px;">
-                  Have questions or want to customize your dates right now?
-                </div>
-                <table border="0" cellspacing="0" cellpadding="0" align="center">
-                  <tr>
-                    <td style="padding-right: 8px;">
-                      <a href="https://wa.me/917001403498" style="display: inline-block; background-color: #16a34a; color: #ffffff; text-decoration: none; padding: 11px 20px; font-weight: bold; font-size: 9px; border-radius: 4px;">
-                        Chat on WhatsApp
-                      </a>
-                    </td>
-                    <td style="padding-left: 8px;">
-                      <a href="tel:+917001403498" style="display: inline-block; background-color: #0b3b24; color: #ffffff; text-decoration: none; padding: 11px 20px; font-weight: bold; font-size: 9px; border-radius: 4px;">
-                        Call Helpline: +91 70014 03498
-                      </a>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-
+        
+             
             </td>
           </tr>
 
@@ -418,7 +394,7 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
           <tr>
             <td style="background-color: #0b3b24; padding: 15px 20px; text-align: center; color: #ffffff;">
               <div style="font-size: 9px; font-weight: bold; letter-spacing: 1px; color: #ffffff;">
-                SUNDARBAN LUXURY EXPEDITIONS
+                SUNDARBAN LUXURY PACKAGE
               </div>
               <div style="font-size: 9px; color: #e2e8f0; margin-top: 4px; letter-spacing: 0.5px;">
                 WILD BENGAL HOSPITALITY &bull; PAKHIRALAY, GOSABA, SUNDARBAN, WB 743370
@@ -815,7 +791,7 @@ export async function sendAdminAuthEmail(params: AdminAuthEmailParams) {
     <tr>
       <td style="background-color: #0b3b24; padding: 28px 24px; text-align: center; border-top: 4px solid #d4af37;">
         <h1 style="color: #ffffff; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: 0.5px;">
-          SUNDARBAN LUXURY PACKAGES
+          SUNDARBAN LUXURY PACKAGE
         </h1>
         <div style="color: #d4af37; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 6px;">
           Admin Password Reset &amp; Access Recovery

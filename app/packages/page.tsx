@@ -64,10 +64,10 @@ export default function PackagesPage() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('/assets/images/luxury-cruise.jpg')`,
+            backgroundImage: `url('/assets/images/deer.jpg')`,
           }}
         />
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-black/70" />
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
 

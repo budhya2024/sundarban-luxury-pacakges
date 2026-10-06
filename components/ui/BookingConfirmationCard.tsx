@@ -25,6 +25,7 @@ export interface BookingConfirmationCardProps {
   primaryActionText?: string;
   secondaryActionText?: string;
   showWhatsApp?: boolean;
+  showCloseButton?: boolean;
 }
 
 export function BookingConfirmationCard({
@@ -33,6 +34,7 @@ export function BookingConfirmationCard({
   onBackToHome,
   primaryActionText = "View Booking",
   secondaryActionText = "Back to Home",
+  showCloseButton = false,
 }: BookingConfirmationCardProps) {
   const handleClose = () => {
     if (onBackToHome) {
@@ -87,14 +89,16 @@ export function BookingConfirmationCard({
   return (
     <div className="relative w-full max-w-md mx-auto text-center font-sans animate-in fade-in zoom-in-95 duration-200">
       {/* Top Right Close Button */}
-      <button
-        onClick={handleClose}
-        type="button"
-        aria-label="Close modal"
-        className="absolute top-1 right-1 z-50 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors cursor-pointer shadow-xs border border-slate-200"
-      >
-        <X className="w-4 h-4" />
-      </button>
+      {showCloseButton && (
+        <button
+          onClick={handleClose}
+          type="button"
+          aria-label="Close modal"
+          className="absolute top-1 right-1 z-50 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors cursor-pointer shadow-xs border border-slate-200"
+        >
+          <X className="w-4 h-4" />
+        </button>
+      )}
 
       {/* Top Confetti & Checkmark Header */}
       <div className="relative pt-2 pb-2 flex justify-center items-center overflow-hidden">

@@ -359,7 +359,7 @@ export function TourDetails({
           </h1>
 
           {/* Breadcrumbs */}
-          <div className="inline-flex items-center gap-2.5 text-base sm:text-lg font-bold text-white flex-wrap justify-center">
+          <div className="inline-flex items-center gap-2.5 text-sm sm:text-base font-bold text-white flex-wrap justify-center">
             <Link href="/" className="text-white hover:text-secondary transition-colors">
               Home
             </Link>
@@ -382,7 +382,7 @@ export function TourDetails({
             <div className="lg:col-span-8 space-y-10">
               {/* SECTION A: OVERVIEW */}
               <div className="bg-white p-6 sm:p-8 border border-slate-100 shadow-sm space-y-6">
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">
                   Package Overview
                 </h2>
 

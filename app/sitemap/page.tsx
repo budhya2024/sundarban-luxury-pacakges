@@ -165,6 +165,12 @@ export default function SitemapPage() {
           description: "Luxury resort amenities, swimming pool, luxury dining, and room packages.",
         },
         {
+          label: "Hotel Sonar Bangla Package Price & Cost",
+          href: "/hotel-sonar-bangla-sundarban-tour-package-price-cost",
+          badge: "Price & Cost Guide",
+          description: "Complete transparent breakdown of package prices, room rates, inclusions & exclusions.",
+        },
+        {
           label: "Tour Packages Catalog",
           href: "/packages",
           description: "Browse all Sundarban jungle safari itineraries, pricing & inclusions.",

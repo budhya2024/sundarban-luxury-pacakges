@@ -97,7 +97,7 @@ export function HeroSlider() {
           >
             <p className="text-secondary text-2xl md:text-3xl lg:text-5xl font-semibold tracking-wider font-montez drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)]  tracking-wide">welcome to</p>
             <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] uppercase tracking-wide">
-              Sundarban Luxury Packages
+              Sundarban Luxury Package
             </h1>
           </div>
 

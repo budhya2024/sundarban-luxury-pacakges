@@ -294,17 +294,17 @@ export default async function BlogDetailPage({
   return (
     <main className="bg-slate-50/50 min-h-screen">
       {/* Hero Banner (Only Breadcrumbs) */}
-      <section className="relative bg-black text-white py-12 sm:py-16 overflow-hidden">
+      <section className="relative bg-black text-white py-20 sm:py-40 overflow-hidden">
         {/* Background Image with Dark Overlay - uses consistent blog banner instead of post.image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=2000&q=80')`,
+            backgroundImage: `url('/assets/images/kingfisher.jpg')`,
           }}
         />
 
         {/* Black 50% Overlay Layer */}
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-black/60" />
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Breadcrumbs */}
@@ -336,7 +336,7 @@ export default async function BlogDetailPage({
             {/* Category & Article Title */}
             <div className="mb-4">
 
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#0e2a47] tracking-tight leading-snug">
+              <h1 className="text-xl  md:text-2xl font-extrabold text-[#0e2a47] tracking-tight leading-snug">
                 {post.title}
               </h1>
             </div>

@@ -26,7 +26,7 @@ export function NewsArticles() {
           setArticles(data.posts);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   return (
@@ -104,7 +104,7 @@ export function NewsArticles() {
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-foreground font-bold text-base sm:text-lg leading-snug mb-3 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                    <h3 className="text-foreground font-bold text-sm sm:text-base leading-snug mb-3 group-hover:text-primary transition-colors duration-300 line-clamp-2">
                       <Link href={`/blog/${article.slug}`} className="hover:underline">
                         {article.title}
                       </Link>
