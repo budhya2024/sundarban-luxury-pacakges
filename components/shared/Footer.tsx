@@ -206,9 +206,9 @@ export function Footer() {
             <h3 className="text-lg font-bold text-white mb-5">Get In Touch</h3>
             <div className="flex flex-col gap-4 text-sm text-white/90">
               {/* Phone */}
-              <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-yellow-light">
-                  <Phone className="h-4 w-4" />
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-yellow-light">
+                  <Phone className="h-3.5 w-3.5" />
                 </div>
                 <div className="leading-snug">
                   <a href="tel:+917001403498" className="hover:text-brand-yellow-light transition-colors block">
@@ -218,9 +218,9 @@ export function Footer() {
               </div>
 
               {/* Email */}
-              <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-yellow-light">
-                  <Mail className="h-4 w-4" />
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-yellow-light">
+                  <Mail className="h-3.5 w-3.5" />
                 </div>
                 <div className="leading-snug">
                   <a href="mailto:sundarbanluxurypackage@gmail.com" className="hover:text-brand-yellow-light transition-colors block break-all">
@@ -230,9 +230,9 @@ export function Footer() {
               </div>
 
               {/* Address */}
-              <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-yellow-light">
-                  <MapPin className="h-4 w-4" />
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-yellow-light">
+                  <MapPin className="h-3.5 w-3.5" />
                 </div>
                 <div className="leading-snug">
                   <a
@@ -285,10 +285,7 @@ export function Footer() {
             <Link href="/privacy-policy" className="hover:text-brand-yellow-light transition-colors">
               Privacy Policy
             </Link>
-            <span className="text-white/30">|</span>
-            <Link href="/hotel-sonar-bangla-sundarban-tour-package-price-cost" className="hover:text-brand-yellow-light transition-colors">
-              Hotel Sonar Bangla Package Price &amp; Cost
-            </Link>
+
           </div>
         </div>
       </div>

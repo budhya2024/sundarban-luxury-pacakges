@@ -116,7 +116,7 @@ export function PlanTripSection() {
             </p>
 
             {/* Features List */}
-            <div className="flex flex-col gap-6 mb-8">
+            <div className="flex flex-col gap-6 ">
               {/* Feature 1: Exclusive Trip */}
               <div className="flex items-start gap-4">
                 <div className="flex h-13 w-13 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-full bg-secondary text-white shadow-md shadow-secondary/20">

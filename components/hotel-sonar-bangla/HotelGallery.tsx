@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
-import { Camera, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Camera, X, Loader2, Sparkles } from "lucide-react";
 
 const galleryImages = [
   {
@@ -103,12 +103,15 @@ const galleryImages = [
   },
 ];
 
-const ITEMS_PER_PAGE = 8;
+const INITIAL_VISIBLE_COUNT = 8;
+const BATCH_LOAD_SIZE = 4;
 
 export function HotelGallery() {
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [images, setImages] = useState(galleryImages);
+  const [visibleCount, setVisibleCount] = useState<number>(INITIAL_VISIBLE_COUNT);
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
+  const observerTargetRef = useRef<HTMLDivElement | null>(null);
 
   // Synchronize resort photos dynamically from Neon backend
   useEffect(() => {
@@ -125,20 +128,38 @@ export function HotelGallery() {
           setImages(dynamicPhotos);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
-  const totalPages = Math.ceil(images.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedImages = images.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const visibleImages = images.slice(0, visibleCount);
+  const hasMore = visibleCount < images.length;
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    const el = document.getElementById("gallery");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
+  const loadMore = useCallback(() => {
+    if (isLoadingMore || !hasMore) return;
+    setIsLoadingMore(true);
+    setTimeout(() => {
+      setVisibleCount((prev) => Math.min(prev + BATCH_LOAD_SIZE, images.length));
+      setIsLoadingMore(false);
+    }, 350);
+  }, [isLoadingMore, hasMore, images.length]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoadingMore) {
+          loadMore();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    const target = observerTargetRef.current;
+    if (target) observer.observe(target);
+
+    return () => {
+      if (target) observer.unobserve(target);
+    };
+  }, [hasMore, isLoadingMore, loadMore]);
 
   return (
     <section id="gallery" className="py-8 md:py-16 scroll-mt-14">
@@ -158,7 +179,7 @@ export function HotelGallery() {
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {paginatedImages.map((img) => (
+          {visibleImages.map((img) => (
             <div
               key={img.id}
               onClick={() => setSelectedImg(img.src)}
@@ -191,53 +212,19 @@ export function HotelGallery() {
           ))}
         </div>
 
-        {/* Pagination Controls */}
-        {totalPages > 1 && (
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
-                disabled={currentPage === 1}
-                aria-label="Previous Page"
-                className={`flex items-center justify-center w-10 h-10 rounded-lg border text-sm font-semibold transition-all cursor-pointer ${
-                  currentPage === 1
-                    ? "border-slate-200 text-slate-300 cursor-not-allowed bg-slate-50"
-                    : "border-slate-300 text-slate-700 hover:bg-primary hover:text-white hover:border-primary shadow-xs"
-                }`}
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
+        {/* Infinite Scroll Trigger Sentry */}
+        <div ref={observerTargetRef} className="h-6 w-full my-3" />
 
-              {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((pageNum) => (
-                <button
-                  key={pageNum}
-                  onClick={() => handlePageChange(pageNum)}
-                  aria-label={`Go to page ${pageNum}`}
-                  className={`flex items-center justify-center w-10 h-10 rounded-lg text-sm font-bold transition-all cursor-pointer ${
-                    currentPage === pageNum
-                      ? "bg-primary text-white border border-primary shadow-sm"
-                      : "bg-white text-slate-700 border border-slate-300 hover:border-primary hover:text-primary"
-                  }`}
-                >
-                  {pageNum}
-                </button>
-              ))}
-
-              <button
-                onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
-                disabled={currentPage === totalPages}
-                aria-label="Next Page"
-                className={`flex items-center justify-center w-10 h-10 rounded-lg border text-sm font-semibold transition-all cursor-pointer ${
-                  currentPage === totalPages
-                    ? "border-slate-200 text-slate-300 cursor-not-allowed bg-slate-50"
-                    : "border-slate-300 text-slate-700 hover:bg-primary hover:text-white hover:border-primary shadow-xs"
-                }`}
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
+        {/* Loading Spinner */}
+        {isLoadingMore && (
+          <div className="flex items-center justify-center py-6 gap-2.5 text-primary font-bold text-sm">
+            <Loader2 className="w-5 h-5 animate-spin" />
+            <span>Loading more resort photos...</span>
           </div>
         )}
+
+
+
       </div>
 
       {/* Lightbox Modal */}

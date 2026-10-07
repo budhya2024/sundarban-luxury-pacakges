@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -9,21 +9,23 @@ import {
   ChevronRight,
   Maximize2,
   Camera,
-  MapPin,
-  Tag,
-  ArrowRight,
-  PhoneCall,
   Sparkles,
+  Loader2,
 } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa6";
 import { useAdmin } from "@/context/AdminContext";
 import { AdminGalleryItem } from "@/lib/admin-data";
+
+const INITIAL_BATCH_SIZE = 8;
+const BATCH_LOAD_SIZE = 8;
 
 export default function GalleryPage() {
   const { galleryItems, contactGeneralInfo, pageContents } = useAdmin();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [activeImageId, setActiveImageId] = useState<string | null>(null);
   const [liveItems, setLiveItems] = useState<AdminGalleryItem[]>([]);
+  const [visibleCount, setVisibleCount] = useState<number>(INITIAL_BATCH_SIZE);
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     fetch("/api/gallery")
@@ -70,6 +72,54 @@ export default function GalleryPage() {
     return activeItems.filter((item) => item.category === selectedCategory);
   }, [activeItems, selectedCategory]);
 
+  // Reset visible count when selected category changes
+  useEffect(() => {
+    setVisibleCount(INITIAL_BATCH_SIZE);
+  }, [selectedCategory]);
+
+  const hasMore = visibleCount < filteredItems.length;
+
+  const loadMore = useCallback(() => {
+    if (isLoadingMore || !hasMore) return;
+    setIsLoadingMore(true);
+    setTimeout(() => {
+      setVisibleCount((prev) => Math.min(prev + BATCH_LOAD_SIZE, filteredItems.length));
+      setIsLoadingMore(false);
+    }, 350);
+  }, [isLoadingMore, hasMore, filteredItems.length]);
+
+  // Intersection Observer for Infinite Scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+        if (target.isIntersecting && hasMore && !isLoadingMore) {
+          loadMore();
+        }
+      },
+      {
+        root: null,
+        rootMargin: "200px",
+        threshold: 0.1,
+      }
+    );
+
+    const currentTarget = loadMoreRef.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [hasMore, isLoadingMore, loadMore]);
+
+  const visibleItems = useMemo(() => {
+    return filteredItems.slice(0, visibleCount);
+  }, [filteredItems, visibleCount]);
+
   // Lightbox handlers
   const activeIndex = filteredItems.findIndex((img) => img.id === activeImageId);
   const activeImage = activeIndex !== -1 ? filteredItems[activeIndex] : null;
@@ -103,13 +153,6 @@ export default function GalleryPage() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeImage, handleClose, handleNext, handlePrev]);
-
-  const rawPhone = contactGeneralInfo?.whatsappNumber || "+91 70014 03498";
-  const cleanPhone = rawPhone.replace(/[^0-9]/g, "");
-  const whatsappNumber = cleanPhone.startsWith("91") ? cleanPhone : `91${cleanPhone}`;
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-    "Hello! I saw your Sundarban photo gallery and would like to inquire about tour package booking."
-  )}`;
 
   return (
     <div className="bg-slate-50/70 min-h-screen text-[#0f172a] font-sans">
@@ -153,9 +196,31 @@ export default function GalleryPage() {
       {/* 2. GALLERY GRID */}
       <section className="py-10 md:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Category Filter Pills */}
+          {categories.length > 1 && (
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 sm:mb-12">
+              {categories.map((cat) => {
+                const isActive = selectedCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-300 cursor-pointer ${
+                      isActive
+                        ? "bg-primary text-white shadow-md shadow-primary/20 scale-105"
+                        : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 shadow-xs"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
           {/* Photos Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
-            {filteredItems.map((item, idx) => (
+            {visibleItems.map((item, idx) => (
               <div
                 key={item.id || idx}
                 onClick={() => setActiveImageId(item.id)}
@@ -203,6 +268,7 @@ export default function GalleryPage() {
             ))}
           </div>
 
+          {/* Empty State */}
           {filteredItems.length === 0 && (
             <div className="text-center py-16 bg-white rounded-2xl border border-slate-200">
               <Camera className="w-12 h-12 text-slate-300 mx-auto mb-3" />
@@ -210,6 +276,17 @@ export default function GalleryPage() {
               <p className="text-sm text-slate-500 mt-1">
                 Photos will appear here once added.
               </p>
+            </div>
+          )}
+
+          {/* Infinite Scroll Trigger Sentry Element */}
+          <div ref={loadMoreRef} className="h-6 w-full my-4" />
+
+          {/* Loading Indicator for Next Batch */}
+          {isLoadingMore && (
+            <div className="flex items-center justify-center py-6 gap-3 text-primary font-bold text-sm">
+              <Loader2 className="w-6 h-6 animate-spin" />
+              <span>Loading more photos...</span>
             </div>
           )}
         </div>

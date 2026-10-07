@@ -97,7 +97,7 @@ function CounterNumber({ targetValue, suffix = "" }: { targetValue: number; suff
 export function TrustSection() {
   return (
     <section className="py-8 md:py-16 bg-white relative overflow-hidden">
-      <div className="container px-4">
+      <div className="container">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-4 sm:gap-6 lg:gap-8 items-center justify-items-center py-4 min-h-[320px] sm:min-h-[380px]">
           {stats.map((stat, idx) => {
             const isUp = stat.offset === "up";

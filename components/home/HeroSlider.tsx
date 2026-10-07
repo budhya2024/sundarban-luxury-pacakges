@@ -64,7 +64,7 @@ export function HeroSlider() {
     <>
       {/* 1. Hero Image Section */}
       <section className="relative w-full h-[45vh] min-h-[320px] sm:min-h-[580px] md:min-h-[640px] lg:min-h-[700px] overflow-hidden bg-[#052e16] flex flex-col justify-between items-center pt-8 sm:pt-16 md:pt-24 pb-4 sm:pb-8 md:pb-10">
-        {/* Background Image with Smooth Depth Zoom */}
+        {/* Background Image / Video Container with Smooth Depth Zoom */}
         <div
           className="absolute inset-0 w-full h-full will-change-transform"
           style={{
@@ -72,6 +72,8 @@ export function HeroSlider() {
             transformOrigin: "center center",
           }}
         >
+          {/* Photo Background (Commented out in favor of video background) */}
+
           <Image
             src={heroBg}
             alt="Sundarban Luxury Package"
@@ -79,6 +81,20 @@ export function HeroSlider() {
             priority
             className="object-cover object-center"
           />
+
+
+          {/* Video Background */}
+          {/* <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster="/assets/images/tiger-photo.jpg"
+            className="w-full h-full object-cover object-center"
+          >
+            <source src="/assets/video/sonar-bangla-hotel.mp4" type="video/mp4" />
+          </video> */}
+
           {/* Luxury Dark Overlay */}
           <div className="absolute inset-0 bg-black/50" />
         </div>

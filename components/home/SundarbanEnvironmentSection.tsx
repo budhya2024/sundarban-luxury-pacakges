@@ -327,7 +327,7 @@ export function SundarbanEnvironmentSection() {
                 </span>
                 <Link
                   href="/packages"
-                  className="btn btn-primary   font-bold shadow-xs flex items-center justify-center gap-1.5"
+                  className="btn btn-primary text-sm! font-bold shadow-xs flex items-center justify-center gap-1.5"
                 >
                   <span>Explore Packages</span>
                   <ArrowRight className="w-3.5 h-3.5" />

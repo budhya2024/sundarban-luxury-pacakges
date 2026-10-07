@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useId, useEffect } from "react";
+import React, { useState, useId, useEffect, useRef } from "react";
 import {
   Calendar,
   Users,
@@ -85,6 +85,21 @@ export function HotelBokingForm() {
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [bookingRefId, setBookingRefId] = useState<string>("");
+  const dateInputRef = useRef<HTMLInputElement>(null);
+
+  const handleDateClick = () => {
+    if (dateInputRef.current) {
+      if (typeof dateInputRef.current.showPicker === "function") {
+        try {
+          dateInputRef.current.showPicker();
+        } catch {
+          dateInputRef.current.focus();
+        }
+      } else {
+        dateInputRef.current.focus();
+      }
+    }
+  };
 
   // Synchronize available rooms dynamically from Neon backend
   useEffect(() => {
@@ -115,6 +130,22 @@ export function HotelBokingForm() {
     const day = String(d.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }, []);
+
+  // Format travel date for display (e.g., "18 Sep 2026")
+  const displayDateText = React.useMemo(() => {
+    if (!travelDate) return "Select Date";
+    try {
+      const [y, m, d] = travelDate.split("-").map(Number);
+      const dateObj = new Date(y, m - 1, d);
+      return dateObj.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
+    } catch {
+      return travelDate;
+    }
+  }, [travelDate]);
 
   const selectedPackage =
     sonarBanglaPackages.find((p) => p.id === selectedPackageId) ||
@@ -371,14 +402,28 @@ export function HotelBokingForm() {
                     >
                       Check-in / Travel Date
                     </label>
-                    <input
-                      id={dateInputId}
-                      type="date"
-                      min={todayStr}
-                      value={travelDate}
-                      onChange={(e) => setTravelDate(e.target.value)}
-                      className="w-full h-12 px-3.5 rounded-[4px] border border-slate-300 bg-white text-foreground text-sm sm:text-base font-medium outline-none focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all cursor-pointer"
-                    />
+                    <div
+                      onClick={handleDateClick}
+                      className="relative flex items-center bg-white border border-slate-300 rounded-[4px] h-12 px-3.5 cursor-pointer group focus-within:border-primary   transition-all"
+                    >
+                      <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 transition-colors flex-shrink-0 mr-2.5 pointer-events-none" />
+                      <span
+                        className={`text-sm sm:text-base select-none truncate flex-1 ${travelDate ? "text-slate-900 font-semibold" : "text-slate-500 font-medium"
+                          }`}
+                      >
+                        {displayDateText}
+                      </span>
+                      <input
+                        ref={dateInputRef}
+                        id={dateInputId}
+                        type="date"
+                        min={todayStr}
+                        value={travelDate}
+                        onChange={(e) => setTravelDate(e.target.value)}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 outline-none"
+                        aria-label="Select Date"
+                      />
+                    </div>
                   </div>
 
                   {/* Travelers (Adults + Kids) */}
@@ -630,19 +675,7 @@ export function HotelBokingForm() {
                 </a>
               </div>
 
-              {/* Footer Helpline */}
-              <div className="pt-2 text-center text-xs sm:text-sm text-slate-500 font-medium">
-                <span>
-                  Direct Hotel Sonar Bangla Safari Helpline:{" "}
-                  <a
-                    href="tel:+917001403498"
-                    className="font-extrabold text-primary hover:text-secondary"
-                  >
-                    +91 70014 03498
-                  </a>{" "}
-                  (Available 24x7)
-                </span>
-              </div>
+
             </form>
           )}
         </div>
