@@ -39,8 +39,8 @@ export async function GET() {
       success: true,
       displayMode: settings.displayMode,
       settings,
-      testimonials: allTestimonials.length > 0 ? allTestimonials : initialAdminTestimonials,
-      manualTestimonials: manualItems.length > 0 ? manualItems : initialAdminTestimonials,
+      testimonials: allTestimonials,
+      manualTestimonials: manualItems,
       googleReviews: googleItems,
     });
   } catch (error: any) {
@@ -57,8 +57,8 @@ export async function GET() {
         googleReviewsCount: 284,
         googleBadgeText: "Verified Google Business Rating",
       },
-      testimonials: initialAdminTestimonials,
-      manualTestimonials: initialAdminTestimonials,
+      testimonials: [],
+      manualTestimonials: [],
       googleReviews: [],
     });
   }

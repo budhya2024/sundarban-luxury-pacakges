@@ -232,6 +232,15 @@ export interface AdminGalleryItem {
   status: "Active" | "Inactive";
 }
 
+export interface AdminHotelPhoto {
+  id: string;
+  title: string;
+  category: string;
+  imageUrl: string;
+  featured?: boolean;
+  order?: number;
+}
+
 export interface AdminGlobalAlertBanner {
   isEnabled: boolean;
   text: string;

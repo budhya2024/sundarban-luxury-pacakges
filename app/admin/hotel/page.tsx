@@ -217,19 +217,21 @@ export default function AdminHotelPage() {
 
 
 
-  const { showToast, updateBookingStatus, deleteBooking, refreshBookings } = useAdmin();
+  const {
+    showToast,
+    updateBookingStatus,
+    deleteBooking,
+    refreshBookings,
+    hotelPhotos,
+    addHotelPhoto,
+    deleteHotelPhoto,
+    refreshHotelPhotos,
+  } = useAdmin();
   const { confirmDelete } = useConfirm();
 
   // Synchronize live data from Neon backend
   useEffect(() => {
-    fetch("/api/admin/hotel/photos")
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data?.success && Array.isArray(data.photos) && data.photos.length > 0) {
-          setResortPhotos(data.photos);
-        }
-      })
-      .catch(() => {});
+    refreshHotelPhotos();
 
     const fetchInquiries = () => {
       fetch("/api/admin/hotel/inquiries")
@@ -252,35 +254,11 @@ export default function AdminHotelPage() {
     e.preventDefault();
     if (!newPhotoTitle.trim() || !newPhotoUrl.trim()) return;
 
-    try {
-      const res = await fetch("/api/admin/hotel/photos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: newPhotoTitle.trim(),
-          category: newPhotoCategory,
-          imageUrl: newPhotoUrl.trim(),
-        }),
-      });
-      const data = await res.json().catch(() => null);
-      if (res.ok && data?.success && data.photo) {
-        setResortPhotos((prev) => [data.photo, ...prev]);
-        showToast("Uploaded new resort photo successfully!");
-      } else {
-        showToast(data?.error || "Failed to upload photo");
-      }
-    } catch (err) {
-      console.error("Error creating photo:", err);
-      const newPhoto: ResortPhoto = {
-        id: `ph-${Date.now()}`,
-        title: newPhotoTitle,
-        category: newPhotoCategory,
-        imageUrl: newPhotoUrl,
-        featured: false,
-      };
-      setResortPhotos([newPhoto, ...resortPhotos]);
-      showToast("Uploaded photo locally.");
-    }
+    await addHotelPhoto({
+      title: newPhotoTitle.trim(),
+      category: newPhotoCategory,
+      imageUrl: newPhotoUrl.trim(),
+    });
 
     setNewPhotoTitle("");
     setNewPhotoUrl("");
@@ -289,21 +267,7 @@ export default function AdminHotelPage() {
 
   const handleDeletePhoto = async (id: string) => {
     if (await confirmDelete("Resort Photo", "Are you sure you want to remove this photo?")) {
-      setResortPhotos((prev) => prev.filter((p) => p.id !== id));
-      try {
-        const res = await fetch(`/api/admin/hotel/photos/${encodeURIComponent(id)}`, {
-          method: "DELETE",
-        });
-        const data = await res.json().catch(() => null);
-        if (res.ok && data?.success) {
-          showToast("Removed resort photo.");
-        } else {
-          showToast(data?.error || "Failed to remove photo on server.");
-        }
-      } catch (err) {
-        console.error("Error deleting photo:", err);
-        showToast("Removed photo locally.");
-      }
+      await deleteHotelPhoto(id);
     }
   };
 
@@ -442,43 +406,60 @@ export default function AdminHotelPage() {
               </button>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {resortPhotos.map((photo) => (
-                <div
-                  key={photo.id}
-                  className="bg-white border border-slate-200 rounded-[4px] shadow-2xs overflow-hidden group hover:shadow-xs transition-all"
+            {hotelPhotos.length === 0 ? (
+              <div className="text-center py-12 bg-white border border-slate-200 rounded-[4px] p-6">
+                <ImageIcon className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                <h4 className="text-sm font-bold text-slate-700">No Resort Photos Added Yet</h4>
+                <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1 mb-4">
+                  Upload high-definition photos of Hotel Sonar Bangla rooms, pool, dining, and lawn to showcase them on the website.
+                </p>
+                <button
+                  onClick={() => setAddPhotoModalOpen(true)}
+                  className="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-[3px] inline-flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
                 >
-                  <div className="relative h-48 w-full bg-slate-100 overflow-hidden">
-                    <Image
-                      src={photo.imageUrl}
-                      alt={photo.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      unoptimized={photo.imageUrl.startsWith("data:")}
-                    />
-                    <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-[2px] bg-slate-900/90 text-white font-bold text-[10px]">
-                      {photo.category}
-                    </span>
-                    <button
-                      onClick={() => handleDeletePhoto(photo.id)}
-                      className="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-rose-600/90 text-white hover:bg-rose-700 transition-colors shadow-md opacity-80 group-hover:opacity-100"
-                      title="Remove photo"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
+                  <Plus className="w-4 h-4" />
+                  <span>Upload First Photo</span>
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {hotelPhotos.map((photo) => (
+                  <div
+                    key={photo.id}
+                    className="bg-white border border-slate-200 rounded-[4px] shadow-2xs overflow-hidden group hover:shadow-xs transition-all"
+                  >
+                    <div className="relative h-48 w-full bg-slate-100 overflow-hidden">
+                      <Image
+                        src={photo.imageUrl && photo.imageUrl.trim() ? photo.imageUrl : "/assets/images/sonarbanglahotel.jpg"}
+                        alt={photo.title || "Resort Photo"}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        unoptimized={Boolean(photo.imageUrl?.startsWith("data:"))}
+                      />
+                      <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-[2px] bg-slate-900/90 text-white font-bold text-[10px]">
+                        {photo.category}
+                      </span>
+                      <button
+                        onClick={() => handleDeletePhoto(photo.id)}
+                        className="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-rose-600/90 text-white hover:bg-rose-700 transition-colors shadow-md opacity-80 group-hover:opacity-100 cursor-pointer"
+                        title="Remove photo"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
 
-                  <div className="p-3.5">
-                    <h4 className="text-xs font-bold text-slate-900 line-clamp-1">
-                      {photo.title}
-                    </h4>
-                    <span className="text-[10px] text-slate-400 font-mono block mt-1 truncate">
-                      {photo.imageUrl}
-                    </span>
+                    <div className="p-3.5">
+                      <h4 className="text-xs font-bold text-slate-900 line-clamp-1">
+                        {photo.title}
+                      </h4>
+                      <span className="text-[10px] text-slate-400 font-mono block mt-1 truncate">
+                        {photo.imageUrl}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 

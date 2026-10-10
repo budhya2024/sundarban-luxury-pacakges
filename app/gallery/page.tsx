@@ -23,6 +23,7 @@ export default function GalleryPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [activeImageId, setActiveImageId] = useState<string | null>(null);
   const [liveItems, setLiveItems] = useState<AdminGalleryItem[]>([]);
+  const [hasFetchedLive, setHasFetchedLive] = useState<boolean>(false);
   const [visibleCount, setVisibleCount] = useState<number>(INITIAL_BATCH_SIZE);
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
@@ -31,8 +32,9 @@ export default function GalleryPage() {
     fetch("/api/gallery")
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if (data?.success && Array.isArray(data.galleryItems) && data.galleryItems.length > 0) {
+        if (data?.success && Array.isArray(data.galleryItems)) {
           setLiveItems(data.galleryItems);
+          setHasFetchedLive(true);
         }
       })
       .catch(() => { });
@@ -47,11 +49,11 @@ export default function GalleryPage() {
     galleryPage?.heroBackgroundImage ||
     "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=2000&q=80";
 
-  // Filter only active items or fallback to all items
-  const itemsToUse = galleryItems.length > 0 ? galleryItems : liveItems;
+  // Once fetch is done, always use liveItems (respects deletions even if list is empty)
+  // Before fetch completes, use galleryItems from context as a loading placeholder
+  const itemsToUse = hasFetchedLive ? liveItems : galleryItems;
   const activeItems = useMemo(() => {
-    const list = itemsToUse.filter((g) => g.status === "Active");
-    return list.length > 0 ? list : itemsToUse;
+    return itemsToUse.filter((g) => g.status === "Active");
   }, [itemsToUse]);
 
   // Extract unique categories
@@ -196,20 +198,19 @@ export default function GalleryPage() {
       {/* 2. GALLERY GRID */}
       <section className="py-10 md:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Category Filter Pills */}
+          {/* Category Filter Pills – sticky so it doesn't overlap page content on scroll */}
           {categories.length > 1 && (
-            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 sm:mb-12">
+            <div className="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-sm py-3 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 mb-6 sm:mb-10 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
               {categories.map((cat) => {
                 const isActive = selectedCategory === cat;
                 return (
                   <button
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
-                    className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-300 cursor-pointer ${
-                      isActive
+                    className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-300 cursor-pointer ${isActive
                         ? "bg-primary text-white shadow-md shadow-primary/20 scale-105"
                         : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 shadow-xs"
-                    }`}
+                      }`}
                   >
                     {cat}
                   </button>

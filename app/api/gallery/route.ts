@@ -16,13 +16,13 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      galleryItems: items.length > 0 ? items : initialAdminGallery,
+      galleryItems: items,
     });
   } catch (error: any) {
     console.error("Error fetching gallery items:", error);
     return NextResponse.json({
       success: true,
-      galleryItems: initialAdminGallery,
+      galleryItems: [],
     });
   }
 }

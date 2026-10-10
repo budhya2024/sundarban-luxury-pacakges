@@ -96,74 +96,84 @@ export function BlogListClient({ initialPosts }: BlogListClientProps) {
       <div id="blog-grid" className="py-8 md:py-16 scroll-mt-6">
         <div className="container">
           {/* Grid of posts */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {currentPosts.map((post) => (
-              <Link
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                className="group flex flex-col bg-white overflow-hidden border border-slate-100 shadow-sm transition-all duration-300 hover:shadow-md rounded-lg "
-              >
-                {/* Image Container */}
-                <div className="relative h-[220px] overflow-hidden">
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  <span className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm text-[#064e3b] text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
-                    {post.category}
-                  </span>
-                </div>
-
-                {/* Card Body */}
-                <div className="p-6 flex flex-col flex-1">
-                  {/* Meta */}
-                  <div className="flex items-center gap-2 text-xs text-slate-400 font-medium mb-3">
-                    <span>{post.date}</span>
-                    <span className="w-[1px] h-3 bg-slate-300 inline-block" />
-                    <span className="flex items-center gap-1">
-                      <FaRegClock className="w-3.5 h-3.5 text-[#d97706]" />
-                      {post.readTime}
+          {postsList.length === 0 ? (
+            <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 my-4">
+              <h3 className="text-lg font-bold text-slate-700">No blog articles found</h3>
+              <p className="text-sm text-slate-500 mt-1">
+                Articles will appear here once published from the admin panel.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {currentPosts.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group flex flex-col bg-white overflow-hidden border border-slate-100 shadow-sm transition-all duration-300 hover:shadow-md rounded-lg "
+                >
+                  {/* Image Container */}
+                  <div className="relative h-[220px] overflow-hidden">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                    <span className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm text-[#064e3b] text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                      {post.category}
                     </span>
                   </div>
 
-                  {/* Title */}
-                  <h3 className="text-[#0f172a] font-bold text-base sm:text-lg leading-snug mb-3 group-hover:text-[#064e3b] transition-colors duration-300 line-clamp-2 flex-1">
-                    {post.title}
-                  </h3>
-
-                  {/* Excerpt */}
-                  <p className="text-slate-500 text-xs sm:text-sm leading-relaxed line-clamp-2 mb-4">
-                    {post.excerpt}
-                  </p>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-1.5 mb-5">
-                    {(post.tags || []).slice(0, 3).map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#064e3b] bg-amber-50/80 px-2.5 py-1 rounded-full border border-amber-100/50"
-                      >
-                        <FaTag className="w-2.5 h-2.5 text-[#d97706]" />
-                        {tag}
+                  {/* Card Body */}
+                  <div className="p-6 flex flex-col flex-1">
+                    {/* Meta */}
+                    <div className="flex items-center gap-2 text-xs text-slate-400 font-medium mb-3">
+                      <span>{post.date}</span>
+                      <span className="w-[1px] h-3 bg-slate-300 inline-block" />
+                      <span className="flex items-center gap-1">
+                        <FaRegClock className="w-3.5 h-3.5 text-[#d97706]" />
+                        {post.readTime}
                       </span>
-                    ))}
-                  </div>
+                    </div>
 
-                  {/* Read more button */}
-                  <div className="pt-4 border-t border-slate-100 mt-auto flex items-center justify-between text-sm font-bold text-[#0f172a] group-hover:text-[#064e3b] transition-colors">
-                    <span>Read Article</span>
-                    <FaArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    {/* Title */}
+                    <h3 className="text-[#0f172a] font-bold text-base sm:text-lg leading-snug mb-3 group-hover:text-[#064e3b] transition-colors duration-300 line-clamp-2 flex-1">
+                      {post.title}
+                    </h3>
+
+                    {/* Excerpt */}
+                    <p className="text-slate-500 text-xs sm:text-sm leading-relaxed line-clamp-2 mb-4">
+                      {post.excerpt}
+                    </p>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-1.5 mb-5">
+                      {(post.tags || []).slice(0, 3).map((tag) => (
+                        <span
+                          key={tag}
+                          className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#064e3b] bg-amber-50/80 px-2.5 py-1 rounded-full border border-amber-100/50"
+                        >
+                          <FaTag className="w-2.5 h-2.5 text-[#d97706]" />
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Read more button */}
+                    <div className="pt-4 border-t border-slate-100 mt-auto flex items-center justify-between text-sm font-bold text-[#0f172a] group-hover:text-[#064e3b] transition-colors">
+                      <span>Read Article</span>
+                      <FaArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+                </Link>
+              ))}
+            </div>
+          )}
 
           {/* Professional Pagination Structure */}
-          <div className="mt-8 md:mt-16 pt-8 border-t border-slate-200/70 flex flex-col sm:flex-row items-center justify-between gap-4">
+          {postsList.length > 0 && (
+            <div className="mt-8 md:mt-16 pt-8 border-t border-slate-200/70 flex flex-col sm:flex-row items-center justify-between gap-4">
             {/* Left side text */}
             <div className="text-xs sm:text-sm text-slate-500 font-normal">
               Showing{" "}
@@ -239,6 +249,7 @@ export function BlogListClient({ initialPosts }: BlogListClientProps) {
               </button>
             </nav>
           </div>
+          )}
         </div>
       </div>
     </main>

@@ -16,13 +16,13 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      faqs: items.length > 0 ? items : initialAdminFaqs,
+      faqs: items,
     });
   } catch (error: any) {
     console.error("Error fetching faqs:", error);
     return NextResponse.json({
       success: true,
-      faqs: initialAdminFaqs,
+      faqs: [],
     });
   }
 }

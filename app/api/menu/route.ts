@@ -16,13 +16,13 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      menuItems: items.length > 0 ? items : initialAdminMenuItems,
+      menuItems: items,
     });
   } catch (error: any) {
     console.error("Error fetching menu items:", error);
     return NextResponse.json({
       success: true,
-      menuItems: initialAdminMenuItems,
+      menuItems: [],
     });
   }
 }

@@ -21,13 +21,13 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      testimonials: items.length > 0 ? items : initialAdminTestimonials,
+      testimonials: items,
     });
   } catch (error: any) {
     console.error("Admin get testimonials error:", error);
     return NextResponse.json({
       success: true,
-      testimonials: initialAdminTestimonials,
+      testimonials: [],
     });
   }
 }

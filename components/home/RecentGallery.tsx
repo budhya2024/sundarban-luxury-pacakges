@@ -66,8 +66,9 @@ function ImageCard({
 
 export function RecentGallery() {
   const { galleryItems } = useAdmin();
+  // Only show items explicitly marked Active — respect deletions and status changes
   const activeItems = galleryItems.filter((g) => g.status === "Active");
-  const displayItems = activeItems.length > 0 ? activeItems : galleryItems;
+  const displayItems = activeItems;
 
   const [activeImageId, setActiveImageId] = useState<string | null>(null);
 

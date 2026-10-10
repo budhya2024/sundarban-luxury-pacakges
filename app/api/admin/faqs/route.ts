@@ -21,13 +21,13 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      faqs: items.length > 0 ? items : initialAdminFaqs,
+      faqs: items,
     });
   } catch (error: any) {
     console.error("Admin get faqs error:", error);
     return NextResponse.json({
       success: true,
-      faqs: initialAdminFaqs,
+      faqs: [],
     });
   }
 }

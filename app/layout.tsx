@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
-import { Manrope, Geist_Mono, Montez } from "next/font/google";
+import { Manrope, Montez } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { AppLayoutWrapper } from "@/components/shared/AppLayoutWrapper";
 
 const manrope = Manrope({
   variable: "--font-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
@@ -59,7 +54,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${manrope.variable} ${geistMono.variable} ${montez.variable} h-full antialiased`}
+      className={`${manrope.variable} ${montez.variable} h-full antialiased`}
     >
       <head>
         <meta

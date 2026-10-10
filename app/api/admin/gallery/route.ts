@@ -21,13 +21,13 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      galleryItems: items.length > 0 ? items : initialAdminGallery,
+      galleryItems: items,
     });
   } catch (error: any) {
     console.error("Admin get gallery items error:", error);
     return NextResponse.json({
       success: true,
-      galleryItems: initialAdminGallery,
+      galleryItems: [],
     });
   }
 }

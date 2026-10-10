@@ -30,6 +30,7 @@ import {
   initialAdminTestimonials,
   initialAdminTestimonialSettings,
   initialAdminGallery,
+  AdminHotelPhoto,
 } from "@/lib/admin-data";
 import { BlogPost, blogPosts as defaultBlogPosts } from "@/lib/blog-data";
 
@@ -48,6 +49,7 @@ interface AdminContextType {
   testimonials: AdminTestimonialItem[];
   testimonialSettings: AdminTestimonialSettings;
   galleryItems: AdminGalleryItem[];
+  hotelPhotos: AdminHotelPhoto[];
 
   // Package Actions
   addPackage: (pkg: Omit<AdminTourPackage, "id">) => void;
@@ -111,6 +113,11 @@ interface AdminContextType {
   updateGalleryItem: (id: string, item: Partial<AdminGalleryItem>) => void;
   deleteGalleryItem: (id: string) => void;
 
+  // Hotel Photo Actions
+  addHotelPhoto: (photo: { title: string; category: string; imageUrl: string; featured?: boolean }) => Promise<void>;
+  deleteHotelPhoto: (id: string) => Promise<void>;
+  refreshHotelPhotos: () => Promise<void>;
+
   // Toast notification system
   toastMessage: string | null;
   showToast: (msg: string) => void;
@@ -126,49 +133,16 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   const [inquiries, setInquiries] = useState<AdminInquiry[]>(initialAdminInquiries);
   const [contactCards, setContactCards] = useState<AdminContactCard[]>(initialAdminContactCards);
   const [contactGeneralInfo, setContactGeneralInfo] = useState<AdminContactGeneralInfo>(initialAdminContactGeneralInfo);
-  const [blogPostsList, setBlogPostsList] = useState<BlogPost[]>(defaultBlogPosts);
+  const [blogPostsList, setBlogPostsList] = useState<BlogPost[]>([]);
   const [pageContents, setPageContents] = useState<AdminPageContent[]>(initialAdminPages);
   const [globalAlertBanner, setGlobalAlertBanner] = useState<AdminGlobalAlertBanner>(initialAdminAlertBanner);
   const [faqs, setFaqs] = useState<AdminFaqItem[]>(initialAdminFaqs);
   const [testimonials, setTestimonials] = useState<AdminTestimonialItem[]>(initialAdminTestimonials);
   const [testimonialSettings, setTestimonialSettings] = useState<AdminTestimonialSettings>(initialAdminTestimonialSettings);
-  const [galleryItems, setGalleryItems] = useState<AdminGalleryItem[]>(initialAdminGallery);
+  const [galleryItems, setGalleryItems] = useState<AdminGalleryItem[]>([]);
+  const [hotelPhotos, setHotelPhotos] = useState<AdminHotelPhoto[]>([]);
 
-  // Restore client-side cached data safely after initial hydration
-  useEffect(() => {
-    try {
-      const savedBookings = localStorage.getItem("sb_admin_bookings");
-      if (savedBookings) setBookings(JSON.parse(savedBookings));
-      const savedPackages = localStorage.getItem("sb_admin_packages");
-      if (savedPackages) setPackages(JSON.parse(savedPackages));
-      const savedRooms = localStorage.getItem("sb_admin_rooms");
-      if (savedRooms) setRooms(JSON.parse(savedRooms));
-      const savedInquiries = localStorage.getItem("sb_admin_inquiries");
-      if (savedInquiries) setInquiries(JSON.parse(savedInquiries));
-      const savedMenu = localStorage.getItem("sb_admin_menu");
-      if (savedMenu) setMenuItems(JSON.parse(savedMenu));
-      const savedContactCards = localStorage.getItem("sb_admin_contact_cards");
-      if (savedContactCards) setContactCards(JSON.parse(savedContactCards));
-      const savedContactGeneral = localStorage.getItem("sb_admin_contact_general");
-      if (savedContactGeneral) setContactGeneralInfo(JSON.parse(savedContactGeneral));
-      const savedBlog = localStorage.getItem("sb_admin_blog_posts");
-      if (savedBlog) setBlogPostsList(JSON.parse(savedBlog));
-      const savedPages = localStorage.getItem("sb_admin_page_contents");
-      if (savedPages) setPageContents(JSON.parse(savedPages));
-      const savedBanner = localStorage.getItem("sb_admin_alert_banner");
-      if (savedBanner) setGlobalAlertBanner(JSON.parse(savedBanner));
-      const savedFaqs = localStorage.getItem("sb_admin_faqs");
-      if (savedFaqs) setFaqs(JSON.parse(savedFaqs));
-      const savedTestimonials = localStorage.getItem("sb_admin_testimonials");
-      if (savedTestimonials) setTestimonials(JSON.parse(savedTestimonials));
-      const savedTestimonialSettings = localStorage.getItem("sb_admin_testimonial_settings");
-      if (savedTestimonialSettings) setTestimonialSettings(JSON.parse(savedTestimonialSettings));
-      const savedGallery = localStorage.getItem("sb_admin_gallery");
-      if (savedGallery) setGalleryItems(JSON.parse(savedGallery));
-    } catch {
-      // ignore
-    }
-  }, []);
+
 
   const [toastInfo, setToastInfo] = useState<{ message: string; type: "success" | "danger" | "info" } | null>(null);
   const toastTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -209,13 +183,22 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // 1. Live Blog Posts
     fetch("/api/admin/blog")
-      .then((res) => (res.ok ? res.json() : null))
+      .then((res) => (res.ok ? res.json() : fetch("/api/blog").then((r) => (r.ok ? r.json() : null))))
       .then((data) => {
-        if (data?.success && Array.isArray(data.posts) && data.posts.length > 0) {
+        if (data?.success && Array.isArray(data.posts)) {
           setBlogPostsList(data.posts);
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        fetch("/api/blog")
+          .then((res) => (res.ok ? res.json() : null))
+          .then((data) => {
+            if (data?.success && Array.isArray(data.posts)) {
+              setBlogPostsList(data.posts);
+            }
+          })
+          .catch(() => {});
+      });
 
     // 2. Live Inquiries & Bookings Notification polling
     const fetchInquiries = () => {
@@ -245,9 +228,9 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
     const fetchRooms = () => {
       fetch("/api/admin/hotel/rooms")
-        .then((res) => (res.ok ? res.json() : null))
+        .then((res) => (res.ok ? res.json() : fetch("/api/hotel/rooms").then((r) => (r.ok ? r.json() : null))))
         .then((data) => {
-          if (data?.success && Array.isArray(data.rooms) && data.rooms.length > 0) {
+          if (data?.success && Array.isArray(data.rooms)) {
             setRooms(data.rooms);
           }
         })
@@ -272,13 +255,13 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
     // 3. Live Contact Information & Branch Cards
     fetch("/api/admin/contact")
-      .then((res) => (res.ok ? res.json() : null))
+      .then((res) => (res.ok ? res.json() : fetch("/api/contact").then((r) => (r.ok ? r.json() : null))))
       .then((data) => {
         if (data?.success) {
           if (data.generalInfo) {
             setContactGeneralInfo((prev) => ({ ...prev, ...data.generalInfo }));
           }
-          if (Array.isArray(data.contactCards) && data.contactCards.length > 0) {
+          if (Array.isArray(data.contactCards)) {
             setContactCards(data.contactCards);
           }
         }
@@ -289,7 +272,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     fetch("/api/packages?sort=createdAt_asc&status=all")
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if (data?.success && Array.isArray(data.packages) && data.packages.length > 0) {
+        if (data?.success && Array.isArray(data.packages)) {
           setPackages(data.packages);
         }
       })
@@ -297,9 +280,9 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
     // 5. Live Page Contents
     fetch("/api/admin/pages")
-      .then((res) => (res.ok ? res.json() : null))
+      .then((res) => (res.ok ? res.json() : fetch("/api/pages").then((r) => (r.ok ? r.json() : null))))
       .then((data) => {
-        if (data?.success && Array.isArray(data.pages) && data.pages.length > 0) {
+        if (data?.success && Array.isArray(data.pages)) {
           setPageContents(data.pages);
         }
       })
@@ -307,9 +290,9 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
     // 6. Live Testimonials & Settings
     fetch("/api/admin/testimonials")
-      .then((res) => (res.ok ? res.json() : null))
+      .then((res) => (res.ok ? res.json() : fetch("/api/testimonials").then((r) => (r.ok ? r.json() : null))))
       .then((data) => {
-        if (data?.success && Array.isArray(data.testimonials) && data.testimonials.length > 0) {
+        if (data?.success && Array.isArray(data.testimonials)) {
           setTestimonials(data.testimonials);
         }
       })
@@ -326,19 +309,28 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
     // 7. Live Gallery Items
     fetch("/api/admin/gallery")
-      .then((res) => (res.ok ? res.json() : null))
+      .then((res) => (res.ok ? res.json() : fetch("/api/gallery").then((r) => (r.ok ? r.json() : null))))
       .then((data) => {
-        if (data?.success && Array.isArray(data.galleryItems) && data.galleryItems.length > 0) {
+        if (data?.success && Array.isArray(data.galleryItems)) {
           setGalleryItems(data.galleryItems);
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        fetch("/api/gallery")
+          .then((res) => (res.ok ? res.json() : null))
+          .then((data) => {
+            if (data?.success && Array.isArray(data.galleryItems)) {
+              setGalleryItems(data.galleryItems);
+            }
+          })
+          .catch(() => {});
+      });
 
     // 8. Live Menu Items
     fetch("/api/admin/menu")
-      .then((res) => (res.ok ? res.json() : null))
+      .then((res) => (res.ok ? res.json() : fetch("/api/menu").then((r) => (r.ok ? r.json() : null))))
       .then((data) => {
-        if (data?.success && Array.isArray(data.menuItems) && data.menuItems.length > 0) {
+        if (data?.success && Array.isArray(data.menuItems)) {
           setMenuItems(data.menuItems);
         }
       })
@@ -346,9 +338,9 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
     // 9. Live FAQs
     fetch("/api/admin/faqs")
-      .then((res) => (res.ok ? res.json() : null))
+      .then((res) => (res.ok ? res.json() : fetch("/api/faqs").then((r) => (r.ok ? r.json() : null))))
       .then((data) => {
-        if (data?.success && Array.isArray(data.faqs) && data.faqs.length > 0) {
+        if (data?.success && Array.isArray(data.faqs)) {
           setFaqs(data.faqs);
         }
       })
@@ -363,6 +355,28 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         }
       })
       .catch(() => {});
+
+    // 11. Live Hotel Photos
+    const fetchHotelPhotosData = () => {
+      fetch("/api/admin/hotel/photos")
+        .then((res) => (res.ok ? res.json() : fetch("/api/hotel/photos").then((r) => (r.ok ? r.json() : null))))
+        .then((data) => {
+          if (data?.success && Array.isArray(data.photos)) {
+            setHotelPhotos(data.photos);
+          }
+        })
+        .catch(() => {
+          fetch("/api/hotel/photos")
+            .then((res) => (res.ok ? res.json() : null))
+            .then((data) => {
+              if (data?.success && Array.isArray(data.photos)) {
+                setHotelPhotos(data.photos);
+              }
+            })
+            .catch(() => {});
+        });
+    };
+    fetchHotelPhotosData();
 
     return () => {
       clearInterval(pollInterval);
@@ -1348,6 +1362,53 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const refreshHotelPhotos = async () => {
+    try {
+      const res = await fetch("/api/hotel/photos");
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.success && Array.isArray(data.photos)) {
+          setHotelPhotos(data.photos);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to refresh hotel photos:", err);
+    }
+  };
+
+  const addHotelPhoto = async (photo: { title: string; category: string; imageUrl: string; featured?: boolean }) => {
+    try {
+      const res = await fetch("/api/admin/hotel/photos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(photo),
+      });
+      const data = await res.json();
+      if (res.ok && data?.success && data.photo) {
+        setHotelPhotos((prev) => [data.photo, ...prev]);
+        showToast("Uploaded resort photo successfully!");
+      } else {
+        showToast(data?.error || "Failed to upload photo", "danger");
+      }
+    } catch (err) {
+      console.error("Failed to upload hotel photo:", err);
+      showToast("Error uploading hotel photo", "danger");
+    }
+  };
+
+  const deleteHotelPhoto = async (id: string) => {
+    setHotelPhotos((prev) => prev.filter((p) => p.id !== id));
+    showToast("Resort photo removed.");
+
+    try {
+      await fetch(`/api/admin/hotel/photos/${encodeURIComponent(id)}`, {
+        method: "DELETE",
+      });
+    } catch (err) {
+      console.error("Failed to delete hotel photo on server:", err);
+    }
+  };
+
   return (
     <AdminContext.Provider
       value={{
@@ -1365,6 +1426,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         testimonials,
         testimonialSettings,
         galleryItems,
+        hotelPhotos,
         addPackage,
         updatePackage,
         deletePackage,
@@ -1405,6 +1467,9 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         addGalleryItem,
         updateGalleryItem,
         deleteGalleryItem,
+        addHotelPhoto,
+        deleteHotelPhoto,
+        refreshHotelPhotos,
         toastMessage: toastInfo?.message || null,
         showToast,
       }}

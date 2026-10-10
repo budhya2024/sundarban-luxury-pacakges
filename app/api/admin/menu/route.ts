@@ -21,13 +21,13 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      menuItems: items.length > 0 ? items : initialAdminMenuItems,
+      menuItems: items,
     });
   } catch (error: any) {
     console.error("Admin get menu items error:", error);
     return NextResponse.json({
       success: true,
-      menuItems: initialAdminMenuItems,
+      menuItems: [],
     });
   }
 }
