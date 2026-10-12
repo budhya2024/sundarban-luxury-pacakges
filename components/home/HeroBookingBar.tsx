@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa6";
 import { useAdmin } from "@/context/AdminContext";
-import { BookingConfirmationCard } from "@/components/ui/BookingConfirmationCard";
+import { BookingConfirmationModal } from "@/components/ui/BookingConfirmationCard";
 
 export function HeroBookingBar() {
   const { packages, addBooking } = useAdmin();
@@ -360,44 +360,24 @@ Hello, I have submitted a booking request on your website. Please confirm itiner
 
       {/* Confirmation Modal */}
       {confirmedBooking && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in duration-200"
-          onClick={() => setConfirmedBooking(null)}
-          aria-modal="true"
-          role="dialog"
-        >
-          <div
-            className="bg-white rounded-2xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative border border-slate-100 transition-all transform animate-in zoom-in-95 duration-200"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button */}
-            <button
-              onClick={() => setConfirmedBooking(null)}
-              type="button"
-              aria-label="Close modal"
-              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
-            >
-              <X className="w-4 h-4" />
-            </button>
-
-            <BookingConfirmationCard
-              details={{
-                hotelOrPackageName: confirmedBooking.packageName,
-                checkInDate: confirmedBooking.travelDate,
-                guests: confirmedBooking.guests,
-                bookingId: confirmedBooking.bookingCode,
-                guestEmail: confirmedBooking.email,
-                guestName: confirmedBooking.guestName,
-                guestPhone: confirmedBooking.phone,
-                whatsAppUrl: getWhatsAppConfirmUrl(),
-              }}
-              onViewBooking={() => setConfirmedBooking(null)}
-              onBackToHome={() => setConfirmedBooking(null)}
-              primaryActionText="View Booking"
-              secondaryActionText="Back to Home"
-            />
-          </div>
-        </div>
+        <BookingConfirmationModal
+          isOpen={Boolean(confirmedBooking)}
+          onClose={() => setConfirmedBooking(null)}
+          details={{
+            hotelOrPackageName: confirmedBooking.packageName,
+            checkInDate: confirmedBooking.travelDate,
+            guests: confirmedBooking.guests,
+            bookingId: confirmedBooking.bookingCode,
+            guestEmail: confirmedBooking.email,
+            guestName: confirmedBooking.guestName,
+            guestPhone: confirmedBooking.phone,
+            whatsAppUrl: getWhatsAppConfirmUrl(),
+          }}
+          onViewBooking={() => setConfirmedBooking(null)}
+          onBackToHome={() => setConfirmedBooking(null)}
+          primaryActionText="View Booking"
+          secondaryActionText="Back to Home"
+        />
       )}
     </>
   );

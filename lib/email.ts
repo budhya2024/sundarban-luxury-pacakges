@@ -589,10 +589,8 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
           
           <!-- Dark Header Banner with White Text -->
           <tr>
-            <td style="background-color: #0b3b24; border-top: 4px solid #d4af37; padding: 15px 20px; text-align: center;">
-              <div style="font-size: 9px; font-weight: bold; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;">
-                LUXURY RESORT &bull; SUNDARBAN DELTA
-              </div>
+            <td style="background-color: #0b3b24; padding: 15px 20px; text-align: center;">
+             
               <h1 style="margin: 0; font-size: 15px; font-weight: bold; color: #ffffff; letter-spacing: 1px;">
                 HOTEL SONAR BANGLA &amp; RESORT
               </h1>
@@ -608,7 +606,7 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
 
               <!-- Greeting & Thank You -->
               <h2 style="margin: 0 0 10px 0; font-size: 15px; font-weight: bold; color: #0f172a;">
-                Namaste, ${inquiry.guestName}!
+                Hi, ${inquiry.guestName}!
               </h2>
               <p style="margin: 0 0 20px 0; font-size: 9px; color: #475569; line-height: 1.6;">
                 Thank you for choosing <strong style="color: #0f172a;">Hotel Sonar Bangla &amp; Resort</strong>. We have received your resort room reservation request. Our front desk team is reviewing your travel dates and preparing your stay details.

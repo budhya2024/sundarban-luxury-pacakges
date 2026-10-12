@@ -46,7 +46,7 @@ export function FloatingActions() {
   return (
     <>
       {/* 1. Right-Middle Floating Call & WhatsApp Action Buttons */}
-      <div className="fixed right-3 sm:right-5 top-1/2 -translate-y-1/2 z-50 flex flex-col items-end gap-3.5 select-none">
+      <div className="fixed right-3 sm:right-5 top-1/2 -translate-y-1/2 z-20 flex flex-col items-end gap-3.5 select-none">
         {/* Floating Call Button */}
         <div className="relative group flex items-center justify-end">
 
@@ -84,7 +84,7 @@ export function FloatingActions() {
       </div>
 
       {/* 2. Scroll to Top Button (Bottom Right) */}
-      <div className="fixed bottom-5 right-3 sm:right-5 z-40 select-none">
+      <div className="fixed bottom-5 right-3 sm:right-5 z-20 select-none">
         <button
           type="button"
           onClick={scrollToTop}

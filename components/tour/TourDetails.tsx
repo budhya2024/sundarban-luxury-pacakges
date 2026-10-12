@@ -22,6 +22,7 @@ import {
   Sparkles,
   Tag,
   Camera,
+  Check,
 } from "lucide-react";
 import {
   FaFacebookF,
@@ -209,17 +210,34 @@ export function TourDetails({
   // Load from Admin Context
   const { packages } = useAdmin();
 
-  // Find matching package or fallback to 2-nights-3-days package or first package
-  const currentPackage =
-    initialPackage ||
-    packages.find(
-      (p) =>
-        (packageSlug && p.slug === packageSlug) ||
-        (packageName && p.name.toLowerCase() === packageName.toLowerCase())
-    ) ||
-    packages.find((p) => p.slug === "2-nights-3-days-tiger-trail") ||
-    packages[0];
+  // Priority: live package from AdminContext/database first, then initialPackage
+  const livePackage = packages.find(
+    (p) =>
+      (packageSlug && p.slug === packageSlug) ||
+      (initialPackage?.id && p.id === initialPackage.id) ||
+      (packageName && p.name.toLowerCase() === packageName.toLowerCase())
+  );
 
+  const currentPackage = useMemo(() => {
+    if (livePackage && initialPackage) {
+      return {
+        ...initialPackage,
+        ...livePackage,
+        image: livePackage.image || initialPackage.image,
+        bannerImage: livePackage.bannerImage || initialPackage.bannerImage,
+        gallery:
+          livePackage.gallery && livePackage.gallery.length > 0
+            ? livePackage.gallery
+            : initialPackage.gallery,
+      };
+    }
+    return (
+      livePackage ||
+      initialPackage ||
+      packages.find((p) => p.slug === "2-nights-3-days-tiger-trail") ||
+      packages[0]
+    );
+  }, [livePackage, initialPackage, packages]);
 
   // Resolve dynamic values
   const title = currentPackage?.name || packageName;
@@ -227,6 +245,9 @@ export function TourDetails({
   const heroImage =
     currentPackage?.bannerImage ||
     currentPackage?.image ||
+    (currentPackage?.gallery && currentPackage.gallery.length > 0
+      ? currentPackage.gallery[0]
+      : null) ||
     "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80&w=2000";
   const duration = currentPackage?.duration || "2 Days / 1 Night";
   const pickupDrop = currentPackage?.pickupDrop || "Kolkata / Canning";
@@ -340,17 +361,24 @@ export function TourDetails({
     <div className="bg-slate-50/70 min-h-screen text-[#0f172a] font-sans relative">
 
       {/* 1. HERO SECTION */}
-      <section className="relative bg-black text-white py-20 lg:py-28 overflow-hidden">
-        {/* Background Image with Dark Black Overlay */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('${heroImage}')`,
-          }}
-        />
+      <section className="relative bg-black text-white py-20 lg:py-28 overflow-hidden min-h-[280px]">
+        {/* Dynamic Package Hero Banner Image */}
+        {heroImage && (
+          <div className="absolute inset-0">
+            <Image
+              src={heroImage}
+              alt={title}
+              fill
+              priority
+              sizes="100vw"
+              unoptimized={Boolean(heroImage.startsWith("data:") || heroImage.startsWith("/uploads/"))}
+              className="object-cover object-center"
+            />
+          </div>
+        )}
 
-        {/* Black 50% Overlay Layer */}
-        <div className="absolute inset-0 bg-black/50" />
+        {/* Black 55% Overlay Layer for Text Readability */}
+        <div className="absolute inset-0 bg-black/55 z-[1]" />
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Hero Title */}
@@ -400,7 +428,7 @@ export function TourDetails({
                 {/* 4 Feature Badges in a Row */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
                   <div className="flex flex-col items-center justify-center p-4 rounded-sm bg-slate-50 border border-slate-200/80 text-center">
-                    <Clock className="w-6 h-6 text-secondary mb-2" />
+                    <Clock className="w-6 h-6 shrink-0 text-secondary mb-2" />
                     <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
                       Duration
                     </span>
@@ -410,7 +438,7 @@ export function TourDetails({
                   </div>
 
                   <div className="flex flex-col items-center justify-center p-4 rounded-sm bg-slate-50 border border-slate-200/80 text-center">
-                    <MapPin className="w-6 h-6 text-secondary mb-2" />
+                    <MapPin className="w-6 h-6 shrink-0 text-secondary mb-2" />
                     <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
                       Pick &amp; Drop
                     </span>
@@ -420,7 +448,7 @@ export function TourDetails({
                   </div>
 
                   <div className="flex flex-col items-center justify-center p-4 rounded-sm bg-slate-50 border border-slate-200/80 text-center">
-                    <Utensils className="w-6 h-6 text-secondary mb-2" />
+                    <Utensils className="w-6 h-6 shrink-0 text-secondary mb-2" />
                     <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
                       Meals Included
                     </span>
@@ -430,7 +458,7 @@ export function TourDetails({
                   </div>
 
                   <div className="flex flex-col items-center justify-center p-4 rounded-sm bg-slate-50 border border-slate-200/80 text-center">
-                    <Users className="w-6 h-6 text-secondary mb-2" />
+                    <Users className="w-6 h-6 shrink-0 text-secondary mb-2" />
                     <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
                       Group Size
                     </span>
@@ -463,7 +491,7 @@ export function TourDetails({
                       <div className="flex items-center justify-between border-b border-emerald-100/80 pb-3">
                         <div className="">
 
-                          <h3 className="text-lg sm:text-xl font-extrabold text-[#0f172a]">
+                          <h3 className="text-lg sm:text-lg md:text-xl font-extrabold text-[#0f172a]">
                             {menuDay.dayTitle || `Day ${menuDay.dayNumber || dayIdx + 1}`} Menu
                           </h3>
                         </div>
@@ -536,33 +564,33 @@ export function TourDetails({
 
               {/* SECTION D: WHAT'S INCLUDED */}
               <div className="bg-brand-green-soft border border-emerald-200/80 p-6 sm:p-8 space-y-4 rounded-sm">
-                <h3 className="text-xl font-extrabold text-primary flex items-center gap-2">
-                  <CheckCircle2 className="w-6 h-6 text-primary" />
+                <h3 className="text-lg md:text-xl font-extrabold text-primary flex items-center gap-2.5">
+                  <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-primary" />
                   <span>What&apos;s Included in this Package</span>
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-medium text-emerald-950">
                   {inclusions.map((item, idx) => (
                     <div key={idx} className="flex items-start gap-2.5">
-                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                      <span>{item}</span>
+                      <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                      <span className="leading-relaxed">{item}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* SECTION E: WHAT'S NOT INCLUDED */}
-              <div className="bg-slate-100/80 border border-slate-200 p-6 sm:p-8 space-y-4 rounded-sm">
-                <h3 className="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-                  <XCircle className="w-6 h-6 text-slate-700" />
+              <div className="bg-slate-50 border border-slate-200 p-6 sm:p-8 space-y-4 rounded-sm">
+                <h3 className="text-lg md:text-xl font-extrabold text-slate-900 flex items-center gap-2.5">
+                  <XCircle className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-rose-500" />
                   <span>What&apos;s Not Included (Exclusions)</span>
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-medium text-slate-700">
                   {exclusions.map((item, idx) => (
                     <div key={idx} className="flex items-start gap-2.5">
-                      <XCircle className="w-4 h-4 text-slate-700 flex-shrink-0 mt-0.5" />
-                      <span>{item}</span>
+                      <XCircle className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
+                      <span className="leading-relaxed">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -570,16 +598,16 @@ export function TourDetails({
 
               {/* SECTION F: THINGS TO CARRY */}
               <div className="bg-amber-50/60 border border-amber-200/80 p-6 sm:p-8 space-y-4 rounded-sm">
-                <h3 className="text-xl font-extrabold text-brand-yellow-dark flex items-center gap-2">
-                  <Briefcase className="w-6 h-6 text-secondary" />
+                <h3 className="text-lg md:text-xl font-extrabold text-brand-yellow-dark flex items-center gap-2.5">
+                  <Briefcase className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-secondary" />
                   <span>Things to Carry Checklist</span>
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-medium text-amber-950">
                   {thingsToCarry.map((item, idx) => (
                     <div key={idx} className="flex items-start gap-2.5">
-                      <span className="w-2 h-2 rounded-full bg-secondary flex-shrink-0 mt-1.5" />
-                      <span>{item}</span>
+                      <Check className="w-4 h-4 text-secondary shrink-0 mt-0.5 stroke-[2.5]" />
+                      <span className="leading-relaxed">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -587,16 +615,16 @@ export function TourDetails({
 
               {/* SECTION G: CHILD POLICY */}
               <div className="bg-slate-50 border border-slate-200 p-6 sm:p-8 space-y-4 rounded-sm">
-                <h3 className="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-                  <Users className="w-6 h-6 text-primary" />
+                <h3 className="text-lg md:text-xl font-extrabold text-slate-900 flex items-center gap-2.5">
+                  <Users className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-primary" />
                   <span>Child &amp; Age Policy</span>
                 </h3>
 
                 <div className="space-y-3 text-xs sm:text-sm font-medium text-slate-800">
                   {childPolicy.map((policy, idx) => (
                     <div key={idx} className="flex items-start gap-2.5">
-                      <span className="w-2 h-2 rounded-full bg-primary flex-shrink-0 mt-1.5" />
-                      <span>{policy}</span>
+                      <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                      <span className="leading-relaxed">{policy}</span>
                     </div>
                   ))}
                 </div>
@@ -604,14 +632,17 @@ export function TourDetails({
 
               {/* SECTION H: IMPORTANT NOTES */}
               <div className="bg-emerald-50 border border-emerald-200 p-6 sm:p-8 space-y-4 rounded-sm">
-                <h3 className="text-lg font-extrabold text-primary flex items-center gap-2">
-                  <Info className="w-5 h-5 text-primary" />
+                <h3 className="text-lg md:text-xl font-extrabold text-primary flex items-center gap-2.5">
+                  <Info className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-primary" />
                   <span>Important Safari Guidelines &amp; Notes</span>
                 </h3>
 
-                <div className="space-y-2 text-xs sm:text-sm text-slate-700 font-normal">
+                <div className="space-y-3 text-xs sm:text-sm font-medium text-slate-800">
                   {importantNotes.map((note, idx) => (
-                    <p key={idx}>• {note}</p>
+                    <div key={idx} className="flex items-start gap-2.5">
+                      <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                      <span className="leading-relaxed">{note}</span>
+                    </div>
                   ))}
                 </div>
               </div>

@@ -198,24 +198,28 @@ export default function GalleryPage() {
       {/* 2. GALLERY GRID */}
       <section className="py-10 md:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Category Filter Pills – sticky so it doesn't overlap page content on scroll */}
+          {/* Category Filter Pills – clean horizontal X-axis scroll on mobile, no sticky overlap */}
           {categories.length > 1 && (
-            <div className="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-sm py-3 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 mb-6 sm:mb-10 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-              {categories.map((cat) => {
-                const isActive = selectedCategory === cat;
-                return (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-300 cursor-pointer ${isActive
-                        ? "bg-primary text-white shadow-md shadow-primary/20 scale-105"
-                        : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 shadow-xs"
-                      }`}
-                  >
-                    {cat}
-                  </button>
-                );
-              })}
+            <div className="relative mb-6 sm:mb-10">
+              <div className="w-full overflow-x-auto scroll-smooth pb-2 pt-1 px-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                <div className="flex items-center gap-2 sm:gap-3 flex-nowrap md:flex-wrap md:justify-center min-w-max md:min-w-0">
+                  {categories.map((cat) => {
+                    const isActive = selectedCategory === cat;
+                    return (
+                      <button
+                        key={cat}
+                        onClick={() => setSelectedCategory(cat)}
+                        className={`flex-shrink-0 whitespace-nowrap px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer ${isActive
+                            ? "bg-primary text-white shadow-md shadow-primary/25 scale-[1.02]"
+                            : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 shadow-2xs"
+                          }`}
+                      >
+                        {cat === "All" ? "All Photos" : cat}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           )}
 

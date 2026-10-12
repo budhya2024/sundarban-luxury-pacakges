@@ -101,20 +101,22 @@ export default function PackagesPage() {
             </p>
           </div>
 
-          {/* Category Tabs */}
-          <div className="flex flex-wrap items-center gap-2">
-            {["All", "1 Day", "2 Days", "3 Days", "Resort Stay"].map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`text-xs sm:text-sm font-bold px-4 py-2 rounded-full transition-all duration-200 cursor-pointer ${selectedCategory === cat
-                  ? "bg-primary text-white shadow-sm"
-                  : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200/80"
-                  }`}
-              >
-                {cat === "All" ? "All Packages" : cat}
-              </button>
-            ))}
+          {/* Category Tabs with smooth mobile horizontal x-axis scroll */}
+          <div className="w-full sm:w-auto overflow-x-auto scroll-smooth pb-1 pt-0.5 px-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex items-center gap-2 flex-nowrap sm:flex-wrap min-w-max sm:min-w-0">
+              {["All", "1 Day", "2 Days", "3 Days", "Resort Stay"].map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`flex-shrink-0 whitespace-nowrap text-xs sm:text-sm font-bold px-4 py-2 rounded-full transition-all duration-200 cursor-pointer ${selectedCategory === cat
+                    ? "bg-primary text-white shadow-sm"
+                    : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200/80"
+                    }`}
+                >
+                  {cat === "All" ? "All Packages" : cat}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 

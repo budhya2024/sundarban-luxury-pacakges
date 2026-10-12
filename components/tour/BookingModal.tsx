@@ -193,21 +193,21 @@ export function BookingModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-xs animate-in fade-in duration-200"
-      onClick={onClose}
+      className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in duration-200"
+      onClick={isSubmitted ? handleReset : onClose}
       aria-modal="true"
       role="dialog"
     >
       <div
-        className="bg-white rounded-2xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative border border-slate-100 transition-all transform animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto"
+        className="bg-white rounded-2xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative border border-slate-100 transition-all transform animate-in zoom-in-95 duration-200 max-h-[92vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button in top right */}
         <button
-          onClick={onClose}
+          onClick={isSubmitted ? handleReset : onClose}
           type="button"
           aria-label="Close modal"
-          className="absolute top-5 right-5 w-9 h-9 rounded-full bg-primary hover:bg-secondary text-white flex items-center justify-center transition-colors cursor-pointer shadow-xs"
+          className="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-colors cursor-pointer shadow-xs"
         >
           <X className="w-5 h-5" />
         </button>
@@ -409,8 +409,8 @@ export function BookingModal({
               guestEmail: formData.email,
               guestName: formData.fullName,
               guestPhone: formData.phoneNumber,
-              whatsAppUrl: `https://api.whatsapp.com/send?phone=919876543210&text=${encodeURIComponent(
-                `Hello, I submitted a booking request for ${packageName} on ${formData.travelDate}.`
+              whatsAppUrl: `https://wa.me/917001403498?text=${encodeURIComponent(
+                `*Sundarban Luxury Package - Trip Booking Request*\nPackage: ${packageName}\nTravel Date: ${formData.travelDate || "To be confirmed"}\nGuests: ${formData.guests}\nGuest Name: ${formData.fullName}\nContact: ${formData.phoneNumber}\nBooking Ref: ${confirmedCode || "Pending"}\n\nHello, I submitted a booking request on your website. Please confirm my reservation.`
               )}`,
             }}
             onViewBooking={handleReset}

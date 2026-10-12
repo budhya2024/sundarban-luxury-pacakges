@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { X } from "lucide-react";
+import { X, Check } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa6";
 
 export interface BookingDetailsData {
   hotelOrPackageName?: string;
@@ -119,22 +120,13 @@ export function BookingConfirmationCard({
 
         {/* Clean Compact Green Checkmark Circle */}
         <div className="relative z-10 w-16 h-16 rounded-full bg-[#10b981] shadow-md shadow-[#10b981]/20 flex items-center justify-center ring-4 ring-[#10b981]/15">
-          <svg
-            className="w-8 h-8 text-white stroke-[3.5]"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
+          <Check className="w-8 h-8 text-white stroke-[3.5]" />
         </div>
       </div>
 
       {/* Title & Subtitle */}
       <div className="mt-1 mb-4 px-2">
-        <h2 className="text-xl font-black text-slate-900 tracking-tight">
+        <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
           Booking Confirmed!
         </h2>
         <p className="text-slate-500 text-xs mt-1 leading-relaxed max-w-xs mx-auto">
@@ -146,21 +138,42 @@ export function BookingConfirmationCard({
       </div>
 
       {/* Compact Booking Details Box */}
-      <div className="bg-slate-50/90 border border-slate-200/80 rounded-xl p-4 text-left shadow-2xs mb-4">
-        <div className="pb-2 mb-2.5 border-b border-slate-200/60">
+      <div className="bg-slate-50/90 border border-slate-200/80 rounded-sm p-4 text-left shadow-2xs mb-4">
+        <div className="pb-2 mb-2.5 border-b border-slate-200/60 flex items-center justify-between">
           <span className="text-xs font-bold text-slate-900 uppercase tracking-wider">
             Booking Details
           </span>
+          {details.bookingId && (
+            <span className="text-[11px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5  border border-emerald-200">
+              Ref: {details.bookingId}
+            </span>
+          )}
         </div>
 
         {/* Key Values */}
         <div className="space-y-2 text-xs">
           <div className="flex items-start justify-between gap-3">
-            <span className="text-slate-500 font-medium">Package</span>
+            <span className="text-slate-500 font-medium">Package / Hotel</span>
             <span className="text-slate-900 font-bold text-right truncate max-w-[200px]">
               {hotelName}
             </span>
           </div>
+
+          {details.guestName && (
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-slate-500 font-medium">Guest Name</span>
+              <span className="text-slate-900 font-semibold">{details.guestName}</span>
+            </div>
+          )}
+
+          {details.guestPhone && (
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-slate-500 font-medium">Contact</span>
+              <span className="text-slate-900 font-semibold">{details.guestPhone}</span>
+            </div>
+          )}
+
+
 
           <div className="flex items-center justify-between gap-3">
             <span className="text-slate-500 font-medium">Travel Date</span>
@@ -179,6 +192,8 @@ export function BookingConfirmationCard({
         </div>
       </div>
 
+
+
       {/* Bottom Action Buttons */}
       <div className="grid grid-cols-2 gap-2.5 pt-1">
         <button
@@ -195,6 +210,60 @@ export function BookingConfirmationCard({
         >
           {primaryActionText}
         </button>
+      </div>
+    </div>
+  );
+}
+
+export interface BookingConfirmationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  details: BookingDetailsData;
+  primaryActionText?: string;
+  secondaryActionText?: string;
+  onViewBooking?: () => void;
+  onBackToHome?: () => void;
+}
+
+export function BookingConfirmationModal({
+  isOpen,
+  onClose,
+  details,
+  primaryActionText = "View Booking",
+  secondaryActionText = "Back to Home",
+  onViewBooking,
+  onBackToHome,
+}: BookingConfirmationModalProps) {
+  if (!isOpen) return null;
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in duration-200"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative border border-slate-100 transition-all transform animate-in zoom-in-95 duration-200 max-h-[92vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          type="button"
+          aria-label="Close modal"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors cursor-pointer shadow-xs"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
+        <BookingConfirmationCard
+          details={details}
+          onViewBooking={onViewBooking || onClose}
+          onBackToHome={onBackToHome || onClose}
+          primaryActionText={primaryActionText}
+          secondaryActionText={secondaryActionText}
+        />
       </div>
     </div>
   );

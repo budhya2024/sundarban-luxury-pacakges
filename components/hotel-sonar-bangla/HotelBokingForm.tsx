@@ -20,7 +20,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa6";
-import { BookingConfirmationCard } from "@/components/ui/BookingConfirmationCard";
+import { BookingConfirmationModal } from "@/components/ui/BookingConfirmationCard";
 
 export interface TourPackageOption {
   id: string;
@@ -267,27 +267,6 @@ export function HotelBokingForm() {
             </p>
           </div>
 
-          {isSubmitted ? (
-            <div className="py-8 px-4 flex justify-center">
-              <BookingConfirmationCard
-                details={{
-                  hotelOrPackageName: `Hotel Sonar Bangla (${selectedPackage.name})`,
-                  checkInDate: travelDate,
-                  guests: `${adults} Adults${children > 0 ? `, ${children} Children` : ""}`,
-                  bookingId: bookingRefId || undefined,
-                  roomNo: selectedRoomId ? selectedRoomId.toUpperCase() : "B215",
-                  guestEmail: guestEmail,
-                  guestName: guestName,
-                  guestPhone: guestPhone,
-                  whatsAppUrl: generateWhatsAppUrl(),
-                }}
-                onViewBooking={() => setIsSubmitted(false)}
-                onBackToHome={() => setIsSubmitted(false)}
-                primaryActionText="View Booking"
-                secondaryActionText="Back to Form"
-              />
-            </div>
-          ) : (
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Step 1: Package Selection Cards (3 Core Packages) */}
               <div>
@@ -677,9 +656,29 @@ export function HotelBokingForm() {
 
 
             </form>
-          )}
         </div>
       </div>
+
+      {/* Booking Confirmation Popup Modal */}
+      <BookingConfirmationModal
+        isOpen={isSubmitted}
+        onClose={() => setIsSubmitted(false)}
+        details={{
+          hotelOrPackageName: `Hotel Sonar Bangla (${selectedPackage.name})`,
+          checkInDate: travelDate,
+          guests: `${adults} Adults${children > 0 ? `, ${children} Children` : ""}`,
+          bookingId: bookingRefId || undefined,
+          roomNo: selectedRoomId ? selectedRoomId.toUpperCase() : "B215",
+          guestEmail: guestEmail,
+          guestName: guestName,
+          guestPhone: guestPhone,
+          whatsAppUrl: generateWhatsAppUrl(),
+        }}
+        onViewBooking={() => setIsSubmitted(false)}
+        onBackToHome={() => setIsSubmitted(false)}
+        primaryActionText="View Booking"
+        secondaryActionText="Close"
+      />
     </section>
   );
 }
