@@ -50,6 +50,185 @@ export const metadata: Metadata = {
   },
 };
 
+const knowledgeGraph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://sundarbanluxurypackage.com/#website",
+      "url": "https://sundarbanluxurypackage.com/",
+      "name": "Sundarban Luxury Package",
+      "description":
+        "Best Sundarban Tour Package from Kolkata with Luxury Hotel Sonar Bangla Stay and Private Cruise.",
+      "publisher": {
+        "@id": "https://sundarbanluxurypackage.com/#organization",
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://sundarbanluxurypackage.com/?s={search_term_string}",
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@type": "TravelAgency",
+      "@id": "https://sundarbanluxurypackage.com/#organization",
+      "name": "Sundarban Luxury Package",
+      "url": "https://sundarbanluxurypackage.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://sundarbanluxurypackage.com/logo.png",
+      },
+      "image": "https://sundarbanluxurypackage.com/logo.png",
+      "email": "sundarbanluxurypackage@gmail.com",
+      "telephone": "+917001403498",
+      "priceRange": "₹₹₹",
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "Kolkata",
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Kolkata",
+        },
+        {
+          "@type": "State",
+          "name": "West Bengal",
+        },
+        {
+          "@type": "Country",
+          "name": "India",
+        },
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Dulki, Gosaba",
+        "addressLocality": "Sundarban",
+        "addressRegion": "West Bengal",
+        "postalCode": "743370",
+        "addressCountry": "IN",
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 22.1652,
+        "longitude": 88.8078,
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        ],
+        "opens": "08:00",
+        "closes": "21:00",
+      },
+      "sameAs": [
+        "https://sundarbanluxurypackage.com/about",
+        "https://sundarbanluxurypackage.com/contact",
+        "https://sundarbanluxurypackage.com/blog",
+      ],
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://sundarbanluxurypackage.com/#sitelinks",
+      "itemListElement": [
+        {
+          "@type": "SiteNavigationElement",
+          "position": 1,
+          "name": "About Us",
+          "url": "https://sundarbanluxurypackage.com/about",
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 2,
+          "name": "Tour Blog",
+          "url": "https://sundarbanluxurypackage.com/blog",
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 3,
+          "name": "Contact Us",
+          "url": "https://sundarbanluxurypackage.com/contact",
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 4,
+          "name": "Hotel Sonar Bangla Package",
+          "url":
+            "https://sundarbanluxurypackage.com/hotel-sonar-bangla-sundarban-weekend-tour-package-from-kolkata",
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 5,
+          "name": "1 Night 2 Days Luxury Cruise",
+          "url": "https://sundarbanluxurypackage.com/tour/1-night-2-days-luxury-cruise",
+        },
+      ],
+    },
+    {
+      "@type": "TouristTrip",
+      "name": "Sundarban Package Tour with Luxury Hotel Sonar Bangla",
+      "description":
+        "Experience the ultimate luxury tour of Sundarban starting from Kolkata with premium accommodation at Hotel Sonar Bangla, guided jungle safaris, and fine dining.",
+      "provider": {
+        "@id": "https://sundarbanluxurypackage.com/#organization",
+      },
+      "url":
+        "https://sundarbanluxurypackage.com/sundarban-package-tour-with-luxury-hotel-sonar-bangla",
+      "itinerary": {
+        "@type": "City",
+        "name": "Kolkata to Sundarban",
+      },
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "INR",
+        "availability": "https://schema.org/InStock",
+        "url":
+          "https://sundarbanluxurypackage.com/sundarban-package-tour-with-luxury-hotel-sonar-bangla",
+      },
+    },
+    {
+      "@type": "TouristTrip",
+      "name": "Best Sundarban Tour Package with Hotel Sonar Bangla Stay",
+      "description":
+        "Top-rated weekend tour package from Kolkata including AC transport, luxury resort stay at Hotel Sonar Bangla, and boat safari permits.",
+      "provider": {
+        "@id": "https://sundarbanluxurypackage.com/#organization",
+      },
+      "url":
+        "https://sundarbanluxurypackage.com/best-sundarban-tour-package-with-hotel-sonar-bangla-stay",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "INR",
+        "availability": "https://schema.org/InStock",
+        "url":
+          "https://sundarbanluxurypackage.com/best-sundarban-tour-package-with-hotel-sonar-bangla-stay",
+      },
+    },
+    {
+      "@type": "TouristTrip",
+      "name": "1 Night 2 Days Luxury Cruise Tour in Sundarban",
+      "description":
+        "Short and premium 1N/2D luxury boat cruise tour package in Sundarban with top-tier hospitality and meals.",
+      "provider": {
+        "@id": "https://sundarbanluxurypackage.com/#organization",
+      },
+      "url": "https://sundarbanluxurypackage.com/tour/1-night-2-days-luxury-cruise",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "INR",
+        "availability": "https://schema.org/InStock",
+        "url": "https://sundarbanluxurypackage.com/tour/1-night-2-days-luxury-cruise",
+      },
+    },
+  ],
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -60,6 +239,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <meta
           name="google-site-verification"
           content="ZB58AbxPxUoxGQkSUgmlus0ml84nt0MkAAeH680uc0s"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(knowledgeGraph),
+          }}
         />
         <Script
           id="gtm-script"
