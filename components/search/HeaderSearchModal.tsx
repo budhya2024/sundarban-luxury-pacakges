@@ -390,7 +390,7 @@ export function HeaderSearchModal({ isOpen, onClose }: HeaderSearchModalProps) {
                 </Link>
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-2">
                 {allSearchableData
                   .filter((i) => i.type === "package" || i.id === "page-hotel")
                   .slice(0, 4)
@@ -402,7 +402,7 @@ export function HeaderSearchModal({ isOpen, onClose }: HeaderSearchModalProps) {
                       className="flex items-center justify-between gap-3 p-2 rounded-sm bg-white hover:bg-slate-50 border border-slate-200/80 shadow-2xs transition-colors"
                     >
                       <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                        <div className="relative w-10 h-10 rounded-sm overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-200 flex items-center justify-center">
+                        <div className="relative w-10 h-10 md:w-16 md:h-16 rounded-sm overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-200 flex items-center justify-center">
                           {item.image ? (
                             <Image
                               src={item.image}

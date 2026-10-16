@@ -89,7 +89,7 @@ export default function PackagesPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12">
+      <div id="packages-section" className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12">
         {/* 2. Top Filter / Category Pills */}
         <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-8 border-b border-slate-200/80">
           <div>

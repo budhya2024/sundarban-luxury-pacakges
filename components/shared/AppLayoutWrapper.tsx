@@ -8,6 +8,8 @@ import { FloatingActions } from "@/components/shared/FloatingActions";
 import { AdminProvider } from "@/context/AdminContext";
 import { ConfirmProvider } from "@/context/ConfirmContext";
 
+import { WinterOfferModal } from "@/components/shared/WinterOfferModal";
+
 export function AppLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith("/admin");
@@ -25,6 +27,7 @@ export function AppLayoutWrapper({ children }: { children: React.ReactNode }) {
             <main className="flex-1">{children}</main>
             <Footer />
             <FloatingActions />
+            <WinterOfferModal />
           </>
         )}
       </AdminProvider>
