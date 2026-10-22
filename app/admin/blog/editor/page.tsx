@@ -40,6 +40,11 @@ import {
   PanelRightClose,
   PanelRightOpen,
   SlidersHorizontal,
+  KeyRound,
+  CheckCircle2,
+  XCircle,
+  Plus,
+  Hash,
 } from "lucide-react";
 
 const DEFAULT_CATEGORIES = [
@@ -51,6 +56,19 @@ const DEFAULT_CATEGORIES = [
   "Cuisine & Dining",
   "Conservation",
   "Photography",
+];
+
+const POPULAR_SUNDARBAN_TAGS = [
+  "Sundarban Safari",
+  "Wildlife Cruise",
+  "Royal Bengal Tiger",
+  "Bird Watching",
+  "Kolkata to Sundarban",
+  "Hotel Sonar Bangla",
+  "Canopy Walkway",
+  "Boat Tour",
+  "Resort Stay",
+  "Weekend Trip",
 ];
 
 const SAMPLE_GALLERY_IMAGES = [
@@ -70,20 +88,33 @@ function MarkdownPreviewRenderer({ content }: { content: string }) {
 
   const lines = content.split("\n");
   const elements: React.ReactNode[] = [];
-  let inList = false;
-  let listItems: string[] = [];
+  let inBulletList = false;
+  let inNumberedList = false;
+  let bulletItems: string[] = [];
+  let numberedItems: string[] = [];
 
   const flushList = () => {
-    if (inList && listItems.length > 0) {
+    if (inBulletList && bulletItems.length > 0) {
       elements.push(
-        <ul key={`list-${elements.length}`} className="list-disc pl-5 space-y-1 my-3 text-slate-700">
-          {listItems.map((item, i) => (
+        <ul key={`ul-${elements.length}`} className="list-disc pl-5 space-y-1.5 my-3 text-slate-700">
+          {bulletItems.map((item, i) => (
             <li key={i}>{formatInline(item)}</li>
           ))}
         </ul>
       );
-      listItems = [];
-      inList = false;
+      bulletItems = [];
+      inBulletList = false;
+    }
+    if (inNumberedList && numberedItems.length > 0) {
+      elements.push(
+        <ol key={`ol-${elements.length}`} className="list-decimal pl-5 space-y-1.5 my-3 text-slate-700">
+          {numberedItems.map((item, i) => (
+            <li key={i}>{formatInline(item)}</li>
+          ))}
+        </ol>
+      );
+      numberedItems = [];
+      inNumberedList = false;
     }
   };
 
@@ -187,10 +218,20 @@ function MarkdownPreviewRenderer({ content }: { content: string }) {
       continue;
     }
 
-    // Lists
+    // Numbered List
+    const numMatch = line.match(/^(\d+)\.\s+(.*)$/);
+    if (numMatch) {
+      if (inBulletList) flushList();
+      inNumberedList = true;
+      numberedItems.push(numMatch[2]);
+      continue;
+    }
+
+    // Bullet List
     if (line.startsWith("- ") || line.startsWith("* ")) {
-      inList = true;
-      listItems.push(line.slice(2));
+      if (inNumberedList) flushList();
+      inBulletList = true;
+      bulletItems.push(line.slice(2));
       continue;
     }
 
@@ -256,6 +297,7 @@ function WordPressBlogEditorContent() {
   const [authorImage, setAuthorImage] = useState("");
   const [tags, setTags] = useState<string[]>(["Sundarban", "Wildlife", "Tiger Trail"]);
   const [tagInput, setTagInput] = useState("");
+  const [focusKeyword, setFocusKeyword] = useState("");
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
@@ -310,6 +352,7 @@ function WordPressBlogEditorContent() {
           setSelectedAuthor(p.author || "Editorial Team");
           setAuthorImage(p.authorImage || "");
           setTags(Array.isArray(p.tags) ? p.tags : ["Sundarban"]);
+          setFocusKeyword(p.focusKeyword || "");
           setStatus(p.status || "Published");
           setIsFeatured(p.featured || false);
           setMetaTitle(p.metaTitle || p.title);
@@ -335,6 +378,7 @@ function WordPressBlogEditorContent() {
           setSelectedAuthor(existing.author || "Editorial Team");
           setAuthorImage(existing.authorImage || "");
           setTags(existing.tags || ["Sundarban"]);
+          setFocusKeyword(existing.focusKeyword || "");
           setStatus(existing.status || "Published");
           setIsFeatured(existing.featured || false);
           setMetaTitle(existing.metaTitle || existing.title);
@@ -363,6 +407,7 @@ function WordPressBlogEditorContent() {
           setSelectedAuthor(existing.author || "Editorial Team");
           setAuthorImage(existing.authorImage || "");
           setTags(existing.tags || ["Sundarban"]);
+          setFocusKeyword(existing.focusKeyword || "");
           setStatus(existing.status || "Published");
           setIsFeatured(existing.featured || false);
           setMetaTitle(existing.metaTitle || existing.title);
@@ -462,8 +507,212 @@ function WordPressBlogEditorContent() {
     }, 10);
   };
 
-  // Keyboard shortcut listener for textarea
+  // Dedicated Bullet List Insertion (handles single line, multi-line selections, and toggling)
+  const insertBulletList = () => {
+    const textarea = contentTextareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = content.substring(start, end);
+
+    if (selectedText.trim()) {
+      const lines = selectedText.split("\n");
+      const allBulleted = lines.every((line) => !line.trim() || line.trim().startsWith("- ") || line.trim().startsWith("* "));
+
+      let newLines: string[];
+      if (allBulleted) {
+        newLines = lines.map((line) => line.replace(/^(\s*)[-*]\s+/, "$1"));
+      } else {
+        newLines = lines.map((line) => {
+          if (!line.trim()) return line;
+          const cleaned = line.replace(/^(\s*)([-*]|\d+\.)\s+/, "$1");
+          return `- ${cleaned.trim()}`;
+        });
+      }
+
+      const replacement = newLines.join("\n");
+      const newContent = content.substring(0, start) + replacement + content.substring(end);
+      setContentWithHistory(newContent);
+
+      setTimeout(() => {
+        textarea.focus();
+        textarea.setSelectionRange(start, start + replacement.length);
+      }, 10);
+    } else {
+      const beforeCursor = content.substring(0, start);
+      const afterCursor = content.substring(end);
+      const lastNewline = beforeCursor.lastIndexOf("\n");
+      const currentLine = beforeCursor.substring(lastNewline + 1);
+
+      let prefix = "- ";
+      if (currentLine.trim().length > 0) {
+        prefix = "\n\n- ";
+      } else if (lastNewline !== -1 && !beforeCursor.endsWith("\n\n") && beforeCursor.trim().length > 0 && !beforeCursor.endsWith("\n")) {
+        prefix = "\n- ";
+      }
+
+      const replacement = `${prefix}List item`;
+      const newContent = beforeCursor + replacement + afterCursor;
+      setContentWithHistory(newContent);
+
+      setTimeout(() => {
+        textarea.focus();
+        textarea.setSelectionRange(
+          start + prefix.length,
+          start + prefix.length + "List item".length
+        );
+      }, 10);
+    }
+  };
+
+  // Dedicated Numbered List Insertion
+  const insertNumberedList = () => {
+    const textarea = contentTextareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = content.substring(start, end);
+
+    if (selectedText.trim()) {
+      const lines = selectedText.split("\n");
+      const allNumbered = lines.every((line) => !line.trim() || /^\s*\d+\.\s+/.test(line));
+
+      let newLines: string[];
+      if (allNumbered) {
+        newLines = lines.map((line) => line.replace(/^(\s*)\d+\.\s+/, "$1"));
+      } else {
+        let counter = 1;
+        newLines = lines.map((line) => {
+          if (!line.trim()) return line;
+          const cleaned = line.replace(/^(\s*)([-*]|\d+\.)\s+/, "$1");
+          return `${counter++}. ${cleaned.trim()}`;
+        });
+      }
+
+      const replacement = newLines.join("\n");
+      const newContent = content.substring(0, start) + replacement + content.substring(end);
+      setContentWithHistory(newContent);
+
+      setTimeout(() => {
+        textarea.focus();
+        textarea.setSelectionRange(start, start + replacement.length);
+      }, 10);
+    } else {
+      const beforeCursor = content.substring(0, start);
+      const afterCursor = content.substring(end);
+      const lastNewline = beforeCursor.lastIndexOf("\n");
+      const currentLine = beforeCursor.substring(lastNewline + 1);
+
+      let prefix = "1. ";
+      if (currentLine.trim().length > 0) {
+        prefix = "\n\n1. ";
+      }
+
+      const replacement = `${prefix}Numbered item`;
+      const newContent = beforeCursor + replacement + afterCursor;
+      setContentWithHistory(newContent);
+
+      setTimeout(() => {
+        textarea.focus();
+        textarea.setSelectionRange(
+          start + prefix.length,
+          start + prefix.length + "Numbered item".length
+        );
+      }, 10);
+    }
+  };
+
+  // Focus Keyword SEO Analysis
+  const trimmedKeyword = focusKeyword.trim().toLowerCase();
+  const keywordInTitle = trimmedKeyword ? title.toLowerCase().includes(trimmedKeyword) : false;
+  const keywordInSlug = trimmedKeyword ? slug.toLowerCase().includes(trimmedKeyword.replace(/\s+/g, "-")) : false;
+  const keywordMatches = trimmedKeyword
+    ? (content.toLowerCase().match(new RegExp(trimmedKeyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")) || []).length
+    : 0;
+  const keywordInMetaDesc = trimmedKeyword
+    ? (metaDescription || excerpt).toLowerCase().includes(trimmedKeyword)
+    : false;
+  const keywordDensity = wordCount > 0 && trimmedKeyword
+    ? ((keywordMatches * trimmedKeyword.split(/\s+/).length / wordCount) * 100).toFixed(1)
+    : "0.0";
+
+  // Keyboard shortcut & auto-list listener for textarea
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Auto-continue bullet or numbered lists on Enter
+    if (e.key === "Enter" && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      const textarea = contentTextareaRef.current;
+      if (textarea) {
+        const start = textarea.selectionStart;
+        const beforeCursor = content.substring(0, start);
+        const afterCursor = content.substring(start);
+        const lastNewline = beforeCursor.lastIndexOf("\n");
+        const currentLine = beforeCursor.substring(lastNewline + 1);
+
+        // Check bullet list item: "- " or "* "
+        const bulletMatch = currentLine.match(/^(\s*)([-*])\s(.*)$/);
+        if (bulletMatch) {
+          e.preventDefault();
+          const indent = bulletMatch[1];
+          const bulletChar = bulletMatch[2];
+          const lineText = bulletMatch[3].trim();
+
+          if (!lineText) {
+            // Empty bullet -> cancel bullet and exit list
+            const lineStartPos = lastNewline + 1;
+            const newContent = content.substring(0, lineStartPos) + afterCursor;
+            setContentWithHistory(newContent);
+            setTimeout(() => {
+              textarea.focus();
+              textarea.setSelectionRange(lineStartPos, lineStartPos);
+            }, 10);
+            return;
+          }
+
+          const insertion = `\n${indent}${bulletChar} `;
+          const newContent = beforeCursor + insertion + afterCursor;
+          setContentWithHistory(newContent);
+          setTimeout(() => {
+            textarea.focus();
+            textarea.setSelectionRange(start + insertion.length, start + insertion.length);
+          }, 10);
+          return;
+        }
+
+        // Check numbered list item: "1. ", "2. ", etc.
+        const numberMatch = currentLine.match(/^(\s*)(\d+)\.\s(.*)$/);
+        if (numberMatch) {
+          e.preventDefault();
+          const indent = numberMatch[1];
+          const currentNum = parseInt(numberMatch[2], 10);
+          const lineText = numberMatch[3].trim();
+
+          if (!lineText) {
+            // Empty numbered item -> cancel and exit list
+            const lineStartPos = lastNewline + 1;
+            const newContent = content.substring(0, lineStartPos) + afterCursor;
+            setContentWithHistory(newContent);
+            setTimeout(() => {
+              textarea.focus();
+              textarea.setSelectionRange(lineStartPos, lineStartPos);
+            }, 10);
+            return;
+          }
+
+          const nextNum = currentNum + 1;
+          const insertion = `\n${indent}${nextNum}. `;
+          const newContent = beforeCursor + insertion + afterCursor;
+          setContentWithHistory(newContent);
+          setTimeout(() => {
+            textarea.focus();
+            textarea.setSelectionRange(start + insertion.length, start + insertion.length);
+          }, 10);
+          return;
+        }
+      }
+    }
+
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "b") {
       e.preventDefault();
       insertFormatting("**", "**", "bold text");
@@ -530,8 +779,10 @@ function WordPressBlogEditorContent() {
 
   // Save/Publish Post via API + Context
   const handleSaveOrPublish = async (postStatus: "Published" | "Draft" = status === "Draft" ? "Draft" : "Published") => {
+    if (isSubmitting) return;
+
     if (!title.trim()) {
-      alert("Please provide an article title before saving.");
+      showToast("Please provide an article title before saving.", "danger");
       return;
     }
 
@@ -549,6 +800,7 @@ function WordPressBlogEditorContent() {
       author: selectedAuthor,
       authorImage: authorImage,
       tags: tags.length > 0 ? tags : ["Sundarban", "Wildlife"],
+      focusKeyword: focusKeyword.trim() || undefined,
       status: postStatus,
       featured: isFeatured,
       metaTitle: metaTitle || title,
@@ -566,7 +818,7 @@ function WordPressBlogEditorContent() {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Failed to update article");
-        updateBlogPost(editSlug, postData);
+        updateBlogPost(editSlug, data.post || postData, true);
         showToast(`Updated article "${title}" successfully`);
       } else {
         const res = await fetch("/api/admin/blog", {
@@ -576,7 +828,7 @@ function WordPressBlogEditorContent() {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Failed to create article");
-        addBlogPost(data.post || postData);
+        addBlogPost(data.post || postData, true);
         showToast(`Published new article "${title}" successfully`);
       }
 
@@ -585,8 +837,7 @@ function WordPressBlogEditorContent() {
       router.refresh();
     } catch (err: any) {
       console.error("Save blog post error:", err);
-      showToast(err?.message || "Failed to save article to server");
-      alert(`Error saving article: ${err?.message || "Server error"}. Your edits have not been lost.`);
+      showToast(err?.message || "Failed to save article to server", "danger");
     } finally {
       setIsSubmitting(false);
     }
@@ -953,7 +1204,7 @@ function WordPressBlogEditorContent() {
                   <div className="flex items-center border-r border-slate-200 pr-1 mr-1 gap-0.5">
                     <button
                       type="button"
-                      onClick={() => insertFormatting("\n- ", "", "Bullet point item")}
+                      onClick={insertBulletList}
                       className="p-1.5 hover:bg-slate-100 rounded text-slate-700 text-xs transition-colors"
                       title="Bullet List"
                     >
@@ -961,7 +1212,7 @@ function WordPressBlogEditorContent() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => insertFormatting("\n1. ", "", "Numbered item")}
+                      onClick={insertNumberedList}
                       className="p-1.5 hover:bg-slate-100 rounded text-slate-700 text-xs transition-colors"
                       title="Numbered List"
                     >
@@ -1082,6 +1333,316 @@ function WordPressBlogEditorContent() {
                     placeholder="A compelling 1-2 sentence lead summary of the article shown on cards and search results..."
                     className="w-full px-3.5 py-2.5 text-xs text-slate-800 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-colors"
                   />
+                </div>
+
+                {/* FOCUS KEYWORD, TAGS & SEO ENGINE (Directly accessible in main editor) */}
+                <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs space-y-0">
+                  {/* Card Header */}
+                  <div className="px-5 py-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-blue-100/70 border border-blue-200 flex items-center justify-center text-blue-700">
+                        <Globe className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                          <span>Focus Keyword, Tags &amp; SEO Engine</span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            Search Ranked
+                          </span>
+                        </h3>
+                        <p className="text-xs text-slate-500">
+                          Optimize primary search keywords, taxonomy tags, and Google snippet preview
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-5 sm:p-6 space-y-6">
+                    {/* SECTION 1: FOCUS KEYWORD */}
+                    <div className="space-y-3 pb-6 border-b border-slate-100">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <label className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                          <KeyRound className="w-3.5 h-3.5 text-blue-600" />
+                          <span>Primary Focus Keyword</span>
+                          <span className="text-[11px] font-normal text-slate-400 capitalize">
+                            (Target search query for Google rankings)
+                          </span>
+                        </label>
+                        {trimmedKeyword && (
+                          <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+                            Density: {keywordDensity}% ({keywordMatches}x in story)
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                          <KeyRound className="w-4 h-4" />
+                        </div>
+                        <input
+                          type="text"
+                          value={focusKeyword}
+                          onChange={(e) => {
+                            setFocusKeyword(e.target.value);
+                            setIsSaved(false);
+                          }}
+                          placeholder="e.g. sundarban luxury package, royal bengal tiger safari, hotel sonar bangla"
+                          className="w-full pl-10 pr-4 py-2.5 text-sm font-medium text-slate-900 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 bg-slate-50/50 focus:bg-white transition-all placeholder:text-slate-400"
+                        />
+                      </div>
+
+                      {/* Live Keyword Optimization Checklist */}
+                      {trimmedKeyword ? (
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-xs">
+                          <div
+                            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border text-[11px] font-medium transition-colors ${
+                              keywordInTitle
+                                ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                : "bg-slate-50 text-slate-500 border-slate-200"
+                            }`}
+                          >
+                            {keywordInTitle ? (
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            ) : (
+                              <XCircle className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            )}
+                            <span className="truncate">In Title</span>
+                          </div>
+
+                          <div
+                            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border text-[11px] font-medium transition-colors ${
+                              keywordInSlug
+                                ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                : "bg-slate-50 text-slate-500 border-slate-200"
+                            }`}
+                          >
+                            {keywordInSlug ? (
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            ) : (
+                              <XCircle className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            )}
+                            <span className="truncate">In URL Slug</span>
+                          </div>
+
+                          <div
+                            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border text-[11px] font-medium transition-colors ${
+                              keywordMatches > 0
+                                ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                : "bg-slate-50 text-slate-500 border-slate-200"
+                            }`}
+                          >
+                            {keywordMatches > 0 ? (
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            ) : (
+                              <XCircle className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            )}
+                            <span className="truncate">In Story ({keywordMatches}x)</span>
+                          </div>
+
+                          <div
+                            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border text-[11px] font-medium transition-colors ${
+                              keywordInMetaDesc
+                                ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                : "bg-slate-50 text-slate-500 border-slate-200"
+                            }`}
+                          >
+                            {keywordInMetaDesc ? (
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            ) : (
+                              <XCircle className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            )}
+                            <span className="truncate">In Meta Description</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="text-[11px] text-slate-400 italic">
+                          Tip: Enter your target focus keyword above to get live search engine readiness feedback across title, slug, description, and story density.
+                        </p>
+                      )}
+                    </div>
+
+                    {/* SECTION 2: ARTICLE TAGS & TOPICS */}
+                    <div className="space-y-3 pb-6 border-b border-slate-100">
+                      <div className="flex items-center justify-between">
+                        <label className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                          <Tag className="w-3.5 h-3.5 text-cyan-600" />
+                          <span>Article Taxonomy Tags</span>
+                          <span className="text-[11px] font-normal text-slate-400 capitalize">
+                            ({tags.length} selected)
+                          </span>
+                        </label>
+                      </div>
+
+                      {/* Tag Input */}
+                      <div className="flex gap-2">
+                        <div className="relative flex-1">
+                          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                            <Hash className="w-3.5 h-3.5" />
+                          </div>
+                          <input
+                            type="text"
+                            placeholder="Type a custom tag and hit Enter or click Add..."
+                            value={tagInput}
+                            onChange={(e) => setTagInput(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                handleAddTag();
+                              }
+                            }}
+                            className="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 bg-white"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleAddTag}
+                          className="px-4 py-2 bg-slate-900 hover:bg-black text-white text-xs font-bold rounded-lg transition-colors cursor-pointer flex items-center gap-1"
+                        >
+                          <Plus className="w-3.5 h-3.5" />
+                          <span>Add Tag</span>
+                        </button>
+                      </div>
+
+                      {/* Active Tags Badge Cloud */}
+                      {tags.length > 0 && (
+                        <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                          {tags.map((t) => (
+                            <span
+                              key={t}
+                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 font-semibold text-xs border border-blue-200 transition-all hover:bg-blue-100/70"
+                            >
+                              <span>#{t}</span>
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveTag(t)}
+                                className="text-blue-500 hover:text-rose-600 ml-0.5 p-0.5"
+                                title={`Remove ${t}`}
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* 1-Click Popular Tag Suggestions */}
+                      <div className="pt-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
+                          Click to Add Suggested Sundarban Tags:
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {POPULAR_SUNDARBAN_TAGS.map((sug) => {
+                            const isAdded = tags.includes(sug);
+                            return (
+                              <button
+                                key={sug}
+                                type="button"
+                                disabled={isAdded}
+                                onClick={() => {
+                                  if (!isAdded) {
+                                    setTags([...tags, sug]);
+                                    setIsSaved(false);
+                                  }
+                                }}
+                                className={`text-[11px] font-medium px-2 py-1 rounded-md border transition-all cursor-pointer ${
+                                  isAdded
+                                    ? "bg-slate-100 text-slate-400 border-slate-200 cursor-default"
+                                    : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-white hover:border-blue-400 hover:text-blue-600"
+                                }`}
+                              >
+                                {isAdded ? `✓ ${sug}` : `+ ${sug}`}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* SECTION 3: GOOGLE SERP PREVIEW & META FIELDS */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <label className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                          <Globe className="w-3.5 h-3.5 text-blue-600" />
+                          <span>Google Search Result Snippet Preview</span>
+                        </label>
+                      </div>
+
+                      {/* Google Preview Snippet */}
+                      <div className="bg-slate-50 border border-slate-200 rounded-lg p-3.5 sm:p-4 space-y-1 font-sans">
+                        <div className="flex items-center gap-1.5 text-[11px] text-slate-500 truncate">
+                          <span className="text-slate-400">https://sundarbanpackages.com &rsaquo; blog &rsaquo;</span>
+                          <span className="font-mono text-slate-700 font-semibold">{slug || "url-slug"}</span>
+                        </div>
+                        <h4 className="text-sm sm:text-base font-semibold text-blue-800 hover:underline cursor-pointer line-clamp-1">
+                          {metaTitle || title || "Article Headline"}
+                        </h4>
+                        <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                          {metaDescription || excerpt || "Write an engaging excerpt or SEO description to help your article rank on search engines."}
+                        </p>
+                      </div>
+
+                      {/* SEO Meta Title & Description Inputs */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                        <div className="space-y-1.5">
+                          <div className="flex items-center justify-between">
+                            <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                              SEO Meta Title
+                            </label>
+                            <span
+                              className={`text-[10px] font-bold ${
+                                metaTitle.length > 60
+                                  ? "text-rose-500"
+                                  : metaTitle.length >= 50
+                                  ? "text-emerald-600"
+                                  : "text-slate-400"
+                              }`}
+                            >
+                              {metaTitle.length}/60 chars
+                            </span>
+                          </div>
+                          <input
+                            type="text"
+                            value={metaTitle}
+                            onChange={(e) => {
+                              setMetaTitle(e.target.value);
+                              setIsSaved(false);
+                            }}
+                            placeholder="Defaults to Post Title"
+                            className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 bg-white"
+                          />
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <div className="flex items-center justify-between">
+                            <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                              SEO Meta Description
+                            </label>
+                            <span
+                              className={`text-[10px] font-bold ${
+                                metaDescription.length > 160
+                                  ? "text-rose-500"
+                                  : metaDescription.length >= 140
+                                  ? "text-emerald-600"
+                                  : "text-slate-400"
+                              }`}
+                            >
+                              {metaDescription.length}/160 chars
+                            </span>
+                          </div>
+                          <textarea
+                            rows={2}
+                            value={metaDescription}
+                            onChange={(e) => {
+                              setMetaDescription(e.target.value);
+                              setIsSaved(false);
+                            }}
+                            placeholder="Defaults to Excerpt summary"
+                            className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 bg-white leading-relaxed resize-none"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </>
             )}
@@ -1270,51 +1831,75 @@ function WordPressBlogEditorContent() {
               </div>
             </div>
 
-            {/* Tags */}
-            <div className="bg-white border border-slate-200 rounded-lg p-3.5 space-y-2.5 shadow-2xs">
-              <div className="flex items-center gap-1.5 text-slate-700 font-bold">
-                <Tag className="w-3.5 h-3.5 text-cyan-600" />
-                <span className="text-[10px] uppercase tracking-wider text-slate-500">Tags &amp; Keywords</span>
-              </div>
-              <div className="flex gap-1.5">
-                <input
-                  type="text"
-                  placeholder="Add new tag..."
-                  value={tagInput}
-                  onChange={(e) => setTagInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      handleAddTag();
-                    }
-                  }}
-                  className="flex-1 px-2.5 py-1.5 border border-slate-300 rounded-md text-xs focus:outline-none focus:border-blue-600"
-                />
-                <button
-                  type="button"
-                  onClick={handleAddTag}
-                  className="px-2.5 py-1.5 bg-slate-800 text-white font-bold rounded-md hover:bg-slate-900 text-xs transition-colors"
-                >
-                  Add
-                </button>
-              </div>
-
-              <div className="flex flex-wrap gap-1.5 pt-1 max-h-32 overflow-y-auto">
-                {tags.map((t) => (
-                  <span
-                    key={t}
-                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-medium text-[11px] border border-blue-200"
-                  >
-                    <span>{t}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveTag(t)}
-                      className="hover:text-rose-600 ml-0.5"
-                    >
-                      <X className="w-3 h-3" />
-                    </button>
+            {/* Focus Keyword & Tags (Sidebar Quick Access) */}
+            <div className="bg-white border border-slate-200 rounded-lg p-3.5 space-y-3 shadow-2xs">
+              <div className="flex items-center justify-between text-slate-700 font-bold">
+                <div className="flex items-center gap-1.5">
+                  <KeyRound className="w-3.5 h-3.5 text-blue-600" />
+                  <span className="text-[10px] uppercase tracking-wider text-slate-500">Focus Keyword</span>
+                </div>
+                {trimmedKeyword && (
+                  <span className="text-[10px] font-mono font-bold text-blue-600">
+                    {keywordMatches}x ({keywordDensity}%)
                   </span>
-                ))}
+                )}
+              </div>
+              <input
+                type="text"
+                placeholder="Target focus keyword..."
+                value={focusKeyword}
+                onChange={(e) => {
+                  setFocusKeyword(e.target.value);
+                  setIsSaved(false);
+                }}
+                className="w-full px-2.5 py-1.5 border border-slate-300 rounded-md text-xs focus:outline-none focus:border-blue-600 font-medium"
+              />
+
+              <div className="pt-2 border-t border-slate-100 space-y-2">
+                <div className="flex items-center gap-1.5 text-slate-700 font-bold">
+                  <Tag className="w-3.5 h-3.5 text-cyan-600" />
+                  <span className="text-[10px] uppercase tracking-wider text-slate-500">Taxonomy Tags ({tags.length})</span>
+                </div>
+                <div className="flex gap-1.5">
+                  <input
+                    type="text"
+                    placeholder="Add tag..."
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddTag();
+                      }
+                    }}
+                    className="flex-1 px-2.5 py-1.5 border border-slate-300 rounded-md text-xs focus:outline-none focus:border-blue-600"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddTag}
+                    className="px-2.5 py-1.5 bg-slate-800 text-white font-bold rounded-md hover:bg-slate-900 text-xs transition-colors"
+                  >
+                    Add
+                  </button>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 pt-1 max-h-32 overflow-y-auto">
+                  {tags.map((t) => (
+                    <span
+                      key={t}
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-medium text-[11px] border border-blue-200"
+                    >
+                      <span>#{t}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTag(t)}
+                        className="hover:text-rose-600 ml-0.5"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
 

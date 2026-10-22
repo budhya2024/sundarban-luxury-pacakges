@@ -10,6 +10,7 @@ export interface BlogPost {
   author: string;
   authorImage: string;
   tags: string[];
+  focusKeyword?: string;
   status?: "Published" | "Draft" | "Scheduled";
   featured?: boolean;
   metaTitle?: string;

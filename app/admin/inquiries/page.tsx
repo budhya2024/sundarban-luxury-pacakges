@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useAdmin } from "@/context/AdminContext";
 import { useConfirm } from "@/context/ConfirmContext";
 import { AdminInquiry } from "@/lib/admin-data";
+import { validateName, validatePhone, validateEmail } from "@/lib/validation";
 import InquiryModal from "@/components/admin/InquiryModal";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import {
@@ -73,6 +74,7 @@ export default function AdminInquiriesPage() {
 
   // New Offline Lead Form state
   const [showAddLead, setShowAddLead] = useState(false);
+  const [leadErrors, setLeadErrors] = useState<{ name?: string; phone?: string; email?: string }>({});
   const [newLead, setNewLead] = useState({
     name: "",
     email: "",
@@ -99,16 +101,32 @@ export default function AdminInquiriesPage() {
 
   const handleCreateOfflineLead = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newLead.name || !newLead.phone) {
-      alert("Name and phone number are required to log an offline lead.");
+    const errs: { name?: string; phone?: string; email?: string } = {};
+
+    const nameErr = validateName(newLead.name);
+    if (nameErr) errs.name = nameErr;
+
+    const phoneErr = validatePhone(newLead.phone);
+    if (phoneErr) errs.phone = phoneErr;
+
+    if (newLead.email.trim()) {
+      const emailErr = validateEmail(newLead.email);
+      if (emailErr) errs.email = emailErr;
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setLeadErrors(errs);
+      showToast("Please correct the form errors before saving.", "danger");
       return;
     }
+
+    setLeadErrors({});
     addInquiry({
-      name: newLead.name,
-      email: newLead.email,
-      phone: newLead.phone,
-      subject: newLead.subject,
-      message: newLead.message,
+      name: newLead.name.trim(),
+      email: newLead.email.trim(),
+      phone: newLead.phone.trim(),
+      subject: newLead.subject.trim(),
+      message: newLead.message.trim(),
       status: "New",
       source: newLead.source || "Helpline Call",
     });
@@ -212,9 +230,17 @@ export default function AdminInquiriesPage() {
                   required
                   placeholder="e.g. Subhashish Roy"
                   value={newLead.name}
-                  onChange={(e) => setNewLead({ ...newLead, name: e.target.value })}
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-[3px] focus:outline-hidden focus:border-blue-600"
+                  onChange={(e) => {
+                    setNewLead({ ...newLead, name: e.target.value });
+                    if (leadErrors.name) setLeadErrors({ ...leadErrors, name: undefined });
+                  }}
+                  className={`w-full px-3 py-2 text-sm border rounded-[3px] focus:outline-hidden ${
+                    leadErrors.name ? "border-red-500 bg-red-50/30 focus:border-red-600" : "border-slate-300 focus:border-blue-600"
+                  }`}
                 />
+                {leadErrors.name && (
+                  <p className="mt-1 text-[11px] text-red-600 font-medium">{leadErrors.name}</p>
+                )}
               </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
@@ -225,9 +251,17 @@ export default function AdminInquiriesPage() {
                   required
                   placeholder="e.g. +91 98300 12345"
                   value={newLead.phone}
-                  onChange={(e) => setNewLead({ ...newLead, phone: e.target.value })}
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-[3px] focus:outline-hidden focus:border-blue-600 font-mono"
+                  onChange={(e) => {
+                    setNewLead({ ...newLead, phone: e.target.value });
+                    if (leadErrors.phone) setLeadErrors({ ...leadErrors, phone: undefined });
+                  }}
+                  className={`w-full px-3 py-2 text-sm border rounded-[3px] focus:outline-hidden font-mono ${
+                    leadErrors.phone ? "border-red-500 bg-red-50/30 focus:border-red-600" : "border-slate-300 focus:border-blue-600"
+                  }`}
                 />
+                {leadErrors.phone && (
+                  <p className="mt-1 text-[11px] text-red-600 font-medium">{leadErrors.phone}</p>
+                )}
               </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
@@ -237,9 +271,17 @@ export default function AdminInquiriesPage() {
                   type="email"
                   placeholder="e.g. subhashish@example.com"
                   value={newLead.email}
-                  onChange={(e) => setNewLead({ ...newLead, email: e.target.value })}
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-[3px] focus:outline-hidden focus:border-blue-600"
+                  onChange={(e) => {
+                    setNewLead({ ...newLead, email: e.target.value });
+                    if (leadErrors.email) setLeadErrors({ ...leadErrors, email: undefined });
+                  }}
+                  className={`w-full px-3 py-2 text-sm border rounded-[3px] focus:outline-hidden ${
+                    leadErrors.email ? "border-red-500 bg-red-50/30 focus:border-red-600" : "border-slate-300 focus:border-blue-600"
+                  }`}
                 />
+                {leadErrors.email && (
+                  <p className="mt-1 text-[11px] text-red-600 font-medium">{leadErrors.email}</p>
+                )}
               </div>
             </div>
 

@@ -21,6 +21,13 @@ import {
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa6";
 import { BookingConfirmationModal } from "@/components/ui/BookingConfirmationCard";
+import {
+  validateName,
+  validateEmail,
+  validatePhone,
+  validateTravelDate,
+  HotelInquiryValidationErrors,
+} from "@/lib/validation";
 
 export interface TourPackageOption {
   id: string;
@@ -82,10 +89,56 @@ export function HotelBokingForm() {
   const [guestName, setGuestName] = useState<string>("");
   const [guestEmail, setGuestEmail] = useState<string>("");
   const [guestPhone, setGuestPhone] = useState<string>("");
+
+  const [errors, setErrors] = useState<HotelInquiryValidationErrors>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [submitErrorMessage, setSubmitErrorMessage] = useState<string | null>(null);
+
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [bookingRefId, setBookingRefId] = useState<string>("");
   const dateInputRef = useRef<HTMLInputElement>(null);
+
+  const validateField = (field: string, value: any) => {
+    let err: string | null = null;
+    switch (field) {
+      case "guestName":
+        err = validateName(value);
+        break;
+      case "email":
+        err = validateEmail(value);
+        break;
+      case "phone":
+        err = validatePhone(value);
+        break;
+      case "checkIn":
+        err = validateTravelDate(value);
+        break;
+      default:
+        break;
+    }
+    setErrors((prev) => ({
+      ...prev,
+      [field]: err || undefined,
+    }));
+    return err;
+  };
+
+  const handleFieldChange = (field: string, value: string) => {
+    if (field === "guestName") setGuestName(value);
+    if (field === "email") setGuestEmail(value);
+    if (field === "phone") setGuestPhone(value);
+    if (field === "checkIn") setTravelDate(value);
+
+    if (touched[field]) {
+      validateField(field, value);
+    }
+  };
+
+  const handleFieldBlur = (field: string, value: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    validateField(field, value);
+  };
 
   const handleDateClick = () => {
     if (dateInputRef.current) {
@@ -162,8 +215,31 @@ export function HotelBokingForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!guestName || !guestEmail || !guestPhone) {
-      alert("Please enter your name, email address, and phone/WhatsApp number.");
+    setSubmitErrorMessage(null);
+
+    // Touch all fields
+    setTouched({
+      guestName: true,
+      email: true,
+      phone: true,
+      checkIn: true,
+    });
+
+    const nameErr = validateName(guestName);
+    const emailErr = validateEmail(guestEmail);
+    const phoneErr = validatePhone(guestPhone);
+    const dateErr = validateTravelDate(travelDate);
+
+    const validationErrors: HotelInquiryValidationErrors = {};
+    if (nameErr) validationErrors.guestName = nameErr;
+    if (emailErr) validationErrors.email = emailErr;
+    if (phoneErr) validationErrors.phone = phoneErr;
+    if (dateErr) validationErrors.checkIn = dateErr;
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      const first = Object.values(validationErrors)[0];
+      setSubmitErrorMessage(first || "Please complete all required fields properly.");
       return;
     }
 
@@ -175,7 +251,7 @@ export function HotelBokingForm() {
         ? 1
         : 1;
 
-    const effectiveCheckIn = travelDate || new Date().toISOString().split("T")[0];
+    const effectiveCheckIn = travelDate;
     const checkInDateObj = new Date(effectiveCheckIn);
     const checkOutDateObj = new Date(
       checkInDateObj.getTime() + nightsCount * 24 * 60 * 60 * 1000
@@ -187,9 +263,9 @@ export function HotelBokingForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          guestName,
-          email: guestEmail,
-          phone: guestPhone,
+          guestName: guestName.trim(),
+          email: guestEmail.trim().toLowerCase(),
+          phone: guestPhone.trim(),
           roomName: `${selectedPackage.name} - ${selectedRoom.name}`,
           roomCode: selectedRoom.id,
           checkIn: effectiveCheckIn,
@@ -198,23 +274,27 @@ export function HotelBokingForm() {
           guestsCount: `${adults} Adults${children > 0 ? `, ${children} Children` : ""}`,
           roomsCount: Math.ceil(adults / 2),
           totalAmount: Math.round(estimatedTotal),
-          specialRequests: `Tour Package: ${selectedPackage.name} (${selectedPackage.duration}). Transfer: ${transferOption === "with-kolkata-transfer" ? "AC Vehicle from Kolkata" : "Direct Godkhali Ferry"
-            }.`,
+          specialRequests: `Tour Package: ${selectedPackage.name} (${selectedPackage.duration}). Transfer: ${
+            transferOption === "with-kolkata-transfer" ? "AC Vehicle from Kolkata" : "Direct Godkhali Ferry"
+          }.`,
         }),
       });
 
       const data = await res.json().catch(() => null);
-      if (res.ok && data?.success) {
-        setBookingRefId(data.inquiry?.refId || `HSB-${Date.now().toString().slice(-4)}`);
+      if (res.ok && data?.success && data?.inquiry) {
+        setBookingRefId(data.inquiry.refId);
         setIsSubmitted(true);
       } else {
-        setBookingRefId(`HSB-${Date.now().toString().slice(-4)}`);
-        setIsSubmitted(true);
+        setSubmitErrorMessage(
+          data?.error ||
+          "Unable to confirm reservation request. Please review your details or call our front desk directly."
+        );
       }
     } catch (err) {
       console.error("Booking submit error:", err);
-      setBookingRefId(`HSB-${Date.now().toString().slice(-4)}`);
-      setIsSubmitted(true);
+      setSubmitErrorMessage(
+        "Network connection error. Please try again or call our 24/7 helpline at +91 70014 03498."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -267,7 +347,7 @@ export function HotelBokingForm() {
             </p>
           </div>
 
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} noValidate className="space-y-8">
               {/* Step 1: Package Selection Cards (3 Core Packages) */}
               <div>
                 <div className="flex items-center justify-between mb-3">
@@ -379,16 +459,21 @@ export function HotelBokingForm() {
                       htmlFor={dateInputId}
                       className="block text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wide mb-2"
                     >
-                      Check-in / Travel Date
+                      Check-in / Travel Date *
                     </label>
                     <div
                       onClick={handleDateClick}
-                      className="relative flex items-center bg-white border border-slate-300 rounded-[4px] h-12 px-3.5 cursor-pointer group focus-within:border-primary   transition-all"
+                      className={`relative flex items-center bg-white border rounded-[4px] h-12 px-3.5 cursor-pointer group transition-all ${
+                        touched.checkIn && errors.checkIn
+                          ? "border-rose-400 bg-rose-50/20 ring-1 ring-rose-400"
+                          : "border-slate-300 focus-within:border-primary"
+                      }`}
                     >
                       <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 transition-colors flex-shrink-0 mr-2.5 pointer-events-none" />
                       <span
-                        className={`text-sm sm:text-base select-none truncate flex-1 ${travelDate ? "text-slate-900 font-semibold" : "text-slate-500 font-medium"
-                          }`}
+                        className={`text-sm sm:text-base select-none truncate flex-1 ${
+                          travelDate ? "text-slate-900 font-semibold" : "text-slate-500 font-medium"
+                        }`}
                       >
                         {displayDateText}
                       </span>
@@ -398,11 +483,17 @@ export function HotelBokingForm() {
                         type="date"
                         min={todayStr}
                         value={travelDate}
-                        onChange={(e) => setTravelDate(e.target.value)}
+                        onChange={(e) => handleFieldChange("checkIn", e.target.value)}
+                        onBlur={() => handleFieldBlur("checkIn", travelDate)}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 outline-none"
                         aria-label="Select Date"
                       />
                     </div>
+                    {touched.checkIn && errors.checkIn && (
+                      <p className="text-xs text-rose-600 mt-1 font-medium">
+                        {errors.checkIn}
+                      </p>
+                    )}
                   </div>
 
                   {/* Travelers (Adults + Kids) */}
@@ -492,9 +583,19 @@ export function HotelBokingForm() {
                       required
                       placeholder="e.g. Rajesh Sharma"
                       value={guestName}
-                      onChange={(e) => setGuestName(e.target.value)}
-                      className="w-full h-12 px-4 rounded-[4px] border border-slate-300 bg-white text-foreground text-sm sm:text-base outline-none focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+                      onChange={(e) => handleFieldChange("guestName", e.target.value)}
+                      onBlur={() => handleFieldBlur("guestName", guestName)}
+                      className={`w-full h-12 px-4 rounded-[4px] border bg-white text-foreground text-sm sm:text-base outline-none transition-all ${
+                        touched.guestName && errors.guestName
+                          ? "border-rose-400 bg-rose-50/20 ring-1 ring-rose-400 focus:border-rose-500"
+                          : "border-slate-300 focus:border-primary focus:ring-1 focus:ring-primary"
+                      }`}
                     />
+                    {touched.guestName && errors.guestName && (
+                      <p className="text-xs text-rose-600 mt-1 font-medium">
+                        {errors.guestName}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -510,9 +611,19 @@ export function HotelBokingForm() {
                       required
                       placeholder="e.g. rajesh@gmail.com"
                       value={guestEmail}
-                      onChange={(e) => setGuestEmail(e.target.value)}
-                      className="w-full h-12 px-4 rounded-[4px] border border-slate-300 bg-white text-foreground text-sm sm:text-base outline-none focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+                      onChange={(e) => handleFieldChange("email", e.target.value)}
+                      onBlur={() => handleFieldBlur("email", guestEmail)}
+                      className={`w-full h-12 px-4 rounded-[4px] border bg-white text-foreground text-sm sm:text-base outline-none transition-all ${
+                        touched.email && errors.email
+                          ? "border-rose-400 bg-rose-50/20 ring-1 ring-rose-400 focus:border-rose-500"
+                          : "border-slate-300 focus:border-primary focus:ring-1 focus:ring-primary"
+                      }`}
                     />
+                    {touched.email && errors.email && (
+                      <p className="text-xs text-rose-600 mt-1 font-medium">
+                        {errors.email}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -528,9 +639,19 @@ export function HotelBokingForm() {
                       required
                       placeholder="e.g. +91 98765 43210"
                       value={guestPhone}
-                      onChange={(e) => setGuestPhone(e.target.value)}
-                      className="w-full h-12 px-4 rounded-[4px] border border-slate-300 bg-white text-foreground text-sm sm:text-base outline-none focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+                      onChange={(e) => handleFieldChange("phone", e.target.value)}
+                      onBlur={() => handleFieldBlur("phone", guestPhone)}
+                      className={`w-full h-12 px-4 rounded-[4px] border bg-white text-foreground text-sm sm:text-base outline-none transition-all ${
+                        touched.phone && errors.phone
+                          ? "border-rose-400 bg-rose-50/20 ring-1 ring-rose-400 focus:border-rose-500"
+                          : "border-slate-300 focus:border-primary focus:ring-1 focus:ring-primary"
+                      }`}
                     />
+                    {touched.phone && errors.phone && (
+                      <p className="text-xs text-rose-600 mt-1 font-medium">
+                        {errors.phone}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -622,6 +743,14 @@ export function HotelBokingForm() {
                   </div>
                 </div>
               </div>
+
+              {/* Error Message Banner */}
+              {submitErrorMessage && (
+                <div className="p-3.5 rounded-[4px] bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm font-semibold flex items-center gap-2 animate-in fade-in">
+                  <span>⚠️</span>
+                  <span>{submitErrorMessage}</span>
+                </div>
+              )}
 
               {/* Step 5: Action Buttons */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">

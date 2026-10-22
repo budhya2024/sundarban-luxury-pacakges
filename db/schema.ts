@@ -42,6 +42,7 @@ export const blogPosts = pgTable("blog_posts", {
   author: varchar("author", { length: 100 }).default("Editorial Team"),
   authorImage: text("author_image"),
   tags: jsonb("tags").$type<string[]>().default([]),
+  focusKeyword: text("focus_keyword"),
   status: varchar("status", { length: 20 }).default("Published").notNull(), // Published, Draft, Scheduled
   featured: boolean("featured").default(false).notNull(),
   metaTitle: text("meta_title"),

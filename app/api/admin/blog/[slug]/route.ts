@@ -85,6 +85,7 @@ export async function PUT(
           author: body.author || fallback?.author || "Arjun Chowdhury",
           authorImage: body.authorImage || fallback?.authorImage || "",
           tags: Array.isArray(body.tags) ? body.tags : fallback?.tags || ["Sundarban"],
+          focusKeyword: body.focusKeyword !== undefined ? body.focusKeyword : null,
           status: body.status || "Published",
           featured: body.featured !== undefined ? Boolean(body.featured) : false,
           metaTitle: body.metaTitle || body.title || fallback?.title || "",
@@ -120,6 +121,8 @@ export async function PUT(
           authorImage:
             body.authorImage !== undefined ? body.authorImage : current.authorImage,
           tags: Array.isArray(body.tags) ? body.tags : current.tags,
+          focusKeyword:
+            body.focusKeyword !== undefined ? body.focusKeyword : current.focusKeyword,
           status: body.status !== undefined ? body.status : current.status,
           featured: body.featured !== undefined ? Boolean(body.featured) : current.featured,
           metaTitle: body.metaTitle !== undefined ? body.metaTitle : current.metaTitle,

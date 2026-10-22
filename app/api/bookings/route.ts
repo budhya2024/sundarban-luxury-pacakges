@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { bookings } from "@/db/schema";
 import { sendBookingNotificationEmails } from "@/lib/email";
+import { validateTourBooking } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
@@ -21,9 +22,25 @@ export async function POST(req: NextRequest) {
     const bookingStatus = body.bookingStatus || "Pending";
     const specialRequests = body.specialRequests || `Direct online reservation for ${packageOrRoom}.`;
 
-    if (!guestName || !email || !phone || !travelDate) {
+    // Strict server-side validation
+    const validation = validateTourBooking({
+      fullName: guestName,
+      email,
+      phoneNumber: phone,
+      travelDate,
+      guests: guestsCount,
+      packageName: packageOrRoom,
+    });
+
+    if (!validation.isValid) {
+      const firstError =
+        Object.values(validation.errors)[0] ||
+        "Please provide valid booking details.";
       return NextResponse.json(
-        { error: "Guest name, email, phone number, and travel date are required." },
+        {
+          error: firstError,
+          errors: validation.errors,
+        },
         { status: 400 }
       );
     }

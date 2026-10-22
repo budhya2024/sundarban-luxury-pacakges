@@ -20,6 +20,12 @@ import {
 import { FaWhatsapp } from "react-icons/fa6";
 import { useAdmin } from "@/context/AdminContext";
 import { BookingConfirmationModal } from "@/components/ui/BookingConfirmationCard";
+import {
+  validateName,
+  validateEmail,
+  validatePhone,
+  validateTravelDate,
+} from "@/lib/validation";
 
 export function HeroBookingBar() {
   const { packages, addBooking } = useAdmin();
@@ -101,13 +107,33 @@ export function HeroBookingBar() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !phone.trim()) {
-      alert("Please enter your name and phone number to book trip.");
+    setErrorMessage("");
+
+    const nameErr = validateName(name);
+    if (nameErr) {
+      setErrorMessage(nameErr);
+      return;
+    }
+
+    const emailErr = validateEmail(email);
+    if (emailErr) {
+      setErrorMessage(emailErr);
+      return;
+    }
+
+    const phoneErr = validatePhone(phone);
+    if (phoneErr) {
+      setErrorMessage(phoneErr);
+      return;
+    }
+
+    const dateErr = validateTravelDate(date);
+    if (dateErr) {
+      setErrorMessage(dateErr);
       return;
     }
 
     setIsSubmitting(true);
-    setErrorMessage("");
 
     const guestCount = parseInt(guests, 10) || 1;
     const pkgName = selectedPackage || "Sundarban 2 Nights 3 Days Tiger Trail Tour";
@@ -122,10 +148,10 @@ export function HeroBookingBar() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           fullName: name.trim(),
-          email: email.trim() || "guest@sundarbanluxury.com",
+          email: email.trim().toLowerCase(),
           phoneNumber: phone.trim(),
           packageName: pkgName,
-          travelDate: date || todayStr,
+          travelDate: date,
           guests: guestCount,
           totalAmount,
           type: "Tour Package",
@@ -146,7 +172,7 @@ export function HeroBookingBar() {
           bookingCode: data.booking.bookingCode,
           guestName: name.trim(),
           packageName: pkgName,
-          travelDate: displayDateText !== "Select Date" ? displayDateText : "Flexible / To Be Confirmed",
+          travelDate: displayDateText !== "Select Date" ? displayDateText : date,
           guests: guestCount,
           phone: phone.trim(),
           email: email.trim(),
@@ -159,44 +185,14 @@ export function HeroBookingBar() {
         setDate("");
       } else {
         setErrorMessage(
-          data?.error || "Could not complete booking reservation. Please try again or call our helpline."
+          data?.error || "Could not complete booking reservation. Please check your information or call our helpline."
         );
       }
     } catch (err) {
       console.error("Hero booking error:", err);
-      // Fallback local booking
-      const fallbackCode = `SB-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
-      const localBooking = {
-        guestName: name.trim(),
-        email: email.trim() || "guest@sundarbanluxury.com",
-        phone: phone.trim(),
-        packageOrRoom: pkgName,
-        type: "Tour Package" as const,
-        travelDate: date || todayStr,
-        guestsCount: guestCount,
-        totalAmount,
-        paidAmount: 0,
-        paymentStatus: "Unpaid" as const,
-        bookingStatus: "Pending" as const,
-        specialRequests: `Direct homepage hero reservation for ${pkgName}.`,
-      };
-      try {
-        addBooking(localBooking);
-      } catch { }
-
-      setConfirmedBooking({
-        bookingCode: fallbackCode,
-        guestName: name.trim(),
-        packageName: pkgName,
-        travelDate: displayDateText !== "Select Date" ? displayDateText : "Flexible / To Be Confirmed",
-        guests: guestCount,
-        phone: phone.trim(),
-        email: email.trim(),
-      });
-      setName("");
-      setEmail("");
-      setPhone("");
-      setDate("");
+      setErrorMessage(
+        "Network connection error. Please try again or call our 24/7 helpline at +91 70014 03498."
+      );
     } finally {
       setIsSubmitting(false);
     }

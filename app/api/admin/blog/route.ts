@@ -51,6 +51,7 @@ export async function POST(req: NextRequest) {
       author,
       authorImage,
       tags,
+      focusKeyword,
       status,
       featured,
       metaTitle,
@@ -111,6 +112,7 @@ export async function POST(req: NextRequest) {
           authorImage ||
           "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
         tags: Array.isArray(tags) ? tags : [],
+        focusKeyword: focusKeyword || null,
         status: status || "Published",
         featured: Boolean(featured),
         metaTitle: metaTitle || title,

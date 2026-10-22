@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { hotelInquiries, bookings } from "@/db/schema";
 import { sendHotelInquiryNotificationEmails } from "@/lib/email";
+import { validateHotelInquiry } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
@@ -28,9 +29,25 @@ export async function POST(req: NextRequest) {
       body.guestsCount ||
       `${body.adults || 2} Adults${body.children ? `, ${body.children} Children` : ""}`;
 
-    if (!guestName || !email || !phone || !checkIn) {
+    // Strict server-side validation
+    const validation = validateHotelInquiry({
+      guestName,
+      email,
+      phone,
+      checkIn,
+      checkOut,
+      roomName,
+    });
+
+    if (!validation.isValid) {
+      const firstError =
+        Object.values(validation.errors)[0] ||
+        "Please provide valid reservation details.";
       return NextResponse.json(
-        { error: "Guest name, email, phone number, and check-in date are required." },
+        {
+          error: firstError,
+          errors: validation.errors,
+        },
         { status: 400 }
       );
     }

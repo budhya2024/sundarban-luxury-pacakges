@@ -85,8 +85,8 @@ interface AdminContextType {
   updateContactGeneralInfo: (info: Partial<AdminContactGeneralInfo>) => Promise<void> | void;
 
   // Blog Post Actions
-  addBlogPost: (post: BlogPost) => Promise<void> | void;
-  updateBlogPost: (slug: string, post: Partial<BlogPost>) => Promise<void> | void;
+  addBlogPost: (post: BlogPost, skipServerSync?: boolean) => Promise<void> | void;
+  updateBlogPost: (slug: string, post: Partial<BlogPost>, skipServerSync?: boolean) => Promise<void> | void;
   deleteBlogPost: (slug: string) => Promise<void> | void;
 
   // Page-wise Content & Alert Actions
@@ -120,7 +120,7 @@ interface AdminContextType {
 
   // Toast notification system
   toastMessage: string | null;
-  showToast: (msg: string) => void;
+  showToast: (msg: string, type?: "success" | "danger" | "info") => void;
 }
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
@@ -937,9 +937,15 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   };
 
   // Blog Post Actions
-  const addBlogPost = async (post: BlogPost) => {
-    setBlogPostsList((prev) => [post, ...prev]);
-    showToast(`Article "${post.title}" published successfully.`);
+  const addBlogPost = async (post: BlogPost, skipServerSync?: boolean) => {
+    setBlogPostsList((prev) => {
+      const filtered = prev.filter((p) => p.slug !== post.slug);
+      return [post, ...filtered];
+    });
+
+    if (skipServerSync) {
+      return;
+    }
 
     try {
       const res = await fetch("/api/admin/blog", {
@@ -960,11 +966,14 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const updateBlogPost = async (slug: string, post: Partial<BlogPost>) => {
+  const updateBlogPost = async (slug: string, post: Partial<BlogPost>, skipServerSync?: boolean) => {
     setBlogPostsList((prev) =>
       prev.map((p) => (p.slug === slug ? { ...p, ...post } : p))
     );
-    showToast("Article updated successfully.");
+
+    if (skipServerSync) {
+      return;
+    }
 
     try {
       const res = await fetch(`/api/admin/blog/${encodeURIComponent(slug)}`, {

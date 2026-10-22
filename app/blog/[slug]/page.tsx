@@ -16,6 +16,7 @@ import {
   FaLinkedinIn,
 } from "react-icons/fa6";
 import { getBlogPost, getRelatedPosts, blogPosts } from "@/lib/blog-data";
+import { NewsletterSubscriptionForm } from "@/components/blog/NewsletterSubscriptionForm";
 
 import { db } from "@/db";
 import { blogPosts as blogPostsTable } from "@/db/schema";
@@ -150,7 +151,11 @@ export default async function BlogDetailPage({
     new Set(sourcePosts.flatMap((item) => item.tags || []))
   );
 
-  const contentBlocks = (post.content || "")
+  const normalizedRaw = (post.content || "")
+    .replace(/([^\n])\n(- |\* |\d+\. |#{1,3} |> )/g, "$1\n\n$2")
+    .replace(/((?:^|\n)(?:- |\* |\d+\. ).*)\n([^-*\d\n#\s>])/g, "$1\n\n$2");
+
+  const contentBlocks = normalizedRaw
     .split("\n\n")
     .map((rawBlock: string, i: number) => {
       const block = rawBlock.trim();
@@ -592,20 +597,7 @@ export default async function BlogDetailPage({
               <p className="text-white/75 text-xs sm:text-sm mb-5 leading-relaxed relative z-10">
                 Get the latest travel stories, tiger sighting updates & tour deals delivered right to your inbox.
               </p>
-              <form className="space-y-3 relative z-10">
-                <input
-                  type="email"
-                  placeholder="Your email address"
-                  className="w-full bg-white/10 border border-white/25 rounded-sm px-4 py-3 text-xs sm:text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#fbbf24] transition-all"
-                />
-                <button
-                  type="button"
-                  className="w-full bg-[#d97706] hover:bg-[#b45309] text-white font-extrabold text-sm py-3 rounded-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-md group cursor-pointer"
-                >
-                  <span>Subscribe Now</span>
-                  <FaPaperPlane className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </button>
-              </form>
+              <NewsletterSubscriptionForm />
             </div>
           </aside>
         </div>

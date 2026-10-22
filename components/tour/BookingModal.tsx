@@ -17,6 +17,15 @@ import {
 
 import { useAdmin } from "@/context/AdminContext";
 import { BookingConfirmationCard } from "@/components/ui/BookingConfirmationCard";
+import {
+  validateTourBooking,
+  validateName,
+  validateEmail,
+  validatePhone,
+  validateTravelDate,
+  validateGuests,
+  TourBookingValidationErrors,
+} from "@/lib/validation";
 
 export interface BookingModalProps {
   isOpen: boolean;
@@ -39,12 +48,56 @@ export function BookingModal({
     guests: "2",
   });
 
+  const [errors, setErrors] = useState<TourBookingValidationErrors>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [confirmedCode, setConfirmedCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const { addBooking } = useAdmin();
   const dateInputRef = useRef<HTMLInputElement>(null);
+
+  // Validate individual field on change / blur
+  const validateSingleField = (field: string, value: any) => {
+    let err: string | null = null;
+    switch (field) {
+      case "fullName":
+        err = validateName(value);
+        break;
+      case "email":
+        err = validateEmail(value);
+        break;
+      case "phoneNumber":
+        err = validatePhone(value);
+        break;
+      case "travelDate":
+        err = validateTravelDate(value);
+        break;
+      case "guests":
+        err = validateGuests(value);
+        break;
+      default:
+        break;
+    }
+    setErrors((prev) => ({
+      ...prev,
+      [field]: err || undefined,
+    }));
+    return err;
+  };
+
+  const handleChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (touched[field]) {
+      validateSingleField(field, value);
+    }
+  };
+
+  const handleBlur = (field: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    validateSingleField(field, (formData as any)[field]);
+  };
 
   // Format date for display on all devices
   const displayDateText = useMemo(() => {
@@ -83,6 +136,8 @@ export function BookingModal({
       setIsSubmitting(false);
       setConfirmedCode("");
       setErrorMessage("");
+      setErrors({});
+      setTouched({});
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -120,6 +175,33 @@ export function BookingModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Mark all fields as touched
+    setTouched({
+      fullName: true,
+      email: true,
+      phoneNumber: true,
+      travelDate: true,
+      guests: true,
+    });
+
+    // Validate all fields
+    const validation = validateTourBooking({
+      fullName: formData.fullName,
+      email: formData.email,
+      phoneNumber: formData.phoneNumber,
+      travelDate: formData.travelDate,
+      guests: formData.guests,
+      packageName,
+    });
+
+    if (!validation.isValid) {
+      setErrors(validation.errors);
+      const firstErr = Object.values(validation.errors)[0] || "Please fill in all required fields properly.";
+      setErrorMessage(firstErr);
+      return;
+    }
+
     setIsSubmitting(true);
     setErrorMessage("");
 
@@ -131,11 +213,11 @@ export function BookingModal({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          fullName: formData.fullName,
-          email: formData.email,
-          phoneNumber: formData.phoneNumber,
+          fullName: formData.fullName.trim(),
+          email: formData.email.trim().toLowerCase(),
+          phoneNumber: formData.phoneNumber.trim(),
           packageName,
-          travelDate: formData.travelDate || todayStr,
+          travelDate: formData.travelDate,
           guests: guestCount,
           totalAmount: totalCalc,
           type: "Tour Package",
@@ -154,30 +236,16 @@ export function BookingModal({
         }
         setIsSubmitted(true);
       } else {
-        setErrorMessage(data?.error || "Unable to process booking request. Please try again or call our helpline.");
+        setErrorMessage(
+          data?.error ||
+          "Unable to process booking request. Please check your information or call our helpline."
+        );
       }
     } catch (err) {
       console.error("Booking submission error:", err);
-      // Fallback local booking
-      try {
-        addBooking({
-          guestName: formData.fullName,
-          email: formData.email,
-          phone: formData.phoneNumber,
-          packageOrRoom: packageName,
-          type: "Tour Package",
-          travelDate: formData.travelDate || todayStr,
-          guestsCount: guestCount,
-          totalAmount: totalCalc,
-          paidAmount: 0,
-          paymentStatus: "Unpaid",
-          bookingStatus: "Pending",
-          specialRequests: `Direct reservation request for ${packageName}.`,
-        });
-      } catch {
-        // ignore
-      }
-      setIsSubmitted(true);
+      setErrorMessage(
+        "Network connection error. Please try again or call our helpline at +91 70014 03498."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -229,7 +297,7 @@ export function BookingModal({
             </div>
 
             {/* Booking Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} noValidate className="space-y-4">
               {/* Full Name */}
               <div>
                 <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">
@@ -243,13 +311,21 @@ export function BookingModal({
                     type="text"
                     required
                     value={formData.fullName}
-                    onChange={(e) =>
-                      setFormData({ ...formData, fullName: e.target.value })
-                    }
+                    onChange={(e) => handleChange("fullName", e.target.value)}
+                    onBlur={() => handleBlur("fullName")}
                     placeholder="Enter your full name"
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-[4px] text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                    className={`w-full pl-10 pr-4 py-2.5 bg-slate-50 border rounded-[4px] text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none transition-all ${
+                      touched.fullName && errors.fullName
+                        ? "border-rose-400 bg-rose-50/20 ring-1 ring-rose-400 focus:border-rose-500"
+                        : "border-slate-200 focus:border-primary focus:ring-1 focus:ring-primary"
+                    }`}
                   />
                 </div>
+                {touched.fullName && errors.fullName && (
+                  <p className="mt-1 text-xs text-rose-600 font-medium">
+                    {errors.fullName}
+                  </p>
+                )}
               </div>
 
               {/* Email & Phone Number Grid */}
@@ -266,13 +342,21 @@ export function BookingModal({
                       type="email"
                       required
                       value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
+                      onChange={(e) => handleChange("email", e.target.value)}
+                      onBlur={() => handleBlur("email")}
                       placeholder="Your email address"
-                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-[4px] text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                      className={`w-full pl-10 pr-4 py-2.5 bg-slate-50 border rounded-[4px] text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none transition-all ${
+                        touched.email && errors.email
+                          ? "border-rose-400 bg-rose-50/20 ring-1 ring-rose-400 focus:border-rose-500"
+                          : "border-slate-200 focus:border-primary focus:ring-1 focus:ring-primary"
+                      }`}
                     />
                   </div>
+                  {touched.email && errors.email && (
+                    <p className="mt-1 text-xs text-rose-600 font-medium">
+                      {errors.email}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -287,33 +371,43 @@ export function BookingModal({
                       type="tel"
                       required
                       value={formData.phoneNumber}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          phoneNumber: e.target.value,
-                        })
-                      }
-                      placeholder="+91 98765 43210"
-                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-[4px] text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                      onChange={(e) => handleChange("phoneNumber", e.target.value)}
+                      onBlur={() => handleBlur("phoneNumber")}
+                      placeholder="10-digit mobile number"
+                      className={`w-full pl-10 pr-4 py-2.5 bg-slate-50 border rounded-[4px] text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none transition-all ${
+                        touched.phoneNumber && errors.phoneNumber
+                          ? "border-rose-400 bg-rose-50/20 ring-1 ring-rose-400 focus:border-rose-500"
+                          : "border-slate-200 focus:border-primary focus:ring-1 focus:ring-primary"
+                      }`}
                     />
                   </div>
+                  {touched.phoneNumber && errors.phoneNumber && (
+                    <p className="mt-1 text-xs text-rose-600 font-medium">
+                      {errors.phoneNumber}
+                    </p>
+                  )}
                 </div>
               </div>
 
               {/* Travel Date & Guests Grid */}
-              <div className="grid  grid-cols-2 gap-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
                   <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">
                     Travel Date <span className="text-rose-500">*</span>
                   </label>
                   <div
                     onClick={handleDateClick}
-                    className="relative flex items-center bg-slate-50 border border-slate-200 rounded-[4px] py-2.5 px-3.5 cursor-pointer group focus-within:bg-white focus-within:border-primary   transition-all h-[42px]"
+                    className={`relative flex items-center bg-slate-50 border rounded-[4px] py-2.5 px-3.5 cursor-pointer group focus-within:bg-white transition-all h-[42px] ${
+                      touched.travelDate && errors.travelDate
+                        ? "border-rose-400 bg-rose-50/20 ring-1 ring-rose-400"
+                        : "border-slate-200 focus-within:border-primary"
+                    }`}
                   >
                     <Calendar className="w-4 h-4 text-slate-400 mr-2.5 flex-shrink-0 group-hover:text-primary transition-colors" />
                     <span
-                      className={`text-sm select-none truncate flex-1 ${formData.travelDate ? "text-slate-800 font-medium" : "text-slate-400"
-                        }`}
+                      className={`text-sm select-none truncate flex-1 ${
+                        formData.travelDate ? "text-slate-800 font-medium" : "text-slate-400"
+                      }`}
                     >
                       {displayDateText}
                     </span>
@@ -323,16 +417,17 @@ export function BookingModal({
                       required
                       min={todayStr}
                       value={formData.travelDate}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          travelDate: e.target.value,
-                        })
-                      }
+                      onChange={(e) => handleChange("travelDate", e.target.value)}
+                      onBlur={() => handleBlur("travelDate")}
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                       aria-label="Travel Date"
                     />
                   </div>
+                  {touched.travelDate && errors.travelDate && (
+                    <p className="mt-1 text-xs text-rose-600 font-medium">
+                      {errors.travelDate}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -349,13 +444,21 @@ export function BookingModal({
                       max="50"
                       required
                       value={formData.guests}
-                      onChange={(e) =>
-                        setFormData({ ...formData, guests: e.target.value })
-                      }
+                      onChange={(e) => handleChange("guests", e.target.value)}
+                      onBlur={() => handleBlur("guests")}
                       placeholder="2"
-                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-[4px] text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                      className={`w-full pl-10 pr-4 py-2.5 bg-slate-50 border rounded-[4px] text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none transition-all ${
+                        touched.guests && errors.guests
+                          ? "border-rose-400 bg-rose-50/20 ring-1 ring-rose-400 focus:border-rose-500"
+                          : "border-slate-200 focus:border-primary focus:ring-1 focus:ring-primary"
+                      }`}
                     />
                   </div>
+                  {touched.guests && errors.guests && (
+                    <p className="mt-1 text-xs text-rose-600 font-medium">
+                      {errors.guests}
+                    </p>
+                  )}
                 </div>
               </div>
 

@@ -3,6 +3,7 @@ import { desc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { contactInquiries } from "@/db/schema";
 import { verifyAdminRequest } from "@/lib/auth";
+import { validateName, validateEmail, validatePhone } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
@@ -47,21 +48,31 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { name, email, phone, subject, message, source, status } = body;
 
-    if (!name || !phone) {
-      return NextResponse.json(
-        { error: "Name and phone number are required" },
-        { status: 400 }
-      );
+    const nameErr = validateName(name);
+    if (nameErr) {
+      return NextResponse.json({ error: nameErr }, { status: 400 });
+    }
+
+    const phoneErr = validatePhone(phone);
+    if (phoneErr) {
+      return NextResponse.json({ error: phoneErr }, { status: 400 });
+    }
+
+    if (email && email.trim()) {
+      const emailErr = validateEmail(email);
+      if (emailErr) {
+        return NextResponse.json({ error: emailErr }, { status: 400 });
+      }
     }
 
     const [newInquiry] = await db
       .insert(contactInquiries)
       .values({
-        name,
-        email: email || "offline-lead@sundarban.com",
-        phone,
-        subject: subject || "Offline Lead",
-        message: message || "Logged via Admin panel",
+        name: name.trim(),
+        email: email && email.trim() ? email.trim().toLowerCase() : "offline-lead@sundarban.com",
+        phone: phone.trim(),
+        subject: subject && subject.trim() ? subject.trim() : "Offline Lead",
+        message: message && message.trim() ? message.trim() : "Logged via Admin panel",
         status: status || "New",
         source: source || "Helpline Call",
       })

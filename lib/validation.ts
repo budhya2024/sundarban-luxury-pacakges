@@ -152,3 +152,126 @@ export function validateContactInquiry(data: {
     errors,
   };
 }
+
+export function validateTravelDate(dateStr?: string): string | null {
+  if (!dateStr || !dateStr.trim()) {
+    return "Please select your expedition / check-in date.";
+  }
+  const clean = dateStr.trim();
+  const dateObj = new Date(clean);
+  if (isNaN(dateObj.getTime())) {
+    return "Please select a valid date.";
+  }
+
+  // Compare with start of today (local time)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // If dateStr is YYYY-MM-DD
+  const parts = clean.split("-").map(Number);
+  if (parts.length === 3) {
+    const checkDate = new Date(parts[0], parts[1] - 1, parts[2]);
+    if (checkDate < today) {
+      return "Travel date cannot be in the past.";
+    }
+  } else if (dateObj < today) {
+    return "Travel date cannot be in the past.";
+  }
+
+  return null;
+}
+
+export function validateGuests(
+  guests?: number | string,
+  min = 1,
+  max = 50
+): string | null {
+  if (guests === undefined || guests === null || guests === "") {
+    return "Please select the number of travelers.";
+  }
+  const parsed = typeof guests === "number" ? guests : parseInt(String(guests), 10);
+  if (isNaN(parsed) || parsed < min) {
+    return `At least ${min} guest is required.`;
+  }
+  if (parsed > max) {
+    return `Maximum group size online is ${max} guests. For larger charters, please call our helpline.`;
+  }
+  return null;
+}
+
+export interface TourBookingValidationErrors {
+  fullName?: string;
+  email?: string;
+  phoneNumber?: string;
+  travelDate?: string;
+  guests?: string;
+  packageName?: string;
+}
+
+export function validateTourBooking(data: {
+  fullName?: string;
+  email?: string;
+  phoneNumber?: string;
+  travelDate?: string;
+  guests?: number | string;
+  packageName?: string;
+}): { isValid: boolean; errors: TourBookingValidationErrors } {
+  const errors: TourBookingValidationErrors = {};
+
+  const nameErr = validateName(data.fullName);
+  if (nameErr) errors.fullName = nameErr;
+
+  const emailErr = validateEmail(data.email);
+  if (emailErr) errors.email = emailErr;
+
+  const phoneErr = validatePhone(data.phoneNumber);
+  if (phoneErr) errors.phoneNumber = phoneErr;
+
+  const dateErr = validateTravelDate(data.travelDate);
+  if (dateErr) errors.travelDate = dateErr;
+
+  const guestErr = validateGuests(data.guests);
+  if (guestErr) errors.guests = guestErr;
+
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors,
+  };
+}
+
+export interface HotelInquiryValidationErrors {
+  guestName?: string;
+  email?: string;
+  phone?: string;
+  checkIn?: string;
+  checkOut?: string;
+  roomName?: string;
+}
+
+export function validateHotelInquiry(data: {
+  guestName?: string;
+  email?: string;
+  phone?: string;
+  checkIn?: string;
+  checkOut?: string;
+  roomName?: string;
+}): { isValid: boolean; errors: HotelInquiryValidationErrors } {
+  const errors: HotelInquiryValidationErrors = {};
+
+  const nameErr = validateName(data.guestName);
+  if (nameErr) errors.guestName = nameErr;
+
+  const emailErr = validateEmail(data.email);
+  if (emailErr) errors.email = emailErr;
+
+  const phoneErr = validatePhone(data.phone);
+  if (phoneErr) errors.phone = phoneErr;
+
+  const dateErr = validateTravelDate(data.checkIn);
+  if (dateErr) errors.checkIn = dateErr;
+
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors,
+  };
+}
