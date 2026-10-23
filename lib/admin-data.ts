@@ -212,7 +212,7 @@ export const initialAdminTestimonialSettings: AdminTestimonialSettings = {
   id: "default",
   displayMode: "google",
   googlePlaceId: "ChIJtRQ1dQCLAToR6rAo34zLXEo",
-  googlePlaceUrl: "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
+  googlePlaceUrl: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D",
   featurableId: "3244b520-3369-414c-a09e-339ea6dbd9e9",
   googleApiKey: "",
   googleRating: 4.9,
@@ -261,592 +261,980 @@ export const initialAdminAlertBanner: AdminGlobalAlertBanner = {
 
 export const initialAdminPackages: AdminTourPackage[] = [
   {
-    id: "pkg-1",
-    name: "1 Night 2 Days Luxury Cruise Package",
-    slug: "1-night-2-days-luxury-cruise",
-    subtitle: "Discover the true wilderness of the mangrove delta with our premier 1N/2D AC river cruise & cultural stay.",
-    duration: "2 Days / 1 Night",
-    price: 2999,
-    originalPrice: 3999,
-    category: "Luxury Cruise",
-    rating: 4.9,
-    reviewsCount: 128,
-    image: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=900&q=80",
-    gallery: [
-      "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=900&q=80",
+    "id": "pkg-1",
+    "name": "1 Night 2 Days Luxury Cruise Package",
+    "slug": "1-night-2-days-luxury-cruise",
+    "subtitle": "Discover the true wilderness of the mangrove delta with our premier 1N/2D AC river cruise & cultural stay.",
+    "duration": "2 Days / 1 Night",
+    "price": 3999,
+    "originalPrice": 4999,
+    "category": "Luxury Cruise",
+    "rating": 4.9,
+    "reviewsCount": 128,
+    "image": "https://br-snowy-mountain-b54pwsv4.storage.c-7.us-east-2.aws.neon.tech/uploads/uploads/1790184085513-bedroom-with-four-poster-bed-2.webp",
+    "bannerImage": "https://br-summer-base-b5g5ej9g.storage.c-7.us-east-2.aws.neon.tech/uploads/uploads/1791801459683-img_20260924_175810.jpg",
+    "gallery": [
+      "https://br-summer-base-b5g5ej9g.storage.c-7.us-east-2.aws.neon.tech/uploads/packages/1792737162536-72.webp"
     ],
-    status: "Active",
-    maxGuests: 45,
-    departure: "Godkhali Ferry Ghat (8:30 AM)",
-    pickupDrop: "Kolkata (Science City / Airport / Howrah Station) & Canning",
-    mealsSummary: "6 Times Fresh Cooked Bengali Buffet Meals",
-    minGroupSize: "Min 2 People",
-    overview: "Sundarban 1 Night 2 Days Tour is the most popular tour package among tourists. You will experience rich wildlife, thick estuarine mangroves, serene watchtowers, and authentic local folk traditions in the land of Royal Bengal Tigers. Sail comfortably on our state-of-the-art vessel with freshly prepared delicacies and expert forest naturalists.",
-    highlightQuote: "“Sundarban 1 Night 2 Days Tour is the most popular tour package from Kolkata. Discover mangroves, watchtowers, and pristine tranquility with our luxury eco package.”",
-    helplinePhone: "+91 70014 03498",
-    inclusions: [
+    "status": "Active",
+    "maxGuests": 45,
+    "departure": "Godkhali Ferry Ghat (8:30 AM)",
+    "pickupDrop": "Kolkata (Science City / Airport / Howrah Station) & Canning",
+    "mealsSummary": "6 Times Fresh Cooked Bengali Buffet Meals",
+    "minGroupSize": "Min 2 People",
+    "overview": "Sundarban tour 1 night 2 days is the most familiar sundarban tour package now. Tourists are enjoying a lot in this package. But it is very top to cover all sightseeing. Some logical reason for Sundarban tour.",
+    "highlightQuote": "“Sundarban 1 Night 2 Days Tour is the most popular tour package from Kolkata. Discover mangroves, watchtowers, and pristine tranquility with our luxury eco package.”",
+    "inclusions": [
       "Pick up & Drop from Kolkata in AC Vehicle",
       "Accommodation in Luxury Resort / Boat Cabins",
-      "All Meals (2 Breakfast, 2 Lunch, 1 Dinner, Evening Snacks)",
       "All Forest Department Entry Permits & Watchtower Fees",
-      "Certified Forest Naturalist Tour Guide",
       "Cultural Folk Dance Show & Evening Bonfire",
       "Luxury Boat Cruise through Mangrove Creeks",
+      "Meal plan – Bed Tea or Coffee ,Breakfast ,DinnerEvening Snacks ,Lunch ,",
+      "Bengali Hindi English Speaking Tour Guide"
     ],
-    exclusions: [
+    "exclusions": [
       "Any Personal Expenses or Tips",
       "Video Camera Permit Charges",
       "Anything Not Mentioned in Inclusions List",
       "Medical or Travel Insurance",
       "GST 5% Extra Applicable",
       "Personal Beverages & Bottled Water",
+      "Any optional tour",
+      "Any optional food menu",
+      "Individual still / video camera permission charge",
+      "Soft drinks and Alcoholic Drinks"
     ],
-    thingsToCarry: [
+    "thingsToCarry": [
       "Original Photo ID Proof (Aadhaar / Voter ID / Passport)",
       "Comfortable Cotton Clothes & Walking Shoes",
       "Sunscreen Lotion, Sunglasses & Sun Hat",
       "Personal Medicines & Basic First Aid Kit",
       "Camera with Extra Memory Card & Power Bank",
       "Insect Repellent Cream",
-      "Cash for Personal Shopping & Local Handicrafts",
+      "Cash for Personal Shopping & Local Handicrafts"
     ],
-    childPolicy: [
-      "Child below 5 years: 100% Complimentary / FREE (sharing parents' bed).",
-      "Child between 5 to 10 years: 50% of adult package price applicable.",
-      "Child above 10 years: Charged as full adult rate with separate bed & seat.",
-    ],
-    importantNotes: [
-      "Forest Department entry permissions require government ID submission 24h before cruise departure.",
-      "Plastic bottles and plastic bags are strictly prohibited inside Sundarban Tiger Reserve core areas.",
-      "Itinerary timings may slightly adjust based on river high-tide and low-tide schedules.",
-      "Swimming in mangrove river creeks is strictly forbidden for wildlife safety.",
-    ],
-    itinerary: [
+    "childPolicy": [],
+    "importantNotes": [],
+    "itinerary": [
       {
-        dayNumber: 1,
-        dayTitle: "Day 1 - Starting in Sundarban",
-        activities: [
-          { time: "8:00 AM", title: "Pick up from Kolkata", desc: "Pick up from Kolkata (Science City / Airport / Howrah Station) in AC luxury vehicle and drive towards Godkhali Ferry Ghat." },
-          { time: "11:30 AM", title: "Arrive at Godkhali & Board Cruise", desc: "Board our luxury vessel with welcome drinks. Sail towards Sajnekhali watchtower area." },
-          { time: "1:30 PM", title: "Cruising Through Mangrove Creek", desc: "Enjoy hot cooked Bengali lunch served on the boat deck while cruising through narrow forest creeks." },
-          { time: "4:00 PM", title: "Sajnekhali Watchtower Visit", desc: "Visit Sajnekhali Watchtower, Mangrove Interpretation Center, and Crocodile Pond with our certified guide." },
-          { time: "6:30 PM", title: "Evening Snacks & Tea", desc: "Return to cruise/resort deck. Fresh evening pakora and tea served." },
-          { time: "8:00 PM", title: "Folk Dance Show", desc: "Enjoy traditional Jhumur & Tribal Folk Dance cultural performance by local artists." },
-          { time: "9:30 PM", title: "Dinner", desc: "Sumptuous dinner served at resort/cruise dining deck." },
-        ],
+        "dayTitle": "Day 1 - Starting in Sundarban",
+        "dayNumber": 1,
+        "activities": [
+          {
+            "desc": "Pick up from Kolkata (Science City / Airport / Howrah Station) in AC luxury vehicle and drive towards Godkhali Ferry Ghat. The beautiful landscape covered with yellowish paddy fields, mud house, ponds Three hours and a half drive to Godkhali Tea Break on the way",
+            "time": "8:00 AM",
+            "title": "Pick up from Kolkata"
+          },
+          {
+            "desc": "Reach Godkhali (the gateway to Sundarban) and cross the historic Gosaba Island by boat.",
+            "time": "11:30 AM",
+            "title": "Arrive at Godkhali & Board Cruise"
+          },
+          {
+            "desc": "Reaching Cottage / Hotel, which is located just opposite to the Sundarban Tiger Reserve Place surrounded by the village, forests, breeze of the river The place where you can enjoy a peaceful and pleasure weekend",
+            "time": "1:00 PM",
+            "title": "Reaching Cottage/ Boat Lunch"
+          },
+          {
+            "desc": "Village walking tour, knowing their simple culture. A short introduction via boat to the Sundarban Bird Jungle Experience the lovely sunset view in the jungle",
+            "time": "3:00 PM",
+            "title": "Visit Sundarban Bird Jungle"
+          },
+          {
+            "desc": "Return to Hotel Sonar Bangla. Fresh evening pakora and tea served.",
+            "time": "5:30 PM",
+            "title": "Back hotel"
+          },
+          {
+            "desc": "Enjoy traditional Jhumur & Tribal Folk Dance cultural performance by local artists.",
+            "time": "6:00 - 7:00 PM",
+            "title": "Folk Dance Show"
+          },
+          {
+            "desc": "Sumptuous dinner served at resort/cruise dining deck.",
+            "time": "9:30 PM",
+            "title": "Dinner"
+          }
+        ]
       },
       {
-        dayNumber: 2,
-        dayTitle: "Day 2 - Deep Forest & Return",
-        activities: [
-          { time: "6:30 AM", title: "Early Morning Boat Safari", desc: "Sailing through Sudhanyakhali & Dobanki canopy watchtowers inside deep tiger reserve core area." },
-          { time: "8:30 AM", title: "Dobanki Watchtower & Canopy Walk", desc: "Walk along the 496m elevated netted canopy walk for high-altitude wildlife viewing." },
-          { time: "1:30 PM", title: "Lunch on Boat", desc: "Freshly prepared lunch served on boat while returning along Pirkhali & Panchamukhani 5-river junction." },
-          { time: "4:30 PM", title: "Return to Godkhali Ghat", desc: "Board AC return vehicle for Kolkata transfer." },
-          { time: "7:30 PM", title: "Drop off at Kolkata", desc: "Reach Kolkata with unforgettable memories of Sundarban wildlife safari." },
-        ],
-      },
+        "dayTitle": "Day 2 - Deep Forest & Return",
+        "dayNumber": 2,
+        "activities": [
+          {
+            "desc": "Boat cruise which will enter inside one of the biggest mangrove forest through the narrow creek followed around the islands of the Sundarban Tiger Reserve You may get to see crocodiles, wild boars, spotted deers, water monitor lizards, kingfisher or different types of birds If you lucky, you can get a glimpse of ‘Royal Bengal Tiger’ of India. Living in the natural habitat. We will also take you to the watch towers where from you can get a distant / bird's eye view of wild animals in the mangroves.",
+            "time": "8:30 AM",
+            "title": "Followed around the islands of the Sundarban Tiger Reserve"
+          },
+          {
+            "desc": "Sajnekhali Sudhanyakhali Dobanki Breakfast, Lunch and Tea will be served on the boat",
+            "time": "4:00 PM",
+            "title": "During this period you will visit 3 watch tower"
+          },
+          {
+            "desc": "Sundarban jungle trip end, head back for Kolkata",
+            "time": "5:00 PM",
+            "title": "Trip end"
+          },
+          {
+            "desc": "Board AC return vehicle for Kolkata transfer.",
+            "time": "6:00 PM",
+            "title": "Return to Godkhali Ghat"
+          },
+          {
+            "desc": "Reach Kolkata with unforgettable memories of Sundarban wildlife safari.",
+            "time": "9:30 PM",
+            "title": "Back to Kolkata"
+          }
+        ]
+      }
     ],
-    foodMenu: [
+    "foodMenu": [
       {
-        dayNumber: 1,
-        dayTitle: "Day 1 Delicious Cuisine Menu",
-        courses: [
-          { courseName: "Breakfast", menuItems: "Luchi, Alur Dom, Sweets, Tea / Coffee" },
-          { courseName: "Lunch", menuItems: "Rice, Dal, Veg Fry, Gold Prawn Curry / Fish Curry, Salad, Chutney, Papad" },
-          { courseName: "Evening Snacks", menuItems: "Chicken Pakora / Veg Pakora, Hot Tea / Coffee" },
-          { courseName: "Dinner", menuItems: "Rice / Roti, Special Chicken Curry, Salad, Sweets" },
+        "courses": [
+          {
+            "menuItems": "Sandwich, Sweet, Bisleri, Tea.",
+            "courseName": "Breakfast"
+          },
+          {
+            "menuItems": "Rice, Dal, Fries, Sabji, Vetki Fish + Other Fish, Chatni, Papad, Salad, Sweet, Paneer/Dhoka Dalna.",
+            "courseName": "Lunch"
+          },
+          {
+            "menuItems": "Chicken/Veg Pakora, Tea/Coffee.",
+            "courseName": "Evening Snacks"
+          },
+          {
+            "menuItems": "Fried Rice, Roti, Sabji, Chilli Chicken/Chicken Kosha, Salad.",
+            "courseName": "Dinner"
+          }
         ],
+        "dayTitle": "Day 1 Delicious Cuisine Menu",
+        "dayNumber": 1
       },
       {
-        dayNumber: 2,
-        dayTitle: "Day 2 Delicious Cuisine Menu",
-        courses: [
-          { courseName: "Morning Bed Tea", menuItems: "Bed Tea, Biscuits, Fresh Fruit / Cookies" },
-          { courseName: "Breakfast", menuItems: "Radhaballavi / Luchi, Chana Masala, Sweet, Tea / Coffee" },
-          { courseName: "Lunch", menuItems: "Rice, Dal, Veg Fry, Special Mutton Curry / Crab Masala, Salad, Chutney, Papad" },
-          { courseName: "Return Refreshment", menuItems: "Evening Tea & Packaged Snack Box for return journey" },
+        "courses": [
+          {
+            "menuItems": "Bed Tea, Biscuits, Puri, Chana Masala, Sweet, Tea / Coffee, Amudi Fish Fry.",
+            "courseName": "Morning Bed Tea"
+          },
+          {
+            "menuItems": "Rice, Dal, Fries, Sabji, Prawn Malai Curry + Fish, Chatni, Papad, Salad, Paneer/Dhoka Dalna.",
+            "courseName": "Breakfast"
+          },
+          {
+            "menuItems": "Egg/Veg Noodles, Pakora/Veg Pakora, Salad, Tea/Coffee.",
+            "courseName": "Lunch"
+          },
+          {
+            "menuItems": "Rice, Roti, Dal, Mix Veg, Mutton Kosha, Salad, Paneer Item.",
+            "courseName": "Return Refreshment"
+          }
         ],
-      },
+        "dayTitle": "Day 2 Delicious Cuisine Menu",
+        "dayNumber": 2
+      }
     ],
-    featured: true,
+    "helplinePhone": "+91 70014 03498",
+    "featured": true
   },
   {
-    id: "pkg-2",
-    name: "2 Nights 3 Days Complete Tiger Trail Expedition",
-    slug: "2-nights-3-days-tiger-trail",
-    subtitle: "The ultimate 3-day deep delta safari covering Burirdabri, Netidhopani, Dobanki canopy walk & Sajnekhali.",
-    duration: "3 Days / 2 Nights",
-    price: 4999,
-    originalPrice: 6499,
-    category: "Luxury Cruise",
-    rating: 4.9,
-    reviewsCount: 245,
-    image: "https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?auto=format&fit=crop&w=900&q=80",
-    gallery: [
-      "https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
-    ],
-    status: "Active",
-    maxGuests: 40,
-    departure: "Godkhali Ghat / Canning",
-    pickupDrop: "Kolkata (AC Coach Pickup & Drop Included)",
-    mealsSummary: "9 Fresh Buffet Meals (3 Breakfast, 3 Lunch, 2 Dinner, 2 High Tea)",
-    minGroupSize: "Min 2 People",
-    overview: "Our 2 Nights 3 Days Tiger Trail is our highest-rated wildlife itinerary designed for photographers, nature enthusiasts, and families. Sail deep into the core delta areas where Royal Bengal Tigers, saltwater crocodiles, and rare mangrove kingfishers thrive.",
-    highlightQuote: "“Experience the deep heart of Sundarban Tiger Reserve with 3 days of uninterrupted estuary cruising and 5 iconic watchtowers.”",
-    helplinePhone: "+91 70014 03498",
-    inclusions: [
+    "id": "pkg-2",
+    "name": "2 Nights 3 Days Complete Tiger Trail Expedition",
+    "slug": "2-nights-3-days-tiger-trail",
+    "subtitle": "The ultimate 3-day deep delta safari covering Burirdabri, Netidhopani, Dobanki canopy walk & Sajnekhali.",
+    "duration": "3 Days / 2 Nights",
+    "price": 5499,
+    "originalPrice": 6499,
+    "category": "Luxury Cruise",
+    "rating": 4.9,
+    "reviewsCount": 245,
+    "image": "https://br-snowy-mountain-b54pwsv4.storage.c-7.us-east-2.aws.neon.tech/uploads/uploads/1790186638603-hotel-building-twilight-lit-pathways-1.webp",
+    "bannerImage": "https://br-snowy-mountain-b54pwsv4.storage.c-7.us-east-2.aws.neon.tech/uploads/uploads/1790186659527-hotel-building-twilight-lit-pathways-1.webp",
+    "gallery": [],
+    "status": "Active",
+    "maxGuests": 40,
+    "departure": "Godkhali Ghat / Canning",
+    "pickupDrop": "Kolkata (AC Coach Pickup & Drop Included)",
+    "mealsSummary": "9 Fresh Buffet Meals (3 Breakfast, 3 Lunch, 2 Dinner, 2 High Tea)",
+    "minGroupSize": "Min 2 People",
+    "overview": "Sundarban tour 2 nights 3 days - Sundarban tour 2 nights 3 days is the standard sundarban tour package which can cover all the sightseeing with comfortably. Some logical reason for Sundarban tour.",
+    "highlightQuote": "“Experience the deep heart of Sundarban Tiger Reserve with 3 days of uninterrupted estuary cruising and 5 iconic watchtowers.”",
+    "inclusions": [
       "AC Premium Cruiser & Experienced Crew",
       "All 9 Buffet Meals with Hilsa & Mutton specials",
       "Sajnekhali, Dobanki & Sudhanyakhali Forest Entry Permits",
       "Village Folk Dance & Campfire Evening",
       "Pick & Drop in AC Coach from Kolkata",
       "Exclusive High-Deck Viewing & Binoculars on Loan",
+      "Bengali Hindi English Speaking Tourist Guide"
     ],
-    exclusions: [
+    "exclusions": [
       "Personal shopping and souvenirs",
       "Camera fees applicable at watchtowers",
       "Optional room service orders",
-      "Medical emergency air ambulance",
+      "Any optional food menu",
+      "Alcoholic Drinks, Soft drinks"
     ],
-    thingsToCarry: [
+    "thingsToCarry": [
       "Government Photo ID Card",
       "Binoculars & Telephoto Lens",
       "Comfortable Walking Attire & Cap",
-      "Light Jacket or Shawl for Early Mornings",
+      "Light Jacket or Shawl for Early Mornings"
     ],
-    childPolicy: [
-      "Under 5 yrs: Free",
-      "5 to 10 yrs: 50% charge",
-      "Above 10 yrs: Adult tariff",
+    "childPolicy": [],
+    "importantNotes": [],
+    "itinerary": [
+      {
+        "dayTitle": "Day 1 - Kolkata Departure & Sajnekhali Watchtower",
+        "dayNumber": 1,
+        "activities": [
+          {
+            "desc": "Board comfortable AC coach from central Kolkata locations.The beautiful landscape covered with yellowish paddy fields, mud house, ponds, fishing ponds Three hours and a half drive to Godkhali Tea Break on the way",
+            "time": "7:30 - 8:00 AM",
+            "title": "Kolkata Pickup"
+          },
+          {
+            "desc": "Cross the Gosaba island by boat",
+            "time": "11:00 AM",
+            "title": "Gosaba islan visit"
+          },
+          {
+            "desc": "Reaching Cottage/hotel, which is located just opposite to the Sundarban Tiger Reserve Cottage surrounded by the village, forests, breeze of the river The place where you can enjoy a peaceful and pleasure weekend",
+            "time": "1:00 PM",
+            "title": "Reaching Cottage/hotel/ Boat Lunch"
+          },
+          {
+            "desc": "A short introduction via boat to the Sundarban Bird Jungle with the lovely sunset view",
+            "time": "3:30 PM",
+            "title": "sunset view"
+          },
+          {
+            "desc": "Back to Hotel Sonar Bangla",
+            "time": "5:00 PM",
+            "title": "Back to resort / cottage."
+          },
+          {
+            "desc": "Local folk dance followed by complimentary snacks",
+            "time": "6:30 PM",
+            "title": "Enjoy local folk dance"
+          },
+          {
+            "desc": "Dinner",
+            "time": "9:00 PM",
+            "title": "Dinner time"
+          }
+        ]
+      },
+      {
+        "dayTitle": "Day 2 - Core Reserve Safari & Canopy Walk",
+        "dayNumber": 2,
+        "activities": [
+          {
+            "desc": "Sajnekhali Watchtower: Visit the Interpretation Center and Crocodile Park",
+            "time": "8:00 AM",
+            "title": "Watchtower Sightseeing"
+          },
+          {
+            "desc": "Sudhanyakhali Watchtower: High chances of spotting Tigers, Deer and monkeys near the sweet-water pond. Dobanki Watchtower ; Experience the famous Canopy Walk, half- kilometer elevated pathway covered with netting for safe viewing, (Note: Breakfast,Lunch,and Afternoon Tea will be freshly coked and served directly on the boat during the cruise",
+            "time": "1:00 AM",
+            "title": "Watchtower Sightseeing"
+          },
+          {
+            "desc": "Reaching Cottage/ Sonar Bangla hotel",
+            "time": "5:00 PM",
+            "title": "Reaching Cottage/hotel"
+          },
+          {
+            "desc": "Bonfire party (only winter season)",
+            "time": "6:00 PM",
+            "title": "party"
+          },
+          {
+            "desc": "Dinner",
+            "time": "9:30 PM",
+            "title": "Dinner Time"
+          }
+        ]
+      },
+      {
+        "dayTitle": "Day 3 - Sudhanyakhali Safari & Return Transfer",
+        "dayNumber": 3,
+        "activities": [
+          {
+            "desc": "After breakfast we go to the local village walk for a couple of hours Experiencing local culture.",
+            "time": "8:00 AM",
+            "title": "Breakfast Time"
+          },
+          {
+            "desc": "Back to the cottages A ride to go to Hamilton Bungalow & Rabindranath Tagore Bungalow",
+            "time": "10:00 AM",
+            "title": "Back to the cottages"
+          },
+          {
+            "desc": "Boat Lunch / On the way lunch",
+            "time": "1:30 PM",
+            "title": "Lunch Time"
+          },
+          {
+            "desc": "Drive back to Kolkata",
+            "time": "2:00 PM",
+            "title": "Back to Kolkata"
+          },
+          {
+            "desc": "Reach Kolkata",
+            "time": "5:00 PM - 6:00 PM",
+            "title": "Reach Kolkata"
+          }
+        ]
+      }
     ],
-    importantNotes: [
-      "Valid Government ID required at boarding.",
-      "Eco-friendly zero-plastic guidelines strictly enforced.",
+    "foodMenu": [
+      {
+        "courses": [
+          {
+            "menuItems": "Sandwich, Sweet, Bisleri, Tea. ( only kolkata to koltaka ava.)",
+            "courseName": "Breakfast"
+          },
+          {
+            "menuItems": "Rice, Dal, Fries, Sabji, Vetki Fish + Other Fish, Chatni, Papad, Salad, Sweet, Paneer/Dhoka Dalna.",
+            "courseName": "Lunch"
+          },
+          {
+            "menuItems": "Chicken/Veg Pakora, Tea/Coffee.",
+            "courseName": "Evening Snacks"
+          },
+          {
+            "menuItems": "Fried Rice, Roti, Sabji, Chilli Chicken/Chicken Kosha, Salad.",
+            "courseName": "Dinner"
+          }
+        ],
+        "dayTitle": "Day 1 Feast",
+        "dayNumber": 1
+      },
+      {
+        "courses": [
+          {
+            "menuItems": "Bed tea, Biscuities.",
+            "courseName": "Morning Tea"
+          },
+          {
+            "menuItems": "Puri, Chana Masala, Sweet, Tea / Coffee, Amudi Fish Fry.",
+            "courseName": "Breakfast"
+          },
+          {
+            "menuItems": "Rice, Dal, Fries, Sabji, Prawn Malai Curry + Fish, Chatni, Papad, Salad, Paneer/Dhoka Dalna.",
+            "courseName": "Lunch"
+          },
+          {
+            "menuItems": "Egg/Veg Noodles, Pakora/Veg Pakora, Salad, Tea/Coffee.",
+            "courseName": "Evening Snacks"
+          },
+          {
+            "menuItems": "Rice, Roti, Dal, Mix Veg, Mutton Kosha, Salad, Paneer Item.",
+            "courseName": "Dinner"
+          }
+        ],
+        "dayTitle": "Day 2 Royal Menu",
+        "dayNumber": 2
+      },
+      {
+        "courses": [
+          {
+            "menuItems": "Bed tea, Biscuities, Luchi, Sabji, Sweet, Tea/coffee.",
+            "courseName": "Breakfast"
+          },
+          {
+            "menuItems": "Chicken Biryani, Salad, 500ml Water Bottle OR Rice, Dal, Sabji, Chicken Kosha/Fish, Salad | Veg Items: Veg Manchurian, Veg Fried Rice.",
+            "courseName": "Lunch"
+          },
+          {
+            "menuItems": "Packaged Sweet & Savory Box with Frooti for return journey",
+            "courseName": "Snack Box"
+          }
+        ],
+        "dayTitle": "Day 3 Farewell Menu",
+        "dayNumber": 3
+      }
     ],
-    itinerary: [
-      {
-        dayNumber: 1,
-        dayTitle: "Day 1 - Kolkata Departure & Sajnekhali Watchtower",
-        activities: [
-          { time: "7:30 AM", title: "Kolkata Pickup", desc: "Board comfortable AC coach from central Kolkata locations." },
-          { time: "11:00 AM", title: "Godkhali Boarding", desc: "Welcome drink & check-in to luxury cruiser." },
-          { time: "1:00 PM", title: "River Lunch & Mangrove Entry", desc: "Savour authentic Bengali feast while gliding into Vidya river." },
-          { time: "3:30 PM", title: "Sajnekhali Watchtower", desc: "Explore interpretation center, crocodile sanctuary, and bird hide." },
-          { time: "7:00 PM", title: "Cultural Program & Evening Tea", desc: "Live Baul & Bonobibi theater drama by local village artists." },
-          { time: "9:00 PM", title: "Dinner", desc: "Chef's special Chicken Kosha & Bengali sweets." },
-        ],
-      },
-      {
-        dayNumber: 2,
-        dayTitle: "Day 2 - Core Reserve Safari & Canopy Walk",
-        activities: [
-          { time: "6:00 AM", title: "Morning Tiger Safari", desc: "Dawn cruise across Pirkhali & Gazikhali narrow tiger crossings." },
-          { time: "8:30 AM", title: "Dobanki Watchtower & Walkway", desc: "Walk the famous 0.5km canopy bridge inside heavy tiger habitat." },
-          { time: "1:00 PM", title: "Buffet Lunch on Deck", desc: "Gold Prawn & Fish curry feast served on upper observation deck." },
-          { time: "4:00 PM", title: "Panchamukhani Confluence", desc: "View the confluence of 5 major delta rivers at sunset." },
-          { time: "8:30 PM", title: "Gala Dinner with Bonfire", desc: "Traditional slow-cooked Mutton Kosha with steamed basmati rice." },
-        ],
-      },
-      {
-        dayNumber: 3,
-        dayTitle: "Day 3 - Sudhanyakhali Safari & Return Transfer",
-        activities: [
-          { time: "7:00 AM", title: "Sudhanyakhali Watchtower", desc: "Sweet-water pond wildlife viewing for spotted deer and wild boars." },
-          { time: "12:30 PM", title: "Farewell Lunch on Boat", desc: "Final sumptuous lunch before disembarking at Godkhali." },
-          { time: "3:30 PM", title: "Godkhali to Kolkata Transfer", desc: "AC coach journey back to Kolkata with drop-off by evening." },
-        ],
-      },
-    ],
-    foodMenu: [
-      {
-        dayNumber: 1,
-        dayTitle: "Day 1 Feast",
-        courses: [
-          { courseName: "Breakfast", menuItems: "Puri Sabji / Bread Omelette, Sweets, Hot Tea / Coffee" },
-          { courseName: "Lunch", menuItems: "Rice, Dal, Begun Bhaja, Katla Fish Curry / Vetki Paturi, Chutney, Papad" },
-          { courseName: "Evening Snacks", menuItems: "Fish Finger / Veg Cutlet with Hot Coffee" },
-          { courseName: "Dinner", menuItems: "Roti / Rice, Desi Murgh Curry, Salad, Rasgulla" },
-        ],
-      },
-      {
-        dayNumber: 2,
-        dayTitle: "Day 2 Royal Menu",
-        courses: [
-          { courseName: "Morning Tea", menuItems: "Bed Tea with Butter Cookies" },
-          { courseName: "Breakfast", menuItems: "Radhaballavi, Cholar Dal, Boiled Egg / Banana, Tea" },
-          { courseName: "Lunch", menuItems: "Basmati Rice, Sona Moong Dal, Chingri Malai Curry / Crab Masala, Papad" },
-          { courseName: "Evening Snacks", menuItems: "Chicken Pakora / Paneer Pakora, Masala Tea" },
-          { courseName: "Dinner", menuItems: "Jeera Rice / Roti, Special Mutton Kosha, Salad, Gulab Jamun" },
-        ],
-      },
-      {
-        dayNumber: 3,
-        dayTitle: "Day 3 Farewell Menu",
-        courses: [
-          { courseName: "Breakfast", menuItems: "Kachori Alur Dom, Jalebi, Tea / Coffee" },
-          { courseName: "Lunch", menuItems: "Rice, Dal, Shorshe Ilish / Rui Kalia, Tomato Chutney, Papad" },
-          { courseName: "Snack Box", menuItems: "Packaged Sweet & Savory Box with Frooti for return journey" },
-        ],
-      },
-    ],
-    featured: true,
+    "helplinePhone": "+91 70014 03498",
+    "featured": true
   },
   {
-    id: "pkg-3",
-    name: "Hotel Sonar Bangla 5-Star Resort Stay & Cruise",
-    slug: "hotel-sonar-bangla-resort-package",
-    subtitle: "5-Star luxury resort living at Hotel Sonar Bangla Sundarban combined with private luxury boat safaris.",
-    duration: "3 Days / 2 Nights",
-    price: 8499,
-    originalPrice: 10999,
-    category: "Resort Stay",
-    rating: 4.8,
-    reviewsCount: 92,
-    image: "/assets/images/sonarbanglahotel.jpg",
-    status: "Active",
-
-    maxGuests: 50,
-    departure: "Gosaba / Godkhali Jetty",
-    pickupDrop: "Private Luxury AC Car Transfer from Kolkata Doorstep",
-    mealsSummary: "All Gourmet Buffet Meals at Hotel Sonar Bangla & Cruise",
-    minGroupSize: "Min 2 People",
-    overview: "Indulge in unmatched delta luxury at Hotel Sonar Bangla Sundarban. Enjoy sprawling manicured gardens, swimming pool, luxury air-conditioned riverfront suites, multi-cuisine dining, and private speed boat / cruise safaris inside the national park.",
-    highlightQuote: "“The pinnacle of luxury in Sundarban: 5-Star resort comfort by night and thrilling mangrove safaris by day.”",
-    helplinePhone: "+91 70014 03498",
-    inclusions: [
-      "Executive AC Deluxe Suite at Hotel Sonar Bangla",
-      "Resort Swimming Pool, Jacuzzi & Gym Access",
-      "Private AC Boat Safari with Certified Naturalist",
-      "All Forest Permits & Watchtower Access",
-      "Buffet Breakfast & Dinner at Resort Restaurant",
-      "Private Car Transfer from Kolkata Airport/Hotel",
-    ],
-    exclusions: [
-      "Alcoholic beverages and room minibar",
-      "Spa & Ayurveda therapy charges",
-      "Personal laundry and phone charges",
-    ],
-    thingsToCarry: [
-      "ID Proof for Resort & Forest Check-in",
-      "Swimwear for Resort Pool",
-      "Casual Resort Wear & Binoculars",
-    ],
-    childPolicy: [
-      "Under 5 yrs: Free sharing bed",
-      "5 to 12 yrs: 50% with extra bed",
-      "Above 12 yrs: Full adult tariff",
-    ],
-    importantNotes: [
-      "Resort check-in 12:00 PM, check-out 10:00 AM.",
-      "Early morning boat safari leaves resort jetty at 6:30 AM.",
-    ],
-    itinerary: [
-      {
-        dayNumber: 1,
-        dayTitle: "Day 1 - Luxury Transfer & Sonar Bangla Check-in",
-        activities: [
-          { time: "8:00 AM", title: "Private Car Pickup", desc: "Chauffeured luxury car pickup from your residence in Kolkata." },
-          { time: "12:00 PM", title: "Resort Welcome & Check-in", desc: "Traditional Bengali welcome drink, check-in to Executive Suite." },
-          { time: "1:30 PM", title: "Gourmet Buffet Lunch", desc: "Enjoy luxury dining at Sonar Bangla restaurant." },
-          { time: "4:00 PM", title: "Sunset Village Walk & Pool Relax", desc: "Relax by the infinity pool or take a stroll through the delta village." },
-          { time: "8:00 PM", title: "Resort Gala Dinner", desc: "Live music and lavish multi-cuisine buffet dinner." },
-        ],
-      },
-      {
-        dayNumber: 2,
-        dayTitle: "Day 2 - Full Day Exclusive Boat Safari",
-        activities: [
-          { time: "6:30 AM", title: "Private Boat Boarding", desc: "Board private safari boat directly from the resort riverfront jetty." },
-          { time: "9:00 AM", title: "Dobanki & Sajnekhali Watchtowers", desc: "Guided exploration of watchtowers and high canopy walk." },
-          { time: "1:30 PM", title: "Fresh Fish Lunch on Boat", desc: "Chef-prepared river meal served on luxury observation deck." },
-          { time: "5:00 PM", title: "Return to Resort & High Tea", desc: "High tea by the pool followed by resort recreation facilities." },
-        ],
-      },
-      {
-        dayNumber: 3,
-        dayTitle: "Day 3 - Morning Leisure & Private Return",
-        activities: [
-          { time: "8:00 AM", title: "Resort Buffet Breakfast", desc: "Continental and Indian buffet breakfast spread." },
-          { time: "11:00 AM", title: "Check-out & Return Journey", desc: "Chauffeured vehicle transfer back to Kolkata." },
-        ],
-      },
-    ],
-    foodMenu: [
-      {
-        dayNumber: 1,
-        dayTitle: "Day 1 Resort Menu",
-        courses: [
-          { courseName: "Lunch Buffet", menuItems: "Multi-cuisine spread with Bhetki Paturi, Mutton Rogan Josh & Desserts" },
-          { courseName: "High Tea", menuItems: "Cookies, Canape, Assorted Teas & Cappuccino" },
-          { courseName: "Dinner Buffet", menuItems: "Live counter Pasta, Indian breads, Biryani & Sundarban Sweet Curd" },
-        ],
-      },
-      {
-        dayNumber: 2,
-        dayTitle: "Day 2 Safari & Resort Dining",
-        courses: [
-          { courseName: "Breakfast", menuItems: "Eggs to order, Dosa, Paratha, Fresh Juices & Fruits" },
-          { courseName: "Safari Lunch", menuItems: "Steamed Rice, Moong Dal, Gold Prawn Malai Curry, Tomato Chutney" },
-          { courseName: "Dinner", menuItems: "Chef's Special Continental & Bengali Fusion Dinner" },
-        ],
-      },
-    ],
-    featured: true,
-  },
-  {
-    id: "pkg-4",
-    name: "1 Day Sundarban Day Safari",
-    slug: "1-day-sundarban-day-safari",
-    subtitle: "Quick 1-day power-packed boat safari for busy travelers and day excursionists.",
-    duration: "1 Day Excursion",
-    price: 1899,
-    originalPrice: 2499,
-    category: "Standard Eco",
-    rating: 4.7,
-    reviewsCount: 67,
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
-    status: "Active",
-    maxGuests: 60,
-    departure: "Godkhali Ferry Ghat (7:30 AM)",
-    pickupDrop: "Pickup & Drop from Science City Kolkata (6:00 AM)",
-    mealsSummary: "Breakfast & Fresh Cooked Lunch on Boat Deck",
-    minGroupSize: "Min 1 Person",
-    overview: "Short on time but eager to witness the majestic Sundarbans? Our 1 Day Safari departs Kolkata at dawn, provides 6 hours of prime boat safari through Sajnekhali and mangrove creeks, and returns you back to Kolkata by 9 PM same day.",
-    highlightQuote: "“Explore the delta in a single action-packed day with breakfast, hot lunch, and watchtower safaris included.”",
-    helplinePhone: "+91 70014 03498",
-    inclusions: [
+    "id": "pkg-4",
+    "name": "1 Day Sundarban Safari",
+    "slug": "1-day-sundarban-safari",
+    "subtitle": "Quick 1-day power-packed boat safari for busy travelers and day excursionists.",
+    "duration": "1 Day Excursion",
+    "price": 2499,
+    "originalPrice": 2999,
+    "category": "Standard Eco",
+    "rating": 4.7,
+    "reviewsCount": 67,
+    "image": "https://br-snowy-mountain-b54pwsv4.storage.c-7.us-east-2.aws.neon.tech/uploads/uploads/1790182551847-exterior-architecture-1.webp",
+    "bannerImage": "https://br-snowy-mountain-b54pwsv4.storage.c-7.us-east-2.aws.neon.tech/uploads/uploads/1790182566686-bedroom-layout-view-1.webp",
+    "gallery": [],
+    "status": "Active",
+    "maxGuests": 60,
+    "departure": "Godkhali Ferry Ghat (7:30 AM)",
+    "pickupDrop": "Pickup & Drop from Science City Kolkata (6:00 AM)",
+    "mealsSummary": "Breakfast & Fresh Cooked Lunch on Boat Deck",
+    "minGroupSize": "Min 1 Person",
+    "overview": "Sundarban day trip is the most familiar sundarban tour package now. Tourists are enjoying a lot in this package. But it is very top to cover all sightseeing. Some logical reason for Sundarban tour.",
+    "highlightQuote": "“Explore the delta in a single action-packed day with breakfast, hot lunch, and watchtower safaris included.”",
+    "inclusions": [
       "Same day AC Coach transfer from Kolkata",
       "Full Day Boat Safari through Sajnekhali & Sudhanyakhali",
       "Breakfast on boat with hot Tea/Coffee",
       "Fresh Cooked Bengali Lunch on Boat Deck",
       "Watchtower Entry Permits & Guide Fees",
+      "Breakfast",
+      "Lunch",
+      "Evening Snacks",
+      "Permission of jungle authority, all entry fees, launch permission"
     ],
-    exclusions: [
+    "exclusions": [
       "Dinner and personal shopping",
-      "Camera permits",
+      "Any optional tour",
+      "Any optional food menu",
+      "Individual still / video camera permission charge",
+      "Alcoholic Drinks",
+      "Soft drinks",
+      "Personal expenditure"
     ],
-    thingsToCarry: [
+    "thingsToCarry": [
       "Photo ID",
       "Sun Hat & Sunglasses",
-      "Powerbank",
+      "Powerbank"
     ],
-    childPolicy: [
-      "Under 5 yrs: Free",
-      "Above 5 yrs: Standard seat rate",
-    ],
-    importantNotes: [
-      "Strict departure time from Kolkata 6:00 AM sharp.",
-    ],
-    itinerary: [
+    "childPolicy": [],
+    "importantNotes": [],
+    "itinerary": [
       {
-        dayNumber: 1,
-        dayTitle: "Full Day Safari Schedule",
-        activities: [
-          { time: "6:00 AM", title: "Kolkata Pickup", desc: "Board AC bus from Kolkata." },
-          { time: "9:00 AM", title: "Godkhali Boat Departure", desc: "Board boat with breakfast." },
-          { time: "11:30 AM", title: "Sajnekhali Watchtower", desc: "Guided watchtower & interpretation visit." },
-          { time: "1:30 PM", title: "Lunch on River", desc: "Freshly cooked fish & chicken lunch on deck." },
-          { time: "3:30 PM", title: "Sudhanyakhali Safari", desc: "Creek cruise in search of tigers & deer." },
-          { time: "5:30 PM", title: "Godkhali to Kolkata", desc: "Return journey to Kolkata." },
-        ],
-      },
+        "dayTitle": "Full Day Safari Schedule",
+        "dayNumber": 1,
+        "activities": [
+          {
+            "desc": "Start from Kolkata at Indian Museum (main gate)/Science City The beautiful landscape covered with yellowish paddy fields, mud house, ponds Three hours and a half drive to Godkhali Tea Break on the way",
+            "time": "5:00 AM",
+            "title": "Start from Kolkata"
+          },
+          {
+            "desc": "Then on the Boat Sundarban begin and head toward the biggest mangrove forest (narrow creek) and delta region On the way you may see different animals such as crocodiles, water monitor, spotted deer, different kind of birds etc. If you are lucky enough you may also face a Royal Bengal Tiger in his natural habitat. During this period you will visit 3 watch towers (Sajnekhali, Sudhanyakhali & Dobanki) (Breakfast and lunch will be cooked and served on the boat)",
+            "time": "9:00 AM",
+            "title": "Sundarban Safari"
+          },
+          {
+            "desc": "Lunch",
+            "time": "1:30 PM",
+            "title": "Lunch Time"
+          },
+          {
+            "desc": "A short introduction via boat to the Sundarban Bird Jungle with the lovely sunset view",
+            "time": "4:00 PM",
+            "title": "sunset view"
+          },
+          {
+            "desc": "Creek cruise in search of tigers & deer.",
+            "time": "5:30 PM",
+            "title": "Sudhanyakhali Safari"
+          },
+          {
+            "desc": "Return journey to Kolkata.",
+            "time": "8:30 PM",
+            "title": "Godkhali to Kolkata"
+          }
+        ]
+      }
     ],
-    foodMenu: [
+    "foodMenu": [
       {
-        dayNumber: 1,
-        dayTitle: "Day Safari Meals",
-        courses: [
-          { courseName: "Breakfast", menuItems: "Luchi, Alur Dom, Sweet, Tea" },
-          { courseName: "Lunch", menuItems: "Rice, Dal, Veg Fry, Fish / Chicken Curry, Chutney, Papad" },
-          { courseName: "Evening Tea", menuItems: "Biscuits & Hot Tea" },
+        "courses": [
+          {
+            "menuItems": "Sandwich, Sweet, Bisleri, Tea.",
+            "courseName": "Breakfast"
+          },
+          {
+            "menuItems": "Rice, Dal, Fries, Sabji, Vetki Fish + Other Fish, Chatni, Papad, Salad, Sweet, Paneer/Dhoka Dalna",
+            "courseName": "Lunch"
+          },
+          {
+            "menuItems": "Chicken/Veg Pakora, Tea/Coffee.",
+            "courseName": "Evening Tea"
+          },
+          {
+            "menuItems": "Fried Rice, Roti, Sabji, Chilli Chicken/Chicken Kosha, Salad.",
+            "courseName": "Dinner"
+          }
         ],
-      },
+        "dayTitle": "Day Safari Meals",
+        "dayNumber": 1
+      }
     ],
-    featured: false,
-  },
-  {
-    id: "pkg-5",
-    name: "Private Luxury Houseboat Royal Charter",
-    slug: "private-luxury-houseboat-charter",
-    subtitle: "Exclusive private charter of a luxury AC houseboat with personal butler, private chef, and custom route.",
-    duration: "3 Days / 2 Nights",
-    price: 24999,
-    originalPrice: 29999,
-    category: "Private Charter",
-    rating: 5.0,
-    reviewsCount: 32,
-    image: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=900&q=80",
-    status: "Active",
-    maxGuests: 12,
-    departure: "Custom Port Departure",
-    pickupDrop: "VIP Doorstep Transfer in Luxury SUV",
-    mealsSummary: "Custom 5-Star Ala-Carte Menu Prepared by Private Onboard Chef",
-    minGroupSize: "Private Group (Up to 12 Guests)",
-    overview: "The most exclusive way to explore Sundarbans. You charter the entire AC luxury cruiser for your family or VIP corporate group. Includes custom route planning, flexible timing, private naturalist guide, and 5-star personalized hospitality.",
-    highlightQuote: "“Your private luxury floating palace in the heart of the world’s largest mangrove forest.”",
-    helplinePhone: "+91 70014 03498",
-    inclusions: [
-      "Exclusive charter of entire luxury boat (no other tourists)",
-      "Dedicated Private Chef, Butler and Navigator Crew",
-      "Full AC Bedrooms with Attached Modern Bathrooms",
-      "Customised Gourmet Dining (Hilsa, Mutton, Lobster, Crab)",
-      "VIP Fast-Track Forest Entry Permits",
-      "Luxury SUV Pick & Drop from Kolkata",
-    ],
-    exclusions: [
-      "Any external helicopter or special transfer requests",
-    ],
-    thingsToCarry: [
-      "Passport or National ID for VIP clearance",
-      "Camera & binoculars",
-    ],
-    childPolicy: [
-      "Children of all ages welcome under private charter.",
-    ],
-    importantNotes: [
-      "Itinerary can be customized to guests' preference.",
-    ],
-    itinerary: [
-      {
-        dayNumber: 1,
-        dayTitle: "Day 1 - VIP Boarding & Private Cruise",
-        activities: [
-          { time: "9:00 AM", title: "Luxury SUV Transfer", desc: "Private pickup from residence." },
-          { time: "12:00 PM", title: "Champagne & Coconut Welcome", desc: "Board private houseboat." },
-          { time: "2:00 PM", title: "Custom Delta Cruise", desc: "Sail to secluded mangrove channels." },
-        ],
-      },
-      {
-        dayNumber: 2,
-        dayTitle: "Day 2 - Deep Wilderness Exploration",
-        activities: [
-          { time: "6:00 AM", title: "Private Dawn Tiger Safari", desc: "Exclusive access to deep watchtowers." },
-          { time: "1:00 PM", title: "Chef's Special Lobster Lunch", desc: "Private dining on sundeck." },
-        ],
-      },
-      {
-        dayNumber: 3,
-        dayTitle: "Day 3 - Sunrise Cruise & Return",
-        activities: [
-          { time: "7:00 AM", title: "Sunrise Safari", desc: "Final scenic safari through delta channels." },
-          { time: "2:00 PM", title: "VIP SUV Return", desc: "Disembark and return to Kolkata in comfort." },
-        ],
-      },
-    ],
-    foodMenu: [
-      {
-        dayNumber: 1,
-        dayTitle: "Day 1 Bespoke Menu",
-        courses: [
-          { courseName: "Welcome & Lunch", menuItems: "Jumbo Gold Prawns, Bhetki Paturi, Basmati Rice, Desserts" },
-          { courseName: "Dinner", menuItems: "Slow Roasted Royal Mutton, Naan, Gulab Jamun" },
-        ],
-      },
-      {
-        dayNumber: 2,
-        dayTitle: "Day 2 Gourmet Feast",
-        courses: [
-          { courseName: "Breakfast", menuItems: "Custom full English & Indian breakfast" },
-          { courseName: "Lunch", menuItems: "Steamed Hilsa, Delta Mud Crab Masala, Chutney, Papad" },
-        ],
-      },
-    ],
-    featured: true,
-  },
+    "helplinePhone": "+91 70014 03498",
+    "featured": false
+  }
 ];
 
 export const initialAdminBookings: AdminBooking[] = [
   {
-    id: "bk-101",
-    bookingCode: "SB-2026-901",
-    guestName: "Subhashis Mukherjee",
-    email: "subhashis.m@gmail.com",
-    phone: "+91 98301 23456",
-    packageOrRoom: "2 Nights 3 Days Complete Tiger Trail Expedition",
-    type: "Tour Package",
-    travelDate: "2026-09-18",
-    guestsCount: 4,
-    totalAmount: 19996,
-    paidAmount: 19996,
-    paymentStatus: "Paid",
-    bookingStatus: "Confirmed",
-    createdAt: "2026-09-12 14:32",
-    specialRequests: "Need vegetarian meals for 2 elderly guests.",
+    "id": "bk-101",
+    "bookingCode": "SB-2026-901",
+    "guestName": "Subhashis Mukherjee",
+    "email": "subhashis.m@gmail.com",
+    "phone": "+91 98301 23456",
+    "packageOrRoom": "2 Nights 3 Days Complete Tiger Trail Expedition",
+    "type": "Tour Package",
+    "travelDate": "2026-09-18",
+    "guestsCount": 4,
+    "totalAmount": 19996,
+    "paidAmount": 19996,
+    "paymentStatus": "Paid",
+    "bookingStatus": "Confirmed",
+    "createdAt": "2026-09-12T09:02:00.000Z",
+    "specialRequests": "Need vegetarian meals for 2 elderly guests."
   },
   {
-    id: "bk-102",
-    bookingCode: "SB-2026-902",
-    guestName: "Priyanka Roy",
-    email: "priyanka.roy@yahoo.com",
-    phone: "+91 94331 88990",
-    packageOrRoom: "Hotel Sonar Bangla 5-Star Resort Stay & Cruise",
-    type: "Hotel Resort",
-    travelDate: "2026-09-22",
-    guestsCount: 2,
-    totalAmount: 16998,
-    paidAmount: 5000,
-    paymentStatus: "Partial",
-    bookingStatus: "Confirmed",
-    createdAt: "2026-09-12 11:15",
-    specialRequests: "Anniversary room decoration requested.",
+    "id": "bk-102",
+    "bookingCode": "SB-2026-902",
+    "guestName": "Priyanka Roy",
+    "email": "priyanka.roy@yahoo.com",
+    "phone": "+91 94331 88990",
+    "packageOrRoom": "Hotel Sonar Bangla 5-Star Resort Stay & Cruise",
+    "type": "Hotel Resort",
+    "travelDate": "2026-09-22",
+    "guestsCount": 2,
+    "totalAmount": 16998,
+    "paidAmount": 5000,
+    "paymentStatus": "Partial",
+    "bookingStatus": "Confirmed",
+    "createdAt": "2026-09-12T05:45:00.000Z",
+    "specialRequests": "Anniversary room decoration requested."
   },
   {
-    id: "bk-103",
-    bookingCode: "SB-2026-903",
-    guestName: "Amitabh Sen",
-    email: "amitabh.sen@tcs.com",
-    phone: "+91 98310 55443",
-    packageOrRoom: "1 Night 2 Days Luxury Cruise Package",
-    type: "Tour Package",
-    travelDate: "2026-09-25",
-    guestsCount: 6,
-    totalAmount: 17994,
-    paidAmount: 0,
-    paymentStatus: "Unpaid",
-    bookingStatus: "Pending",
-    createdAt: "2026-09-12 09:40",
-    specialRequests: "AC pickup from Science City Kolkata.",
+    "id": "bk-103",
+    "bookingCode": "SB-2026-903",
+    "guestName": "Amitabh Sen",
+    "email": "amitabh.sen@tcs.com",
+    "phone": "+91 98310 55443",
+    "packageOrRoom": "1 Night 2 Days Luxury Cruise Package",
+    "type": "Tour Package",
+    "travelDate": "2026-09-25",
+    "guestsCount": 6,
+    "totalAmount": 17994,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-09-12T04:10:00.000Z",
+    "specialRequests": "AC pickup from Science City Kolkata."
   },
   {
-    id: "bk-104",
-    bookingCode: "SB-2026-904",
-    guestName: "Dr. Debolina Das",
-    email: "debolina.das@apollo.org",
-    phone: "+91 97482 11223",
-    packageOrRoom: "Private Luxury Houseboat Royal Charter",
-    type: "Tour Package",
-    travelDate: "2026-10-02",
-    guestsCount: 8,
-    totalAmount: 24999,
-    paidAmount: 24999,
-    paymentStatus: "Paid",
-    bookingStatus: "Confirmed",
-    createdAt: "2026-09-11 16:50",
+    "id": "bk-104",
+    "bookingCode": "SB-2026-904",
+    "guestName": "Dr. Debolina Das",
+    "email": "debolina.das@apollo.org",
+    "phone": "+91 97482 11223",
+    "packageOrRoom": "Private Luxury Houseboat Royal Charter",
+    "type": "Tour Package",
+    "travelDate": "2026-10-02",
+    "guestsCount": 8,
+    "totalAmount": 24999,
+    "paidAmount": 24999,
+    "paymentStatus": "Paid",
+    "bookingStatus": "Confirmed",
+    "createdAt": "2026-09-11T11:20:00.000Z"
   },
   {
-    id: "bk-105",
-    bookingCode: "SB-2026-905",
-    guestName: "Vikramaditya Bose",
-    email: "vikram.bose@gmail.com",
-    phone: "+91 98305 66778",
-    packageOrRoom: "1 Day Sundarban Day Safari",
-    type: "Tour Package",
-    travelDate: "2026-09-15",
-    guestsCount: 3,
-    totalAmount: 5697,
-    paidAmount: 5697,
-    paymentStatus: "Paid",
-    bookingStatus: "Completed",
-    createdAt: "2026-09-10 18:20",
+    "id": "bk-105",
+    "bookingCode": "SB-2026-905",
+    "guestName": "Vikramaditya Bose",
+    "email": "vikram.bose@gmail.com",
+    "phone": "+91 98305 66778",
+    "packageOrRoom": "1 Day Sundarban Day Safari",
+    "type": "Tour Package",
+    "travelDate": "2026-09-15",
+    "guestsCount": 3,
+    "totalAmount": 5697,
+    "paidAmount": 5697,
+    "paymentStatus": "Paid",
+    "bookingStatus": "Completed",
+    "createdAt": "2026-09-10T12:50:00.000Z"
   },
+  {
+    "id": "bk-1790665893469-815",
+    "bookingCode": "SB-2026-6209",
+    "guestName": "Budhya Das",
+    "email": "Budhyadas41@gmail.com",
+    "phone": "09883564745",
+    "packageOrRoom": "1 Day Sundarban Safari",
+    "type": "Tour Package",
+    "travelDate": "2026-09-30",
+    "guestsCount": 3,
+    "totalAmount": 7497,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-09-29T07:11:34.859Z",
+    "specialRequests": "Direct homepage hero reservation for 1 Day Sundarban Safari."
+  },
+  {
+    "id": "bk-1789922606089-880",
+    "bookingCode": "SB-2026-8093",
+    "guestName": "Test",
+    "email": "test@test.com",
+    "phone": "9876543210",
+    "packageOrRoom": "1 Night 2 Days Luxury Cruise Package",
+    "type": "Tour Package",
+    "travelDate": "2026-09-29",
+    "guestsCount": 2,
+    "totalAmount": 5998,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Confirmed",
+    "createdAt": "2026-09-20T16:43:26.996Z",
+    "specialRequests": "Direct reservation request for 1 Night 2 Days Luxury Cruise Package."
+  },
+  {
+    "id": "b-h-inq-1789922518199",
+    "bookingCode": "HSB-2026-6711",
+    "guestName": "Test",
+    "email": "test@test.com",
+    "phone": "9876543210",
+    "packageOrRoom": "1 Night 2 Days Deluxe Package - Test Premium",
+    "type": "Hotel Resort",
+    "travelDate": "2026-09-20",
+    "guestsCount": 2,
+    "totalAmount": 19798,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Confirmed",
+    "createdAt": "2026-09-20T16:41:59.460Z",
+    "specialRequests": "Tour Package: 1 Night 2 Days Deluxe Package (1 Night / 2 Days). Transfer: AC Vehicle from Kolkata."
+  },
+  {
+    "id": "bk-test-1790441552387",
+    "bookingCode": "SB-2026-3902",
+    "guestName": "Verification Guest",
+    "email": "verify@example.com",
+    "phone": "+91 98765 43210",
+    "packageOrRoom": "Sundarban 2 Nights 3 Days Complete Tiger Trail Expedition",
+    "type": "Tour Package",
+    "travelDate": "2026-10-15",
+    "guestsCount": 2,
+    "totalAmount": 9998,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-09-26T16:52:32.579Z",
+    "specialRequests": "Verification test from Hero Booking Bar"
+  },
+  {
+    "id": "bk-1790445444242-283",
+    "bookingCode": "SB-2026-7574",
+    "guestName": "Test",
+    "email": "test@test.com",
+    "phone": "7654321098",
+    "packageOrRoom": "1 Night 2 Days Luxury Cruise Package",
+    "type": "Tour Package",
+    "travelDate": "2026-09-29",
+    "guestsCount": 2,
+    "totalAmount": 7998,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-09-26T17:57:25.380Z",
+    "specialRequests": "Direct homepage hero reservation for 1 Night 2 Days Luxury Cruise Package."
+  },
+  {
+    "id": "bk-1790605729947-300",
+    "bookingCode": "SB-2026-3861",
+    "guestName": "Test",
+    "email": "Budhyadas41@gmail.com",
+    "phone": "9883564745",
+    "packageOrRoom": "1 Night 2 Days Luxury Cruise Package",
+    "type": "Tour Package",
+    "travelDate": "2026-09-28",
+    "guestsCount": 10,
+    "totalAmount": 39990,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-09-28T14:28:51.858Z",
+    "specialRequests": "Direct homepage hero reservation for 1 Night 2 Days Luxury Cruise Package."
+  },
+  {
+    "id": "bk-1790663178676-922",
+    "bookingCode": "SB-2026-1487",
+    "guestName": "test",
+    "email": "Budhyadas41@gmail.com",
+    "phone": "09883564745",
+    "packageOrRoom": "1 Night 2 Days Luxury Cruise Package",
+    "type": "Tour Package",
+    "travelDate": "2026-09-30",
+    "guestsCount": 2,
+    "totalAmount": 7998,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-09-29T06:26:20.320Z",
+    "specialRequests": "Direct homepage hero reservation for 1 Night 2 Days Luxury Cruise Package."
+  },
+  {
+    "id": "bk-1790663922529-795",
+    "bookingCode": "SB-2026-6874",
+    "guestName": "test",
+    "email": "Budhyadas41@gmail.com",
+    "phone": "9883564745",
+    "packageOrRoom": "2 Nights 3 Days Complete Tiger Trail Expedition",
+    "type": "Tour Package",
+    "travelDate": "2026-09-30",
+    "guestsCount": 2,
+    "totalAmount": 10998,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-09-29T06:38:44.163Z",
+    "specialRequests": "Direct homepage hero reservation for 2 Nights 3 Days Complete Tiger Trail Expedition."
+  },
+  {
+    "id": "bk-1790665316990-326",
+    "bookingCode": "SB-2026-2825",
+    "guestName": "testting",
+    "email": "Budhyadas41@gmail.com",
+    "phone": "09883564745",
+    "packageOrRoom": "1 Night 2 Days Luxury Cruise Package",
+    "type": "Tour Package",
+    "travelDate": "2026-09-30",
+    "guestsCount": 2,
+    "totalAmount": 7998,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-09-29T07:01:58.624Z",
+    "specialRequests": "Direct homepage hero reservation for 1 Night 2 Days Luxury Cruise Package."
+  },
+  {
+    "id": "bk-1790665519456-109",
+    "bookingCode": "SB-2026-5011",
+    "guestName": "Budhya Das",
+    "email": "Budhyadas41@gmail.com",
+    "phone": "09883564745",
+    "packageOrRoom": "1 Night 2 Days Luxury Cruise Package",
+    "type": "Tour Package",
+    "travelDate": "2026-09-30",
+    "guestsCount": 4,
+    "totalAmount": 15996,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-09-29T07:05:20.046Z",
+    "specialRequests": "Direct homepage hero reservation for 1 Night 2 Days Luxury Cruise Package."
+  },
+  {
+    "id": "bk-1790706909936-857",
+    "bookingCode": "SB-2026-4530",
+    "guestName": "TECHSHIFT TECHNOLOGY",
+    "email": "techshifttechnology@gmail.com",
+    "phone": "6252584521",
+    "packageOrRoom": "2 Nights 3 Days Complete Tiger Trail Expedition",
+    "type": "Tour Package",
+    "travelDate": "2026-09-30",
+    "guestsCount": 4,
+    "totalAmount": 21996,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Cancelled",
+    "createdAt": "2026-09-29T18:35:10.082Z",
+    "specialRequests": "Direct homepage hero reservation for 2 Nights 3 Days Complete Tiger Trail Expedition."
+  },
+  {
+    "id": "bk-1790707055801-313",
+    "bookingCode": "SB-2026-4236",
+    "guestName": "TECHSHIFT TECHNOLOGY",
+    "email": "techshifttechnology@gmail.com",
+    "phone": "1452852452",
+    "packageOrRoom": "2 Nights 3 Days Complete Tiger Trail Expedition",
+    "type": "Tour Package",
+    "travelDate": "2026-09-29",
+    "guestsCount": 10,
+    "totalAmount": 54990,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Cancelled",
+    "createdAt": "2026-09-29T18:37:36.453Z",
+    "specialRequests": "Direct homepage hero reservation for 2 Nights 3 Days Complete Tiger Trail Expedition."
+  },
+  {
+    "id": "bk-1790972111384-351",
+    "bookingCode": "SB-2026-7544",
+    "guestName": "Payton Wehner",
+    "email": "your.email+fakedata80055@gmail.com",
+    "phone": "9988776655",
+    "packageOrRoom": "1 Day Sundarban Safari",
+    "type": "Tour Package",
+    "travelDate": "2027-01-27",
+    "guestsCount": 1,
+    "totalAmount": 2499,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-10-02T20:15:11.516Z",
+    "specialRequests": "Direct homepage hero reservation for 1 Day Sundarban Safari."
+  },
+  {
+    "id": "bk-1791171803816-655",
+    "bookingCode": "SB-2026-7163",
+    "guestName": "testing",
+    "email": "budhyadas41@gmail.com",
+    "phone": "9883564745",
+    "packageOrRoom": "2 Nights 3 Days Complete Tiger Trail Expedition",
+    "type": "Tour Package",
+    "travelDate": "2026-10-09",
+    "guestsCount": 2,
+    "totalAmount": 10998,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-10-05T03:43:24.423Z",
+    "specialRequests": "Direct homepage hero reservation for 2 Nights 3 Days Complete Tiger Trail Expedition."
+  },
+  {
+    "id": "bk-1791289590473-640",
+    "bookingCode": "SB-2026-3993",
+    "guestName": "rajesh",
+    "email": "test@gmail.com",
+    "phone": "8617352330",
+    "packageOrRoom": "2 Nights 3 Days Complete Tiger Trail Expedition",
+    "type": "Tour Package",
+    "travelDate": "2026-10-21",
+    "guestsCount": 5,
+    "totalAmount": 27495,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-10-06T12:26:31.079Z",
+    "specialRequests": "Direct homepage hero reservation for 2 Nights 3 Days Complete Tiger Trail Expedition."
+  },
+  {
+    "id": "bk-1791289790925-715",
+    "bookingCode": "SB-2026-9274",
+    "guestName": "sundarban bengal trip",
+    "email": "info.sundarbanbengaltrip@gmail.com",
+    "phone": "8617352330",
+    "packageOrRoom": "1 Night 2 Days Luxury Cruise Package",
+    "type": "Tour Package",
+    "travelDate": "2026-10-22",
+    "guestsCount": 4,
+    "totalAmount": 15996,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-10-06T12:29:51.532Z",
+    "specialRequests": "Direct homepage hero reservation for 1 Night 2 Days Luxury Cruise Package."
+  },
+  {
+    "id": "b-h-inq-1791799000563",
+    "bookingCode": "HSB-2026-2527",
+    "guestName": "Budhya Das",
+    "email": "Budhyadas41@gmail.com",
+    "phone": "+919883564745",
+    "packageOrRoom": "1 Night 2 Days Deluxe Package - Royal Mangrove Heritage Suite",
+    "type": "Hotel Resort",
+    "travelDate": "2026-10-14",
+    "guestsCount": 2,
+    "totalAmount": 34797,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-10-12T09:56:41.950Z",
+    "specialRequests": "Tour Package: 1 Night 2 Days Deluxe Package (1 Night / 2 Days). Transfer: Direct Godkhali Ferry."
+  },
+  {
+    "id": "b-h-inq-1791800763237",
+    "bookingCode": "HSB-2026-1260",
+    "guestName": "Budhya Das",
+    "email": "Budhyadas41@gmail.com",
+    "phone": "+919883564745",
+    "packageOrRoom": "1 Night 2 Days Deluxe Package - Executive Riverview Deluxe Room",
+    "type": "Hotel Resort",
+    "travelDate": "2026-10-21",
+    "guestsCount": 2,
+    "totalAmount": 19798,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-10-12T10:26:06.612Z",
+    "specialRequests": "Tour Package: 1 Night 2 Days Deluxe Package (1 Night / 2 Days). Transfer: AC Vehicle from Kolkata."
+  },
+  {
+    "id": "bk-1792050915775-178",
+    "bookingCode": "SB-2026-3112",
+    "guestName": "bu",
+    "email": "udhyadas41@gmail.com",
+    "phone": "x,",
+    "packageOrRoom": "2 Nights 3 Days Complete Tiger Trail Expedition",
+    "type": "Tour Package",
+    "travelDate": "2026-10-23",
+    "guestsCount": 2,
+    "totalAmount": 10998,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-10-15T07:55:16.402Z",
+    "specialRequests": "Direct reservation request for 2 Nights 3 Days Complete Tiger Trail Expedition."
+  },
+  {
+    "id": "b-h-inq-1790665673098",
+    "bookingCode": "HSB-2026-5748",
+    "guestName": "Budhya Das",
+    "email": "Budhyadas41@gmail.com",
+    "phone": "+919883564745",
+    "packageOrRoom": "1 Night 2 Days Deluxe Package - Premium Forest View Family Suite",
+    "type": "Hotel Resort",
+    "travelDate": "2026-09-30",
+    "guestsCount": 16,
+    "totalAmount": 205784,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Completed",
+    "createdAt": "2026-09-29T07:07:56.603Z",
+    "specialRequests": "Tour Package: 1 Night 2 Days Deluxe Package (1 Night / 2 Days). Transfer: Direct Godkhali Ferry."
+  },
+  {
+    "id": "b-h-inq-1789837202408",
+    "bookingCode": "HSB-2026-3453",
+    "guestName": "Test",
+    "email": "test@test.com",
+    "phone": "9876543210",
+    "packageOrRoom": "1 Night 2 Days Deluxe Package - Deluxe Premium AC Room",
+    "type": "Hotel Resort",
+    "travelDate": "2026-09-29",
+    "guestsCount": 2,
+    "totalAmount": 19798,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Completed",
+    "createdAt": "2026-09-19T17:00:03.646Z",
+    "specialRequests": "Tour Package: 1 Night 2 Days Deluxe Package (1 Night / 2 Days). Transfer: AC Vehicle from Kolkata."
+  },
+  {
+    "id": "bk-1792147730364-350",
+    "bookingCode": "SB-2026-9149",
+    "guestName": "জন duo",
+    "email": "sample@outlook.com",
+    "phone": "685945",
+    "packageOrRoom": "2 Nights 3 Days Complete Tiger Trail Expedition",
+    "type": "Tour Package",
+    "travelDate": "2026-10-31",
+    "guestsCount": 2,
+    "totalAmount": 10998,
+    "paidAmount": 0,
+    "paymentStatus": "Unpaid",
+    "bookingStatus": "Pending",
+    "createdAt": "2026-10-16T10:48:50.983Z",
+    "specialRequests": "Direct reservation request for 2 Nights 3 Days Complete Tiger Trail Expedition."
+  }
 ];
 
 export const initialAdminRooms: AdminHotelRoom[] = [
@@ -1007,7 +1395,7 @@ export const initialAdminContactCards: AdminContactCard[] = [
     subtitle: "Launch & Reservation Center",
     details: ["Sundarban Luxury Package, Dulki, Gosaba", "South 24 Parganas, West Bengal 743370"],
     actionType: "map",
-    actionValue: "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
+    actionValue: "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D",
     isPrimary: true,
     status: "Active",
   },
@@ -1065,7 +1453,7 @@ export const initialAdminContactGeneralInfo: AdminContactGeneralInfo = {
   supportEmail: "sundarbanluxurypackage@gmail.com",
   mainAddress: "Sundarban Luxury Package, Dulki, Gosaba, South 24 Parganas, West Bengal 743370",
   workingHours: "Monday to Sunday: 8:00 AM – 9:00 PM IST",
-  googleMapEmbedUrl: "https://maps.google.com/maps?q=Sundarban+Luxury+Package,+Dulki,+Gosaba,+West+Bengal+743370&t=&z=15&ie=UTF8&iwloc=&output=embed",
+  googleMapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3690.697089422998!2d88.80691567586522!3d22.14168367980598!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a018b93c291328f%3A0x9053b19002605ee0!2sSundarban%20Luxury%20Package!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin",
   emergencyHotline: "+91 70014 03498",
 };
 

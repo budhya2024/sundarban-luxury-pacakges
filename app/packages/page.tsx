@@ -27,6 +27,7 @@ import {
 } from "react-icons/fa6";
 import { useAdmin } from "@/context/AdminContext";
 import { BookingModal } from "@/components/tour/BookingModal";
+import { PackageCardImageSlider } from "@/components/tour/PackageCardImageSlider";
 import { AdminTourPackage } from "@/lib/admin-data";
 
 export default function PackagesPage() {
@@ -135,19 +136,21 @@ export default function PackagesPage() {
                 key={pkg.id || pkg.slug}
                 className="group bg-white rounded-xl border border-slate-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden flex flex-col lg:flex-row"
               >
-                {/* Left Column: Big Package Image */}
-                <div className="relative w-full lg:w-[380px] xl:w-[420px] h-[190px] sm:h-[220px] lg:h-auto shrink-0 overflow-hidden bg-slate-100">
-                  <Image
-                    src={pkg.image}
+                {/* Left Column: Big Package Image Slider */}
+                <div className="relative w-full lg:w-[380px] xl:w-[420px] h-[220px] sm:h-[250px] lg:h-auto min-h-[220px] shrink-0 overflow-hidden bg-slate-900">
+                  <PackageCardImageSlider
+                    images={
+                      pkg.gallery && pkg.gallery.length > 0
+                        ? (pkg.gallery.includes(pkg.image) ? pkg.gallery : [pkg.image, ...pkg.gallery])
+                        : [pkg.image].filter(Boolean)
+                    }
                     alt={pkg.name}
-                    fill
                     sizes="(max-width: 1024px) 100vw, 420px"
-                    unoptimized={pkg.image?.startsWith("data:")}
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    className="h-full min-h-[220px]"
                   />
 
                   {/* Top-Left Discount Badge */}
-                  <div className="absolute top-3 left-3 z-10">
+                  <div className="absolute top-3 left-3 z-10 pointer-events-none">
                     <div className="offer-shine-badge inline-flex items-center gap-1.5 px-3 py-1 rounded-[4px] bg-red-600 text-white text-[11px] sm:text-xs font-black uppercase tracking-wider shadow-md">
                       <Tag className="w-3 h-3 text-white" />
                       <span>{discountPercent}% OFF</span>
@@ -155,12 +158,10 @@ export default function PackagesPage() {
                   </div>
 
                   {/* Top-Right Google Rating */}
-                  <div className="absolute top-3 right-3 bg-amber-500/95 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-md flex items-center gap-1 backdrop-blur-xs z-10">
+                  <div className="absolute top-3 right-3 bg-amber-500/95 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-md flex items-center gap-1 backdrop-blur-xs z-10 pointer-events-none">
                     <Star className="w-3.5 h-3.5 fill-white" />
                     <span>{pkg.rating || 4.9}</span> Rating
                   </div>
-
-
                 </div>
 
                 {/* Mobile-only Booking Indicator under the image */}

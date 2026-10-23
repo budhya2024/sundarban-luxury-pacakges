@@ -24,6 +24,7 @@ import {
   Filter,
   LayoutGrid,
   List,
+  Camera,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AdminHeader } from "@/components/admin/AdminHeader";
@@ -303,9 +304,17 @@ export default function AdminPackagesPage() {
                                   </span>
                                 )}
                               </div>
-                              <span className="text-[10px] font-mono text-slate-400 block mt-0.5 truncate max-w-[200px]">
-                                /tour/{pkg.slug}
-                              </span>
+                              <div className="flex items-center gap-2 mt-0.5">
+                                <span className="text-[10px] font-mono text-slate-400 block truncate max-w-[170px]">
+                                  /tour/{pkg.slug}
+                                </span>
+                                {pkg.gallery && pkg.gallery.length > 0 && (
+                                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-purple-700 bg-purple-50 px-1.5 py-0.2 rounded border border-purple-200">
+                                    <Camera className="w-2.5 h-2.5" />
+                                    <span>{pkg.gallery.length} photos</span>
+                                  </span>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </td>
@@ -501,6 +510,12 @@ export default function AdminPackagesPage() {
                           <CheckCircle className="w-3 h-3 text-slate-500" />
                           <span>{inclusionsCount} Inclusions</span>
                         </span>
+                        {pkg.gallery && pkg.gallery.length > 0 && (
+                          <span className="px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-200 flex items-center gap-1">
+                            <Camera className="w-3 h-3 text-purple-500" />
+                            <span>{pkg.gallery.length} Photos</span>
+                          </span>
+                        )}
                       </div>
 
                       {/* Departure Point */}

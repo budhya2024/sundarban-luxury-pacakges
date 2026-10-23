@@ -47,6 +47,13 @@ export async function GET(req: NextRequest) {
       }
     };
 
+    const verifiedGoogleMapsUrl =
+      settings?.googlePlaceUrl &&
+      (settings.googlePlaceUrl.includes("Sundarban") ||
+        settings.googlePlaceUrl.includes("0x3a018b93c291328f"))
+        ? settings.googlePlaceUrl
+        : "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D";
+
     // 1. If Featurable ID is configured, fetch live from Featurable v2 API
     if (activeFeaturableId) {
       try {
@@ -71,7 +78,9 @@ export async function GET(req: NextRequest) {
               relativeTime: formatRelativeTime(r.publishedAt),
               text: r.text || r.originalText || "",
               isLocalGuide: false,
-              url: r.url || summary.writeAReviewUri || null,
+              url: (r.url && (r.url.includes("Sundarban") || r.url.includes("0x3a018b93c291328f")))
+                ? r.url
+                : verifiedGoogleMapsUrl,
             }));
 
             return NextResponse.json({
@@ -79,8 +88,8 @@ export async function GET(req: NextRequest) {
               source: "featurable",
               rating: summary.rating || 4.9,
               reviewsCount: summary.reviewsCount || formattedReviews.length,
-              writeAReviewUri:
-                summary.writeAReviewUri || "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
+              writeAReviewUri: verifiedGoogleMapsUrl,
+              placeUrl: verifiedGoogleMapsUrl,
               reviews: formattedReviews,
             });
           }
@@ -119,6 +128,8 @@ export async function GET(req: NextRequest) {
               rating: gData.result?.rating,
               totalReviews: gData.result?.user_ratings_total,
               reviews: formattedReviews,
+              writeAReviewUri: verifiedGoogleMapsUrl,
+              placeUrl: verifiedGoogleMapsUrl,
             });
           }
         }
@@ -132,9 +143,10 @@ export async function GET(req: NextRequest) {
       success: true,
       source: "maps-profile",
       placeId,
-      placeUrl: settings?.googlePlaceUrl || "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
+      placeUrl: verifiedGoogleMapsUrl,
+      writeAReviewUri: verifiedGoogleMapsUrl,
       rating: settings?.googleRating || 4.9,
-      reviewsCount: settings?.googleReviewsCount || 284,
+      reviewsCount: settings?.googleReviewsCount || 32,
     });
   } catch (error: any) {
     console.error("Live Google reviews fetch error:", error);

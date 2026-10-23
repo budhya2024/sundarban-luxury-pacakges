@@ -31,18 +31,11 @@ import {
   FaWhatsapp,
   FaAngleRight,
 } from "react-icons/fa6";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
 import { BookingModal } from "./BookingModal";
+import { PackageCardImageSlider } from "./PackageCardImageSlider";
 import { useAdmin } from "@/context/AdminContext";
 
 import { AdminTourPackage, TourDayFoodMenu, TourItineraryDay } from "@/lib/admin-data";
-
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/effect-fade";
 
 interface TourDetailsProps {
   packageSlug?: string;
@@ -248,7 +241,7 @@ export function TourDetails({
     (currentPackage?.gallery && currentPackage.gallery.length > 0
       ? currentPackage.gallery[0]
       : null) ||
-    "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80&w=2000";
+    "/assets/images/safari-boat.jpg";
   const duration = currentPackage?.duration || "2 Days / 1 Night";
   const pickupDrop = currentPackage?.pickupDrop || "Kolkata / Canning";
   const mealsSummary = currentPackage?.mealsSummary || "6 Times Fresh Cooked";
@@ -269,24 +262,25 @@ export function TourDetails({
   // Dynamic image list for sidebar slider
   const packageImages = useMemo(() => {
     const list: string[] = [];
-    if (currentPackage?.image) list.push(currentPackage.image);
-    if (currentPackage?.bannerImage && !list.includes(currentPackage.bannerImage)) {
-      list.push(currentPackage.bannerImage);
+    if (currentPackage?.image && typeof currentPackage.image === "string" && currentPackage.image.trim()) {
+      list.push(currentPackage.image.trim());
     }
-    if (currentPackage?.gallery && currentPackage.gallery.length > 0) {
+    if (
+      currentPackage?.bannerImage &&
+      typeof currentPackage.bannerImage === "string" &&
+      currentPackage.bannerImage.trim() &&
+      !list.includes(currentPackage.bannerImage.trim())
+    ) {
+      list.push(currentPackage.bannerImage.trim());
+    }
+    if (Array.isArray(currentPackage?.gallery) && currentPackage.gallery.length > 0) {
       currentPackage.gallery.forEach((img: string) => {
-        if (img && !list.includes(img)) list.push(img);
+        if (img && typeof img === "string" && img.trim() && !list.includes(img.trim())) {
+          list.push(img.trim());
+        }
       });
     }
-    // High-resolution Sundarban landscape & safari fallback images
-    const fallbackList = [
-      "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=900&q=80",
-    ];
-    return list.length > 0 ? list : fallbackList;
+    return list.length > 0 ? list : [currentPackage?.image || "/assets/images/safari-boat.jpg"];
   }, [currentPackage]);
 
   // Determine package duration type (1-day, 2-days, 3-days)
@@ -565,7 +559,7 @@ export function TourDetails({
               {/* SECTION D: WHAT'S INCLUDED */}
               <div className="bg-brand-green-soft border border-emerald-200/80 p-6 sm:p-8 space-y-4 rounded-sm">
                 <h3 className="text-lg md:text-xl font-extrabold text-primary flex items-center gap-2.5">
-                  <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-primary" />
+
                   <span>What&apos;s Included in this Package</span>
                 </h3>
 
@@ -582,7 +576,7 @@ export function TourDetails({
               {/* SECTION E: WHAT'S NOT INCLUDED */}
               <div className="bg-slate-50 border border-slate-200 p-6 sm:p-8 space-y-4 rounded-sm">
                 <h3 className="text-lg md:text-xl font-extrabold text-slate-900 flex items-center gap-2.5">
-                  <XCircle className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-rose-500" />
+
                   <span>What&apos;s Not Included (Exclusions)</span>
                 </h3>
 
@@ -599,7 +593,7 @@ export function TourDetails({
               {/* SECTION F: THINGS TO CARRY */}
               <div className="bg-amber-50/60 border border-amber-200/80 p-6 sm:p-8 space-y-4 rounded-sm">
                 <h3 className="text-lg md:text-xl font-extrabold text-brand-yellow-dark flex items-center gap-2.5">
-                  <Briefcase className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-secondary" />
+
                   <span>Things to Carry Checklist</span>
                 </h3>
 
@@ -616,7 +610,7 @@ export function TourDetails({
               {/* SECTION G: CHILD POLICY */}
               <div className="bg-slate-50 border border-slate-200 p-6 sm:p-8 space-y-4 rounded-sm">
                 <h3 className="text-lg md:text-xl font-extrabold text-slate-900 flex items-center gap-2.5">
-                  <Users className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-primary" />
+
                   <span>Child &amp; Age Policy</span>
                 </h3>
 
@@ -633,7 +627,7 @@ export function TourDetails({
               {/* SECTION H: IMPORTANT NOTES */}
               <div className="bg-emerald-50 border border-emerald-200 p-6 sm:p-8 space-y-4 rounded-sm">
                 <h3 className="text-lg md:text-xl font-extrabold text-primary flex items-center gap-2.5">
-                  <Info className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-primary" />
+
                   <span>Important Safari Guidelines &amp; Notes</span>
                 </h3>
 
@@ -652,65 +646,16 @@ export function TourDetails({
             <div className="lg:col-span-4 sticky top-6 space-y-6">
               {/* Image & Booking Card */}
               <div className="bg-white border border-slate-200 p-5 shadow-md overflow-hidden space-y-5 rounded-sm">
-                {/* Image Slider */}
+                {/* Dynamic Image Slider */}
                 <div className="relative h-60 sm:h-64 rounded-sm overflow-hidden bg-slate-900 group select-none shadow-xs">
-                  <Swiper
-                    modules={[Navigation, Pagination, Autoplay, EffectFade]}
-                    navigation={{
-                      prevEl: ".sidebar-slider-prev",
-                      nextEl: ".sidebar-slider-next",
-                    }}
-                    pagination={{
-                      clickable: true,
-                      bulletClass: "sidebar-tour-bullet",
-                      bulletActiveClass: "sidebar-tour-bullet-active",
-                    }}
-                    autoplay={{
-                      delay: 3500,
-                      disableOnInteraction: false,
-                      pauseOnMouseEnter: true,
-                    }}
-                    loop={packageImages.length > 1}
-                    speed={600}
-                    className="h-full w-full relative"
-                  >
-                    {packageImages.map((imgUrl, idx) => (
-                      <SwiperSlide key={idx} className="relative h-full w-full">
-                        <Image
-                          src={imgUrl}
-                          alt={`${title} - Photo ${idx + 1}`}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 400px"
-                          unoptimized={imgUrl.startsWith("data:")}
-                          className="object-cover"
-                          priority={idx === 0}
-                        />
-                      </SwiperSlide>
-                    ))}
-
-
-
-
-                    {/* Left & Right Navigation Arrows */}
-                    {packageImages.length > 1 && (
-                      <>
-                        <button
-                          type="button"
-                          aria-label="Previous Slide"
-                          className="sidebar-slider-prev absolute left-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/55 hover:bg-[#064e3b] text-white flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 shadow-md backdrop-blur-xs cursor-pointer"
-                        >
-                          <ChevronLeft className="w-4 h-4" />
-                        </button>
-                        <button
-                          type="button"
-                          aria-label="Next Slide"
-                          className="sidebar-slider-next absolute right-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/55 hover:bg-[#064e3b] text-white flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 shadow-md backdrop-blur-xs cursor-pointer"
-                        >
-                          <ChevronRight className="w-4 h-4" />
-                        </button>
-                      </>
-                    )}
-                  </Swiper>
+                  <PackageCardImageSlider
+                    images={packageImages}
+                    alt={title}
+                    sizes="(max-width: 1024px) 100vw, 400px"
+                    className="h-full w-full"
+                    priority={true}
+                    autoSlideInterval={3500}
+                  />
                 </div>
 
                 <div className="space-y-3">
@@ -788,31 +733,6 @@ export function TourDetails({
         packageName={title}
         pricePerPerson={price}
       />
-
-      {/* Global CSS for Swiper pagination bullets */}
-      <style jsx global>{`
-        .sidebar-tour-bullet {
-          width: 0.45rem;
-          height: 0.45rem;
-          border-radius: 9999px;
-          border: none !important;
-          outline: none !important;
-          background-color:  white !important;
-          display: inline-block;
-          margin: 0 3px !important;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          opacity: 1 !important;
-        }
-        .sidebar-tour-bullet:hover {
-          background-color: #fbbf24 !important;
-        }
-        .sidebar-tour-bullet-active {
-          width: 1.25rem !important;
-          background-color: #f59e0b !important;
-          border-radius: 9999px !important;
-        }
-      `}</style>
     </div>
   );
 }

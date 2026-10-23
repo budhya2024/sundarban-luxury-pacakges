@@ -179,9 +179,9 @@ export default function WeekendTourPackagePage() {
 
                 <Link
                   href="/hotel-sonar-bangla"
-                  className="inline-flex px-6 py-2.5 bg-primary text-white font-semibold rounded-sm shadow-md hover:bg-secondary transition-colors"
+                  className="inline-flex px-6 py-2.5 bg-primary text-white font-semibold rounded-sm shadow-md hover:bg-secondary transition-colors text-sm"
                 >
-                  Check here.
+                  Explore hotel Sonar Bangla
                 </Link>
               </div>
 

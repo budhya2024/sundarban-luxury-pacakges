@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { monthlyRevenueData } from "@/lib/admin-data";
 import { TrendingUp, CalendarCheck, IndianRupee } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
 
@@ -10,46 +9,37 @@ export function RevenueChart() {
   const [viewMode, setViewMode] = useState<"revenue" | "bookings">("revenue");
   const [hoveredMonth, setHoveredMonth] = useState<number | null>(null);
 
-  // Compute dynamic monthly revenue & bookings combining live bookings with baseline seasonality
+  // Compute strictly real monthly revenue & bookings directly from database bookings
   const dynamicMonthlyData = useMemo(() => {
-    const monthNames = [
-      "jan", "feb", "mar", "apr", "may", "jun",
-      "jul", "aug", "sep", "oct", "nov", "dec"
-    ];
+    const months = ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"];
+    const monthNames = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 
-    return monthlyRevenueData.map((item) => {
-      const monthIdx = monthNames.indexOf(item.month.toLowerCase());
+    return months.map((monthStr) => {
+      const monthIdx = monthNames.indexOf(monthStr.toLowerCase());
 
       const matchingBookings = bookings.filter((b) => {
-        const dateStr = (b.travelDate || b.createdAt || "").toLowerCase();
-        if (dateStr.includes(item.month.toLowerCase())) return true;
-        const match = dateStr.match(/^\d{4}-(\d{2})-\d{2}/);
-        if (match && parseInt(match[1], 10) - 1 === monthIdx) return true;
+        const rawDate = b.travelDate || b.createdAt || "";
+        if (!rawDate) return false;
+        const d = new Date(rawDate);
+        if (!isNaN(d.getTime())) {
+          return d.getMonth() === monthIdx;
+        }
         return false;
       });
 
+      const liveRevenue = matchingBookings.reduce((sum, b) => sum + (Number(b.totalAmount) || 0), 0);
       const liveBookingsCount = matchingBookings.length;
-      const liveRevenue = matchingBookings.reduce((sum, b) => sum + (b.totalAmount || 0), 0);
-      const totalRevenue = item.revenue + liveRevenue;
-      const totalBookings = item.bookings + liveBookingsCount;
-
-      const maxCapacity = 50;
-      const bookingRate = Math.min(100, Math.round((totalBookings / maxCapacity) * 100));
 
       return {
-        month: item.month,
-        revenue: totalRevenue,
-        liveRevenue,
-        bookings: totalBookings,
-        liveBookingsCount,
-        bookingRate,
-        hasLiveBookings: liveBookingsCount > 0,
+        month: monthStr,
+        revenue: liveRevenue,
+        bookings: liveBookingsCount,
       };
     });
   }, [bookings]);
 
-  const maxRevenue = Math.max(...dynamicMonthlyData.map((d) => d.revenue));
-  const maxBookings = Math.max(...dynamicMonthlyData.map((d) => d.bookings));
+  const maxRevenue = Math.max(...dynamicMonthlyData.map((d) => d.revenue), 1);
+  const maxBookings = Math.max(...dynamicMonthlyData.map((d) => d.bookings), 1);
   const currentMonthShort = new Date().toLocaleDateString("en-US", { month: "short" });
 
   const totalAnnualRevenue = dynamicMonthlyData.reduce((acc, cur) => acc + cur.revenue, 0);
@@ -64,6 +54,9 @@ export function RevenueChart() {
   );
 
   const formatLakhs = (val: number) => {
+    if (val >= 10000000) {
+      return `₹${(val / 10000000).toFixed(2)} Cr`;
+    }
     if (val >= 100000) {
       return `₹${(val / 100000).toFixed(1)}L`;
     }
@@ -124,13 +117,14 @@ export function RevenueChart() {
       <div className="mt-6 pt-2">
         <div className="flex items-end justify-between gap-1.5 sm:gap-3 h-48 px-1">
           {dynamicMonthlyData.map((item, idx) => {
+            const hasData = viewMode === "revenue" ? item.revenue > 0 : item.bookings > 0;
             const heightPercent =
               viewMode === "revenue"
                 ? maxRevenue > 0 ? (item.revenue / maxRevenue) * 100 : 0
                 : maxBookings > 0 ? (item.bookings / maxBookings) * 100 : 0;
 
             const isHovered = hoveredMonth === idx;
-            const isPeak = item.month === highestMonth.month || item.month === "Dec" || item.month === "Jan";
+            const isPeak = hasData && item.month === highestMonth.month;
 
             return (
               <div
@@ -143,15 +137,15 @@ export function RevenueChart() {
                 {isHovered && (
                   <div className="absolute -top-16 z-20 bg-slate-900 text-white text-[11px] font-bold py-1.5 px-3 rounded-[3px] shadow-xl pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95 duration-100 border border-slate-700">
                     <span className="block text-slate-300 text-[10px]">
-                      {item.month} 2026 {item.month === currentMonthShort ? "• Current Month" : ""}
+                      {item.month} {item.month === currentMonthShort ? "• Current Month" : ""}
                     </span>
                     <span className="text-emerald-400 font-extrabold text-xs block">
                       {formatLakhs(item.revenue)} ({item.bookings} Bookings)
                     </span>
                     <span className="block text-slate-300 text-[10px]">
-                      {item.liveBookingsCount > 0
-                        ? `${item.liveBookingsCount} active database bookings`
-                        : "High season baseline"}
+                      {item.bookings > 0
+                        ? `${item.bookings} real database bookings`
+                        : "No bookings recorded"}
                     </span>
                   </div>
                 )}
@@ -163,7 +157,7 @@ export function RevenueChart() {
                       ? "bg-slate-900 group-hover:bg-blue-600"
                       : "bg-blue-600 group-hover:bg-blue-700"
                   } ${isHovered ? "ring-2 ring-blue-400 shadow-md" : ""}`}
-                  style={{ height: `${Math.max(14, heightPercent)}%` }}
+                  style={{ height: `${hasData ? Math.max(12, heightPercent) : 4}%` }}
                 />
 
                 {/* Month label */}

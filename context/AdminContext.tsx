@@ -126,8 +126,30 @@ interface AdminContextType {
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 export function AdminProvider({ children }: { children: React.ReactNode }) {
-  const [packages, setPackages] = useState<AdminTourPackage[]>(initialAdminPackages);
-  const [bookings, setBookings] = useState<AdminBooking[]>(initialAdminBookings);
+  const [packages, setPackages] = useState<AdminTourPackage[]>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const cached = localStorage.getItem("sb_admin_packages");
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch {}
+    }
+    return initialAdminPackages;
+  });
+  const [bookings, setBookings] = useState<AdminBooking[]>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const cached = localStorage.getItem("sb_admin_bookings");
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch {}
+    }
+    return initialAdminBookings;
+  });
   const [rooms, setRooms] = useState<AdminHotelRoom[]>(initialAdminRooms);
   const [menuItems, setMenuItems] = useState<AdminMenuItem[]>(initialAdminMenuItems);
   const [inquiries, setInquiries] = useState<AdminInquiry[]>(initialAdminInquiries);
@@ -274,6 +296,11 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
       .then((data) => {
         if (data?.success && Array.isArray(data.packages)) {
           setPackages(data.packages);
+          if (typeof window !== "undefined") {
+            try {
+              localStorage.setItem("sb_admin_packages", JSON.stringify(data.packages));
+            } catch {}
+          }
         }
       })
       .catch(() => {});
@@ -463,6 +490,15 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem("sb_admin_gallery", JSON.stringify(galleryItems));
     }
   }, [galleryItems]);
+
+  // Synchronize packages to localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined" && packages && packages.length > 0) {
+      try {
+        localStorage.setItem("sb_admin_packages", JSON.stringify(packages));
+      } catch {}
+    }
+  }, [packages]);
 
   // Package CRUD
   const addPackage = async (pkg: Omit<AdminTourPackage, "id">) => {

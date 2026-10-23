@@ -49,8 +49,7 @@ export function ConfirmProvider({ children }: { children: React.ReactNode }) {
         itemName: itemName,
         message:
           customMessage ||
-          `Are you sure you want to delete ${
-            itemName ? `"${itemName}"` : "this item"
+          `Are you sure you want to delete ${itemName ? `"${itemName}"` : "this item"
           }? This action is permanent and cannot be undone.`,
         confirmText: "Delete",
         cancelText: "Cancel",
@@ -102,17 +101,7 @@ export function ConfirmProvider({ children }: { children: React.ReactNode }) {
             {/* Modal Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-slate-50">
               <div className="flex items-center gap-2">
-                <span
-                  className={`w-2.5 h-2.5 rounded-full ${
-                    modalState.options.variant === "warning"
-                      ? "bg-amber-500"
-                      : modalState.options.variant === "info"
-                      ? "bg-blue-500"
-                      : modalState.options.variant === "success"
-                      ? "bg-emerald-500"
-                      : "bg-rose-600"
-                  }`}
-                />
+
                 <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wide">
                   {modalState.options.title || "Confirm Action"}
                 </h3>
@@ -129,38 +118,11 @@ export function ConfirmProvider({ children }: { children: React.ReactNode }) {
 
             {/* Modal Body */}
             <div className="p-5 flex items-start gap-4">
-              {/* Icon Container */}
-              <div
-                className={`p-2.5 rounded-[4px] border shrink-0 ${
-                  modalState.options.variant === "warning"
-                    ? "bg-amber-50 text-amber-600 border-amber-200"
-                    : modalState.options.variant === "info"
-                    ? "bg-blue-50 text-blue-600 border-blue-200"
-                    : modalState.options.variant === "success"
-                    ? "bg-emerald-50 text-emerald-600 border-emerald-200"
-                    : "bg-rose-50 text-rose-600 border-rose-200"
-                }`}
-              >
-                {modalState.options.icon ? (
-                  modalState.options.icon
-                ) : modalState.options.variant === "warning" ? (
-                  <AlertTriangle className="w-5 h-5" />
-                ) : modalState.options.variant === "info" ? (
-                  <Info className="w-5 h-5" />
-                ) : modalState.options.variant === "success" ? (
-                  <CheckCircle2 className="w-5 h-5" />
-                ) : (
-                  <Trash2 className="w-5 h-5" />
-                )}
-              </div>
+
 
               {/* Message Details */}
               <div className="flex-1 min-w-0">
-                {modalState.options.itemName && (
-                  <div className="mb-2 inline-block px-2.5 py-1 bg-slate-100 border border-slate-200 rounded-[3px] text-xs font-bold text-slate-800 max-w-full truncate">
-                    {modalState.options.itemName}
-                  </div>
-                )}
+
                 <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
                   {modalState.options.message}
                 </p>
@@ -179,15 +141,14 @@ export function ConfirmProvider({ children }: { children: React.ReactNode }) {
               <button
                 type="button"
                 onClick={handleConfirm}
-                className={`px-4 py-1.5 rounded-[3px] text-white text-xs font-bold transition-colors shadow-2xs flex items-center gap-1.5 cursor-pointer ${
-                  modalState.options.variant === "warning"
-                    ? "bg-amber-600 hover:bg-amber-700"
-                    : modalState.options.variant === "info"
+                className={`px-4 py-1.5 rounded-[3px] text-white text-xs font-bold transition-colors shadow-2xs flex items-center gap-1.5 cursor-pointer ${modalState.options.variant === "warning"
+                  ? "bg-amber-600 hover:bg-amber-700"
+                  : modalState.options.variant === "info"
                     ? "bg-blue-600 hover:bg-blue-700"
                     : modalState.options.variant === "success"
-                    ? "bg-emerald-600 hover:bg-emerald-700"
-                    : "bg-rose-600 hover:bg-rose-700"
-                }`}
+                      ? "bg-emerald-600 hover:bg-emerald-700"
+                      : "bg-rose-600 hover:bg-rose-700"
+                  }`}
               >
                 {modalState.options.variant === "danger" || !modalState.options.variant ? (
                   <Trash2 className="w-3.5 h-3.5" />

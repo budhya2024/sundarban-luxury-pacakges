@@ -71,7 +71,7 @@ export function FaqSection() {
                     }`}
                 >
                   <div className="overflow-hidden">
-                    <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2 sm:pt-4 text-slate-600 text-xs sm:text-[15px] leading-relaxed border-t border-slate-100/80 bg-white">
+                    <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2 sm:pt-4 text-slate-600 text-sm md:text-base leading-relaxed border-t border-slate-100/80 bg-white">
                       <p>{item.answer}</p>
                     </div>
                   </div>

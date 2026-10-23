@@ -252,7 +252,7 @@ export function GoogleReviewsWidget({
   const [reviews, setReviews] = useState<GoogleReviewItem[]>(authenticGoogleReviews);
   const [rating, setRating] = useState<number>(googleRating);
   const [reviewsCount, setReviewsCount] = useState<number>(googleReviewsCount);
-  const [writeReviewUrl, setWriteReviewUrl] = useState<string>(googlePlaceUrl);
+  const mapUrl = googlePlaceUrl || "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D";
 
   // Sync background updates seamlessly without flashing
   useEffect(() => {
@@ -267,7 +267,6 @@ export function GoogleReviewsWidget({
           setReviews(data.reviews);
           if (data.rating) setRating(data.rating);
           if (data.reviewsCount) setReviewsCount(data.reviewsCount);
-          if (data.writeAReviewUri) setWriteReviewUrl(data.writeAReviewUri);
         }
       } catch (err) {
         console.warn("Background Google reviews refresh failed:", err);
@@ -311,7 +310,7 @@ export function GoogleReviewsWidget({
         {/* Right Side: CTAs (Write a Review & Open Google Maps) */}
         <div className="w-full md:w-auto grid grid-cols-1 sm:grid-cols-2 gap-2.5 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100">
           <a
-            href={writeReviewUrl}
+            href={mapUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs sm:text-sm font-bold shadow-xs transition-all cursor-pointer"
@@ -321,7 +320,7 @@ export function GoogleReviewsWidget({
             <ExternalLink className="w-3.5 h-3.5 opacity-80" />
           </a>
           <a
-            href={googlePlaceUrl}
+            href={mapUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-800 text-xs sm:text-sm font-bold transition-colors cursor-pointer border border-slate-200/60"
@@ -429,7 +428,7 @@ export function GoogleReviewsWidget({
                   </span>
 
                   <a
-                    href={item.url || googlePlaceUrl}
+                    href={(item.url && item.url.includes("Sundarban")) ? item.url : mapUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-700 font-bold flex items-center gap-0.5 hover:underline cursor-pointer"

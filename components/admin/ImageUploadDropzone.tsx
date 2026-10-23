@@ -25,15 +25,6 @@ const ALLOWED_IMAGE_TYPES = [
   "image/avif",
 ];
 
-const DEFAULT_PRESETS = [
-  "/assets/images/royal-bengal-tiger.jpg",
-  "/assets/images/safari-boat.jpg",
-  "/assets/images/hotel/gallery/hotel-sonar-bangla-sundarban-01.jpg",
-  "/assets/images/hotel/gallery/hotel-sonar-bangla-sundarban-03.jpg",
-  "https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?auto=format&fit=crop&w=1200&q=80",
-  "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=1200&q=80",
-];
-
 export function ImageUploadDropzone({
   value,
   onChange,
@@ -180,26 +171,29 @@ export function ImageUploadDropzone({
 
 
   const heightClass =
-    aspectRatio === "square" ? "h-40 w-40" : aspectRatio === "wide" ? "h-36 w-full" : "h-48 w-full";
+    aspectRatio === "square"
+      ? "h-48 sm:h-56 w-full"
+      : aspectRatio === "wide"
+      ? "h-44 sm:h-52 w-full"
+      : "h-48 sm:h-56 w-full";
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 w-full">
       {label && (
         <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
           {label}
         </label>
       )}
 
-
       {/* Main Upload Dropzone & Live Preview */}
       {value ? (
-        <div className="relative rounded-[4px] border-2 border-slate-200 overflow-hidden bg-slate-900 group shadow-xs">
-          <div className={`relative ${heightClass}`}>
+        <div className="relative rounded-[4px] border-2 border-slate-200 overflow-hidden bg-slate-900 group shadow-xs w-full">
+          <div className={`relative ${heightClass} w-full`}>
             <Image
               src={value}
               alt="Uploaded photo"
               fill
-              className="object-cover"
+              className="object-cover w-full h-full"
               unoptimized={true}
             />
             {/* Overlay Gradient on hover */}

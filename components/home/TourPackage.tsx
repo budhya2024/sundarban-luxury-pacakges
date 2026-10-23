@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay, Pagination } from "swiper/modules";
 import type { Swiper as SwiperClass } from "swiper";
 import { BookingModal } from "@/components/tour/BookingModal";
+import { PackageCardImageSlider } from "@/components/tour/PackageCardImageSlider";
 import { FaBinoculars, FaVanShuttle, FaUtensils, FaUserDoctor } from "react-icons/fa6";
 import { useAdmin } from "@/context/AdminContext";
 
@@ -95,19 +96,20 @@ export function PopularDestinations() {
               return (
                 <SwiperSlide key={item.id} className="h-auto flex flex-col w-full">
                   <div className="bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full w-full group rounded-xl">
-                    {/* Card Image */}
-                    <div className="relative w-full h-[240px] sm:h-[260px] bg-slate-100 overflow-hidden flex-shrink-0">
-                      <Image
-                        src={item.image}
+                    {/* Card Image Slider */}
+                    <div className="relative w-full h-[240px] sm:h-[260px] bg-slate-900 overflow-hidden flex-shrink-0">
+                      <PackageCardImageSlider
+                        images={
+                          item.gallery && item.gallery.length > 0
+                            ? (item.gallery.includes(item.image) ? item.gallery : [item.image, ...item.gallery])
+                            : [item.image].filter(Boolean)
+                        }
                         alt={item.name}
-                        fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        unoptimized={item.image?.startsWith("data:")}
-                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
                       />
 
                       {/* Top-Left 15% OFF Offer Badge with Smooth Moving Shine Effect */}
-                      <div className="absolute top-3 left-3 z-10">
+                      <div className="absolute top-3 left-3 z-10 pointer-events-none">
                         <div className="offer-shine-badge inline-flex items-center gap-1.5 px-3 py-1 rounded-[4px] bg-red-600 text-white text-[11px] sm:text-xs font-black uppercase tracking-wider shadow-md shadow-red-950/30">
                           <Tag className="w-3 h-3 text-white" />
                           <span>{discountPercent}% OFF</span>
@@ -115,7 +117,7 @@ export function PopularDestinations() {
                       </div>
 
                       {/* Top-Right Star Rating Badge */}
-                      <div className="absolute top-3 right-3 bg-amber-500/95 text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-md flex items-center gap-1 backdrop-blur-xs z-10">
+                      <div className="absolute top-3 right-3 bg-amber-500/95 text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-md flex items-center gap-1 backdrop-blur-xs z-10 pointer-events-none">
                         <Star className="w-3 h-3 fill-white" />
                         <span>{item.rating || 4.9}</span> Google Rating
                       </div>

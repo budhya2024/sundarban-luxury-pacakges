@@ -36,6 +36,7 @@ import {
   TourMealCourse,
 } from "@/lib/admin-data";
 import { ImageUploadDropzone } from "@/components/admin/ImageUploadDropzone";
+import { MultiImageUploadDropzone } from "@/components/admin/MultiImageUploadDropzone";
 
 interface PackageModalProps {
   isOpen: boolean;
@@ -603,6 +604,16 @@ export function PackageModal({
                     label="Cover Banner Photo Upload *"
                     helperText="Upload safari boat or tiger cover photo from your device"
                     aspectRatio="wide"
+                  />
+                </div>
+
+                {/* Multiple Image Gallery Upload */}
+                <div className="sm:col-span-12">
+                  <MultiImageUploadDropzone
+                    value={gallery}
+                    onChange={setGallery}
+                    label="Package Gallery Photos (Multiple Images - Optional)"
+                    helperText="Upload or select multiple photos for package card slider and tour gallery."
                   />
                 </div>
 

@@ -5,30 +5,14 @@ import { FaPhone, FaEnvelope, FaLocationDot, FaClock } from "react-icons/fa6";
 
 import { useAdmin } from "@/context/AdminContext";
 
+const EXACT_SUNDARBAN_MAP_LINK =
+  "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D";
+
 function getDirectMapLink(rawUrl?: string, address?: string): string {
-  const defaultDirectLink = "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D";
-  if (!rawUrl) {
-    if (address) {
-      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
-    }
-    return defaultDirectLink;
+  if (rawUrl && !rawUrl.includes("embed") && (rawUrl.includes("Sundarban") || rawUrl.includes("0x3a018b93c291328f"))) {
+    return rawUrl;
   }
-  if (rawUrl.includes("output=embed") || rawUrl.includes("embed")) {
-    try {
-      const urlObj = new URL(rawUrl);
-      const q = urlObj.searchParams.get("q");
-      if (q) {
-        return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
-      }
-    } catch {
-      // ignore
-    }
-    if (address) {
-      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
-    }
-    return defaultDirectLink;
-  }
-  return rawUrl;
+  return EXACT_SUNDARBAN_MAP_LINK;
 }
 
 export function ContactInfoCards() {

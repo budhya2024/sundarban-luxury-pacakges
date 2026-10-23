@@ -30,6 +30,7 @@ import {
   TourMealCourse,
 } from "@/lib/admin-data";
 import { ImageUploadDropzone } from "@/components/admin/ImageUploadDropzone";
+import { MultiImageUploadDropzone } from "@/components/admin/MultiImageUploadDropzone";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 
 type SectionType = "basic" | "itinerary" | "menu" | "inclusions";
@@ -57,6 +58,7 @@ function PackageEditorForm() {
   const [reviewsCount, setReviewsCount] = useState(128);
   const [image, setImage] = useState("https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=900&q=80");
   const [bannerImage, setBannerImage] = useState("https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=1600&q=80");
+  const [gallery, setGallery] = useState<string[]>([]);
   const [status, setStatus] = useState<AdminTourPackage["status"]>("Active");
   const [maxGuests, setMaxGuests] = useState(45);
   const [departure, setDeparture] = useState("Godkhali Ferry Ghat (8:30 AM)");
@@ -92,6 +94,7 @@ function PackageEditorForm() {
       setReviewsCount(existingPackage.reviewsCount || 128);
       setImage(existingPackage.image || "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=900&q=80");
       setBannerImage(existingPackage.bannerImage || existingPackage.image || "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=1600&q=80");
+      setGallery(existingPackage.gallery?.length ? [...existingPackage.gallery] : []);
       setStatus(existingPackage.status || "Active");
       setMaxGuests(existingPackage.maxGuests || 45);
       setDeparture(existingPackage.departure || "Godkhali Ferry Ghat (8:30 AM)");
@@ -118,6 +121,7 @@ function PackageEditorForm() {
       setReviewsCount(95);
       setImage("https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=900&q=80");
       setBannerImage("https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=1600&q=80");
+      setGallery([]);
       setStatus("Active");
       setMaxGuests(45);
       setDeparture("Godkhali Ferry Ghat (8:30 AM)");
@@ -375,7 +379,7 @@ function PackageEditorForm() {
       reviewsCount: Number(reviewsCount),
       image,
       bannerImage,
-      gallery: [],
+      gallery,
       status,
       maxGuests: Number(maxGuests),
       departure,
@@ -569,17 +573,17 @@ function PackageEditorForm() {
 
                 {/* Photo Upload Options */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
+                  <div className="w-full">
                     <ImageUploadDropzone
                       value={image}
                       onChange={(newVal) => setImage(newVal)}
                       label="Thumbnail Photo Upload *"
-                      helperText="Upload thumbnail photo shown on package cards & table list"
-                      aspectRatio="square"
+                      helperText="Upload thumbnail photo shown on package cards & table list (full width cover)"
+                      aspectRatio="video"
                     />
                   </div>
 
-                  <div>
+                  <div className="w-full">
                     <ImageUploadDropzone
                       value={bannerImage}
                       onChange={(newVal) => setBannerImage(newVal)}
@@ -588,6 +592,16 @@ function PackageEditorForm() {
                       aspectRatio="wide"
                     />
                   </div>
+                </div>
+
+                {/* Optional Multiple Image Gallery Upload */}
+                <div>
+                  <MultiImageUploadDropzone
+                    value={gallery}
+                    onChange={setGallery}
+                    label="Package Gallery Photos (Multiple Images - Optional)"
+                    helperText="Select or upload multiple photos for this package card slider & tour gallery."
+                  />
                 </div>
 
                 <div>

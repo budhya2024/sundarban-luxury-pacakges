@@ -66,10 +66,13 @@ export function TestimonialsSection() {
   const displayItems = manualList.length > 0 ? manualList : activeTestimonials;
 
   const googleRating = testimonialSettings?.googleRating || 4.9;
-  const reviewsCount = testimonialSettings?.googleReviewsCount || 284;
+  const reviewsCount = testimonialSettings?.googleReviewsCount || 32;
   const googleUrl =
-    testimonialSettings?.googlePlaceUrl ||
-    "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D";
+    testimonialSettings?.googlePlaceUrl &&
+    (testimonialSettings.googlePlaceUrl.includes("Sundarban") ||
+     testimonialSettings.googlePlaceUrl.includes("0x3a018b93c291328f"))
+      ? testimonialSettings.googlePlaceUrl
+      : "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D";
 
   return (
     <section

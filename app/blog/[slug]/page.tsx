@@ -585,12 +585,9 @@ export default async function BlogDetailPage({
             </div>
 
             {/* 5. Subscribe to Newsletter Widget (LAST / BOTTOM) */}
-            <div className="bg-gradient-to-br from-[#052e16] via-[#064e3b] to-[#022c22]  rounded-sm p-4 sm:p-7 text-white relative overflow-hidden border border-[#fbbf24]/20">
-              <div className="absolute -right-8 -top-8 w-32 h-32 bg-[#d97706]/20 rounded-full blur-xl pointer-events-none" />
-              <div className="flex items-center gap-2.5 text-[#fbbf24] font-bold text-xs uppercase tracking-widest mb-2.5 relative z-10">
-                <FaRegEnvelope className="w-4 h-4" />
-                <span>Newsletter</span>
-              </div>
+            <div className="bg-brand-green-dark  rounded-sm p-4 sm:p-7 text-white relative overflow-hidden border border-[#fbbf24]/20">
+
+
               <h3 className="text-xl font-extrabold text-white mb-2 relative z-10">
                 Subscribe to Newsletter
               </h3>

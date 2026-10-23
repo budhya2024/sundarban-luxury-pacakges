@@ -210,8 +210,8 @@ export default function GalleryPage() {
                         key={cat}
                         onClick={() => setSelectedCategory(cat)}
                         className={`flex-shrink-0 whitespace-nowrap px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer ${isActive
-                            ? "bg-primary text-white shadow-md shadow-primary/25 scale-[1.02]"
-                            : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 shadow-2xs"
+                          ? "bg-primary text-white shadow-md shadow-primary/25 scale-[1.02]"
+                          : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 shadow-2xs"
                           }`}
                       >
                         {cat === "All" ? "All Photos" : cat}
@@ -229,7 +229,7 @@ export default function GalleryPage() {
               <div
                 key={item.id || idx}
                 onClick={() => setActiveImageId(item.id)}
-                className="group relative overflow-hidden rounded-2xl bg-zinc-100 shadow-sm transition-all duration-300 hover:shadow-xl cursor-pointer h-[190px] sm:h-[240px] md:h-[280px] lg:h-[300px] w-full border border-slate-200/80"
+                className="group relative overflow-hidden rounded-xl  transition-all duration-300  cursor-pointer h-[190px] sm:h-[240px] md:h-[280px] lg:h-[300px] w-full "
                 role="button"
                 tabIndex={0}
                 aria-label={`View ${item.title}`}

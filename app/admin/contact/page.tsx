@@ -160,8 +160,10 @@ export default function AdminContactManagerPage() {
       key: "visit",
       title: contactGeneralInfo?.visitCardTitle || "Visit Us",
       subtitle: contactGeneralInfo?.visitCardSubtitle || "Our office location",
-      detail: contactGeneralInfo?.mainAddress || "Sundarban Luxury Package, Dulki, Gosaba, West Bengal 743370",
-      extra: contactGeneralInfo?.googleMapEmbedUrl || "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
+      detail: contactGeneralInfo?.mainAddress || "Sundarban Luxury Package, Dulki, Gosaba, South 24 Parganas, West Bengal 743370",
+      extra:
+        contactGeneralInfo?.googleMapEmbedUrl ||
+        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3690.697089422998!2d88.80691567586522!3d22.14168367980598!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a018b93c291328f%3A0x9053b19002605ee0!2sSundarban%20Luxury%20Package!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin",
       status: contactGeneralInfo?.visitCardStatus || "Active",
     },
     {

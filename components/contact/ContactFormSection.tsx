@@ -24,6 +24,12 @@ import {
   validateContactInquiry,
 } from "@/lib/validation";
 
+const EXACT_SUNDARBAN_MAP_LINK =
+  "https://www.google.com/maps/place/Sundarban+Luxury+Package/@22.1416837,88.8094906,17z/data=!3m1!4b1!4m6!3m5!1s0x3a018b93c291328f:0x9053b19002605ee0!8m2!3d22.1416837!4d88.8094906!16s%2Fg%2F11zxrs2zsc?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D";
+
+const EXACT_SUNDARBAN_MAP_EMBED =
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3690.697089422998!2d88.80691567586522!3d22.14168367980598!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a018b93c291328f%3A0x9053b19002605ee0!2sSundarban%20Luxury%20Package!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin";
+
 export function ContactFormSection() {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -59,9 +65,8 @@ export function ContactFormSection() {
     whatsapp: "917001403498",
     addressSummary:
       "📍 Sundarban Luxury Package, Dulki, Gosaba, South 24 Parganas, West Bengal 743370. Pickups available from Kolkata Airport & Howrah Railway Station.",
-    mapEmbedUrl:
-      "https://maps.google.com/maps?q=Sundarban+Luxury+Package,+Dulki,+Gosaba,+West+Bengal+743370&t=&z=15&ie=UTF8&iwloc=&output=embed",
-    mapLink: "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
+    mapEmbedUrl: EXACT_SUNDARBAN_MAP_EMBED,
+    mapLink: EXACT_SUNDARBAN_MAP_LINK,
   });
 
   useEffect(() => {
@@ -78,9 +83,11 @@ export function ContactFormSection() {
               ? `📍 Office / Departure: ${g.mainAddress}. Pickups available from Kolkata Airport & Howrah Railway Station.`
               : "📍 Sundarban Luxury Package, Dulki, Gosaba, South 24 Parganas, West Bengal 743370. Pickups available from Kolkata Airport & Howrah Railway Station.",
             mapEmbedUrl:
-              g.googleMapEmbedUrl ||
-              "https://maps.google.com/maps?q=Sundarban+Luxury+Package,+Dulki,+Gosaba,+West+Bengal+743370&t=&z=15&ie=UTF8&iwloc=&output=embed",
-            mapLink: "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb",
+              g.googleMapEmbedUrl &&
+              (g.googleMapEmbedUrl.includes("Sundarban") || g.googleMapEmbedUrl.includes("0x3a018b93c291328f"))
+                ? g.googleMapEmbedUrl
+                : EXACT_SUNDARBAN_MAP_EMBED,
+            mapLink: EXACT_SUNDARBAN_MAP_LINK,
           });
         }
       })
@@ -206,9 +213,7 @@ export function ContactFormSection() {
           {/* Left Column: Validated Interactive Contact Form (7 cols) */}
           <div className="lg:col-span-7 rounded-sm bg-[#f9fafb] border border-emerald-100/80 p-5 sm:p-7 md:p-10 shadow-sm">
             <div className="mb-8">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#d97706] block mb-1">
-                Reach Our Travel Concierge
-              </span>
+
               <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0f172a] tracking-tight">
                 Get In Touch
               </h2>
@@ -485,7 +490,7 @@ export function ContactFormSection() {
                   <span>Departure &amp; Office Location</span>
                 </div>
                 <a
-                  href={hotlineInfo.mapLink || "https://maps.app.goo.gl/49hCpzhsd1WremJW6?g_st=awb"}
+                  href={hotlineInfo.mapLink || EXACT_SUNDARBAN_MAP_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs font-semibold text-primary hover:text-secondary flex items-center gap-1.5 transition-colors"
@@ -499,10 +504,7 @@ export function ContactFormSection() {
               <div className="relative w-full h-[250px] rounded-sm overflow-hidden border border-slate-200/80 shadow-inner">
                 <iframe
                   title="Sundarban Luxury Package Location Map"
-                  src={
-                    hotlineInfo.mapEmbedUrl ||
-                    "https://maps.google.com/maps?q=Sundarban+Luxury+Package,+Dulki,+Gosaba,+West+Bengal+743370&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                  }
+                  src={hotlineInfo.mapEmbedUrl || EXACT_SUNDARBAN_MAP_EMBED}
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
