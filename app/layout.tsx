@@ -36,11 +36,28 @@ export const metadata: Metadata = {
     "max-image-preview": "large",
     "max-video-preview": -1,
   },
+  openGraph: {
+    title: "Sundarban Tour Package from Kolkata | Best Jungle Safari Booking",
+    description:
+      "Book affordable Sundarban tour packages from Kolkata. Experience thrilling boat safari, wildlife spotting, and cozy stays. Call now for best offers!",
+    url: "https://sundarbanluxurypackage.com/",
+    siteName: "Sundarban Luxury Package",
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Sundarban Luxury Package - Jungle Safari & Resort Stay",
+      },
+    ],
+  },
   twitter: {
     card: "summary_large_image",
-    title: "Sundarban Tour Package from Kolkata",
+    title: "Sundarban Tour Package from Kolkata | Best Jungle Safari Booking",
     description: "Experience the best Sundarban jungle safari with us.",
-    images: ["https://sundarbanluxurypackage.com/images/sundarban-banner.jpg"],
+    images: ["/og-image.png"],
   },
   verification: {
     google: "ZB58AbxPxUoxGQkSUgmlus0ml84nt0MkAAeH680uc0s",

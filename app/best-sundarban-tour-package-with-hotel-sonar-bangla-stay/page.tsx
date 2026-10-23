@@ -29,6 +29,27 @@ export const metadata: Metadata = {
     canonical:
       "https://sundarbanluxurypackage.com/best-sundarban-tour-package-with-hotel-sonar-bangla-stay",
   },
+  openGraph: {
+    title: "Best Sundarban Tour Package with Hotel Sonar Bangla Stay",
+    description:
+      "Book the best Sundarban tour package with Hotel Sonar Bangla stay. Experience UNESCO mangrove safari, luxury riverfront resort, and expert forest guide.",
+    url: "https://sundarbanluxurypackage.com/best-sundarban-tour-package-with-hotel-sonar-bangla-stay",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Best Sundarban Tour Package with Hotel Sonar Bangla Stay",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Best Sundarban Tour Package with Hotel Sonar Bangla Stay",
+    description:
+      "Book the best Sundarban tour package with Hotel Sonar Bangla stay. Experience UNESCO mangrove safari, luxury riverfront resort, and expert forest guide.",
+    images: ["/og-image.png"],
+  },
 };
 
 const jsonLdSchema = {

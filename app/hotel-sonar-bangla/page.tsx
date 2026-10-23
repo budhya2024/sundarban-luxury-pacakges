@@ -9,6 +9,27 @@ export const metadata: Metadata = {
   title: "Hotel Sonar Bangla - 5-Star Luxury Resort in Sundarban | Sundarban Luxury Package",
   description:
     "Experience 5-star luxury at Hotel Sonar Bangla Sundarban. Swimming pool, fine dining, private cruise jetty, and eco-friendly resort hospitality.",
+  openGraph: {
+    title: "Hotel Sonar Bangla - 5-Star Luxury Resort in Sundarban",
+    description:
+      "Experience 5-star luxury at Hotel Sonar Bangla Sundarban. Swimming pool, fine dining, private cruise jetty, and eco-friendly resort hospitality.",
+    url: "https://sundarbanluxurypackage.com/hotel-sonar-bangla",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Hotel Sonar Bangla Luxury Resort Sundarban",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hotel Sonar Bangla - 5-Star Luxury Resort in Sundarban",
+    description:
+      "Experience 5-star luxury at Hotel Sonar Bangla Sundarban. Swimming pool, fine dining, and luxury safari.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function HotelPage() {

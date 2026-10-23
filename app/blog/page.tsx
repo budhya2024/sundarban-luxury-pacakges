@@ -11,6 +11,27 @@ export const metadata = {
   title: "News & Articles | Sundarban Luxury Package",
   description:
     "Wildlife stories, travel guides, culture & ecology from the heart of Sundarban.",
+  openGraph: {
+    title: "News & Articles | Sundarban Luxury Package",
+    description:
+      "Wildlife stories, travel guides, culture & ecology from the heart of Sundarban.",
+    url: "https://sundarbanluxurypackage.com/blog",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Sundarban Travel Stories and Guides",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "News & Articles | Sundarban Luxury Package",
+    description:
+      "Wildlife stories, travel guides, culture & ecology from the heart of Sundarban.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default async function BlogListPage() {

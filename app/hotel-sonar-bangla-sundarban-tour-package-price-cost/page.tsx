@@ -30,6 +30,27 @@ export const metadata: Metadata = {
     canonical:
       "https://sundarbanluxurypackage.com/hotel-sonar-bangla-sundarban-tour-package-price-cost",
   },
+  openGraph: {
+    title: "Hotel Sonar Bangla Sundarban Tour Package Price & Cost 2026",
+    description:
+      "Check Hotel Sonar Bangla Sundarban tour package price and cost. Get best deals on luxury resort stay, boat safari, and food inclusions from Kolkata.",
+    url: "https://sundarbanluxurypackage.com/hotel-sonar-bangla-sundarban-tour-package-price-cost",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Hotel Sonar Bangla Sundarban Tour Package Price & Cost",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hotel Sonar Bangla Sundarban Tour Package Price & Cost 2026",
+    description:
+      "Check Hotel Sonar Bangla Sundarban tour package price and cost. Get best deals on luxury resort stay, boat safari, and food inclusions from Kolkata.",
+    images: ["/og-image.png"],
+  },
 };
 
 const jsonLdSchema = {

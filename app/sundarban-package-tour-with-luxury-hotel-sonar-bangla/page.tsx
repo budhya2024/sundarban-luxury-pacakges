@@ -31,6 +31,29 @@ export const metadata: Metadata = {
     canonical:
       "https://sundarbanluxurypackage.com/sundarban-package-tour-with-luxury-hotel-sonar-bangla",
   },
+  openGraph: {
+    title:
+      "Sundarban Package Tour with Luxury Hotel Sonar Bangla | Best Booking",
+    description:
+      "Book exclusive Sundarban package tour with luxury Hotel Sonar Bangla. Enjoy premium resort stay, thrilling jungle safari, and comfortable river cruise from Kolkata.",
+    url: "https://sundarbanluxurypackage.com/sundarban-package-tour-with-luxury-hotel-sonar-bangla",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Sundarban Package Tour with Luxury Hotel Sonar Bangla",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title:
+      "Sundarban Package Tour with Luxury Hotel Sonar Bangla | Best Booking",
+    description:
+      "Book exclusive Sundarban package tour with luxury Hotel Sonar Bangla. Enjoy premium resort stay, thrilling jungle safari, and comfortable river cruise.",
+    images: ["/og-image.png"],
+  },
 };
 
 const jsonLdSchema = {

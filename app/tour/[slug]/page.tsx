@@ -42,13 +42,28 @@ export async function generateMetadata({
     pkg?.subtitle ||
     `Detailed itinerary, food menu, pricing and inclusions for ${title}. Book your luxury Sundarban mangrove safari today.`;
 
+  const tourImage = pkg?.bannerImage || pkg?.image || "/og-image.png";
+
   return {
     title,
     description,
     openGraph: {
       title,
       description,
-      images: pkg?.bannerImage || pkg?.image ? [pkg.bannerImage || pkg.image] : [],
+      images: [
+        {
+          url: tourImage,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [tourImage],
     },
   };
 }

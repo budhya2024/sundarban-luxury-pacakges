@@ -35,6 +35,27 @@ export const metadata: Metadata = {
     canonical:
       "https://sundarbanluxurypackage.com/hotel-sonar-bangla-sundarban-weekend-tour-package-from-kolkata",
   },
+  openGraph: {
+    title: "Hotel Sonar Bangla Sundarban Weekend Tour Package from Kolkata",
+    description:
+      "Book Hotel Sonar Bangla Sundarban weekend tour package from Kolkata. Enjoy a 2N/3D luxury weekend getaway with jungle safari, premium stay, and delicious food.",
+    url: "https://sundarbanluxurypackage.com/hotel-sonar-bangla-sundarban-weekend-tour-package-from-kolkata",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Hotel Sonar Bangla Sundarban Weekend Tour Package",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hotel Sonar Bangla Sundarban Weekend Tour Package from Kolkata",
+    description:
+      "Book Hotel Sonar Bangla Sundarban weekend tour package from Kolkata. Enjoy a 2N/3D luxury weekend getaway with jungle safari, premium stay, and delicious food.",
+    images: ["/og-image.png"],
+  },
 };
 
 const jsonLdSchema = {

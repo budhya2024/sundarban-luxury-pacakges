@@ -10,6 +10,27 @@ export const metadata: Metadata = {
   title: "Sundarban 2 Nights 3 Days Package Details | Sundarban Luxury Package",
   description:
     "Book Sundarban 2 Nights 3 Days Complete Tiger Trail Safari Package. Experience luxury boat cruise safaris, forest watchtowers, Dobanki canopy walk, local folk dance, and chef-cooked meals from Kolkata.",
+  openGraph: {
+    title: "Sundarban 2 Nights 3 Days Package Details | Sundarban Luxury Package",
+    description:
+      "Book Sundarban 2 Nights 3 Days Complete Tiger Trail Safari Package. Experience luxury boat cruise safaris, forest watchtowers, Dobanki canopy walk, and local hospitality.",
+    url: "https://sundarbanluxurypackage.com/tour-details",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Sundarban 2 Nights 3 Days Package Details",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sundarban 2 Nights 3 Days Package Details | Sundarban Luxury Package",
+    description:
+      "Book Sundarban 2 Nights 3 Days Complete Tiger Trail Safari Package. Experience luxury boat cruise safaris and forest watchtowers.",
+    images: ["/og-image.png"],
+  },
 };
 
 async function getTourPackage(slug: string) {
