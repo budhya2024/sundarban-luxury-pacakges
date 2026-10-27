@@ -83,7 +83,7 @@ export async function PUT(
           date: body.date || fallback?.date || "Today",
           readTime: body.readTime || fallback?.readTime || "4 Min Read",
           author: body.author || fallback?.author || "Arjun Chowdhury",
-          authorImage: body.authorImage || fallback?.authorImage || "",
+          authorImage: body.authorImage && !body.authorImage.includes("unsplash.com") ? body.authorImage : "",
           tags: Array.isArray(body.tags) ? body.tags : fallback?.tags || ["Sundarban"],
           focusKeyword: body.focusKeyword !== undefined ? body.focusKeyword : null,
           status: body.status || "Published",

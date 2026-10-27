@@ -8,7 +8,7 @@ export interface BlogPost {
   date: string;
   readTime: string;
   author: string;
-  authorImage: string;
+  authorImage?: string;
   tags: string[];
   focusKeyword?: string;
   status?: "Published" | "Draft" | "Scheduled";
@@ -51,8 +51,7 @@ Our luxury Sundarban packages include expert naturalist guides, premium vessel a
     date: "Jul 10, 2024",
     readTime: "5 Min Read",
     author: "Arjun Chowdhury",
-    authorImage:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Tiger", "Wildlife", "Mangrove", "Safari"],
   },
   {
@@ -85,8 +84,7 @@ Our onboard chef prepares fresh Bengali seafood delicacies — tiger prawns, Hil
     date: "Jul 10, 2024",
     readTime: "4 Min Read",
     author: "Priya Bose",
-    authorImage:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Boat Safari", "Cruise", "Luxury", "Waterways"],
   },
   {
@@ -119,8 +117,7 @@ The soft golden light of early morning over the Sundarbans waterways provides ex
     date: "Jul 08, 2024",
     readTime: "4 Min Read",
     author: "Sunita Das",
-    authorImage:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Birdwatching", "Nature", "Wildlife", "Photography"],
   },
   {
@@ -153,8 +150,7 @@ Rising sea levels, increasing cyclone intensity, and illegal fishing pose existe
     date: "Jul 05, 2024",
     readTime: "6 Min Read",
     author: "Arjun Chowdhury",
-    authorImage:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Ecology", "Mangrove", "Conservation", "Climate"],
   },
   {
@@ -187,8 +183,7 @@ Some of our luxury packages include guided visits to Moule villages where guests
     date: "Jul 02, 2024",
     readTime: "5 Min Read",
     author: "Priya Bose",
-    authorImage:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Culture", "Heritage", "Honey", "Local Life"],
   },
   {
@@ -225,8 +220,7 @@ For first-time visitors seeking the best wildlife experience, we recommend Novem
     date: "Jun 28, 2024",
     readTime: "6 Min Read",
     author: "Sunita Das",
-    authorImage:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Travel Guide", "Season", "Planning", "Tips"],
   },
   {
@@ -251,8 +245,7 @@ Early mornings offer mystical mist and golden river reflections. Use circular po
     date: "Jun 24, 2024",
     readTime: "5 Min Read",
     author: "Arjun Chowdhury",
-    authorImage:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Photography", "Wildlife", "Camera", "Tips"],
   },
   {
@@ -277,8 +270,7 @@ Hotel Sonar Bangla provides luxury swimming pools, manicured gardens, expansive 
     date: "Jun 20, 2024",
     readTime: "6 Min Read",
     author: "Priya Bose",
-    authorImage:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Resort", "Houseboat", "Luxury", "Hotel Sonar Bangla"],
   },
   {
@@ -303,8 +295,7 @@ Alongside glowing water, night boat excursions reveal flying foxes, fishing cats
     date: "Jun 16, 2024",
     readTime: "4 Min Read",
     author: "Sunita Das",
-    authorImage:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Night Safari", "Bioluminescence", "Ecology", "Adventure"],
   },
   {
@@ -329,8 +320,7 @@ Finish your meals with traditional Bengal mishti drizzled with raw mangrove hone
     date: "Jun 12, 2024",
     readTime: "5 Min Read",
     author: "Priya Bose",
-    authorImage:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Food", "Seafood", "Culture", "Cuisine"],
   },
   {
@@ -351,8 +341,7 @@ Watch towers at Sajnekhali and Sudhanyakhali provide panoramic vantage points ov
     date: "Jun 08, 2024",
     readTime: "4 Min Read",
     author: "Arjun Chowdhury",
-    authorImage:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Birdwatching", "Winter", "Migration", "Wildlife"],
   },
   {
@@ -373,8 +362,7 @@ In the confluence of the rivers Matla and Bidya, rare Irrawaddy dolphins and Gan
     date: "Jun 04, 2024",
     readTime: "5 Min Read",
     author: "Sunita Das",
-    authorImage:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Crocodiles", "Dolphins", "River Safari", "Wildlife"],
   },
   {
@@ -395,8 +383,7 @@ During local festivals, rural troupes perform dramatic reenactments of the legen
     date: "May 30, 2024",
     readTime: "5 Min Read",
     author: "Priya Bose",
-    authorImage:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Bonbibi", "Folklore", "Culture", "Heritage"],
   },
   {
@@ -417,8 +404,7 @@ From this aerial perspective, visitors frequently spot spotted deer, wild boars,
     date: "May 25, 2024",
     readTime: "4 Min Read",
     author: "Arjun Chowdhury",
-    authorImage:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Dobanki", "Canopy Walk", "Adventure", "Watch Tower"],
   },
   {
@@ -441,8 +427,7 @@ Visiting an environmentally sensitive UNESCO World Heritage biosphere requires m
     date: "May 20, 2024",
     readTime: "5 Min Read",
     author: "Sunita Das",
-    authorImage:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Ecology", "Conservation", "Rules", "Safety"],
   },
   {
@@ -459,8 +444,7 @@ Because tigers in Sundarban drink freshwater to stay healthy, sweetwater ponds n
     date: "May 15, 2024",
     readTime: "4 Min Read",
     author: "Arjun Chowdhury",
-    authorImage:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Sudhanyakhali", "Tiger", "Watch Tower", "Wildlife"],
   },
   {
@@ -477,8 +461,7 @@ Preparing for a Sundarban cruise is simple when you know the climate. Cotton fab
     date: "May 10, 2024",
     readTime: "5 Min Read",
     author: "Priya Bose",
-    authorImage:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Packing List", "Guide", "Travel Tips", "Preparation"],
   },
   {
@@ -495,8 +478,7 @@ A wilderness safari does not have to be rigorous. With luxury vessels equipped w
     date: "May 05, 2024",
     readTime: "4 Min Read",
     author: "Sunita Das",
-    authorImage:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Family", "Kids", "Seniors", "Comfort"],
   },
   {
@@ -513,8 +495,7 @@ Mangrove trees thrive in environments that would kill most other plant life. The
     date: "Apr 28, 2024",
     readTime: "5 Min Read",
     author: "Arjun Chowdhury",
-    authorImage:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Botany", "Sundari Trees", "Mangroves", "Ecology"],
   },
   {
@@ -531,8 +512,7 @@ As day transitions into twilight, the wide waters of the Matla River reflect fie
     date: "Apr 22, 2024",
     readTime: "3 Min Read",
     author: "Priya Bose",
-    authorImage:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80",
+    authorImage: "",
     tags: ["Sunset", "Matla River", "Cruise", "Scenic"],
   },
 ];

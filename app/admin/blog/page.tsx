@@ -18,6 +18,7 @@ import {
   Star,
   ChevronLeft,
   ChevronRight,
+  User,
 } from "lucide-react";
 
 export default function AdminBlogManagerPage() {
@@ -98,7 +99,7 @@ export default function AdminBlogManagerPage() {
       <AdminHeader
         onOpenMobile={() => setIsMobileOpen(true)}
         title="Blog & Editorial Publications"
-        subtitle="WordPress-style content manager for Sundarban wildlife articles, safari guides, and travel blogs"
+        subtitle="Content manager for Sundarban wildlife articles, safari guides, and travel blogs"
       />
 
       <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6">
@@ -279,14 +280,20 @@ export default function AdminBlogManagerPage() {
                         {/* Author */}
                         <td className="py-3.5 px-4 whitespace-nowrap">
                           <div className="flex items-center gap-2">
-                            <div className="relative w-6 h-6 rounded-full overflow-hidden bg-slate-200 shrink-0">
-                              <Image
-                                src={post.authorImage || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"}
-                                alt={post.author}
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
+                            {post.authorImage && !post.authorImage.includes("unsplash.com") ? (
+                              <div className="relative w-6 h-6 rounded-full overflow-hidden bg-slate-200 shrink-0">
+                                <Image
+                                  src={post.authorImage}
+                                  alt={post.author}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                            ) : (
+                              <div className="w-6 h-6 rounded-full bg-slate-100 border border-slate-200 text-slate-500 flex items-center justify-center shrink-0">
+                                <User className="w-3 h-3" />
+                              </div>
+                            )}
                             <span className="text-slate-700 font-medium text-[11px]">
                               {post.author}
                             </span>

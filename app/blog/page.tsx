@@ -55,7 +55,7 @@ export default async function BlogListPage() {
       date: p.date || "Today",
       readTime: p.readTime || "4 Min Read",
       author: p.author || "Arjun Chowdhury",
-      authorImage: p.authorImage || "",
+      authorImage: p.authorImage && !p.authorImage.includes("unsplash.com") ? p.authorImage : "",
       tags: Array.isArray(p.tags) ? (p.tags as string[]) : [],
       status: (p.status as "Published" | "Draft" | "Scheduled") || "Published",
       featured: p.featured ?? false,

@@ -352,7 +352,7 @@ function WordPressBlogEditorContent() {
           setCategory(p.category || "Wildlife");
           setPublishDate(p.date || "Today");
           setSelectedAuthor(p.author || "Editorial Team");
-          setAuthorImage(p.authorImage || "");
+          setAuthorImage(p.authorImage && !p.authorImage.includes("unsplash.com") ? p.authorImage : "");
           setTags(Array.isArray(p.tags) ? p.tags : ["Sundarban"]);
           setFocusKeyword(p.focusKeyword || "");
           setStatus(p.status || "Published");
@@ -378,7 +378,7 @@ function WordPressBlogEditorContent() {
           setCategory(existing.category || "Wildlife");
           setPublishDate(existing.date || "Today");
           setSelectedAuthor(existing.author || "Editorial Team");
-          setAuthorImage(existing.authorImage || "");
+          setAuthorImage(existing.authorImage && !existing.authorImage.includes("unsplash.com") ? existing.authorImage : "");
           setTags(existing.tags || ["Sundarban"]);
           setFocusKeyword(existing.focusKeyword || "");
           setStatus(existing.status || "Published");
@@ -407,7 +407,7 @@ function WordPressBlogEditorContent() {
           setCategory(existing.category || "Wildlife");
           setPublishDate(existing.date || "Today");
           setSelectedAuthor(existing.author || "Editorial Team");
-          setAuthorImage(existing.authorImage || "");
+          setAuthorImage(existing.authorImage && !existing.authorImage.includes("unsplash.com") ? existing.authorImage : "");
           setTags(existing.tags || ["Sundarban"]);
           setFocusKeyword(existing.focusKeyword || "");
           setStatus(existing.status || "Published");
@@ -1800,7 +1800,7 @@ function WordPressBlogEditorContent() {
               {/* Author Photo / Avatar Upload (No filename text displayed) */}
               <div className="space-y-1.5 pt-2 border-t border-slate-100">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
-                  Author Photo
+                  Author Photo <span className="text-slate-400 font-normal lowercase">(optional, not required)</span>
                 </label>
                 <AuthorAvatarUpload
                   value={authorImage}

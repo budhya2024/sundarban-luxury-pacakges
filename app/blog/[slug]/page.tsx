@@ -369,17 +369,16 @@ export default async function BlogDetailPage({
             {/* Author & Meta Section */}
             <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-8 border-b border-slate-100">
               <div className="flex items-center gap-3">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-[#064e3b]/30 shrink-0">
-                  <Image
-                    src={
-                      post.authorImage ||
-                      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80"
-                    }
-                    alt={post.author || "Author"}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                {post.authorImage && !post.authorImage.includes("unsplash.com") && (
+                  <div className="relative w-11 h-11 rounded-full overflow-hidden ring-2 ring-[#064e3b]/30 shrink-0">
+                    <Image
+                      src={post.authorImage}
+                      alt={post.author || "Author"}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                )}
                 <div>
                   <p className="text-[#0e2a47] font-bold text-sm sm:text-base flex items-center gap-1.5">
                     <FaRegUser className="w-3.5 h-3.5 text-[#064e3b]" />

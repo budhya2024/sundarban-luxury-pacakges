@@ -108,9 +108,7 @@ export async function POST(req: NextRequest) {
         date: formattedDate,
         readTime: readTime || "4 Min Read",
         author: author || "Arjun Chowdhury",
-        authorImage:
-          authorImage ||
-          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+        authorImage: authorImage && !authorImage.includes("unsplash.com") ? authorImage : "",
         tags: Array.isArray(tags) ? tags : [],
         focusKeyword: focusKeyword || null,
         status: status || "Published",
