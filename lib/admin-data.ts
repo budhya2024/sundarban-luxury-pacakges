@@ -1,24 +1,34 @@
 export interface TourActivity {
   time: string;
   title: string;
-  desc: string;
+  desc?: string;
+  description?: string;
 }
 
 export interface TourItineraryDay {
-  dayNumber: number;
-  dayTitle: string;
+  dayNumber?: number;
+  day?: number;
+  dayTitle?: string;
+  title?: string;
+  description?: string;
   activities: TourActivity[];
 }
 
 export interface TourMealCourse {
   courseName: string;
-  menuItems: string;
+  menuItems?: string;
+  name?: string;
+  time?: string;
+  items?: string[];
 }
 
 export interface TourDayFoodMenu {
-  dayNumber: number;
-  dayTitle: string;
+  dayNumber?: number;
+  day?: number;
+  dayTitle?: string;
+  title?: string;
   courses: TourMealCourse[];
+  meals?: TourMealCourse[];
 }
 
 export interface AdminTourPackage {
@@ -54,6 +64,25 @@ export interface AdminTourPackage {
   featured: boolean;
 }
 
+export interface AdminHotelPackage {
+  id: string;
+  name: string;
+  duration: string;
+  pricePerPerson: number;
+  originalPrice?: number;
+  premiumRoomDelta: number;
+  highlight: string;
+  popular: boolean;
+  status: "Active" | "Draft";
+  order?: number;
+  itinerary?: TourItineraryDay[];
+  foodMenu?: TourDayFoodMenu[];
+  inclusions?: string[];
+  exclusions?: string[];
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
+}
+
 export interface AdminBooking {
   id: string;
   bookingCode: string;
@@ -85,6 +114,27 @@ export interface AdminHotelRoom {
   image: string;
   amenities: string[];
 }
+
+export interface AdminHotelSettings {
+  id: string;
+  privateBoatPrice: number;
+  standardBoatPrice: number;
+  privateBoatTitle?: string;
+  privateBoatDescription?: string;
+  privateTransferPrice: number;
+  groupTransferPrice: number;
+  updatedAt?: string;
+}
+
+export const defaultHotelSettings: AdminHotelSettings = {
+  id: "default",
+  privateBoatPrice: 20000,
+  standardBoatPrice: 0,
+  privateBoatTitle: "Exclusive Private Boat",
+  privateBoatDescription: "Dedicated luxury boat exclusively for your group.",
+  privateTransferPrice: 5000,
+  groupTransferPrice: 500,
+};
 
 export interface AdminMenuItem {
   id: string;
@@ -1291,6 +1341,351 @@ export const initialAdminRooms: AdminHotelRoom[] = [
     amenities: ["Private Lawn", "Direct Jetty Access", "Personal Chef", "Complimentary High Tea", "Eco-friendly Wooden Interior"],
   },
 
+];
+
+export const initialAdminHotelPackages: AdminHotelPackage[] = [
+  {
+    id: "2n3d-sonar",
+    name: "1 Night 2 Days Deluxe Package",
+    duration: "1 Night / 2 Days",
+    pricePerPerson: 10500,
+    originalPrice: 13500,
+    premiumRoomDelta: 2000,
+    highlight: "1 Night Resort Stay • 2 Forest Safaris • Baul Night & All Meals",
+    popular: true,
+    status: "Active",
+    order: 1,
+    itinerary: [
+      {
+        day: 1,
+        title: "Kolkata to Godkhali & Sonar Bangla Resort Check-in",
+        activities: [
+          {
+            time: "08:30 AM",
+            title: "Departure from Kolkata",
+            desc: "Board air-conditioned vehicle from Kolkata towards Godkhali Ferry Ghat.",
+          },
+          {
+            time: "11:30 AM",
+            title: "Arrival at Godkhali & Cruise Boarding",
+            desc: "Board exclusive luxury cruiser boat, sip fresh green coconut water, and cruise through Gomor and Bidya rivers.",
+          },
+          {
+            time: "01:30 PM",
+            title: "Check-in at Hotel Sonar Bangla",
+            desc: "Traditional welcome, check-in to 5-star AC Deluxe/Premium suites, followed by lavish Bengali buffet lunch.",
+          },
+          {
+            time: "03:30 PM",
+            title: "Afternoon Watchtower Safari",
+            desc: "Board safari boat to Sajnekhali Watchtower, Mangrove Interpretation Center & Crocodile Pond.",
+          },
+          {
+            time: "06:30 PM",
+            title: "Evening High Tea & Cultural Baul Show",
+            desc: "Hot tea/coffee with crispy Bengali snacks, live tribal folk dance and Baul music concert by the river lawn.",
+          },
+          {
+            time: "08:30 PM",
+            title: "Royal Dinner Buffet",
+            desc: "Multi-cuisine dinner featuring fresh local fish & chicken delicacies at Breathing Roots restaurant.",
+          },
+        ],
+      },
+      {
+        day: 2,
+        title: "Deep Forest Creek Safari & Return Journey",
+        activities: [
+          {
+            time: "06:30 AM",
+            title: "Morning Delta Cruise",
+            desc: "Bed tea/coffee, early morning cruise into Sundarban core delta for birdwatching and wildlife spotting.",
+          },
+          {
+            time: "08:30 AM",
+            title: "Sudhanyakhali Watchtower Safari",
+            desc: "Visit Sudhanyakhali watchtower overlooking freshwater pond frequented by tigers, spotted deer & wild boars.",
+          },
+          {
+            time: "09:30 AM",
+            title: "Buffet Breakfast on Cruiser",
+            desc: "Luchi, alur dom, boiled eggs, sweets, fresh juice served onboard.",
+          },
+          {
+            time: "11:30 AM",
+            title: "Dobanki Canopy Walk",
+            desc: "Walk 20 feet above ground level on the canopy pathway for aerial view of pristine mangrove forest.",
+          },
+          {
+            time: "01:30 PM",
+            title: "Farewell Gourmet Lunch",
+            desc: "Traditional lunch served as the vessel cruises back towards Godkhali Jetty.",
+          },
+          {
+            time: "03:30 PM",
+            title: "Arrival at Godkhali & Transfer to Kolkata",
+            desc: "Board vehicle for comfortable return journey to Kolkata with sweet memories.",
+          },
+        ],
+      },
+    ],
+    foodMenu: [
+      {
+        day: 1,
+        dayTitle: "Day 1 Gourmet Bengali Feast",
+        courses: [
+          {
+            courseName: "Welcome Drink",
+            items: ["Fresh Green Coconut Water", "Assorted Butter Cookies", "Mineral Water"],
+          },
+          {
+            courseName: "Buffet Lunch",
+            items: ["Fine Basmati Rice", "Sona Moong Dal with Ghee", "Crispy Aloo Bhaja", "Echorer Dalna / Seasonal Veg", "Bhetki Fish Curry / Mutton Kosha", "Chutney & Papad", "Hot Rosogolla"],
+          },
+          {
+            courseName: "Evening High Tea",
+            items: ["Darjeeling Tea / Black Coffee", "Crispy Onion & Veg Pakoras", "French Fries", "Dry Cake"],
+          },
+          {
+            courseName: "Grand Dinner",
+            items: ["Rumali Roti / Tawa Butter Roti", "Jeera Pulao", "Butter Chicken / Murgh Kosha", "Paneer Butter Masala", "Green Salad", "Gulab Jamun"],
+          },
+        ],
+      },
+      {
+        day: 2,
+        dayTitle: "Day 2 River Cruise Delight",
+        courses: [
+          {
+            courseName: "Bed Tea",
+            items: ["Morning Masala Tea / Brewed Coffee", "Marie Biscuits"],
+          },
+          {
+            courseName: "Cruiser Breakfast",
+            items: ["Fluffy Hot Luchi / Puri", "Chholar Dal with Coconut", "Farm Boiled Eggs", "Sandesh Sweet", "Seasonal Fruit Bowl"],
+          },
+          {
+            courseName: "Farewell Lunch",
+            items: ["Steamed Rice", "Katla Kalia / Rohu Fish Curry", "Aloo Posto", "Tomato Khejur Chutney", "Papad", "Sweet Curd (Misti Doi)"],
+          },
+        ],
+      },
+    ],
+    inclusions: [
+      "1 Night AC Accommodation at Hotel Sonar Bangla",
+      "All Gourmet Buffet Meals Included (Welcome Drink to Farewell Lunch)",
+      "AC Forest Cruiser Safari with Govt Naturalist Guide",
+      "Sajnekhali, Sudhanyakhali & Dobanki Watchtower Entry Fees & Permits",
+      "Traditional Baul Song & Folk Dance Performance",
+      "Resort Swimming Pool, Lawn & Garden Access",
+    ],
+    exclusions: [
+      "Personal expenses (telephone calls, laundry, room service charges)",
+      "Any alcoholic or packaged beverages not included in the meal plan",
+      "Camera & Video Camera entry permits (paid directly to Forest Dept)",
+      "Tips and gratuities for safari boat crew, drivers & tour guides",
+      "Optional private vehicle transfers (group ₹500 / private ₹5,000)",
+      "Medical insurance or personal emergency evacuation charges",
+    ],
+  },
+  {
+    id: "3n4d-sonar",
+    name: "2 Nights 3 Days Deluxe Package",
+    duration: "2 Nights / 3 Days",
+    pricePerPerson: 17500,
+    originalPrice: 21500,
+    premiumRoomDelta: 4000,
+    highlight: "2 Nights Resort Stay • Core Safari • Dobanki Canopy Walk & Dolphin Creek",
+    popular: false,
+    status: "Active",
+    order: 2,
+    itinerary: [
+      {
+        day: 1,
+        title: "Kolkata to Sundarban Delta & Sonar Bangla Check-in",
+        activities: [
+          {
+            time: "08:30 AM",
+            title: "Departure from Kolkata",
+            desc: "AC vehicle journey from Kolkata to Godkhali through picturesque Bengal countryside.",
+          },
+          {
+            time: "11:30 AM",
+            title: "Godkhali Jetty Cruise",
+            desc: "Embark on cruiser vessel with refreshing welcome coconut water.",
+          },
+          {
+            time: "01:30 PM",
+            title: "Check-in at Hotel Sonar Bangla",
+            desc: "Welcome reception, suite room check-in, and authentic Bengali buffet lunch.",
+          },
+          {
+            time: "03:30 PM",
+            title: "Bird Sanctuary Safari",
+            desc: "Cruise into Sajnekhali Bird Sanctuary, watchtower and museum visit.",
+          },
+          {
+            time: "06:30 PM",
+            title: "Cultural Baul Night",
+            desc: "Folk performance, bonfire by the riverbank, and hot evening snacks.",
+          },
+          {
+            time: "08:30 PM",
+            title: "Grand Resort Dinner",
+            desc: "Deluxe dinner buffet at Breathing Roots restaurant, overnight stay.",
+          },
+        ],
+      },
+      {
+        day: 2,
+        title: "Full-Day Core Safari, Dobanki Canopy Walk & Tiger Trail",
+        activities: [
+          {
+            time: "06:00 AM",
+            title: "Early Morning Jungle Cruise",
+            desc: "Venture into deep mangrove creeks of Pirkhali, Gajikhali and Deulbharani.",
+          },
+          {
+            time: "08:30 AM",
+            title: "Sudhanyakhali Watchtower",
+            desc: "Wildlife observation from strategic watchtower.",
+          },
+          {
+            time: "10:30 AM",
+            title: "Panchamukhani Confluence",
+            desc: "Cruising through the majestic 5-river junction and Dolphin creek.",
+          },
+          {
+            time: "12:30 PM",
+            title: "Dobanki Canopy Walkway",
+            desc: "Half-kilometer canopy walk at 20 ft elevation.",
+          },
+          {
+            time: "02:00 PM",
+            title: "Buffet Lunch on River Cruise",
+            desc: "Warm Bengali spread served onboard while cruising along quiet channels.",
+          },
+          {
+            time: "05:00 PM",
+            title: "Sunset Return to Resort",
+            desc: "Return to Sonar Bangla, leisure time by the infinity pool.",
+          },
+          {
+            time: "08:30 PM",
+            title: "Barbeque & Royal Dinner",
+            desc: "Tandoori starters & chef's special dinner, overnight stay.",
+          },
+        ],
+      },
+      {
+        day: 3,
+        title: "Village Walk, Mangrove Creek Safari & Return to Kolkata",
+        activities: [
+          {
+            time: "07:00 AM",
+            title: "Village Eco Walk",
+            desc: "Guided walk to experience Sundarban village life, local crafts, and organic farms.",
+          },
+          {
+            time: "08:30 AM",
+            title: "Resort Breakfast Buffet",
+            desc: "Lavish multi-cuisine breakfast at resort.",
+          },
+          {
+            time: "10:30 AM",
+            title: "Check-out & Final Creek Cruise",
+            desc: "Cruise towards Godkhali while scanning banks for basking estuarine crocodiles.",
+          },
+          {
+            time: "01:00 PM",
+            title: "Lunch on Cruiser",
+            desc: "Closing feast onboard before reaching Godkhali Ferry Ghat.",
+          },
+          {
+            time: "02:30 PM",
+            title: "Disembarkation & Transfer to Kolkata",
+            desc: "AC vehicle ride returning to Kolkata by evening.",
+          },
+        ],
+      },
+    ],
+    foodMenu: [
+      {
+        day: 1,
+        dayTitle: "Day 1 Welcome Feast",
+        courses: [
+          {
+            courseName: "Welcome Drink",
+            items: ["Green Coconut Water", "Assorted Biscuits", "Mineral Water"],
+          },
+          {
+            courseName: "Lunch",
+            items: ["Basmati Rice", "Moong Dal", "Beguni", "Katla Kalia / Chicken Kosha", "Tomato Chutney", "Papad", "Rosogolla"],
+          },
+          {
+            courseName: "Evening High Tea",
+            items: ["Tea / Coffee", "Hot Fish Cutlets", "Veg Pakoras", "Cookies"],
+          },
+          {
+            courseName: "Dinner",
+            items: ["Butter Naan / Roti", "Jeera Rice", "Mutton Rogan Josh / Kadai Paneer", "Salad", "Ice Cream"],
+          },
+        ],
+      },
+      {
+        day: 2,
+        dayTitle: "Day 2 River Safari Special",
+        courses: [
+          {
+            courseName: "Breakfast",
+            items: ["Radhaballavi with Chholar Dal", "Bread, Butter & Jam", "Boiled / Omelette Eggs", "Fresh Fruits", "Tea / Coffee"],
+          },
+          {
+            courseName: "Cruiser Lunch",
+            items: ["Basmati Rice", "Macher Matha Diye Dal", "Bhetki Paturi / Chicken Curry", "Pineapple Chutney", "Papad", "Misti Doi"],
+          },
+          {
+            courseName: "Evening High Tea",
+            items: ["Tea / Coffee", "Chicken Nuggets / Paneer Pakora", "Pastry"],
+          },
+          {
+            courseName: "Dinner",
+            items: ["Chicken Biryani / Veg Fried Rice", "Chicken Chaap / Paneer Butter Masala", "Burani Raita", "Gulab Jamun"],
+          },
+        ],
+      },
+      {
+        day: 3,
+        dayTitle: "Day 3 Grand Farewell",
+        courses: [
+          {
+            courseName: "Breakfast",
+            items: ["Idli Sambar / Puri Sabzi", "Boiled Eggs", "Sandesh Sweet", "Tea / Coffee"],
+          },
+          {
+            courseName: "Lunch",
+            items: ["Fried Rice", "Chilli Chicken / Chilli Paneer", "Crispy Fish Fry", "Salad", "Chutney & Sweet"],
+          },
+        ],
+      },
+    ],
+    inclusions: [
+      "2 Nights Deluxe/Premium Stay at Hotel Sonar Bangla",
+      "All Meals from Day 1 Lunch to Day 3 Lunch Included",
+      "Full Day Core Safari to Dobanki, Sudhanyakhali, Panchamukhani",
+      "Cultural Evening Program & Baul Folk Music",
+      "Resort Infinity Pool, Gym, and Riverfront Deck Access",
+      "Government Forest Permits, Cruise Crew & Naturalist Guide",
+    ],
+    exclusions: [
+      "Personal expenses (laundry, room service, telephone calls)",
+      "Alcoholic drinks, aerated sodas & mineral water outside buffet hours",
+      "Professional Camera & Camcorder permits levied by Forest Department",
+      "Tips, porterage and gratuities to resort staff & boat drivers",
+      "Optional resort spa treatments & motorized water activities",
+      "Travel insurance or emergency medical expense coverage",
+    ],
+  },
 ];
 
 export const initialAdminMenuItems: AdminMenuItem[] = [

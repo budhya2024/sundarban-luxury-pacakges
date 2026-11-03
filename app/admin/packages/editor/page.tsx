@@ -349,7 +349,7 @@ function PackageEditorForm() {
 
   const handleUpdateCourse = (dayIndex: number, courseIndex: number, field: keyof TourMealCourse, val: string) => {
     const updated = [...foodMenu];
-    updated[dayIndex].courses[courseIndex][field] = val;
+    (updated[dayIndex].courses[courseIndex] as any)[field] = val;
     setFoodMenu(updated);
   };
 

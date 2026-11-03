@@ -61,9 +61,7 @@ export default function TermsAndConditionsPage() {
             {/* Section 1 */}
             <div id="acceptance" className="space-y-3">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
-                  1
-                </span>
+
                 Acceptance of Terms
               </h2>
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -77,9 +75,7 @@ export default function TermsAndConditionsPage() {
             {/* Section 2 */}
             <div id="booking-pricing" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
-                  2
-                </span>
+
                 Booking, Payments &amp; Pricing
               </h2>
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -101,9 +97,7 @@ export default function TermsAndConditionsPage() {
             {/* Section 3 */}
             <div id="cancellation-refund" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
-                  3
-                </span>
+
                 Cancellation &amp; 100% Refund Policy
               </h2>
               <div className="p-4 bg-amber-50 border border-amber-200">
@@ -131,9 +125,7 @@ export default function TermsAndConditionsPage() {
             {/* Section 4 */}
             <div id="wildlife-forest-rules" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
-                  4
-                </span>
+
                 Forest Dept. &amp; National Park Regulations
               </h2>
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -170,9 +162,7 @@ export default function TermsAndConditionsPage() {
             {/* Section 5 */}
             <div id="safety-insurance" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
-                  5
-                </span>
+
                 Boat Safety, Life Jackets &amp; Liability
               </h2>
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -186,9 +176,7 @@ export default function TermsAndConditionsPage() {
             {/* Section 6 */}
             <div id="force-majeure" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
-                  6
-                </span>
+
                 Weather, Tidal Conditions &amp; Force Majeure
               </h2>
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -202,9 +190,7 @@ export default function TermsAndConditionsPage() {
             {/* Section 7 */}
             <div id="jurisdiction" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
-                  7
-                </span>
+
                 Governing Law &amp; Jurisdiction
               </h2>
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">

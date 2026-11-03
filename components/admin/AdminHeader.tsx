@@ -22,7 +22,7 @@ export function AdminHeader({
   title,
   subtitle,
 }: {
-  onOpenMobile: () => void;
+  onOpenMobile?: () => void;
   title: string;
   subtitle?: string;
 }) {

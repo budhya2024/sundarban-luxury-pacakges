@@ -259,6 +259,44 @@ export const hotelInquiries = pgTable("hotel_inquiries", {
 export type HotelInquiryRow = typeof hotelInquiries.$inferSelect;
 export type NewHotelInquiry = typeof hotelInquiries.$inferInsert;
 
+// 10b. Hotel Sonar Bangla Tour Packages
+export const hotelPackages = pgTable("hotel_packages", {
+  id: varchar("id", { length: 100 }).primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  duration: varchar("duration", { length: 100 }).notNull(),
+  pricePerPerson: integer("price_per_person").notNull(),
+  originalPrice: integer("original_price").default(12500),
+  premiumRoomDelta: integer("premium_room_delta").default(2000).notNull(),
+  highlight: text("highlight").notNull(),
+  popular: boolean("popular").default(false).notNull(),
+  status: varchar("status", { length: 50 }).default("Active").notNull(),
+  itinerary: jsonb("itinerary").$type<TourItineraryDayItem[]>().default([]),
+  foodMenu: jsonb("food_menu").$type<TourDayFoodMenuItem[]>().default([]),
+  inclusions: jsonb("inclusions").$type<string[]>().default([]),
+  exclusions: jsonb("exclusions").$type<string[]>().default([]),
+  order: integer("order").default(0).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type HotelPackageRow = typeof hotelPackages.$inferSelect;
+export type NewHotelPackage = typeof hotelPackages.$inferInsert;
+
+// 10c. Hotel Sonar Bangla Settings & Safari Add-on Pricing
+export const hotelSettings = pgTable("hotel_settings", {
+  id: varchar("id", { length: 50 }).primaryKey().default("default"),
+  privateBoatPrice: integer("private_boat_price").default(20000).notNull(),
+  standardBoatPrice: integer("standard_boat_price").default(0).notNull(),
+  privateBoatTitle: varchar("private_boat_title", { length: 255 }).default("Exclusive Private Boat"),
+  privateBoatDescription: text("private_boat_description").default("Dedicated luxury boat exclusively for your group."),
+  privateTransferPrice: integer("private_transfer_price").default(5000).notNull(),
+  groupTransferPrice: integer("group_transfer_price").default(500).notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type HotelSettingsRow = typeof hotelSettings.$inferSelect;
+export type NewHotelSettings = typeof hotelSettings.$inferInsert;
+
 // 11. Page Contents (Home, About, Contact, Gallery, Hotel, Tours)
 export interface PageSectionItem {
   id: string;

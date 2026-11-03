@@ -15,207 +15,76 @@ import {
   Clock,
   User,
   Mail,
+  Package,
+  Edit3,
+  Copy,
+  Eye,
+  Utensils,
+  Sparkles,
+  Layers,
+  CheckCircle2,
+  AlertCircle,
+  FileText,
+  DollarSign,
+  ChevronRight,
+  Check,
 } from "lucide-react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { ImageUploadDropzone } from "@/components/admin/ImageUploadDropzone";
 import { useAdmin } from "@/context/AdminContext";
 import { useConfirm } from "@/context/ConfirmContext";
+import {
+  AdminHotelPackage,
+  AdminHotelPhoto,
+  initialAdminHotelPackages,
+} from "@/lib/admin-data";
 
-interface ResortPhoto {
-  id: string;
-  title: string;
-  category: "Swimming Pool" | "Riverfront Lawn" | "Dining & Bar" | "Luxury Suites" | "Jetty Deck" | "Resort Lobby";
-  imageUrl: string;
-  featured: boolean;
-}
-
-interface HotelInquiry {
+export interface HotelInquiry {
   id: string;
   refId: string;
   guestName: string;
   phone: string;
   email: string;
+  packageName?: string;
   roomName: string;
-  roomCode: string;
+  roomCode?: string;
   checkIn: string;
   checkOut: string;
   nights: number;
   guestsCount: string;
-  roomsCount: number;
+  roomsCount?: number;
   totalAmount: number;
-  paidAmount: number;
-  paymentStatus: "Paid" | "Partial" | "Pending";
+  paidAmount?: number;
+  paymentStatus?: "Paid" | "Partial" | "Pending";
   status: "Confirmed" | "Pending" | "Checked In" | "Completed" | "Cancelled";
   date: string;
   specialRequests?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
-
-const initialResortPhotos: ResortPhoto[] = [
-  {
-    id: "ph-1",
-    title: "Infinity Pool overlooking Delta Waterways",
-    category: "Swimming Pool",
-    imageUrl: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=1200",
-    featured: true,
-  },
-  {
-    id: "ph-2",
-    title: "Executive River View Master Suite Bed",
-    category: "Luxury Suites",
-    imageUrl: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&q=80&w=1200",
-    featured: true,
-  },
-  {
-    id: "ph-3",
-    title: "Sunset Dining Lawn & Bonfire Pavilion",
-    category: "Riverfront Lawn",
-    imageUrl: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=1200",
-    featured: true,
-  },
-  {
-    id: "ph-4",
-    title: "Private Boat Boarding Jetty at Dusk",
-    category: "Jetty Deck",
-    imageUrl: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80&w=1200",
-    featured: false,
-  },
-  {
-    id: "ph-5",
-    title: "Royal Sonar Multi-Cuisine Dining Restaurant",
-    category: "Dining & Bar",
-    imageUrl: "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&q=80&w=1200",
-    featured: false,
-  },
-  {
-    id: "ph-6",
-    title: "Grand Italian Marble Reception & Lounge",
-    category: "Resort Lobby",
-    imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1200",
-    featured: false,
-  },
-];
-
-const initialHotelInquiries: HotelInquiry[] = [
-  {
-    id: "h-inq-1",
-    refId: "HSB-2026-8810",
-    guestName: "Ananya Roy",
-    phone: "+91 98301 24567",
-    email: "ananya.roy@example.com",
-    roomName: "Executive River View Suite",
-    roomCode: "HSB-EX-RIVER",
-    checkIn: "Sep 20, 2026",
-    checkOut: "Sep 22, 2026",
-    nights: 2,
-    guestsCount: "2 Adults, 1 Child",
-    roomsCount: 1,
-    totalAmount: 15998,
-    paidAmount: 15998,
-    paymentStatus: "Paid",
-    status: "Confirmed",
-    date: "Sep 13, 2026",
-    specialRequests: "River facing upper floor requested with extra buffet breakfast.",
-  },
-  {
-    id: "h-inq-2",
-    refId: "HSB-2026-8811",
-    guestName: "Vikram Malhotra",
-    phone: "+91 98112 34567",
-    email: "vikram.m@example.com",
-    roomName: "Luxury Family Deluxe Cottage",
-    roomCode: "HSB-FAM-LUX",
-    checkIn: "Sep 25, 2026",
-    checkOut: "Sep 27, 2026",
-    nights: 2,
-    guestsCount: "4 Adults, 2 Children",
-    roomsCount: 2,
-    totalAmount: 23996,
-    paidAmount: 10000,
-    paymentStatus: "Partial",
-    status: "Pending",
-    date: "Sep 12, 2026",
-    specialRequests: "Need adjacent inter-connected rooms near swimming pool lawn.",
-  },
-  {
-    id: "h-inq-3",
-    refId: "HSB-2026-8812",
-    guestName: "Dr. Sourav Banerjee",
-    phone: "+91 94330 98765",
-    email: "sourav.banerjee@example.com",
-    roomName: "Premium Mangrove View Room",
-    roomCode: "HSB-PREM-MAN",
-    checkIn: "Sep 18, 2026",
-    checkOut: "Sep 19, 2026",
-    nights: 1,
-    guestsCount: "2 Adults",
-    roomsCount: 1,
-    totalAmount: 5999,
-    paidAmount: 5999,
-    paymentStatus: "Paid",
-    status: "Checked In",
-    date: "Sep 11, 2026",
-    specialRequests: "Early check-in at 10 AM requested.",
-  },
-  {
-    id: "h-inq-4",
-    refId: "HSB-2026-8813",
-    guestName: "Priyanka Sharma",
-    phone: "+91 97178 54321",
-    email: "priyanka.s@example.com",
-    roomName: "Royal Heritage Presidential Suite",
-    roomCode: "HSB-ROYAL-PRES",
-    checkIn: "Oct 02, 2026",
-    checkOut: "Oct 05, 2026",
-    nights: 3,
-    guestsCount: "2 Adults",
-    roomsCount: 1,
-    totalAmount: 38997,
-    paidAmount: 0,
-    paymentStatus: "Pending",
-    status: "Pending",
-    date: "Sep 10, 2026",
-    specialRequests: "Honeymoon decoration package with private candlelight dinner on jetty deck.",
-  },
-  {
-    id: "h-inq-5",
-    refId: "HSB-2026-8814",
-    guestName: "Amitabh Sen",
-    phone: "+91 98310 11223",
-    email: "amitabh.sen@example.com",
-    roomName: "Executive River View Suite",
-    roomCode: "HSB-EX-RIVER",
-    checkIn: "Sep 05, 2026",
-    checkOut: "Sep 07, 2026",
-    nights: 2,
-    guestsCount: "2 Adults",
-    roomsCount: 1,
-    totalAmount: 15998,
-    paidAmount: 15998,
-    paymentStatus: "Paid",
-    status: "Completed",
-    date: "Sep 01, 2026",
-    specialRequests: "Airport AC vehicle transfer service arranged.",
-  },
-];
 
 export default function AdminHotelPage() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"photos" | "inquiries">("photos");
+  const [activeTab, setActiveTab] = useState<"packages" | "photos" | "inquiries">("packages");
+
+  // Packages state
+  const [packages, setPackages] = useState<AdminHotelPackage[]>(initialAdminHotelPackages);
+  const [isLoadingPackages, setIsLoadingPackages] = useState(false);
+  const [packageSearch, setPackageSearch] = useState("");
+  const [packageStatusFilter, setPackageStatusFilter] = useState("all");
 
   // Photos state
-  const [resortPhotos, setResortPhotos] = useState<ResortPhoto[]>(initialResortPhotos);
   const [addPhotoModalOpen, setAddPhotoModalOpen] = useState(false);
   const [newPhotoTitle, setNewPhotoTitle] = useState("");
-  const [newPhotoCategory, setNewPhotoCategory] = useState<ResortPhoto["category"]>("Swimming Pool");
+  const [newPhotoCategory, setNewPhotoCategory] = useState<string>("Swimming Pool");
   const [newPhotoUrl, setNewPhotoUrl] = useState("");
 
   // Inquiries state
-  const [hotelInquiries, setHotelInquiries] = useState<HotelInquiry[]>(initialHotelInquiries);
+  const [hotelInquiries, setHotelInquiries] = useState<HotelInquiry[]>([]);
+  const [isLoadingInquiries, setIsLoadingInquiries] = useState(true);
   const [inquirySearch, setInquirySearch] = useState("");
   const [inquiryStatusFilter, setInquiryStatusFilter] = useState("all");
   const [selectedInquiry, setSelectedInquiry] = useState<HotelInquiry | null>(null);
-
-
 
   const {
     showToast,
@@ -229,25 +98,115 @@ export default function AdminHotelPage() {
   } = useAdmin();
   const { confirmDelete } = useConfirm();
 
+  // Fetch packages from Neon Postgres backend
+  const fetchPackages = async () => {
+    setIsLoadingPackages(true);
+    try {
+      const res = await fetch("/api/admin/hotel/packages");
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.success && Array.isArray(data.packages) && data.packages.length > 0) {
+          setPackages(data.packages);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to fetch packages:", err);
+    } finally {
+      setIsLoadingPackages(false);
+    }
+  };
+
   // Synchronize live data from Neon backend
   useEffect(() => {
+    fetchPackages();
     refreshHotelPhotos();
 
     const fetchInquiries = () => {
       fetch("/api/admin/hotel/inquiries")
         .then((res) => (res.ok ? res.json() : null))
         .then((data) => {
-          if (data?.success && Array.isArray(data.inquiries) && data.inquiries.length > 0) {
+          if (data?.success && Array.isArray(data.inquiries)) {
             setHotelInquiries(data.inquiries);
           }
         })
-        .catch(() => {});
+        .catch((err) => console.error("Error fetching inquiries:", err))
+        .finally(() => setIsLoadingInquiries(false));
     };
 
     fetchInquiries();
     const interval = setInterval(fetchInquiries, 30000);
     return () => clearInterval(interval);
   }, []);
+
+  // Package Handlers
+  const handleDeletePackage = async (pkg: AdminHotelPackage) => {
+    if (await confirmDelete(pkg.name, `Are you sure you want to delete "${pkg.name}"? This will remove its day-by-day itinerary and food menu.`)) {
+      try {
+        const res = await fetch(`/api/admin/hotel/packages/${encodeURIComponent(pkg.id)}`, {
+          method: "DELETE",
+        });
+        const data = await res.json().catch(() => null);
+        if (res.ok && data?.success) {
+          showToast(`Deleted package "${pkg.name}"`);
+          setPackages((prev) => prev.filter((p) => p.id !== pkg.id));
+        } else {
+          showToast(data?.error || "Failed to delete package");
+        }
+      } catch (err) {
+        console.error("Failed to delete package:", err);
+        showToast("Error deleting package");
+      }
+    }
+  };
+
+  const handleTogglePackageStatus = async (pkg: AdminHotelPackage) => {
+    const nextStatus = pkg.status === "Active" ? "Draft" : "Active";
+    setPackages((prev) =>
+      prev.map((p) => (p.id === pkg.id ? { ...p, status: nextStatus } : p))
+    );
+    try {
+      const res = await fetch(`/api/admin/hotel/packages/${encodeURIComponent(pkg.id)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: nextStatus }),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok && data?.success) {
+        showToast(`Package status changed to ${nextStatus}`);
+      } else {
+        showToast(data?.error || "Failed to update status on server");
+        fetchPackages();
+      }
+    } catch {
+      showToast("Error updating status");
+      fetchPackages();
+    }
+  };
+
+  const handleDuplicatePackage = async (pkg: AdminHotelPackage) => {
+    try {
+      const duplicatedData = {
+        ...pkg,
+        id: undefined,
+        name: `${pkg.name} (Copy)`,
+        status: "Draft" as const,
+      };
+      const res = await fetch("/api/admin/hotel/packages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(duplicatedData),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok && data?.success) {
+        showToast(`Package duplicated as "${pkg.name} (Copy)"`);
+        await fetchPackages();
+      } else {
+        showToast(data?.error || "Failed to duplicate package");
+      }
+    } catch {
+      showToast("Failed to duplicate package");
+    }
+  };
 
   // Photo Handlers
   const handleAddPhotoSubmit = async (e: React.FormEvent) => {
@@ -277,7 +236,6 @@ export default function AdminHotelPage() {
       prev.map((inq) => (inq.id === id ? { ...inq, status: nextStatus } : inq))
     );
 
-    // Immediately update unified bookings in context so notification bell clears instantly
     const mappedBookingStatus =
       nextStatus === "Checked In" ? "Confirmed" : nextStatus;
     updateBookingStatus(`b-${id}`, mappedBookingStatus);
@@ -304,7 +262,6 @@ export default function AdminHotelPage() {
   const handleDeleteInquiry = async (id: string, refId: string) => {
     if (await confirmDelete(`Inquiry #${refId}`, `Delete inquiry #${refId}?`)) {
       setHotelInquiries((prev) => prev.filter((inq) => inq.id !== id));
-      // Immediately delete from unified bookings in context
       deleteBooking(`b-${id}`);
 
       try {
@@ -325,7 +282,17 @@ export default function AdminHotelPage() {
     }
   };
 
-
+  // Filtered packages
+  const filteredPackages = packages.filter((pkg) => {
+    const matchesSearch =
+      pkg.name.toLowerCase().includes(packageSearch.toLowerCase()) ||
+      pkg.duration.toLowerCase().includes(packageSearch.toLowerCase()) ||
+      (pkg.highlight || "").toLowerCase().includes(packageSearch.toLowerCase());
+    const matchesStatus =
+      packageStatusFilter === "all" ||
+      pkg.status.toLowerCase() === packageStatusFilter.toLowerCase();
+    return matchesSearch && matchesStatus;
+  });
 
   // Filtered Inquiries
   const filteredInquiries = hotelInquiries.filter((inq) => {
@@ -344,29 +311,38 @@ export default function AdminHotelPage() {
     <div className="flex-1 flex flex-col min-h-screen bg-slate-50">
       <AdminHeader
         onOpenMobile={() => setIsMobileOpen(true)}
-        title="Hotel Sonar Bangla Resort Showcase &amp; Inquiries"
-        subtitle="Manage resort photo gallery showcase and guest booking inquiries"
+        title="Hotel Sonar Bangla Resort Showcase & Inquiries"
+        subtitle="Manage resort tour packages, day-by-day itineraries, meal menus, photo gallery, and booking inquiries"
       />
 
       <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6">
-
-
         {/* Tab Navigation */}
         <div className="flex items-center gap-2 border-b border-slate-200 pb-1 overflow-x-auto">
           <button
+            onClick={() => setActiveTab("packages")}
+            className={`px-4 py-2 text-xs font-bold rounded-[3px] transition-all flex items-center gap-2 cursor-pointer shrink-0 ${activeTab === "packages"
+              ? "bg-blue-600 text-white shadow-xs"
+              : "text-slate-600 hover:bg-slate-200/60"
+              }`}
+          >
+            <Package className="w-4 h-4" />
+            <span>Tour Packages ({packages.length})</span>
+          </button>
+
+          <button
             onClick={() => setActiveTab("photos")}
-            className={`px-4 py-2 text-xs font-bold rounded-[3px] transition-all flex items-center gap-2 ${activeTab === "photos"
+            className={`px-4 py-2 text-xs font-bold rounded-[3px] transition-all flex items-center gap-2 cursor-pointer shrink-0 ${activeTab === "photos"
               ? "bg-blue-600 text-white shadow-xs"
               : "text-slate-600 hover:bg-slate-200/60"
               }`}
           >
             <ImageIcon className="w-4 h-4" />
-            <span>Resort Photo Gallery ({resortPhotos.length})</span>
+            <span>Resort Photo Gallery ({hotelPhotos.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab("inquiries")}
-            className={`px-4 py-2 text-xs font-bold rounded-[3px] transition-all flex items-center gap-2 ${activeTab === "inquiries"
+            className={`px-4 py-2 text-xs font-bold rounded-[3px] transition-all flex items-center gap-2 cursor-pointer shrink-0 ${activeTab === "inquiries"
               ? "bg-blue-600 text-white shadow-xs"
               : "text-slate-600 hover:bg-slate-200/60"
               }`}
@@ -379,18 +355,244 @@ export default function AdminHotelPage() {
               </span>
             )}
           </button>
-
-
         </div>
+
+        {/* TAB 0: TOUR PACKAGES */}
+        {activeTab === "packages" && (
+          <div className="space-y-6">
+            {/* Header Control Box */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 rounded-[4px] border border-slate-200 shadow-2xs">
+              <div>
+                <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                  <Package className="w-4 h-4 text-blue-600" />
+                  <span>Hotel Sonar Bangla Tour Packages</span>
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Configure stay durations, Deluxe rates, Premium room upgrade deltas, detailed day-by-day itineraries and full food menu meals.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <Link
+                  href="/admin/hotel/packages/editor"
+                  className="px-3.5 py-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-[3px] flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer w-full sm:w-auto justify-center"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Create Tour Package</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Filter & Search Bar */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3 rounded-[4px] border border-slate-200">
+              <div className="relative w-full sm:w-72">
+                <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Search packages by name or highlights..."
+                  value={packageSearch}
+                  onChange={(e) => setPackageSearch(e.target.value)}
+                  className="w-full pl-8 pr-3 py-1.5 text-xs rounded-[3px] border border-slate-300 focus:outline-none focus:border-blue-600"
+                />
+              </div>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                <span className="text-xs text-slate-500 font-medium">Status:</span>
+                <select
+                  value={packageStatusFilter}
+                  onChange={(e) => setPackageStatusFilter(e.target.value)}
+                  className="px-2.5 py-1.5 text-xs rounded-[3px] border border-slate-300 bg-white font-medium text-slate-700 focus:outline-none focus:border-blue-600"
+                >
+                  <option value="all">All Packages ({packages.length})</option>
+                  <option value="active">Active Only</option>
+                  <option value="draft">Draft Only</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Packages Grid */}
+            {filteredPackages.length === 0 ? (
+              <div className="text-center py-12 bg-white border border-slate-200 rounded-[4px] p-6">
+                <Package className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                <h4 className="text-sm font-bold text-slate-700">No Tour Packages Found</h4>
+                <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1 mb-4">
+                  {packageSearch
+                    ? "No packages match your search filter."
+                    : "Create your first hotel tour package with complete itinerary and food menu."}
+                </p>
+                <Link
+                  href="/admin/hotel/packages/editor"
+                  className="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-[3px] inline-flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add First Package</span>
+                </Link>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {filteredPackages.map((pkg) => {
+                  const totalActivities = (pkg.itinerary || []).reduce(
+                    (acc, day) => acc + (day.activities?.length || 0),
+                    0
+                  );
+                  const totalMealCourses = (pkg.foodMenu || []).reduce(
+                    (acc, day) => acc + ((day.meals || day.courses || []).length),
+                    0
+                  );
+
+                  return (
+                    <div
+                      key={pkg.id}
+                      className="bg-white border border-slate-200 rounded-[4px] shadow-2xs hover:shadow-xs transition-all overflow-hidden flex flex-col justify-between"
+                    >
+                      {/* Package Card Top */}
+                      <div className="p-5 border-b border-slate-100">
+                        <div className="flex items-start justify-between gap-3 mb-2">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 flex-wrap mb-1">
+
+
+                              {pkg.popular && (
+                                <span className="px-2 py-0.5 rounded-[2px] font-black text-[10px] uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-300">
+                                  ★ Most Popular
+                                </span>
+                              )}
+
+
+                            </div>
+
+                            <h4 className="text-base font-extrabold text-slate-900 leading-snug">
+                              {pkg.name}
+                            </h4>
+                          </div>
+                        </div>
+
+                        {pkg.highlight && (
+                          <p className="text-xs text-slate-600 line-clamp-2 mt-1 leading-relaxed">
+                            {pkg.highlight}
+                          </p>
+                        )}
+
+                        {/* Pricing Grid */}
+                        <div className="grid grid-cols-2 gap-3 mt-4 pt-3 border-t border-slate-100">
+                          <div className="p-2.5 rounded-[3px] bg-slate-50 border border-slate-200/70">
+                            <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
+                              Deluxe Room (Base)
+                            </span>
+                            <div className="flex items-baseline gap-1.5 mt-0.5">
+                              <span className="text-base font-black text-slate-900">
+                                ₹{pkg.pricePerPerson.toLocaleString("en-IN")}
+                              </span>
+                              <span className="text-[10px] text-slate-500 font-semibold">/person</span>
+                              {pkg.originalPrice && pkg.originalPrice > pkg.pricePerPerson && (
+                                <span className="text-[11px] text-slate-400 line-through">
+                                  ₹{pkg.originalPrice.toLocaleString("en-IN")}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="p-2.5 rounded-[3px] bg-blue-50/50 border border-blue-100">
+                            <span className="text-[10px] uppercase font-bold text-blue-600 block tracking-wider">
+                              Premium Room Upgrade
+                            </span>
+                            <div className="flex items-baseline gap-1 mt-0.5">
+                              <span className="text-base font-black text-blue-900">
+                                +₹{(pkg.premiumRoomDelta || 0).toLocaleString("en-IN")}
+                              </span>
+                              <span className="text-[10px] text-blue-700 font-semibold">/person</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Details Badges */}
+                        <div className="flex items-center gap-3 mt-3 pt-3 border-t border-slate-100 text-[11px] text-slate-600 font-medium">
+                          <div className="flex items-center gap-1.5">
+                            <Calendar className="w-3.5 h-3.5 text-blue-600" />
+                            <span>
+                              <strong className="text-slate-900 font-bold">{pkg.itinerary?.length || 0}</strong> Days Itinerary ({totalActivities} activities)
+                            </span>
+                          </div>
+
+                          <span className="text-slate-300">•</span>
+
+                          <div className="flex items-center gap-1.5">
+                            <Utensils className="w-3.5 h-3.5 text-amber-600" />
+                            <span>
+                              {pkg.foodMenu && pkg.foodMenu.length > 0 ? (
+                                <>
+                                  <strong className="text-slate-900 font-bold">{pkg.foodMenu.length}</strong> Days Food Menu ({totalMealCourses} courses)
+                                </>
+                              ) : (
+                                <span className="text-[10px] font-bold text-amber-800 bg-amber-100/80 px-1.5 py-0.5 rounded border border-amber-200">
+                                  Menu: Contact Operator
+                                </span>
+                              )}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Package Card Actions Footer */}
+                      <div className="px-5 py-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-2 flex-wrap">
+                        <Link
+                          href={`/admin/hotel/packages/${encodeURIComponent(pkg.id)}`}
+                          className="px-3 py-1.5 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 border border-slate-300 rounded-[3px] flex items-center gap-1.5 transition-colors cursor-pointer"
+                        >
+                          <Eye className="w-3.5 h-3.5 text-blue-600" />
+                          <span>View Details</span>
+                        </Link>
+
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => handleTogglePackageStatus(pkg)}
+                            title={`Switch to ${pkg.status === "Active" ? "Draft" : "Active"}`}
+                            className={`px-2.5 py-1.5 text-xs font-bold rounded-[3px] border transition-colors cursor-pointer ${pkg.status === "Active"
+                              ? "bg-emerald-50 text-emerald-700 border-emerald-300 hover:bg-emerald-100"
+                              : "bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200"
+                              }`}
+                          >
+                            {pkg.status === "Active" ? "Active" : "Draft"}
+                          </button>
+
+
+
+                          <Link
+                            href={`/admin/hotel/packages/editor?id=${encodeURIComponent(pkg.id)}`}
+                            title="Edit package, itinerary & meals"
+                            className="px-3 py-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-[3px] flex items-center gap-1 transition-colors cursor-pointer shadow-2xs"
+                          >
+                            <Edit3 className="w-3.5 h-3.5" />
+                            <span>Edit</span>
+                          </Link>
+
+                          <button
+                            type="button"
+                            onClick={() => handleDeletePackage(pkg)}
+                            title="Delete package"
+                            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-[3px] transition-colors cursor-pointer"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* TAB 1: RESORT PHOTO GALLERY */}
         {activeTab === "photos" && (
           <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 rounded-[4px] border border-slate-200">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 rounded-[4px] border border-slate-200 shadow-2xs">
               <div>
                 <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
                   <ImageIcon className="w-4 h-4 text-blue-600" />
-                  <span>Resort Photos &amp; Facility Showcase</span>
+                  <span>Resort Photos & Facility Showcase</span>
                 </h3>
                 <p className="text-xs text-slate-500 mt-0.5">
                   High-resolution photo gallery for swimming pool, riverfront lawn, dining, and jetty.
@@ -399,7 +601,7 @@ export default function AdminHotelPage() {
 
               <button
                 onClick={() => setAddPhotoModalOpen(true)}
-                className="px-3.5 py-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-[3px] flex items-center gap-1.5 shadow-xs transition-colors"
+                className="px-3.5 py-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-[3px] flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 <span>Upload New Photo</span>
@@ -448,13 +650,13 @@ export default function AdminHotelPage() {
                       </button>
                     </div>
 
-                    <div className="p-3.5">
-                      <h4 className="text-xs font-bold text-slate-900 line-clamp-1">
+                    <div className="p-3">
+                      <h4 className="font-bold text-slate-900 text-xs truncate">
                         {photo.title}
                       </h4>
-                      <span className="text-[10px] text-slate-400 font-mono block mt-1 truncate">
-                        {photo.imageUrl}
-                      </span>
+                      <p className="text-[11px] text-slate-400 mt-0.5">
+                        Gallery Item
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -463,56 +665,48 @@ export default function AdminHotelPage() {
           </div>
         )}
 
-        {/* TAB 2: HOTEL BOOKING INQUIRIES FETCH TABLE */}
+        {/* TAB 2: GUEST INQUIRIES */}
         {activeTab === "inquiries" && (
           <div className="space-y-6">
-            {/* KPI Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="p-3.5 bg-white border border-slate-200 rounded-[4px] shadow-2xs">
-                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Total Inquiries</div>
-                <div className="text-xl font-bold text-slate-900 mt-0.5">{hotelInquiries.length}</div>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 rounded-[4px] border border-slate-200 shadow-2xs">
+              <div>
+                <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-blue-600" />
+                  <span>Resort & Tour Booking Inquiries</span>
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Guest inquiries submitted through the Hotel Sonar Bangla Luxury booking form.
+                </p>
               </div>
-              <div className="p-3.5 bg-white border border-slate-200 rounded-[4px] shadow-2xs">
-                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Pending Action</div>
-                <div className="text-xl font-bold text-amber-600 mt-0.5">
-                  {hotelInquiries.filter((i) => i.status === "Pending").length}
-                </div>
-              </div>
-              <div className="p-3.5 bg-white border border-slate-200 rounded-[4px] shadow-2xs">
-                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Confirmed Bookings</div>
-                <div className="text-xl font-bold text-emerald-600 mt-0.5">
-                  {hotelInquiries.filter((i) => i.status === "Confirmed" || i.status === "Checked In").length}
-                </div>
-              </div>
-              <div className="p-3.5 bg-white border border-slate-200 rounded-[4px] shadow-2xs">
-                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Total Revenue</div>
-                <div className="text-xl font-bold text-blue-600 mt-0.5">
-                  ₹{hotelInquiries.reduce((sum, i) => sum + i.totalAmount, 0).toLocaleString()}
-                </div>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <span className="text-xs font-bold text-slate-700">
+                  Total {hotelInquiries.length} Inquiries
+                </span>
               </div>
             </div>
 
-            {/* Filter and Search Bar */}
-            <div className="flex flex-col md:flex-row gap-3 items-center justify-between bg-white p-3 rounded-[4px] border border-slate-200 shadow-2xs">
-              <div className="relative w-full md:w-80">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+            {/* Filter & Search Bar */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3 rounded-[4px] border border-slate-200">
+              <div className="relative w-full sm:w-72">
+                <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
-                  placeholder="Search by Guest Name, Phone, Ref ID, Room..."
+                  placeholder="Search guest name, phone, room..."
                   value={inquirySearch}
                   onChange={(e) => setInquirySearch(e.target.value)}
-                  className="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-300 rounded-[3px] focus:outline-hidden focus:border-blue-600 bg-white"
+                  className="w-full pl-8 pr-3 py-1.5 text-xs rounded-[3px] border border-slate-300 focus:outline-none focus:border-blue-600"
                 />
               </div>
 
-              <div className="flex items-center gap-1.5 text-xs w-full md:w-auto">
-                <span className="font-semibold text-slate-500">Status:</span>
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                <span className="text-xs text-slate-500 font-medium">Status:</span>
                 <select
                   value={inquiryStatusFilter}
                   onChange={(e) => setInquiryStatusFilter(e.target.value)}
-                  className="px-2.5 py-1 text-xs border border-slate-300 rounded-[3px] bg-white font-medium focus:outline-hidden focus:border-blue-600"
+                  className="px-2.5 py-1.5 text-xs rounded-[3px] border border-slate-300 bg-white font-medium text-slate-700 focus:outline-none focus:border-blue-600"
                 >
-                  <option value="all">All Inquiries</option>
+                  <option value="all">All Inquiries ({hotelInquiries.length})</option>
                   <option value="pending">Pending</option>
                   <option value="confirmed">Confirmed</option>
                   <option value="checked in">Checked In</option>
@@ -523,91 +717,121 @@ export default function AdminHotelPage() {
             </div>
 
             {/* Inquiries Table */}
-            <div className="bg-white border border-slate-200 rounded-[4px] shadow-xs overflow-hidden">
+            <div className="bg-white border border-slate-200 rounded-[4px] shadow-2xs overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-600">
-                      <th className="py-3 px-4 whitespace-nowrap">Sl. No.</th>
-                      <th className="py-3 px-4 whitespace-nowrap">Booking ID</th>
-                      <th className="py-3 px-4">Guest Details</th>
-                      <th className="py-3 px-4">Room Category</th>
-                      <th className="py-3 px-4">Check-In / Out</th>
+                    <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold">
+                      <th className="py-3 px-4">Booking Ref</th>
+                      <th className="py-3 px-4">Guest Info</th>
+                      <th className="py-3 px-4">Room & Stay</th>
                       <th className="py-3 px-4">Guests</th>
-                      <th className="py-3 px-4">Total Price</th>
+                      <th className="py-3 px-4">Amount</th>
                       <th className="py-3 px-4">Status</th>
                       <th className="py-3 px-4 text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    {filteredInquiries.length === 0 ? (
+                    {isLoadingInquiries && hotelInquiries.length === 0 ? (
                       <tr>
-                        <td colSpan={9} className="py-12 text-center text-slate-400">
-                          <Calendar className="w-8 h-8 mx-auto mb-2 text-slate-300" />
-                          <p className="font-semibold">No hotel booking inquiries found matching filters.</p>
+                        <td colSpan={7} className="text-center py-8 text-slate-400">
+                          Loading guest inquiries...
+                        </td>
+                      </tr>
+                    ) : filteredInquiries.length === 0 ? (
+                      <tr>
+                        <td colSpan={7} className="text-center py-8 text-slate-400">
+                          No inquiries found matching criteria.
                         </td>
                       </tr>
                     ) : (
-                      filteredInquiries.map((inq, index) => (
-                        <tr key={inq.id} className="hover:bg-slate-50/80 transition-colors">
-                          <td className="py-3.5 px-4 whitespace-nowrap font-mono font-bold text-slate-900 text-xs">
-                            #{index + 1}
-                          </td>
-
-                          <td className="py-3.5 px-4 whitespace-nowrap font-mono font-bold text-blue-900">
-                            <span className="bg-blue-50/90 text-blue-900 border border-blue-200/80 px-2.5 py-1 rounded text-xs tracking-wide">
+                      filteredInquiries.map((inq) => (
+                        <tr
+                          key={inq.id}
+                          onClick={() => setSelectedInquiry(inq)}
+                          className="hover:bg-blue-50/40 transition-colors cursor-pointer group"
+                        >
+                          <td className="py-3.5 px-4">
+                            <span className="font-extrabold text-blue-600 block">
                               {inq.refId}
+                            </span>
+                            <span className="text-[10px] text-slate-400">
+                              {inq.date}
                             </span>
                           </td>
 
                           <td className="py-3.5 px-4">
-                            <div className="font-bold text-slate-900 text-xs">{inq.guestName}</div>
-                            <div className="text-[10px] text-slate-500 flex items-center gap-2 mt-0.5">
-                              <span className="flex items-center gap-0.5"><Phone className="w-2.5 h-2.5 text-slate-400" /> {inq.phone}</span>
+                            <span className="font-bold text-slate-900 block group-hover:text-blue-700">
+                              {inq.guestName}
+                            </span>
+                            <div className="flex items-center gap-2 mt-0.5 text-[11px] text-slate-500">
+                              <span className="flex items-center gap-1">
+                                <Phone className="w-3 h-3 text-slate-400" />
+                                {inq.phone}
+                              </span>
                             </div>
                           </td>
 
-                          <td className="py-3.5 px-4 font-semibold text-slate-800">
-                            {inq.roomName}
-                          </td>
-
-                          <td className="py-3.5 px-4 whitespace-nowrap">
-                            <div className="text-slate-900 font-bold text-[11px]">{inq.checkIn}</div>
-                            <div className="text-[10px] text-slate-500">to {inq.checkOut} ({inq.nights}N)</div>
+                          <td className="py-3.5 px-4">
+                            <span className="font-semibold text-slate-800 block">
+                              {inq.roomName}
+                            </span>
+                            <span className="text-[11px] text-slate-500">
+                              {inq.checkIn} — {inq.checkOut} ({inq.nights}N)
+                            </span>
                           </td>
 
                           <td className="py-3.5 px-4 text-slate-700 font-medium">
                             {inq.guestsCount}
                           </td>
 
-                          <td className="py-3.5 px-4 whitespace-nowrap">
-                            <div className="font-extrabold text-slate-900">₹{inq.totalAmount.toLocaleString()}</div>
-                          </td>
-
-                          <td className="py-3.5 px-4 whitespace-nowrap">
-                            <span
-                              className={`px-2 py-0.5 rounded-[2px] text-[10px] font-bold uppercase tracking-wider ${inq.status === "Confirmed"
-                                ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                                : inq.status === "Checked In"
-                                  ? "bg-blue-50 text-blue-700 border border-blue-200"
-                                  : inq.status === "Pending"
-                                    ? "bg-amber-50 text-amber-700 border border-amber-200"
-                                    : inq.status === "Completed"
-                                      ? "bg-slate-100 text-slate-700 border border-slate-200"
-                                      : "bg-rose-50 text-rose-700 border border-rose-200"
-                                }`}
-                            >
-                              {inq.status}
+                          <td className="py-3.5 px-4">
+                            <span className="font-bold text-slate-900">
+                              ₹{inq.totalAmount.toLocaleString()}
                             </span>
                           </td>
 
-                          <td className="py-3.5 px-4 text-right whitespace-nowrap">
-                            <button
-                              onClick={() => setSelectedInquiry(inq)}
-                              className="px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white font-bold text-xs transition-colors cursor-pointer"
+                          <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
+                            <select
+                              value={inq.status}
+                              onChange={(e) =>
+                                handleToggleInquiryStatus(inq.id, e.target.value as HotelInquiry["status"])
+                              }
+                              className={`px-2 py-1 rounded-[2px] font-bold text-[10px] border focus:outline-none cursor-pointer ${inq.status === "Confirmed"
+                                ? "bg-emerald-50 text-emerald-700 border-emerald-300"
+                                : inq.status === "Checked In"
+                                  ? "bg-blue-50 text-blue-700 border-blue-300"
+                                  : inq.status === "Pending"
+                                    ? "bg-amber-50 text-amber-700 border-amber-300"
+                                    : inq.status === "Completed"
+                                      ? "bg-slate-100 text-slate-700 border-slate-300"
+                                      : "bg-rose-50 text-rose-700 border-rose-300"
+                                }`}
                             >
-                              View Details
-                            </button>
+                              <option value="Pending">Pending</option>
+                              <option value="Confirmed">Confirmed</option>
+                              <option value="Checked In">Checked In</option>
+                              <option value="Completed">Completed</option>
+                              <option value="Cancelled">Cancelled</option>
+                            </select>
+                          </td>
+
+                          <td className="py-3.5 px-4 text-right" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-center justify-end gap-1">
+                              <button
+                                onClick={() => setSelectedInquiry(inq)}
+                                className="px-2.5 py-1 rounded-[3px] text-slate-600 hover:text-blue-600 hover:bg-blue-50 font-semibold transition-colors"
+                              >
+                                View
+                              </button>
+                              <button
+                                onClick={() => handleDeleteInquiry(inq.id, inq.refId)}
+                                className="p-1 rounded-[3px] text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                                title="Delete Inquiry"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))
@@ -618,50 +842,48 @@ export default function AdminHotelPage() {
             </div>
           </div>
         )}
-
-
       </main>
 
-      {/* Add Resort Photo Modal */}
+      {/* Upload Photo Modal */}
       {addPhotoModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-[4px] shadow-xl w-full max-w-md overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between p-4 border-b border-slate-100 bg-slate-50">
-              <h3 className="font-extrabold text-sm text-slate-900 flex items-center gap-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
+          <div className="bg-white rounded-[4px] border border-slate-200 shadow-xl w-full max-w-md p-6 animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
+              <h3 className="font-extrabold text-slate-900 text-sm flex items-center gap-2">
                 <ImageIcon className="w-4 h-4 text-blue-600" />
-                <span>Upload Resort Photo</span>
+                <span>Upload Resort Showcase Photo</span>
               </h3>
               <button
                 onClick={() => setAddPhotoModalOpen(false)}
-                className="p-1 text-slate-400 hover:text-slate-700 rounded"
+                className="text-slate-400 hover:text-slate-600 p-1"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleAddPhotoSubmit} className="p-4 space-y-4">
+            <form onSubmit={handleAddPhotoSubmit} className="space-y-4 text-xs">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Photo Title / Caption *
+                <label className="block font-bold text-slate-700 mb-1">
+                  Photo Title / Description *
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Riverfront Swimming Pool Sunset"
+                  placeholder="e.g. Sunset Infinity Pool with Forest View"
                   value={newPhotoTitle}
                   onChange={(e) => setNewPhotoTitle(e.target.value)}
-                  className="w-full text-xs px-3 py-2 border border-slate-300 rounded-[3px] focus:outline-hidden focus:border-blue-600"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-[3px] focus:outline-none focus:border-blue-600"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Facility Category *
+                <label className="block font-bold text-slate-700 mb-1">
+                  Category *
                 </label>
                 <select
                   value={newPhotoCategory}
-                  onChange={(e) => setNewPhotoCategory(e.target.value as ResortPhoto["category"])}
-                  className="w-full text-xs px-3 py-2 border border-slate-300 rounded-[3px] focus:outline-hidden focus:border-blue-600 bg-white"
+                  onChange={(e) => setNewPhotoCategory(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-[3px] focus:outline-none focus:border-blue-600 font-medium"
                 >
                   <option value="Swimming Pool">Swimming Pool</option>
                   <option value="Riverfront Lawn">Riverfront Lawn</option>
@@ -672,26 +894,31 @@ export default function AdminHotelPage() {
                 </select>
               </div>
 
-              <ImageUploadDropzone
-                value={newPhotoUrl}
-                onChange={setNewPhotoUrl}
-                label="Resort Photo *"
-                helperText="Drag & drop your resort photo or choose a local file"
-              />
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">
+                  Resort Image Upload or URL *
+                </label>
+                <ImageUploadDropzone
+                  value={newPhotoUrl}
+                  onChange={(url) => setNewPhotoUrl(url)}
+                  helperText="Upload photo from device or enter image URL"
+                />
+              </div>
 
-              <div className="pt-2 flex items-center justify-end gap-2 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setAddPhotoModalOpen(false)}
-                  className="px-3.5 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-[3px]"
+                  className="px-3.5 py-1.5 font-bold text-slate-600 hover:bg-slate-100 rounded-[3px]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-[3px] shadow-xs"
+                  disabled={!newPhotoTitle.trim() || !newPhotoUrl.trim()}
+                  className="px-4 py-1.5 font-bold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-[3px] shadow-xs cursor-pointer"
                 >
-                  Save &amp; Publish Photo
+                  Upload Photo
                 </button>
               </div>
             </form>
@@ -702,12 +929,9 @@ export default function AdminHotelPage() {
       {/* Inquiry Detail Right-Side Drawer */}
       {selectedInquiry && (
         <div className="fixed inset-0 z-50 flex justify-end bg-slate-900/40 backdrop-blur-xs animate-in fade-in duration-200">
-          {/* Backdrop click to dismiss */}
           <div className="fixed inset-0" onClick={() => setSelectedInquiry(null)} />
 
-          {/* Right-Side Drawer Panel */}
           <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-right duration-300 text-slate-800 text-xs border-l border-slate-200">
-            {/* Top Header with Clean White Background */}
             <div className="px-6 py-4.5 bg-white border-b border-slate-200 flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-2">
@@ -715,17 +939,16 @@ export default function AdminHotelPage() {
                     Hotel Booking Details
                   </h3>
                   <span
-                    className={`px-2 py-0.5 rounded-sm text-[10px] font-bold ${
-                      selectedInquiry.status === "Confirmed"
-                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                        : selectedInquiry.status === "Checked In"
+                    className={`px-2 py-0.5 rounded-sm text-[10px] font-bold ${selectedInquiry.status === "Confirmed"
+                      ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                      : selectedInquiry.status === "Checked In"
                         ? "bg-blue-50 text-blue-700 border border-blue-200"
                         : selectedInquiry.status === "Pending"
-                        ? "bg-amber-50 text-amber-700 border border-amber-200"
-                        : selectedInquiry.status === "Completed"
-                        ? "bg-slate-100 text-slate-700 border border-slate-200"
-                        : "bg-rose-50 text-rose-700 border border-rose-200"
-                    }`}
+                          ? "bg-amber-50 text-amber-700 border border-amber-200"
+                          : selectedInquiry.status === "Completed"
+                            ? "bg-slate-100 text-slate-700 border border-slate-200"
+                            : "bg-rose-50 text-rose-700 border border-rose-200"
+                      }`}
                   >
                     {selectedInquiry.status}
                   </span>
@@ -744,9 +967,7 @@ export default function AdminHotelPage() {
               </button>
             </div>
 
-            {/* Drawer Body */}
             <div className="flex-1 overflow-y-auto p-6 space-y-4">
-              {/* Guest Details Card */}
               <div className="p-4 rounded-sm bg-slate-50 border border-slate-200/80 space-y-3">
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
@@ -780,7 +1001,6 @@ export default function AdminHotelPage() {
                 </div>
               </div>
 
-              {/* Room & Stay Details Card */}
               <div className="p-4 rounded-sm bg-blue-50/40 border border-blue-100 space-y-3">
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 block mb-0.5">
@@ -804,7 +1024,7 @@ export default function AdminHotelPage() {
 
                   <div>
                     <span className="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">
-                      Guests &amp; Rooms
+                      Guests & Rooms
                     </span>
                     <span className="font-bold text-slate-900 flex items-center gap-1 mt-0.5">
                       <Users className="w-3 h-3 text-blue-600" />
@@ -823,7 +1043,6 @@ export default function AdminHotelPage() {
                 </div>
               </div>
 
-              {/* Special Guest Custom Notes if present */}
               {selectedInquiry.specialRequests && (
                 <div className="p-3 rounded-sm bg-amber-50/70 border border-amber-200/80 text-[11px] text-amber-900">
                   <span className="font-bold block text-[10px] uppercase tracking-wider text-amber-800 mb-0.5">
@@ -833,7 +1052,6 @@ export default function AdminHotelPage() {
                 </div>
               )}
 
-              {/* Status Update Selector */}
               <div className="space-y-1.5 pt-1">
                 <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">
                   Update Booking Status
@@ -850,17 +1068,16 @@ export default function AdminHotelPage() {
                             handleToggleInquiryStatus(selectedInquiry.id, st);
                             setSelectedInquiry({ ...selectedInquiry, status: st });
                           }}
-                          className={`py-2 px-0.5 rounded-sm text-[10px] font-bold text-center transition-all cursor-pointer border ${
-                            isActive
-                              ? st === "Confirmed" || st === "Checked In"
-                                ? "bg-blue-600 text-white border-blue-600 shadow-xs"
-                                : st === "Pending"
+                          className={`py-2 px-0.5 rounded-sm text-[10px] font-bold text-center transition-all cursor-pointer border ${isActive
+                            ? st === "Confirmed" || st === "Checked In"
+                              ? "bg-blue-600 text-white border-blue-600 shadow-xs"
+                              : st === "Pending"
                                 ? "bg-amber-500 text-white border-amber-500 shadow-xs"
                                 : st === "Completed"
-                                ? "bg-emerald-600 text-white border-emerald-600 shadow-xs"
-                                : "bg-rose-600 text-white border-rose-600 shadow-xs"
-                              : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
-                          }`}
+                                  ? "bg-emerald-600 text-white border-emerald-600 shadow-xs"
+                                  : "bg-rose-600 text-white border-rose-600 shadow-xs"
+                            : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+                            }`}
                         >
                           {st}
                         </button>
@@ -871,7 +1088,6 @@ export default function AdminHotelPage() {
               </div>
             </div>
 
-            {/* Drawer Footer Actions */}
             <div className="px-6 py-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between gap-3">
               <button
                 type="button"
@@ -884,8 +1100,6 @@ export default function AdminHotelPage() {
           </div>
         </div>
       )}
-
-
     </div>
   );
 }

@@ -386,7 +386,7 @@ export function PackageModal({
     val: string
   ) => {
     const updated = [...foodMenu];
-    updated[dayIndex].courses[courseIndex][field] = val;
+    (updated[dayIndex].courses[courseIndex] as any)[field] = val;
     setFoodMenu(updated);
   };
 

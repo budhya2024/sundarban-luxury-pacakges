@@ -21,7 +21,7 @@ export default function PrivacyPolicyPage() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80&w=2000')`,
+            backgroundImage: `url('/assets/images/sonarbanglahotel.jpg')`,
           }}
         />
 
@@ -61,9 +61,7 @@ export default function PrivacyPolicyPage() {
             {/* Section 1 */}
             <div id="data-collection" className="space-y-3">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
-                  1
-                </span>
+
                 Information We Collect
               </h2>
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -108,9 +106,7 @@ export default function PrivacyPolicyPage() {
             {/* Section 2 */}
             <div id="how-we-use" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
-                  2
-                </span>
+
                 How We Use Your Data
               </h2>
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -135,9 +131,7 @@ export default function PrivacyPolicyPage() {
             {/* Section 3 */}
             <div id="forest-permits" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
-                  3
-                </span>
+
                 National Park Permit Protocols
               </h2>
               <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200 text-xs sm:text-sm text-[#0f172a] space-y-2">
@@ -153,9 +147,7 @@ export default function PrivacyPolicyPage() {
             {/* Section 4 */}
             <div id="payment-security" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
-                  4
-                </span>
+
                 Payment &amp; SSL Security
               </h2>
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -174,9 +166,7 @@ export default function PrivacyPolicyPage() {
             {/* Section 5 */}
             <div id="third-parties" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
-                  5
-                </span>
+
                 Third-Party Sharing Rules
               </h2>
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -205,9 +195,7 @@ export default function PrivacyPolicyPage() {
             {/* Section 6 */}
             <div id="user-rights" className="space-y-3 pt-6 border-t border-slate-200">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] flex items-center gap-2.5">
-                <span className="w-7 h-7  bg-primary text-white text-xs flex items-center justify-center font-bold">
-                  6
-                </span>
+
                 Your Rights &amp; Data Deletion
               </h2>
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -238,7 +226,7 @@ export default function PrivacyPolicyPage() {
                   Our Data Protection Officer is ready to assist you.
                 </p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                 <Link
                   href="/contact"
                   className="px-5 py-2.5 rounded-full bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-xs sm:text-sm transition-colors shadow-sm"

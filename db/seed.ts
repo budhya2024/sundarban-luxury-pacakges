@@ -43,7 +43,7 @@ async function seed() {
       name: "Super Admin",
       role: "super_admin",
     });
-    console.log("✅ Admin user seeded: username=admin, password=Admin@Sundarban2026");
+    console.log(" Admin user seeded: username=admin, password=Admin@Sundarban2026");
   } else {
     console.log("ℹ️ Admin user already exists, skipping.");
   }
@@ -75,7 +75,7 @@ async function seed() {
         metaDescription: post.metaDescription || post.excerpt,
         views: post.views || 0,
       });
-      console.log(`✅ Seeded blog post: ${post.slug}`);
+      console.log(` Seeded blog post: ${post.slug}`);
     }
   }
 
@@ -100,7 +100,7 @@ async function seed() {
       googleMapEmbedUrl: initialAdminContactGeneralInfo.googleMapEmbedUrl,
       emergencyHotline: initialAdminContactGeneralInfo.emergencyHotline,
     });
-    console.log("✅ Seeded contact general info");
+    console.log(" Seeded contact general info");
   }
 
   // 4. Seed Contact Cards
@@ -120,7 +120,7 @@ async function seed() {
         order: i + 1,
       });
     }
-    console.log(`✅ Seeded ${initialAdminContactCards.length} contact cards`);
+    console.log(` Seeded ${initialAdminContactCards.length} contact cards`);
   }
 
   // 5. Seed Contact Inquiries
@@ -137,7 +137,7 @@ async function seed() {
         source: inq.source,
       });
     }
-    console.log(`✅ Seeded ${initialAdminInquiries.length} initial inquiries`);
+    console.log(` Seeded ${initialAdminInquiries.length} initial inquiries`);
   }
 
   // 6. Seed Tour Packages
@@ -182,9 +182,9 @@ async function seed() {
         featured: pkg.featured || false,
         createdAt,
         updatedAt: createdAt,
-      });
+      } as any);
     }
-    console.log(`✅ Seeded ${initialAdminPackages.length} tour packages`);
+    console.log(` Seeded ${initialAdminPackages.length} tour packages`);
   }
 
   // 7. Seed Bookings
@@ -211,7 +211,7 @@ async function seed() {
         updatedAt: isNaN(createdDate.getTime()) ? new Date() : createdDate,
       });
     }
-    console.log(`✅ Seeded ${initialAdminBookings.length} initial bookings`);
+    console.log(` Seeded ${initialAdminBookings.length} initial bookings`);
   }
 
   // 8. Seed Hotel Rooms
@@ -232,7 +232,7 @@ async function seed() {
         amenities: rm.amenities || [],
       });
     }
-    console.log(`✅ Seeded ${initialAdminRooms.length} initial hotel rooms`);
+    console.log(` Seeded ${initialAdminRooms.length} initial hotel rooms`);
   }
 
   // 9. Seed Hotel Photos
@@ -340,103 +340,7 @@ async function seed() {
     for (const ph of initialHotelPhotosSeed) {
       await db.insert(schema.hotelPhotos).values(ph);
     }
-    console.log(`✅ Seeded ${initialHotelPhotosSeed.length} initial hotel photos`);
-  }
-
-  // 10. Seed Hotel Inquiries
-  const existingHotelInquiries = await db.select().from(schema.hotelInquiries);
-  if (existingHotelInquiries.length === 0) {
-    const initialHotelInquiriesSeed = [
-      {
-        id: "h-inq-1",
-        refId: "HSB-2026-8810",
-        guestName: "Ananya Roy",
-        phone: "+91 98301 24567",
-        email: "ananya.roy@example.com",
-        packageName: "2 Nights 3 Days Deluxe Package",
-        roomName: "Executive Riverview Deluxe Room",
-        roomCode: "HSB-DLX-01",
-        checkIn: "2026-09-20",
-        checkOut: "2026-09-22",
-        nights: 2,
-        guestsCount: "2 Adults, 1 Child",
-        roomsCount: 1,
-        totalAmount: 15998,
-        paidAmount: 15998,
-        paymentStatus: "Paid",
-        status: "Confirmed",
-        date: "2026-09-13",
-        specialRequests: "River facing upper floor requested with extra buffet breakfast.",
-      },
-      {
-        id: "h-inq-2",
-        refId: "HSB-2026-8811",
-        guestName: "Vikram Malhotra",
-        phone: "+91 98112 34567",
-        email: "vikram.m@example.com",
-        packageName: "2 Nights 3 Days Grand Expedition",
-        roomName: "Heritage Mangrove Wooden Villa",
-        roomCode: "HSB-VILLA-04",
-        checkIn: "2026-09-25",
-        checkOut: "2026-09-27",
-        nights: 2,
-        guestsCount: "4 Adults, 2 Children",
-        roomsCount: 2,
-        totalAmount: 23996,
-        paidAmount: 10000,
-        paymentStatus: "Partial",
-        status: "Pending",
-        date: "2026-09-12",
-        specialRequests: "Need adjacent inter-connected rooms near swimming pool lawn.",
-      },
-      {
-        id: "h-inq-3",
-        refId: "HSB-2026-8812",
-        guestName: "Dr. Sourav Banerjee",
-        phone: "+91 94330 98765",
-        email: "sourav.banerjee@example.com",
-        packageName: "1 Day Luxury Package",
-        roomName: "Deluxe Premium AC Room",
-        roomCode: "HSB-DLX-03",
-        checkIn: "2026-09-18",
-        checkOut: "2026-09-19",
-        nights: 1,
-        guestsCount: "2 Adults",
-        roomsCount: 1,
-        totalAmount: 5999,
-        paidAmount: 5999,
-        paymentStatus: "Paid",
-        status: "Checked In",
-        date: "2026-09-11",
-        specialRequests: "Early check-in at 10 AM requested.",
-      },
-      {
-        id: "h-inq-4",
-        refId: "HSB-2026-8813",
-        guestName: "Priyanka Sharma",
-        phone: "+91 97178 54321",
-        email: "priyanka.s@example.com",
-        packageName: "2 Nights 3 Days Grand Expedition",
-        roomName: "Royal Presidential Mangrove Suite",
-        roomCode: "HSB-STE-02",
-        checkIn: "2026-10-02",
-        checkOut: "2026-10-05",
-        nights: 3,
-        guestsCount: "2 Adults",
-        roomsCount: 1,
-        totalAmount: 38997,
-        paidAmount: 0,
-        paymentStatus: "Pending",
-        status: "Pending",
-        date: "2026-09-10",
-        specialRequests: "Honeymoon decoration package with private candlelight dinner on jetty deck.",
-      },
-    ];
-
-    for (const inq of initialHotelInquiriesSeed) {
-      await db.insert(schema.hotelInquiries).values(inq);
-    }
-    console.log(`✅ Seeded ${initialHotelInquiriesSeed.length} initial hotel inquiries`);
+    console.log(` Seeded ${initialHotelPhotosSeed.length} initial hotel photos`);
   }
 
   console.log("🎉 Database seeding completed successfully!");
