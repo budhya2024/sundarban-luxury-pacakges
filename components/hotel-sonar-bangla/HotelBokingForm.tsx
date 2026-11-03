@@ -610,11 +610,7 @@ export function HotelBokingForm() {
                       >
                         <Utensils className="w-3.5 h-3.5" />
                         <span>Food Menu</span>
-                        {!hasFoodMenu && (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 font-extrabold uppercase">
-                            On Request
-                          </span>
-                        )}
+
                       </button>
 
                       <button
@@ -689,46 +685,21 @@ export function HotelBokingForm() {
                             Day-Wise Menu Details
                           </h4>
                         </div>
-                        {!hasFoodMenu && (
-                          <span className="text-[11px] font-bold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded border border-amber-200">
-                            Menu Not Provided (Contact Operator)
-                          </span>
-                        )}
+
                       </div>
 
                       {!hasFoodMenu ? (
                         <div className="p-5 sm:p-7 bg-amber-50/50 rounded-lg border border-amber-200/90 shadow-2xs text-center space-y-3.5">
-                          <div className="w-12 h-12 rounded-full bg-amber-100 text-amber-800 mx-auto flex items-center justify-center shadow-xs">
-                            <Utensils className="w-6 h-6 text-amber-700" />
-                          </div>
+
                           <div>
                             <h5 className="text-sm sm:text-base font-black text-amber-950">
-                              Menu Details Not Provided In This Package
+                              Menu Details Not Listed In This Package
                             </h5>
                             <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto leading-relaxed mt-1">
                               Fixed meal items are not pre-set for this customized package. Please contact our tour operator for personalized dining arrangements, special dietary requests, or seasonal local Bengali delicacies.
                             </p>
                           </div>
-                          <div className="pt-1 flex flex-wrap items-center justify-center gap-3">
-                            <a
-                              href="tel:+917001403498"
-                              className="inline-flex items-center gap-2 px-4 py-2.5 bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs sm:text-sm rounded-[4px] shadow-xs transition-colors cursor-pointer"
-                            >
-                              <Phone className="w-3.5 h-3.5" />
-                              <span>Call Operator: +91 70014 03498</span>
-                            </a>
-                            <a
-                              href={`https://wa.me/917001403498?text=${encodeURIComponent(
-                                `Hello! I would like to inquire about the food menu and meal arrangements for "${selectedPackage.name}".`
-                              )}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs sm:text-sm rounded-[4px] shadow-xs transition-colors cursor-pointer"
-                            >
-                              <FaWhatsapp className="w-4 h-4" />
-                              <span>WhatsApp Operator</span>
-                            </a>
-                          </div>
+
                         </div>
                       ) : (
                         <div className="space-y-4">
