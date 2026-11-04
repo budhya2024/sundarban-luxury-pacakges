@@ -39,6 +39,5 @@ Allow: /
 # 4. Custom Sitemap Location (Using your sitemap.xml)
 Sitemap: https://sundarbanluxurypackage.com/sitemap.xml
 
-# 5. LLM & AI Agent Context File (llmstxt.org Standard)
+# 5. LLM & AI Agent Context File
 # https://sundarbanluxurypackage.com/llms.txt
-# https://sundarbanluxurypackage.com/llms-full.txt
