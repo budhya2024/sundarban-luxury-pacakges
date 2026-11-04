@@ -253,6 +253,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${manrope.variable} ${montez.variable} h-full antialiased`}
     >
       <head>
+        <link rel="describedby" href="/llms.txt" />
         <meta
           name="google-site-verification"
           content="ZB58AbxPxUoxGQkSUgmlus0ml84nt0MkAAeH680uc0s"
