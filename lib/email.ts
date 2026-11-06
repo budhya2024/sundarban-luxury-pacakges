@@ -191,16 +191,14 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
         <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
           <!-- Top Dark Header Banner with White Text -->
           <tr>
-            <td style="background-color: #0b3b24; border-top: 4px solid #d4af37; padding: 15px 20px; text-align: center;">
+            <td style="background-color: #0b3b24;  padding: 15px 20px; text-align: center;">
               <div style="font-size: 9px; font-weight: bold; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;">
                 ADMIN NOTIFICATION &bull; ${websiteName}
               </div>
               <h1 style="margin: 0; font-size: 15px; font-weight: bold; color: #ffffff; letter-spacing: 1px;">
-                NEW GUEST SAFARI BOOKING
+                NEW GUEST PACKAGE BOOKING
               </h1>
-              <div style="font-size: 9px; color: #e2e8f0; margin-top: 6px;">
-                Booking Code: ${booking.bookingCode}
-              </div>
+            
             </td>
           </tr>
 
@@ -219,11 +217,7 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
                         ${booking.bookingCode}
                       </div>
                     </td>
-                    <td align="right">
-                      <span style="display: inline-block; background-color: #14532d; color: #ffffff; font-size: 9px; font-weight: bold; padding: 6px 14px; border-radius: 4px;">
-                        NEW REQUEST
-                      </span>
-                    </td>
+                   
                   </tr>
                 </table>
               </div>
@@ -258,7 +252,7 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
           <tr>
             <td style="background-color: #0b3b24; padding: 15px 20px; text-align: center; color: #ffffff; font-size: 9px;">
               <div style="font-weight: bold; color: #ffffff;">${websiteName}</div>
-              <div style="margin-top: 4px; color: #cbd5e1;">System Generated Admin Notification &bull; ${websiteDomain}</div>
+              <div style="margin-top: 4px; color: #cbd5e1;">Dulki, Gosaba, West Bengal 743370 &bull; ${websiteDomain}</div>
             </td>
           </tr>
         </table>
@@ -397,7 +391,7 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
                 SUNDARBAN LUXURY PACKAGE
               </div>
               <div style="font-size: 9px; color: #e2e8f0; margin-top: 4px; letter-spacing: 0.5px;">
-                WILD BENGAL HOSPITALITY &bull; PAKHIRALAY, GOSABA, SUNDARBAN, WB 743370
+                WILD BENGAL HOSPITALITY &bull; Dulki, Gosaba, West Bengal 743370
               </div>
               <div style="font-size: 9px; color: #cbd5e1; margin-top: 12px; border-top: 1px solid #14532d; padding-top: 12px;">
                 Direct Safari Helpline: <a href="tel:+917001403498" style="color: #ffffff; text-decoration: none; font-weight: bold;">+91 70014 03498</a> | <a href="mailto:sundarbanluxurypackage@gmail.com" style="color: #ffffff; text-decoration: none; font-weight: bold;">sundarbanluxurypackage@gmail.com</a>
@@ -467,7 +461,7 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
       };
     }
 
-    const websiteName = "Hotel Sonar Bangla & Resort";
+    const websiteName = "Sundarban Luxury Package";
     const websiteDomain = process.env.NEXT_PUBLIC_APP_URL || "https://sundarbanluxury.com";
     const fromAddress =
       process.env.SMTP_FROM || `"${websiteName}" <${process.env.SMTP_USER}>`;
@@ -506,16 +500,11 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
         <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
           <!-- Top Dark Header Banner with White Text -->
           <tr>
-            <td style="background-color: #0b3b24; border-top: 4px solid #d4af37; padding: 15px 20px; text-align: center;">
-              <div style="font-size: 9px; font-weight: bold; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;">
-                ADMIN ALERT &bull; HOTEL SONAR BANGLA
-              </div>
+            <td style="background-color: #0b3b24;  padding: 15px 20px; text-align: center;">
+              
               <h1 style="margin: 0; font-size: 15px; font-weight: bold; color: #ffffff; letter-spacing: 1px;">
-                NEW RESORT RESERVATION
-              </h1>
-              <div style="font-size: 9px; color: #e2e8f0; margin-top: 6px;">
-                Ref ID: ${inquiry.refId}
-              </div>
+                NEW PACKAGE BOOKING
+            
             </td>
           </tr>
 
@@ -546,8 +535,8 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
           <!-- Dark Footer Banner with White Text -->
           <tr>
             <td style="background-color: #0b3b24; padding: 15px 20px; text-align: center; color: #ffffff; font-size: 9px;">
-              <div style="font-weight: bold; color: #ffffff;">Hotel Sonar Bangla &bull; Sundarban</div>
-              <div style="margin-top: 4px; color: #cbd5e1;">${websiteDomain}</div>
+              <div style="font-weight: bold; color: #ffffff;">Sundarban Luxury Package</div>
+              <div style="margin-top: 4px; color: #cbd5e1;">Dulki, Gosaba, West Bengal 743370 &bull; ${websiteDomain}</div>
             </td>
           </tr>
         </table>
@@ -594,7 +583,7 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
               <h1 style="margin: 0; font-size: 15px; font-weight: bold; color: #ffffff; letter-spacing: 1px;">
                 HOTEL SONAR BANGLA &amp; RESORT
               </h1>
-              <div style="font-size: 9px; color: #e2e8f0; margin-top: 6px; line-height: 1.4;">
+              <div style="font-size: 10px; color: #e2e8f0; margin-top: 6px; line-height: 1.4;">
                 River-front Luxury Rooms, Swimming Pool &amp; World-class Bengali Hospitality
               </div>
             </td>
@@ -616,7 +605,7 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
               <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px 15px; margin-bottom: 22px;">
                 <table width="100%" border="0" cellspacing="0" cellpadding="4" style="font-size: 9px;">
                   <tr>
-                    <td style="color: #64748b; width: 38%; font-weight: bold;">Room / Suite Type:</td>
+                    <td style="color: #64748b; width: 38%; font-weight: bold;">Package Name</td>
                     <td style="color: #0f172a; font-weight: bold;">${inquiry.roomName}</td>
                   </tr>
                   <tr>
@@ -632,13 +621,10 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
                     <td style="color: #0f172a; font-weight: bold;">${inquiry.guestsCount} (${inquiry.roomsCount} Room, ${inquiry.nights} Night(s))</td>
                   </tr>
                   <tr>
-                    <td style="color: #64748b; font-weight: bold;">Estimated Tariff:</td>
+                    <td style="color: #64748b; font-weight: bold;">Estimated Price:</td>
                     <td style="color: #14532d; font-weight: bold; font-size: 9px;">${formattedAmount}</td>
                   </tr>
-                  <tr>
-                    <td style="color: #64748b; font-weight: bold;">Payment Terms:</td>
-                    <td style="color: #15803d; font-weight: bold;">Zero Upfront Fee : Pay at Resort Check-In</td>
-                  </tr>
+                 
                 </table>
               </div>
 
@@ -650,7 +636,7 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-size: 9px; color: #581c87; line-height: 1.8;">
                   <tr>
                     <td width="50%" valign="top">
-                      - River-view / Garden-view Luxury Accommodation<br>
+                      - Garden-view Luxury Accommodation<br>
                       - Complimentary Gourmet Breakfast &amp; High Tea<br>
                       - Swimming Pool &amp; Sun Deck Access
                     </td>
@@ -704,7 +690,7 @@ export async function sendHotelInquiryNotificationEmails(inquiry: HotelInquiryEm
                 HOTEL SONAR BANGLA &amp; RESORT
               </div>
               <div style="font-size: 9px; color: #e2e8f0; margin-top: 4px; letter-spacing: 0.5px;">
-                WILD BENGAL HOSPITALITY &bull; PAKHIRALAY, GOSABA, SUNDARBAN, WB 743370
+                WILD BENGAL HOSPITALITY &bull; Dulki, Gosaba, West Bengal 743370
               </div>
               <div style="font-size: 9px; color: #cbd5e1; margin-top: 12px; border-top: 1px solid #14532d; padding-top: 12px;">
                 Direct Resort Helpline: <a href="tel:+917001403498" style="color: #ffffff; text-decoration: none; font-weight: bold;">+91 70014 03498</a> | <a href="mailto:sundarbanluxurypackage@gmail.com" style="color: #ffffff; text-decoration: none; font-weight: bold;">sundarbanluxurypackage@gmail.com</a>
@@ -787,7 +773,7 @@ export async function sendAdminAuthEmail(params: AdminAuthEmailParams) {
   <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 580px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 16px rgba(0,0,0,0.05);">
     <!-- Header -->
     <tr>
-      <td style="background-color: #0b3b24; padding: 28px 24px; text-align: center; border-top: 4px solid #d4af37;">
+      <td style="background-color: #0b3b24; padding: 28px 24px; text-align: center; ">
         <h1 style="color: #ffffff; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: 0.5px;">
           SUNDARBAN LUXURY PACKAGE
         </h1>
@@ -848,7 +834,7 @@ export async function sendAdminAuthEmail(params: AdminAuthEmailParams) {
     <!-- Footer -->
     <tr>
       <td style="background-color: #f1f5f9; padding: 18px 24px; text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0;">
-        &copy; ${new Date().getFullYear()} Sundarban Luxury Packages &bull; Wild Bengal Hospitality &bull; Automated Security Dispatch
+        &copy; ${new Date().getFullYear()} Sundarban Luxury Packages &bull; Dulki, Gosaba, West Bengal 743370 &bull; Automated Security Dispatch
       </td>
     </tr>
   </table>
