@@ -280,6 +280,15 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
     // -------------------------------------------------------------
     let guestSent = false;
     try {
+      // Filter out internal system placeholder notes so they are never sent to the client
+      const rawNotes = (booking.specialRequests || "").trim();
+      const isSystemGeneratedNote =
+        rawNotes.toLowerCase().includes("hero reservation") ||
+        rawNotes.toLowerCase().includes("direct homepage") ||
+        rawNotes.toLowerCase().includes("direct online reservation") ||
+        rawNotes.toLowerCase().includes("direct safari reservation");
+      const clientVisibleNotes = !isSystemGeneratedNote && rawNotes.length > 0 ? rawNotes : "";
+
       const guestHtml = `
 <!DOCTYPE html>
 <html lang="en">
@@ -339,12 +348,13 @@ export async function sendBookingNotificationEmails(booking: BookingEmailData): 
                     <td style="color: #14532d; font-weight: bold; font-size: 9px;">${formattedAmount}</td>
                   </tr>
                  
+                  ${clientVisibleNotes ? `
                   <tr>
                     <td style="color: #64748b; font-weight: bold;">Your Notes:</td>
                     <td style="color: #334155; font-style: italic;">
-                      ${booking.specialRequests ? booking.specialRequests : `Direct safari reservation request for ${booking.packageOrRoom}.`}
+                      ${clientVisibleNotes}
                     </td>
-                  </tr>
+                  </tr>` : ""}
                 </table>
               </div>
 

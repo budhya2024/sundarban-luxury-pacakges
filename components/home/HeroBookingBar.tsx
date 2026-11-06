@@ -155,7 +155,7 @@ export function HeroBookingBar() {
           guests: guestCount,
           totalAmount,
           type: "Tour Package",
-          specialRequests: `Direct homepage hero reservation for ${pkgName}.`,
+          specialRequests: "",
         }),
       });
 

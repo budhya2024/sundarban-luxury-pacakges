@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     const type = body.type || "Tour Package";
     const paymentStatus = body.paymentStatus || "Unpaid";
     const bookingStatus = body.bookingStatus || "Pending";
-    const specialRequests = body.specialRequests || `Direct online reservation for ${packageOrRoom}.`;
+    const specialRequests = (body.specialRequests || "").trim();
 
     // Strict server-side validation
     const validation = validateTourBooking({
