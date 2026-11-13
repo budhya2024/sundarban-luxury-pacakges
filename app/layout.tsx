@@ -253,25 +253,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${manrope.variable} ${montez.variable} h-full antialiased`}
     >
       <head>
-        <link rel="describedby" href="/llms.txt" />
-        <meta
-          name="google-site-verification"
-          content="ZB58AbxPxUoxGQkSUgmlus0ml84nt0MkAAeH680uc0s"
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(knowledgeGraph),
-          }}
-        />
-        {/* Google Tag Manager (GTM) */}
+        {/* Google tag (gtag.js) for GTM-5DM8PX6G */}
         <Script
           id="gtm-script"
           strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtm.js?id=GTM-5DM8PX6G"
         />
-
-        {/* Google Tag initialization */}
         <Script
           id="gtag-init"
           strategy="afterInteractive"
@@ -293,6 +280,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             __html: `
               gtag('event', 'conversion', {'send_to': 'AW-18468295501/ofSUCKjAorYdEM2mr-ZE'});
             `,
+          }}
+        />
+
+        <link rel="describedby" href="/llms.txt" />
+        <meta
+          name="google-site-verification"
+          content="ZB58AbxPxUoxGQkSUgmlus0ml84nt0MkAAeH680uc0s"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(knowledgeGraph),
           }}
         />
       </head>
